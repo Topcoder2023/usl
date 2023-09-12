@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>usl</name>
+    <groupId>com.gitee</groupId>
+    <artifactId>usl</artifactId>
+    <version>1.0.0</version>
+    <description>Universal Script Language (通用脚本语言)</description>
+
+    <developers>
+        <developer>
+            <id>LHD</id>
+            <name>hongda.li</name>
+            <roles>
+                <role>Developer</role>
+                <role>Maintainer</role>
+                <role>Contributor</role>
+            </roles>
+            <email>hongda_li_dlmu@163.com</email>
+        </developer>
+    </developers>
+
+    <properties>
+        <!--依赖版本定义-->
+        <hutool.version>5.8.18</hutool.version>
+        <aviator.version>5.3.3</aviator.version>
+        <slf4j.version>2.0.9</slf4j.version>
+
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.aviator</groupId>
+            <artifactId>aviator</artifactId>
+            <version>${aviator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>
