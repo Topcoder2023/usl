@@ -1,5 +1,7 @@
 package com.gitee.usl;
 
+import com.gitee.usl.infra.thread.UslExecutor;
+import com.gitee.usl.infra.time.TimedTaskManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,5 +13,9 @@ public class UslApplication {
 
     public static void main(String[] args) {
        LOGGER.info("USL Starting...");
+
+        UslExecutor.submit(() -> LOGGER.info("USL started."));
+
+       new TimedTaskManager().doInit();
     }
 }

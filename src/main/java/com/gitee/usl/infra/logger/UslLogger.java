@@ -61,7 +61,7 @@ public class UslLogger extends AbstractUslEnabledLogger {
         AnsiColor color = COLOR_MAPPING.apply(level);
 
         // 根据颜色定义生成特殊编码的模板
-        final String template = AnsiEncoder.encode(COLOR_TIME, "[%s]", color, " [%-5s]%s", COLOR_CLASSNAME, "%-52s: ", color, "%s%n");
+        final String template = AnsiEncoder.encode(COLOR_TIME, "[%s]", color, " [%-5s]%s", COLOR_CLASSNAME, "%-45s: ", color, "%s%n");
 
         // 生成 yyyy-MM-dd HH:mm:ss.SSS 格式的时间
         final String time = DatePattern.NORM_DATETIME_MS_FORMAT.format(new Date());
