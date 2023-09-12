@@ -7,7 +7,7 @@
     <name>usl</name>
     <groupId>com.gitee</groupId>
     <artifactId>usl</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0.sunshine</version>
     <description>Universal Script Language (通用脚本语言)</description>
 
     <developers>
@@ -20,6 +20,17 @@
                 <role>Contributor</role>
             </roles>
             <email>hongda_li_dlmu@163.com</email>
+        </developer>
+
+        <developer>
+            <id>ZJS</id>
+            <name>jingshu.zeng</name>
+            <roles>
+                <role>Developer</role>
+                <role>Maintainer</role>
+                <role>Contributor</role>
+            </roles>
+            <email>xxx@xx.com</email>
         </developer>
     </developers>
 
