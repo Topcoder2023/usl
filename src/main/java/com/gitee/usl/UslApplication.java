@@ -10,6 +10,6 @@ public class UslApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(UslApplication.class);
 
     public static void main(String[] args) {
-        LOGGER.info("test");
+       LOGGER.info("USL Starting...");
     }
 }

@@ -7,7 +7,7 @@ import org.slf4j.helpers.LegacyAbstractLogger;
  *
  * @author hongda.li
  */
-public abstract class UslEnabledLogger extends LegacyAbstractLogger {
+public abstract class AbstractUslEnabledLogger extends LegacyAbstractLogger {
     @Override
     public boolean isTraceEnabled() {
         return true;
