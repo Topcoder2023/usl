@@ -8,15 +8,18 @@ import java.util.function.Consumer;
  * @author hongda.li
  */
 public final class UslConfiguration {
+    private final CacheConfiguration cacheConfiguration;
     private final EngineConfiguration engineConfiguration;
     private final ThreadPoolConfiguration threadPoolConfiguration;
 
     public UslConfiguration() {
-        this(new EngineConfiguration(), new ThreadPoolConfiguration());
+        this(new CacheConfiguration(), new EngineConfiguration(), new ThreadPoolConfiguration());
     }
 
-    public UslConfiguration(EngineConfiguration engineConfiguration,
+    public UslConfiguration(CacheConfiguration cacheConfiguration,
+                            EngineConfiguration engineConfiguration,
                             ThreadPoolConfiguration threadPoolConfiguration) {
+        this.cacheConfiguration = cacheConfiguration;
         this.engineConfiguration = engineConfiguration;
         this.threadPoolConfiguration = threadPoolConfiguration;
     }
@@ -41,6 +44,10 @@ public final class UslConfiguration {
     public UslConfiguration configThreadPool(Consumer<ThreadPoolConfiguration> consumer) {
         consumer.accept(threadPoolConfiguration);
         return this;
+    }
+
+    public CacheConfiguration getCacheConfiguration() {
+        return cacheConfiguration;
     }
 
     public EngineConfiguration getEngineConfiguration() {
