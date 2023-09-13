@@ -15,6 +15,11 @@ public final class NumberConstant {
     public static final int ZERO = 0;
 
     /**
+     * 数字八
+     */
+    public static final int EIGHT = 8;
+
+    /**
      * 默认的 Map 初始化大小
      */
     public static final int COMMON_MAP_SIZE = 2 << 3;

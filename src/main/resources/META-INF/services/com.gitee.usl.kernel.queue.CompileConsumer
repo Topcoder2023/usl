@@ -1,0 +1,3 @@
+com.gitee.usl.kernel.queue.CompileKeyConsumer
+com.gitee.usl.kernel.queue.CompileCacheConsumer
+com.gitee.usl.kernel.queue.CompileGeneratorConsumer

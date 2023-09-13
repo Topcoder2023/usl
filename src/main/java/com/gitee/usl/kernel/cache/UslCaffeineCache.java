@@ -1,7 +1,7 @@
 package com.gitee.usl.kernel.cache;
 
 import com.gitee.usl.api.Initializer;
-import com.gitee.usl.api.annotation.Order;
+import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -11,7 +11,6 @@ import com.googlecode.aviator.Expression;
 /**
  * @author hongda.li
  */
-@Order
 public class UslCaffeineCache implements UslCache, Initializer {
     private Cache<String, Expression> cache;
 
@@ -19,11 +18,17 @@ public class UslCaffeineCache implements UslCache, Initializer {
     public void doInit(UslConfiguration uslConfiguration) {
         CacheConfiguration configuration = uslConfiguration.getCacheConfiguration();
 
-        this.cache = Caffeine.newBuilder()
-                .maximumSize(10)
-                .build();
+        UslCache uslCache = SpiServiceUtil.loadFirstSortedService(UslCache.class);
+        if (uslCache == null) {
+            this.cache = Caffeine.newBuilder()
+                    .maximumSize(10)
+                    .build();
 
-        configuration.setUslCache(this);
+            configuration.setUslCache(this);
+            return;
+        }
+
+        configuration.setUslCache(uslCache);
     }
 
     @Override

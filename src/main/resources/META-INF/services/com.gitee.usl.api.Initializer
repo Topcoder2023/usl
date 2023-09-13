@@ -1,3 +1,5 @@
+com.gitee.usl.infra.thread.UslExecutor
 com.gitee.usl.infra.time.TimedTaskManager
 com.gitee.usl.infra.proxy.UslProxyManager
-com.gitee.usl.infra.thread.UslExecutor
+com.gitee.usl.kernel.cache.UslCaffeineCache
+com.gitee.usl.kernel.queue.CompileQueueManager

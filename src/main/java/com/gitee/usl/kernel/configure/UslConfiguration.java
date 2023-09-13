@@ -9,17 +9,23 @@ import java.util.function.Consumer;
  */
 public final class UslConfiguration {
     private final CacheConfiguration cacheConfiguration;
+    private final QueueConfiguration queueConfiguration;
     private final EngineConfiguration engineConfiguration;
     private final ThreadPoolConfiguration threadPoolConfiguration;
 
     public UslConfiguration() {
-        this(new CacheConfiguration(), new EngineConfiguration(), new ThreadPoolConfiguration());
+        this(new CacheConfiguration(),
+                new QueueConfiguration(),
+                new EngineConfiguration(),
+                new ThreadPoolConfiguration());
     }
 
     public UslConfiguration(CacheConfiguration cacheConfiguration,
+                            QueueConfiguration queueConfiguration,
                             EngineConfiguration engineConfiguration,
                             ThreadPoolConfiguration threadPoolConfiguration) {
         this.cacheConfiguration = cacheConfiguration;
+        this.queueConfiguration = queueConfiguration;
         this.engineConfiguration = engineConfiguration;
         this.threadPoolConfiguration = threadPoolConfiguration;
     }
@@ -48,6 +54,10 @@ public final class UslConfiguration {
 
     public CacheConfiguration getCacheConfiguration() {
         return cacheConfiguration;
+    }
+
+    public QueueConfiguration getQueueConfiguration() {
+        return queueConfiguration;
     }
 
     public EngineConfiguration getEngineConfiguration() {
