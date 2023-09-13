@@ -7,6 +7,7 @@ import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.exception.UslException;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
+import com.gitee.usl.kernel.configure.UslConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,7 @@ public class UslProxyManager implements Initializer {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public void doInit() {
+    public void doInit(UslConfiguration configuration) {
         SpiServiceUtil.loadSortedService(UslProxy.class).forEach(this::initProxy);
     }
 

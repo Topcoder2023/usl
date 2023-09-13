@@ -1,7 +1,7 @@
 package com.gitee.usl.infra.time.impl;
 
-import com.gitee.usl.infra.thread.UslExecutor;
 import com.gitee.usl.infra.time.FixedRateTimedTask;
+import com.gitee.usl.kernel.configure.UslConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,8 +22,10 @@ public class ThreadStatusWatcher implements FixedRateTimedTask {
     }
 
     @Override
-    public void doTask() {
-        final ThreadPoolExecutor executor = UslExecutor.executor();
+    public void doTask(UslConfiguration configuration) {
+        final ThreadPoolExecutor executor = configuration.getThreadPoolConfiguration()
+                .getUslExecutor()
+                .getExecutor();
 
         logger.debug("[{}] => [TC:{} - CTC:{} - AC:{} - WC:{}]", executor.getClass().getSimpleName(),
                 executor.getTaskCount(),

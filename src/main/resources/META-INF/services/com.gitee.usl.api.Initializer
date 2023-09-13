@@ -1,2 +1,3 @@
 com.gitee.usl.infra.time.TimedTaskManager
 com.gitee.usl.infra.proxy.UslProxyManager
+com.gitee.usl.infra.thread.UslExecutor

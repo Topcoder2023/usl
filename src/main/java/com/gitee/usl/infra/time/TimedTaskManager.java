@@ -4,6 +4,7 @@ import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.thread.NamedThreadFactory;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
+import com.gitee.usl.kernel.configure.UslConfiguration;
 
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,21 +28,21 @@ public class TimedTaskManager implements Initializer {
     }
 
     @Override
-    public void doInit() {
+    public void doInit(UslConfiguration configuration) {
         // 初始化固定执行频率的定时任务
-        this.takeWhile(FixedRateTimedTask.class, fixed -> executor.scheduleAtFixedRate(fixed::doTask,
+        this.takeWhile(FixedRateTimedTask.class, fixed -> executor.scheduleAtFixedRate(() -> fixed.doTask(configuration),
                 fixed.initDelay(),
                 fixed.cycle(),
                 fixed.unit()));
 
         // 初始化固定延迟时间的定时任务
-        this.takeWhile(FixedDelayTimedTask.class, fixed -> executor.scheduleWithFixedDelay(fixed::doTask,
+        this.takeWhile(FixedDelayTimedTask.class, fixed -> executor.scheduleWithFixedDelay(() -> fixed.doTask(configuration),
                 fixed.initDelay(),
                 fixed.delay(),
                 fixed.unit()));
 
         // 初始化仅执行一次的定时任务
-        this.takeWhile(FixedOnceTimedTask.class, fixed -> executor.schedule(fixed::doTask,
+        this.takeWhile(FixedOnceTimedTask.class, fixed -> executor.schedule(() -> fixed.doTask(configuration),
                 fixed.initDelay(),
                 fixed.unit()));
     }
