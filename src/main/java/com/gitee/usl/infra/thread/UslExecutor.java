@@ -1,5 +1,6 @@
 package com.gitee.usl.infra.thread;
 
+import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.thread.ExecutorBuilder;
 import cn.hutool.core.thread.RejectPolicy;
 import com.gitee.usl.api.service.UslEnvLoader;
@@ -48,7 +49,7 @@ public class UslExecutor {
                 return executor;
             }
 
-            UslEnvLoader envLoader = UslEnvLoader.getInstance();
+            UslEnvLoader envLoader = Singleton.get(UslEnvLoader.class);
 
             // 获取CPU核心数
             int processor = Runtime.getRuntime().availableProcessors();

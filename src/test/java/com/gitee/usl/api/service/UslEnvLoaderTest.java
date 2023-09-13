@@ -1,5 +1,6 @@
 package com.gitee.usl.api.service;
 
+import cn.hutool.core.lang.Singleton;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ class UslEnvLoaderTest {
 
     @BeforeAll
     public static void before() {
-        envLoader = UslEnvLoader.getInstance();
+        envLoader = Singleton.get(UslEnvLoader.class);
     }
 
     @Test

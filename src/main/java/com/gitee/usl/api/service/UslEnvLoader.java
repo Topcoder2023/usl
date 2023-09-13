@@ -18,35 +18,18 @@ public class UslEnvLoader implements EnvLoader {
      * 环境变量加载器实例集合
      * 该集合在本类首次加载时被初始化
      */
-    private static final List<EnvLoader> LOADER_LIST;
+    private final List<EnvLoader> loaderList;
 
-    /**
-     * USL环境变量加载器全局唯一实例
-     */
-    private static final UslEnvLoader LOADER = new UslEnvLoader();
-
-    private UslEnvLoader() {
-    }
-
-    static {
+    public UslEnvLoader() {
         // 根据SPI机制加载所有可用的环境变量加载器并排序
-        LOADER_LIST = SpiServiceUtil.loadSortedService(EnvLoader.class);
-    }
-
-    /**
-     * 获取全局唯一的 USL 环境变量加载器实例
-     *
-     * @return USL 环境变量加载器实例
-     */
-    public static UslEnvLoader getInstance() {
-        return LOADER;
+        loaderList = SpiServiceUtil.loadSortedService(EnvLoader.class);
     }
 
     @Override
     public String fetch(String name) {
         // 遍历所有环境变量加载器并获取首个加载成功的值
         // 若所有环境变量加载器均无法加载此值，则返回空
-        for (EnvLoader loader : LOADER_LIST) {
+        for (EnvLoader loader : loaderList) {
             String fetched;
             if ((fetched = loader.fetch(name)) != null) {
                 return fetched;
