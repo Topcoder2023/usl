@@ -20,7 +20,7 @@ public final class NumberConstant {
     public static final int EIGHT = 8;
 
     /**
-     * 默认的 Map 初始化大小
+     * 默认的容器初始化大小
      */
-    public static final int COMMON_MAP_SIZE = 2 << 3;
+    public static final int COMMON_SIZE = 2 << 3;
 }

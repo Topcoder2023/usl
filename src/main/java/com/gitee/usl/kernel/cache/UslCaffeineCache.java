@@ -6,12 +6,16 @@ import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import com.googlecode.aviator.Expression;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author hongda.li
  */
 public class UslCaffeineCache implements UslCache, Initializer {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private Cache<String, Expression> cache;
 
     @Override
@@ -22,6 +26,7 @@ public class UslCaffeineCache implements UslCache, Initializer {
         if (uslCache == null) {
             this.cache = Caffeine.newBuilder()
                     .maximumSize(10)
+                    .recordStats()
                     .build();
 
             configuration.setUslCache(this);
@@ -48,5 +53,18 @@ public class UslCaffeineCache implements UslCache, Initializer {
 
     public Cache<String, Expression> getCache() {
         return cache;
+    }
+
+    @Override
+    public void snapshot() {
+        CacheStats stats = this.cache.stats();
+        if (stats == null) {
+            return;
+        }
+
+        logger.info("USL Cache Snapshot => [HC : {}, MC : {}, EC : {}]",
+                stats.hitCount(),
+                stats.missCount(),
+                stats.evictionCount());
     }
 }

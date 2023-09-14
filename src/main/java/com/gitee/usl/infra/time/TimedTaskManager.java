@@ -16,19 +16,17 @@ import java.util.function.Consumer;
  *
  * @author hongda.li
  */
-@Order
+@Order(Integer.MAX_VALUE - 100)
 public class TimedTaskManager implements Initializer {
     public static final String PREFIX = "USL_Timed_Executor";
-    private final ScheduledExecutorService executor;
-    private final List<TimedTask> taskList;
-
-    public TimedTaskManager() {
-        taskList = SpiServiceUtil.loadSortedService(TimedTask.class);
-        executor = new ScheduledThreadPoolExecutor(taskList.size(), new NamedThreadFactory(PREFIX));
-    }
+    private List<TimedTask> taskList;
+    private ScheduledExecutorService executor;
 
     @Override
     public void doInit(UslConfiguration configuration) {
+        taskList = SpiServiceUtil.loadSortedService(TimedTask.class);
+        executor = new ScheduledThreadPoolExecutor(taskList.size(), new NamedThreadFactory(PREFIX));
+
         // 初始化固定执行频率的定时任务
         this.takeWhile(FixedRateTimedTask.class, fixed -> executor.scheduleAtFixedRate(() -> fixed.doTask(configuration),
                 fixed.initDelay(),
@@ -60,5 +58,9 @@ public class TimedTaskManager implements Initializer {
                 .filter(type::isInstance)
                 .map(type::cast)
                 .forEach(consumer);
+    }
+
+    public ScheduledExecutorService getExecutor() {
+        return executor;
     }
 }

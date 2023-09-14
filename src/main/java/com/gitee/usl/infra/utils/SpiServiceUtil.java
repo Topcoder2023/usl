@@ -2,12 +2,12 @@ package com.gitee.usl.infra.utils;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ServiceLoaderUtil;
+import com.gitee.usl.api.Excluded;
+import com.gitee.usl.infra.constant.NumberConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * SPI 服务发现机制工具类
@@ -16,8 +16,15 @@ import java.util.List;
  */
 public class SpiServiceUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpiServiceUtil.class);
+    private static final Set<Class<?>> EXCLUDE_TYPES;
 
     private SpiServiceUtil() {
+    }
+
+    static {
+        EXCLUDE_TYPES = HashSet.newHashSet(NumberConstant.COMMON_SIZE);
+        List<Excluded> excludedList = loadSortedService(Excluded.class);
+        excludedList.forEach(excluded -> EXCLUDE_TYPES.addAll(excluded.targets()));
     }
 
     /**
@@ -30,7 +37,11 @@ public class SpiServiceUtil {
      */
     public static <T> List<T> loadSortedService(Class<T> serviceType) {
         // 根据SPI机制加载所有可用服务
-        List<T> elements = ServiceLoaderUtil.loadList(serviceType);
+        // 但排除指定的服务及其子类
+        List<T> elements = new ArrayList<>(ServiceLoaderUtil.loadList(serviceType)
+                .stream()
+                .filter(element -> EXCLUDE_TYPES.stream().noneMatch(excludeType -> excludeType.isAssignableFrom(element.getClass())))
+                .toList());
 
         if (CollUtil.isEmpty(elements)) {
             return Collections.emptyList();

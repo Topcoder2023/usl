@@ -20,7 +20,7 @@ public final class UslLoggerFactory implements ILoggerFactory {
     private final Map<String, UslLogger> loggerCache;
 
     public UslLoggerFactory() {
-        loggerCache = new ConcurrentHashMap<>(NumberConstant.COMMON_MAP_SIZE);
+        loggerCache = new ConcurrentHashMap<>(NumberConstant.COMMON_SIZE);
     }
 
     @Override

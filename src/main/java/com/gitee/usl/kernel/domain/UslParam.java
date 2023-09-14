@@ -28,7 +28,7 @@ public class UslParam {
 
     public UslParam() {
         this.cached = true;
-        this.context = HashMap.newHashMap(NumberConstant.COMMON_MAP_SIZE);
+        this.context = HashMap.newHashMap(NumberConstant.COMMON_SIZE);
     }
 
     public UslParam setContext(String name, Object value) {
