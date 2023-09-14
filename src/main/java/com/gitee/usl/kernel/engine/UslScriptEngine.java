@@ -22,10 +22,15 @@ import com.googlecode.aviator.Expression;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.LockSupport;
 
 /**
  * USL 脚本引擎
+ * SHA512
+ * SpinLock
+ * W-TinyLFU
+ * Token-Bucket
+ * Count–Min Sketch
+ * Non-blocking Synchronization
  *
  * @author hongda.li
  */
