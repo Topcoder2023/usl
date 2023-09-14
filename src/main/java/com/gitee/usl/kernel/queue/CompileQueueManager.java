@@ -3,6 +3,7 @@ package com.gitee.usl.kernel.queue;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.thread.NamedThreadFactory;
+import com.gitee.usl.infra.utils.CompareUtil;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.QueueConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
@@ -14,8 +15,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
+ * 编译队列管理者
+ * 存放 Disruptor 和 生产者的实例
+ * 对外提供获取 Disruptor 和生产者实例的方法
+ * 同时作为初始化器，会自动按配置初始化编译队列以及组装生产者
+ * 组装生产者的顺序取决于生产者类上的 @Order 注解
+ * <br/>
+ * 编译队列为单一生产者模式
+ * 多消费者独立消费模式
+ * 即消费者之间互相独立消费同一编译事件，互不影响
+ * 生产者必须实现 CompileConsumer 接口并通过 SPI 机制提供服务注册
+ *
  * @author hongda.li
  */
 @Order
@@ -44,18 +59,39 @@ public class CompileQueueManager implements Initializer {
         // 设置独立消费者
         // 每个消费者互相独立消费
         // 即前一个消费者消费事件后，后面的消费者仍可继续消费
-        Iterator<CompileConsumer> iterator = SpiServiceUtil.loadSortedService(CompileConsumer.class).iterator();
-        CompileConsumer first = iterator.next();
-        logger.info("Set compile queue consumer => {}", first.getClass().getName());
-        EventHandlerGroup<CompileEvent> eventsWith = disruptor.handleEventsWith(first);
+        Iterator<Map.Entry<Integer, List<CompileConsumer>>> iterator = SpiServiceUtil.loadSortedService(CompileConsumer.class)
+                .stream()
+                .collect(Collectors.groupingBy(consumer -> CompareUtil.getOrder(consumer.getClass())))
+                .entrySet()
+                .iterator();
+
+        Map.Entry<Integer, List<CompileConsumer>> first = iterator.next();
+
+        // 设置首个消费者组
+        // 如果存在多个同序消费者，则同时消费
+        EventHandlerGroup<CompileEvent> eventsWith = disruptor.handleEventsWith(first.getValue().toArray(new CompileConsumer[]{}));
+        logger.info("Set compile queue consumer => {}", this.getConsumerNames(first.getValue()));
+
+        // 依次按序添加其余消费者组
         while (iterator.hasNext()) {
-            CompileConsumer next = iterator.next();
-            eventsWith.then(next);
-            logger.info("Set compile queue consumer => {}", next.getClass().getName());
+            Map.Entry<Integer, List<CompileConsumer>> next = iterator.next();
+            eventsWith.then(next.getValue().toArray(new CompileConsumer[]{}));
+
+            logger.info("Set compile queue consumer => {}", this.getConsumerNames(next.getValue()));
         }
 
         // 启动编译任务队列
         this.disruptor.start();
+    }
+
+    /**
+     * 获取消费者集合的名称
+     *
+     * @param consumers 消费者集合
+     * @return 名称集合
+     */
+    private List<String> getConsumerNames(List<CompileConsumer> consumers) {
+        return consumers.stream().map(consumer -> consumer.getClass().getName()).toList();
     }
 
     public CompileEventProducer getProducer() {

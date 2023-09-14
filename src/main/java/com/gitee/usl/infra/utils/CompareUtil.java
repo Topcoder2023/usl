@@ -43,8 +43,8 @@ public class CompareUtil {
             Class<?> clz2 = element2.getClass();
 
             // 获取元素对象的类上的 @Order 注解中的 value值
-            Integer value1 = (Integer) Optional.ofNullable(AnnotationUtil.getAnnotationValue(clz1, Order.class)).orElse(NumberConstant.ZERO);
-            Integer value2 = (Integer) Optional.ofNullable(AnnotationUtil.getAnnotationValue(clz2, Order.class)).orElse(NumberConstant.ZERO);
+            Integer value1 = CompareUtil.getOrder(clz1);
+            Integer value2 = CompareUtil.getOrder(clz2);
 
             // 调用 Int 类型的比较方法
             // 默认按从小到大的顺序排序
@@ -53,5 +53,16 @@ public class CompareUtil {
         });
 
         return elements;
+    }
+
+    /**
+     * 获取类上的 @Order 注解的值
+     * 如果不存在 @Order 注解则给默认排序 0
+     *
+     * @param clz 任意类
+     * @return 排序值
+     */
+    public static Integer getOrder(Class<?> clz) {
+        return (Integer) Optional.ofNullable(AnnotationUtil.getAnnotationValue(clz, Order.class)).orElse(NumberConstant.ZERO);
     }
 }
