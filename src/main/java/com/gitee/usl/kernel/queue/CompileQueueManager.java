@@ -55,7 +55,7 @@ public class CompileQueueManager implements Initializer {
 
         // 设置单一生产者
         this.producer = new CompileEventProducer(this.disruptor.getRingBuffer());
-        logger.info("Set compile queue producer => {}", producer.getClass().getName());
+        logger.info("Set compile queue producer - [{}]", producer.getClass().getName());
 
         // 设置独立消费者
         // 每个消费者互相独立消费
@@ -71,14 +71,14 @@ public class CompileQueueManager implements Initializer {
         // 设置首个消费者组
         // 如果存在多个同序消费者，则同时消费
         EventHandlerGroup<CompileEvent> eventsWith = disruptor.handleEventsWith(first.getValue().toArray(new CompileConsumer[]{}));
-        logger.info("Set compile queue consumer => {}", this.getConsumerNames(first.getValue()));
+        logger.info("Set compile queue consumer - {}", this.getConsumerNames(first.getValue()));
 
         // 依次按序添加其余消费者组
         while (iterator.hasNext()) {
             Map.Entry<Integer, List<CompileConsumer>> next = iterator.next();
             eventsWith.then(next.getValue().toArray(new CompileConsumer[]{}));
 
-            logger.info("Set compile queue consumer => {}", this.getConsumerNames(next.getValue()));
+            logger.info("Set compile queue consumer - {}", this.getConsumerNames(next.getValue()));
         }
 
         // 启动编译任务队列

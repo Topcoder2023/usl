@@ -15,8 +15,6 @@ class UslRunnerTest {
                 .setContent("1 + 100 * 100 * 200 + math.log(var)")
                 .setContext("var", 10.5);
 
-        new UslRunner().run(param);
-
         System.out.println(runner.run(param).getData());
     }
 }

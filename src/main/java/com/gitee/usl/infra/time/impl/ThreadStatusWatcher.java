@@ -27,7 +27,7 @@ public class ThreadStatusWatcher implements FixedRateTimedTask {
                 .getUslExecutor()
                 .getExecutor();
 
-        logger.debug("[{}] => [TC:{} - CTC:{} - AC:{} - WC:{}]", executor.getClass().getSimpleName(),
+        logger.debug("[{}] - [TC:{} - CTC:{} - AC:{} - WC:{}]", executor.getClass().getSimpleName(),
                 executor.getTaskCount(),
                 executor.getCompletedTaskCount(),
                 executor.getActiveCount(),

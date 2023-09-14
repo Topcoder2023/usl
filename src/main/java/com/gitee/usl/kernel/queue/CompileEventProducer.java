@@ -23,10 +23,7 @@ public class CompileEventProducer {
             unpublished.setContent(expression);
             unpublished.setConfiguration(configuration);
 
-            logger.debug("Publish compile event => [ID: {}, Sequence : {}, Expression : {}]",
-                    unpublished.getEventId(),
-                    sequence,
-                    unpublished.getContent());
+            logger.debug("Publish compile event - [ID: {}, Sequence : {}]", unpublished.getEventId(), sequence);
         });
     }
 }

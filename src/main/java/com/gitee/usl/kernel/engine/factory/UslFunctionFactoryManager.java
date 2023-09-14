@@ -24,7 +24,7 @@ public class UslFunctionFactoryManager implements Initializer {
         EngineConfiguration configuration = uslConfiguration.getEngineConfiguration();
         List<UslFunctionFactory> factoryList = SpiServiceUtil.services(UslFunctionFactory.class);
 
-        factoryList.forEach(factory -> logger.info("Register USL Factory. [{}]", factory.getClass().getName()));
+        factoryList.forEach(factory -> logger.info("Register USL Factory - [{}]", factory.getClass().getName()));
 
         configuration.setFactoryList(factoryList);
     }

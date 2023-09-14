@@ -17,7 +17,7 @@ public class NamedThreadFactory implements ThreadFactory {
     /**
      * 线程创建成功时的信息
      */
-    private static final String THREAD_CREATE = "Thread created success. {}";
+    private static final String THREAD_CREATE = "Thread created success - {}";
 
     /**
      * 线程执行发生异常时的信息

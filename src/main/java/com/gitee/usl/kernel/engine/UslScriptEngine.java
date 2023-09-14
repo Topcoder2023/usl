@@ -132,10 +132,13 @@ public final class UslScriptEngine implements Initializer {
 
         // CPU 自旋阻塞获取编译后的表达式
         while (expression == null) {
-            // 减少CPU自旋的次数
-            // 在性能和资源两者直接平衡
-            ThreadUtil.sleep(NumberConstant.ONE, TimeUnit.NANOSECONDS);
             expression = uslCache.select(key);
+
+            if (expression == null) {
+                // 减少CPU自旋的次数
+                // 在性能和资源两者直接平衡
+                ThreadUtil.sleep(NumberConstant.ONE, TimeUnit.NANOSECONDS);
+            }
         }
 
         return expression;

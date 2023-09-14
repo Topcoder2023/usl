@@ -50,7 +50,7 @@ public class SpiServiceUtil {
         // 若服务不为空则排序后返回
         CompareUtil.sort(elements);
 
-        elements.forEach(item -> LOGGER.debug("Spi Service found. [{} - {}]", serviceType.getName(), item.getClass().getName()));
+        elements.forEach(item -> LOGGER.debug("Spi Service found - [{} - {}]", serviceType.getName(), item.getClass().getName()));
 
         return elements;
     }

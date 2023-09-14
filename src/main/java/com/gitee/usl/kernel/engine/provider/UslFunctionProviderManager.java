@@ -40,17 +40,17 @@ public class UslFunctionProviderManager implements Initializer {
         List<UslFunctionProvider> providers = SpiServiceUtil.services(UslFunctionProvider.class);
 
         for (UslFunctionProvider provider : providers) {
-            logger.info("USL function provider found. [{}]", provider.getClass().getName());
+            logger.info("USL function provider found - [{}]", provider.getClass().getName());
 
             // 根据函数提供者提供的函数定义信息依次注册函数
             provider.provide(configuration).forEach(definition -> {
                 String name = definition.getName();
 
-                logger.info("Register USL function. [{}]", name);
+                logger.info("Register USL function - [{}]", name);
 
                 // 跳过重名函数
                 if (functionMap.containsKey(name)) {
-                    logger.warn("USL function has been registered. [{}]", name);
+                    logger.warn("USL function has been registered - [{}]", name);
                     return;
                 }
 
