@@ -11,8 +11,9 @@ public interface UslCache {
      * 根据缓存键查询编译后的表达式
      *
      * @param key 缓存键
+     * @return 编译后的表达式
      */
-    void select(String key);
+    Expression select(String key);
 
     /**
      * 根据缓存键移除编译后的表达式

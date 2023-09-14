@@ -17,8 +17,8 @@ public class ThreadStatusWatcher implements FixedRateTimedTask {
 
     @Override
     public long cycle() {
-        // 每30秒输出一次线程池状态
-        return 30;
+        // 每60秒输出一次线程池状态
+        return 60;
     }
 
     @Override

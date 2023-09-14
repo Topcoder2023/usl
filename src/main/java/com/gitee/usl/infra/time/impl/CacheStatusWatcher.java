@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class CacheStatusWatcher implements FixedRateTimedTask {
     @Override
     public long cycle() {
-        return 5;
+        return 30;
     }
 
     @Override

@@ -8,10 +8,16 @@ public enum ResultCode {
      * 执行成功
      */
     SUCCESS(100),
+
     /**
      * 执行失败
      */
-    FAILURE(500);
+    FAILURE(500),
+
+    /**
+     * 编译失败
+     */
+    COMPILE_FAILURE(510),;
 
     private final int code;
 

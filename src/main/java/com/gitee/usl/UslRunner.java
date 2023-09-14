@@ -20,7 +20,15 @@ import java.util.List;
 public class UslRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(UslRunner.class);
 
+    private final UslConfiguration configuration;
+
+    public UslRunner() {
+        this(new UslConfiguration());
+    }
+
     public UslRunner(UslConfiguration configuration) {
+        this.configuration = configuration;
+
         final StopWatch watch = new StopWatch();
         watch.start();
 
@@ -40,7 +48,9 @@ public class UslRunner {
      * @return USL 返回值
      */
     public <T> UslResult<T> run(UslParam uslParam) {
-        return null;
+        return this.configuration.getEngineConfiguration()
+                .getScriptEngine()
+                .run(uslParam);
     }
 
     /**
@@ -52,5 +62,14 @@ public class UslRunner {
         // 获取所有初始化器，并依次执行初始化动作
         List<Initializer> initializers = SpiServiceUtil.loadSortedService(Initializer.class);
         initializers.forEach(initializer -> initializer.doInit(configuration));
+    }
+
+    /**
+     * 获取当前 USL 执行器的配置类
+     *
+     * @return USL 配置类
+     */
+    public UslConfiguration getConfiguration() {
+        return configuration;
     }
 }

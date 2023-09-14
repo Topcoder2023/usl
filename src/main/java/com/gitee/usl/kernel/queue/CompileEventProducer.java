@@ -19,16 +19,14 @@ public class CompileEventProducer {
     }
 
     public void produce(String expression, UslConfiguration configuration) {
-        long sequence = ringBuffer.next();
-        CompileEvent unpublished = ringBuffer.get(sequence)
-                .setContent(expression)
-                .setConfiguration(configuration);
+        this.ringBuffer.publishEvent((unpublished, sequence) -> {
+            unpublished.setContent(expression);
+            unpublished.setConfiguration(configuration);
 
-        ringBuffer.publish(sequence);
-
-        logger.debug("Publish compile event => [ID: {}, Sequence : {}, Expression : {}]",
-                unpublished.getEventId(),
-                sequence,
-                unpublished.getContent());
+            logger.debug("Publish compile event => [ID: {}, Sequence : {}, Expression : {}]",
+                    unpublished.getEventId(),
+                    sequence,
+                    unpublished.getContent());
+        });
     }
 }

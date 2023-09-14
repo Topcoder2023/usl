@@ -17,9 +17,9 @@ public class UslParam {
     private boolean cached;
 
     /**
-     * 表达式内容
+     * 脚本内容
      */
-    private String expression;
+    private String content;
 
     /**
      * 上下文变量
@@ -45,12 +45,12 @@ public class UslParam {
         return this;
     }
 
-    public String getExpression() {
-        return expression;
+    public String getContent() {
+        return content;
     }
 
-    public UslParam setExpression(String expression) {
-        this.expression = expression;
+    public UslParam setContent(String content) {
+        this.content = content;
         return this;
     }
 
@@ -67,7 +67,7 @@ public class UslParam {
     public String toString() {
         return "UslParam{" +
                 "cached=" + cached +
-                ", expression='" + expression + '\'' +
+                ", expression='" + content + '\'' +
                 ", context=" + context +
                 '}';
     }

@@ -25,7 +25,7 @@ public class CompileGeneratorConsumer implements CompileConsumer {
      * 空的表达式占位对象
      * 用以替代 null 的 Expression
      */
-    private static final Expression EMPTY_PLACE_HOLDER = new BaseExpression(null, null, null) {
+    public static final Expression EMPTY_PLACE_HOLDER = new BaseExpression(null, null, null) {
         @Override
         public Object executeDirectly(Map<String, Object> env) {
             return null;
@@ -42,7 +42,7 @@ public class CompileGeneratorConsumer implements CompileConsumer {
     @Override
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) throws Exception {
         EngineConfiguration configuration = event.getConfiguration().getEngineConfiguration();
-        AviatorEvaluatorInstance instance = configuration.getInstance();
+        AviatorEvaluatorInstance instance = configuration.getScriptEngine().getInstance();
 
         @SuppressWarnings("ReassignedVariable") Expression expression;
 

@@ -15,6 +15,11 @@ public final class NumberConstant {
     public static final int ZERO = 0;
 
     /**
+     * 数字一
+     */
+    public static final int ONE = 1;
+
+    /**
      * 数字八
      */
     public static final int EIGHT = 8;

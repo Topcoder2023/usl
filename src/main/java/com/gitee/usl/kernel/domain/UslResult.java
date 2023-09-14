@@ -28,8 +28,20 @@ public class UslResult<T> {
         return new UslResult<>(ResultCode.SUCCESS, CharSequenceUtil.EMPTY, null);
     }
 
+    public static <T> UslResult<T> success(T data) {
+        return new UslResult<>(ResultCode.SUCCESS, CharSequenceUtil.EMPTY, data);
+    }
+
     public static <T> UslResult<T> failure() {
         return new UslResult<>(ResultCode.FAILURE, CharSequenceUtil.EMPTY, null);
+    }
+
+    public static <T> UslResult<T> failure(ResultCode resultCode) {
+        return new UslResult<>(resultCode, CharSequenceUtil.EMPTY, null);
+    }
+
+    public static <T> UslResult<T> failure(ResultCode resultCode, String message) {
+        return new UslResult<>(resultCode, message, null);
     }
 
     public UslResult(ResultCode resultCode, String message, T data) {

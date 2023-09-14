@@ -1,19 +1,19 @@
 package com.gitee.usl.kernel.configure;
 
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.kernel.engine.UslScriptEngine;
 
 /**
  * @author hongda.li
  */
 public class EngineConfiguration {
-    private AviatorEvaluatorInstance instance;
+    private UslScriptEngine scriptEngine;
 
-    public AviatorEvaluatorInstance getInstance() {
-        return instance;
+    public UslScriptEngine getScriptEngine() {
+        return scriptEngine;
     }
 
-    public EngineConfiguration setInstance(AviatorEvaluatorInstance instance) {
-        this.instance = instance;
+    public EngineConfiguration setScriptEngine(UslScriptEngine scriptEngine) {
+        this.scriptEngine = scriptEngine;
         return this;
     }
 }

@@ -11,7 +11,6 @@ import com.googlecode.aviator.Expression;
  */
 public class CompileEvent {
     private final String eventId;
-    private String key;
     private String content;
     private Expression expression;
     private UslConfiguration configuration;
@@ -27,15 +26,6 @@ public class CompileEvent {
 
     public String getContent() {
         return content;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public CompileEvent setKey(String key) {
-        this.key = key;
-        return this;
     }
 
     public CompileEvent setContent(String content) {

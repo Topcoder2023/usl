@@ -21,7 +21,7 @@ public class UslResourceParam extends UslParam {
     private void init() {
         try {
             String utf8Str = ResourceUtil.readUtf8Str(this.resource);
-            this.setExpression(utf8Str);
+            this.setContent(utf8Str);
         } catch (Exception e) {
             throw new UslNotFoundException(NOT_FOUND, this.resource);
         }

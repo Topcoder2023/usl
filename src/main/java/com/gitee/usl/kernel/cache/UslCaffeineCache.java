@@ -47,8 +47,8 @@ public class UslCaffeineCache implements UslCache, Initializer {
     }
 
     @Override
-    public void select(String key) {
-        this.cache.getIfPresent(key);
+    public Expression select(String key) {
+        return this.cache.getIfPresent(key);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class UslCaffeineCache implements UslCache, Initializer {
             return;
         }
 
-        logger.info("USL Cache Snapshot => [HC : {}, MC : {}, EC : {}]",
+        logger.info("[USL Cache Snapshot] => [HC : {}, MC : {}, EC : {}]",
                 stats.hitCount(),
                 stats.missCount(),
                 stats.evictionCount());

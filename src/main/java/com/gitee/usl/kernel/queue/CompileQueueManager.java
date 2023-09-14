@@ -7,7 +7,7 @@ import com.gitee.usl.infra.utils.CompareUtil;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.QueueConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
-import com.lmax.disruptor.BusySpinWaitStrategy;
+import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.EventHandlerGroup;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,7 +51,7 @@ public class CompileQueueManager implements Initializer {
                 configuration.getBufferSize(),
                 new NamedThreadFactory(THREAD_PREFIX),
                 ProducerType.SINGLE,
-                new BusySpinWaitStrategy());
+                new BlockingWaitStrategy());
 
         // 设置单一生产者
         this.producer = new CompileEventProducer(this.disruptor.getRingBuffer());
@@ -61,7 +62,7 @@ public class CompileQueueManager implements Initializer {
         // 即前一个消费者消费事件后，后面的消费者仍可继续消费
         Iterator<Map.Entry<Integer, List<CompileConsumer>>> iterator = SpiServiceUtil.loadSortedService(CompileConsumer.class)
                 .stream()
-                .collect(Collectors.groupingBy(consumer -> CompareUtil.getOrder(consumer.getClass())))
+                .collect(Collectors.groupingBy(consumer -> CompareUtil.getOrder(consumer.getClass()), LinkedHashMap::new, Collectors.toList()))
                 .entrySet()
                 .iterator();
 
