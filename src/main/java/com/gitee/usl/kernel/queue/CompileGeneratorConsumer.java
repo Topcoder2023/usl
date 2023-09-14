@@ -35,7 +35,7 @@ public class CompileGeneratorConsumer implements CompileConsumer {
     /**
      * 编译字节码生成器消费者的顺序
      */
-    public static final int GENERATOR_ORDER = Integer.MAX_VALUE - 100;
+    public static final int GENERATOR_ORDER = Integer.MAX_VALUE - 1000;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

@@ -7,10 +7,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * USL 缓存字节码 消费者
+ * 优先级在字节码编译消费者之后
  *
  * @author hongda.li
  */
-@Order(Integer.MAX_VALUE)
+@Order(CompileGeneratorConsumer.GENERATOR_ORDER + 100)
 public class CompileCacheConsumer implements CompileConsumer {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
