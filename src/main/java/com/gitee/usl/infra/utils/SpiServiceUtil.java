@@ -23,7 +23,7 @@ public class SpiServiceUtil {
 
     static {
         EXCLUDE_TYPES = HashSet.newHashSet(NumberConstant.COMMON_SIZE);
-        List<Excluded> excludedList = loadSortedService(Excluded.class);
+        List<Excluded> excludedList = services(Excluded.class);
         excludedList.forEach(excluded -> EXCLUDE_TYPES.addAll(excluded.targets()));
     }
 
@@ -35,7 +35,7 @@ public class SpiServiceUtil {
      * @param <T>         服务泛型
      * @return 服务实现集合
      */
-    public static <T> List<T> loadSortedService(Class<T> serviceType) {
+    public static <T> List<T> services(Class<T> serviceType) {
         // 根据SPI机制加载所有可用服务
         // 但排除指定的服务及其子类
         List<T> elements = new ArrayList<>(ServiceLoaderUtil.loadList(serviceType)
@@ -64,9 +64,9 @@ public class SpiServiceUtil {
      * @param <T>         服务泛型
      * @return 首个可用的服务实现
      */
-    public static <T> T loadFirstSortedService(Class<T> serviceType) {
+    public static <T> T firstService(Class<T> serviceType) {
         // 加载所有可用服务并排序
-        Iterator<T> iterator = SpiServiceUtil.loadSortedService(serviceType).iterator();
+        Iterator<T> iterator = SpiServiceUtil.services(serviceType).iterator();
 
         // 若服务不为空则返回首个可用服务
         return iterator.hasNext() ? iterator.next() : null;

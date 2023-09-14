@@ -60,7 +60,7 @@ public class CompileQueueManager implements Initializer {
         // 设置独立消费者
         // 每个消费者互相独立消费
         // 即前一个消费者消费事件后，后面的消费者仍可继续消费
-        Iterator<Map.Entry<Integer, List<CompileConsumer>>> iterator = SpiServiceUtil.loadSortedService(CompileConsumer.class)
+        Iterator<Map.Entry<Integer, List<CompileConsumer>>> iterator = SpiServiceUtil.services(CompileConsumer.class)
                 .stream()
                 .collect(Collectors.groupingBy(consumer -> CompareUtil.getOrder(consumer.getClass()), LinkedHashMap::new, Collectors.toList()))
                 .entrySet()

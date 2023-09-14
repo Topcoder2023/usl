@@ -35,7 +35,7 @@ public class UslProxyManager implements Initializer {
 
     @Override
     public void doInit(UslConfiguration configuration) {
-        SpiServiceUtil.loadSortedService(UslProxy.class).forEach(this::initProxy);
+        SpiServiceUtil.services(UslProxy.class).forEach(this::initProxy);
     }
 
     /**

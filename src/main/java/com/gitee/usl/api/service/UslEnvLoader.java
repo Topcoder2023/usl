@@ -22,7 +22,7 @@ public class UslEnvLoader implements EnvLoader {
 
     public UslEnvLoader() {
         // 根据SPI机制加载所有可用的环境变量加载器并排序
-        loaderList = SpiServiceUtil.loadSortedService(EnvLoader.class);
+        loaderList = SpiServiceUtil.services(EnvLoader.class);
     }
 
     @Override

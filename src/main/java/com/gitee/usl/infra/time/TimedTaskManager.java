@@ -24,7 +24,7 @@ public class TimedTaskManager implements Initializer {
 
     @Override
     public void doInit(UslConfiguration configuration) {
-        taskList = SpiServiceUtil.loadSortedService(TimedTask.class);
+        taskList = SpiServiceUtil.services(TimedTask.class);
         executor = new ScheduledThreadPoolExecutor(taskList.size(), new NamedThreadFactory(PREFIX));
 
         // 初始化固定执行频率的定时任务

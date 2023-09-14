@@ -32,7 +32,7 @@ public class UslCaffeineCache implements UslCache, Initializer {
         CacheConfiguration configuration = uslConfiguration.getCacheConfiguration();
 
         // 根据SPI机制加载优先级最高的 UslCache 接口实现类
-        UslCache uslCache = SpiServiceUtil.loadFirstSortedService(UslCache.class);
+        UslCache uslCache = SpiServiceUtil.firstService(UslCache.class);
 
         // 若 UslCache 为 UslCaffeineCache
         // 则根据缓存配置初始化 UslCaffeineCache 中的 Cache 成员变量
