@@ -12,7 +12,6 @@ import com.googlecode.aviator.Expression;
 public class CompileEvent {
     private final String eventId;
     private String key;
-    private boolean cached;
     private String content;
     private Expression expression;
     private UslConfiguration configuration;
@@ -41,15 +40,6 @@ public class CompileEvent {
 
     public CompileEvent setContent(String content) {
         this.content = content;
-        return this;
-    }
-
-    public boolean isCached() {
-        return cached;
-    }
-
-    public CompileEvent setCached(boolean cached) {
-        this.cached = cached;
         return this;
     }
 
