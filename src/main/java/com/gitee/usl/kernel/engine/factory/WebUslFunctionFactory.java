@@ -11,10 +11,6 @@ import com.googlecode.aviator.runtime.type.AviatorFunction;
  * @author hongda.li
  */
 public class WebUslFunctionFactory extends AbstractUslFunctionFactory {
-    @Override
-    public boolean supported(UslFunctionDefinition definition) {
-        return false;
-    }
 
     @Override
     public AviatorFunction create(UslFunctionDefinition definition) {

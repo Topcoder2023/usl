@@ -1,6 +1,9 @@
 package com.gitee.usl.kernel.engine;
 
+import cn.hutool.core.util.ReflectUtil;
+import com.gitee.usl.infra.proxy.UslInvocation;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
+import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 
 import java.util.Map;
@@ -19,7 +22,8 @@ public class UslFunction extends AbstractVariadicFunction {
 
     @Override
     public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {
-        return null;
+        UslInvocation<?> invocation = definition.getInvocation();
+        return FunctionUtils.wrapReturn(ReflectUtil.invoke(invocation.target(), invocation.method()));
     }
 
     @Override

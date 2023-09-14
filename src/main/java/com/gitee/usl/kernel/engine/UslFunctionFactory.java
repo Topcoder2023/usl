@@ -8,15 +8,8 @@ import com.googlecode.aviator.runtime.type.AviatorFunction;
  *
  * @author hongda.li
  */
+@FunctionalInterface
 public interface UslFunctionFactory {
-    /**
-     * 是否支持该函数定义
-     *
-     * @param definition 函数定义信息
-     * @return 是否支持
-     */
-    boolean supported(UslFunctionDefinition definition);
-
     /**
      * 根据函数定义创建 Aviator 函数
      *

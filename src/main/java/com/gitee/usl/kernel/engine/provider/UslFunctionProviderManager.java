@@ -1,5 +1,6 @@
 package com.gitee.usl.kernel.engine.provider;
 
+import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.infra.exception.UslNotFoundException;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
@@ -26,6 +27,7 @@ public class UslFunctionProviderManager implements Initializer {
     private static final String NOT_FOUND = "There is no function factory that can support the creation of this type. [{}]";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @SuppressWarnings("ReassignedVariable")
     @Override
     public void doInit(UslConfiguration uslConfiguration) {
         EngineConfiguration configuration = uslConfiguration.getEngineConfiguration();
@@ -54,15 +56,16 @@ public class UslFunctionProviderManager implements Initializer {
                     return;
                 }
 
-                // 先根据函数工厂是否支持函数定义来过滤
-                // 再根据函数工厂优先级获取首个可用工厂
-                // 再通过工厂创建函数
-                // 当找不到合适的函数工厂或创建错误时，抛出异常
-                AviatorFunction function = factoryList.stream()
-                        .filter(factory -> factory.supported(definition))
-                        .findFirst()
-                        .map(factory -> factory.create(definition))
-                        .orElseThrow(() -> new UslNotFoundException(NOT_FOUND, definition));
+                // 根据函数工厂优先级依次创建函数实例
+                // 当函数工厂不支持该函数定义时则会返回空
+                // 若找不到合适的函数工厂或创建错误时，抛出异常
+                AviatorFunction function = null;
+                for (UslFunctionFactory factory : factoryList) {
+                    if ((function = factory.create(definition)) != null) {
+                        break;
+                    }
+                }
+                Assert.notNull(function, () -> new UslNotFoundException(NOT_FOUND, definition));
 
                 functionMap.put(name, function);
             });

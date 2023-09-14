@@ -15,10 +15,8 @@ import com.gitee.usl.kernel.domain.UslResult;
 import com.gitee.usl.kernel.queue.CompileGeneratorConsumer;
 import com.gitee.usl.kernel.queue.CompileQueueManager;
 import com.google.common.hash.Hashing;
-import com.googlecode.aviator.AviatorEvaluator;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
-import com.googlecode.aviator.ClassPathConfigFunctionLoader;
-import com.googlecode.aviator.Expression;
+import com.googlecode.aviator.*;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
@@ -51,6 +49,7 @@ public final class UslScriptEngine implements Initializer {
 
         this.instance = AviatorEvaluator.newInstance();
         this.instance.removeFunctionLoader(ClassPathConfigFunctionLoader.getInstance());
+        this.instance.addFunctionLoader(name -> configuration.getFunctionMap().get(name));
 
         configuration.setScriptEngine(this);
     }
