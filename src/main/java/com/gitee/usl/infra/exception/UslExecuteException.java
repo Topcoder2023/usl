@@ -24,6 +24,11 @@ public class UslExecuteException extends UslException {
         this.resultCode = resultCode;
     }
 
+    public UslExecuteException(Throwable throwable) {
+        super(throwable);
+        this.resultCode = ResultCode.FAILURE;
+    }
+
     public ResultCode getResultCode() {
         return resultCode;
     }

@@ -1,6 +1,6 @@
 package com.gitee.usl.infra.time;
 
-import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.thread.NamedThreadFactory;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  * @author hongda.li
  */
 @Order(Integer.MAX_VALUE - 100)
-public class TimedTaskManager implements Initializer {
+public class TimedTaskManager implements UslInitializer {
     public static final String PREFIX = "USL_Timed_Executor";
     private List<TimedTask> taskList;
     private ScheduledExecutorService executor;

@@ -1,7 +1,7 @@
 package com.gitee.usl.kernel.engine.provider;
 
 import cn.hutool.core.lang.Assert;
-import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.infra.exception.UslNotFoundException;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
@@ -23,7 +23,7 @@ import java.util.Map;
  *
  * @author hongda.li
  */
-public class UslFunctionProviderManager implements Initializer {
+public class UslFunctionProviderManager implements UslInitializer {
     private static final String NOT_FOUND = "There is no function factory that can support the creation of this type. [{}]";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

@@ -4,6 +4,7 @@ import com.gitee.usl.infra.constant.NumberConstant;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * USL 参数结构
@@ -65,10 +66,10 @@ public class UslParam {
 
     @Override
     public String toString() {
-        return "UslParam{" +
-                "cached=" + cached +
-                ", expression='" + content + '\'' +
-                ", context=" + context +
-                '}';
+        return new StringJoiner(", ", UslParam.class.getSimpleName() + "[", "]")
+                .add("cached=" + cached)
+                .add("content='" + content + "'")
+                .add("context=" + context)
+                .toString();
     }
 }

@@ -6,6 +6,8 @@ import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.infra.proxy.UslInvocation;
 import com.gitee.usl.kernel.engine.UslFunctionDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -16,12 +18,16 @@ import java.util.stream.Stream;
  * @author hongda.li
  */
 public class PackageUslFunctionProvider extends AbstractUslFunctionProvider {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     protected List<UslFunctionDefinition> class2Definition(Class<?> clz) {
         Object ifPossible = ReflectUtil.newInstanceIfPossible(clz);
 
         if (ifPossible == null) {
+            logger.warn("Unable to instantiate the function class. - {}", clz.getName());
+            logger.warn("Consider providing a parameterless constructor or customizing UslFunctionLoader");
+
             return Collections.emptyList();
         }
 
@@ -30,8 +36,9 @@ public class PackageUslFunctionProvider extends AbstractUslFunctionProvider {
                     String[] accept = AnnotationUtil.getAnnotationValue(method, Func.class);
 
                     if (accept == null) {
-                        // 未指定函数名称，则取方法名的首字母小写
-                        return Stream.of(this.buildDefinition(CharSequenceUtil.lowerFirst(method.getName()), ifPossible, method));
+                        // 未指定函数名称，则取方法名转下划线
+                        String defaultName = CharSequenceUtil.toUnderlineCase(method.getName());
+                        return Stream.of(this.buildDefinition(defaultName, ifPossible, method));
                     } else {
                         // 指定了函数名称，则取指定的函数名称
                         return Stream.of(accept).map(name -> this.buildDefinition(name, ifPossible, method));

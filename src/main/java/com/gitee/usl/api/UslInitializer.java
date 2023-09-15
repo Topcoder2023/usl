@@ -8,7 +8,7 @@ import com.gitee.usl.kernel.configure.UslConfiguration;
  * @author hongda.li
  */
 @FunctionalInterface
-public interface Initializer {
+public interface UslInitializer {
     /**
      * 执行初始化逻辑
      *

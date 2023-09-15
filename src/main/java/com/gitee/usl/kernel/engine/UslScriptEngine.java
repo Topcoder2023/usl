@@ -1,7 +1,7 @@
 package com.gitee.usl.kernel.engine;
 
 import cn.hutool.core.thread.ThreadUtil;
-import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.UslExecuteException;
@@ -16,24 +16,25 @@ import com.gitee.usl.kernel.queue.CompileGeneratorConsumer;
 import com.gitee.usl.kernel.queue.CompileQueueManager;
 import com.google.common.hash.Hashing;
 import com.googlecode.aviator.*;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
  * USL 脚本引擎
- * SHA512
- * SpinLock
- * W-TinyLFU
- * Token-Bucket
- * Count–Min Sketch
- * Non-blocking Synchronization
+ * SHA512 —— 唯一缓存键生成
+ * SpinLock —— 异步加载编译结果
+ * W-TinyLFU —— 缓存淘汰算法
+ * Token-Bucket —— 令牌桶限流组件
+ * Timing-Wheel —— 时间轮任务调度
+ * Count–Min Sketch —— 编译缓存计数算法
+ * Non-blocking Synchronization —— 无锁化编程
+ * <br/>
  *
  * @author hongda.li
  */
 @SuppressWarnings("UnstableApiUsage")
-public final class UslScriptEngine implements Initializer {
+public final class UslScriptEngine implements UslInitializer {
     private AviatorEvaluatorInstance instance;
     private UslConfiguration uslConfiguration;
     private CacheConfiguration cacheConfiguration;

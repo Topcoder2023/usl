@@ -1,6 +1,6 @@
 package com.gitee.usl.kernel.cache;
 
-import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.CacheConfiguration;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * @author hongda.li
  */
 @Order(UslCaffeineCache.USL_CACHE_ORDER)
-public class UslCaffeineCache implements UslCache, Initializer {
+public class UslCaffeineCache implements UslCache, UslInitializer {
     /**
      * USL 缓存的优先级
      * 若想使用自定义缓存替代 USL 内置提供的 Caffeine 缓存

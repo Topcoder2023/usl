@@ -3,6 +3,8 @@ package com.gitee.usl.kernel.domain;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.infra.enums.ResultCode;
 
+import java.util.StringJoiner;
+
 /**
  * 执行结果
  *
@@ -64,10 +66,10 @@ public class UslResult<T> {
 
     @Override
     public String toString() {
-        return "Result{" +
-                "data=" + data +
-                ", code=" + code +
-                ", message='" + message + '\'' +
-                '}';
+        return new StringJoiner(", ", UslResult.class.getSimpleName() + "[", "]")
+                .add("data=" + data)
+                .add("code=" + code)
+                .add("message='" + message + "'")
+                .toString();
     }
 }

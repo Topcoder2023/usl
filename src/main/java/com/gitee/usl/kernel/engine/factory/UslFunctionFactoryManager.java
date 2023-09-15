@@ -1,6 +1,6 @@
 package com.gitee.usl.kernel.engine.factory;
 
-import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author hongda.li
  */
-public class UslFunctionFactoryManager implements Initializer {
+public class UslFunctionFactoryManager implements UslInitializer {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override

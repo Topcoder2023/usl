@@ -1,6 +1,6 @@
 package com.gitee.usl.kernel.queue;
 
-import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.thread.NamedThreadFactory;
 import com.gitee.usl.infra.utils.CompareUtil;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @author hongda.li
  */
 @Order
-public class CompileQueueManager implements Initializer {
+public class CompileQueueManager implements UslInitializer {
     private static final String THREAD_PREFIX = "Usl_Queue_Disruptor";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private CompileEventProducer producer;

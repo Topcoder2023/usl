@@ -1,6 +1,6 @@
 package com.gitee.usl;
 
-import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.UslConfiguration;
@@ -38,7 +38,7 @@ public class UslRunner {
         this.configuration = configuration;
         int number = NUMBER.getAndIncrement();
         LOGGER.info("USL Runner-{} - Starting...", number);
-        SpiServiceUtil.services(Initializer.class).forEach(initializer -> initializer.doInit(configuration));
+        SpiServiceUtil.services(UslInitializer.class).forEach(initializer -> initializer.doInit(configuration));
         LOGGER.info("USL Runner-{} - Start completed.", number);
     }
 
