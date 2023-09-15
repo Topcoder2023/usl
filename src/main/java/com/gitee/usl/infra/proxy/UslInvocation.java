@@ -12,7 +12,10 @@ import java.util.StringJoiner;
  *
  * @author hongda.li
  */
-public record UslInvocation<E>(Object target, Class<E> targetType, Method method, Object[] args) {
+public record UslInvocation<E>(Object target,
+                               Class<E> targetType,
+                               Method method,
+                               Object[] args) {
 
     /**
      * 复制一个新的 USL 调用记录类

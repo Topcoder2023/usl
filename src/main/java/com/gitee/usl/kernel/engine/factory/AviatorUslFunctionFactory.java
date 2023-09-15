@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.engine.factory;
 
 import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.infra.proxy.UslInvocation;
-import com.gitee.usl.infra.proxy.UslMethodInterceptor;
+import com.gitee.usl.kernel.engine.UslAviatorProxyFunction;
 import com.gitee.usl.kernel.engine.UslFunctionDefinition;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 
@@ -24,12 +24,9 @@ public class AviatorUslFunctionFactory extends AbstractUslFunctionFactory {
             return null;
         }
 
-        return new UslMethodInterceptor<>(invocation.target(), AviatorFunction.class) {
-            @Override
-            protected Object intercept(UslInvocation<AviatorFunction> uslInvocation, Object proxy) {
-                return null;
-            }
-        }.createProxy();
+        // 创建 USL-Aviator 代理函数
+        // 动态代理 AviatorFunction 接口中的 call() 方法
+        return new UslAviatorProxyFunction(definition, invocation.target()).createProxy();
     }
 
     private boolean isMatch(Class<?> clz) {
