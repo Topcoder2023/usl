@@ -3,5 +3,4 @@ com.gitee.usl.infra.time.TimedTaskManager
 com.gitee.usl.kernel.cache.UslCaffeineCache
 com.gitee.usl.kernel.queue.CompileQueueManager
 com.gitee.usl.kernel.engine.UslScriptEngine
-com.gitee.usl.kernel.engine.factory.UslFunctionFactoryManager
 com.gitee.usl.kernel.engine.provider.UslFunctionProviderManager

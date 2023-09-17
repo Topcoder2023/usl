@@ -35,7 +35,7 @@ public class UslFunction extends AbstractVariadicFunction implements UslFunction
     public Object handle(final UslFunctionSession session) {
         UslInvocation<?> invocation = definition.getInvocation();
 
-        return ReflectUtil.invoke(invocation.target(), invocation.method());
+        return ReflectUtil.invoke(invocation.target(), invocation.method(), invocation.args());
     }
 
     @Override

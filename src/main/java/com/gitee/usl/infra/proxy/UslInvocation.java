@@ -25,7 +25,7 @@ public record UslInvocation<E>(Object target,
      * @param <E>  复制的泛型
      * @return 复制结果
      */
-    public static <E> UslInvocation<E> copy(UslInvocation<E> base, Object[] args) {
+    public static <E> UslInvocation<E> from(UslInvocation<E> base, Object[] args) {
         return new UslInvocation<>(base.target(), base.targetType, base.method(), args);
     }
 
