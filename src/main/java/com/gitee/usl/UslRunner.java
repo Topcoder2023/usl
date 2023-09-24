@@ -51,7 +51,7 @@ public class UslRunner {
      */
     public <T> UslResult<T> run(UslParam uslParam) {
         return this.configuration.getEngineConfiguration()
-                .getScriptEngine()
+                .getScriptEngineManager()
                 .run(uslParam);
     }
 

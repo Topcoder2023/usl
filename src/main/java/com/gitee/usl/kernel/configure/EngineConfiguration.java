@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.configure;
 
 import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.kernel.engine.UslScriptEngine;
+import com.gitee.usl.kernel.engine.UslScriptEngineManager;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.util.*;
@@ -11,9 +11,9 @@ import java.util.*;
  * @author hongda.li
  */
 public class EngineConfiguration {
-    private UslScriptEngine scriptEngine;
     private final Set<String> packageNameList;
     private final Map<String, AviatorFunction> functionMap;
+    private UslScriptEngineManager scriptEngineManager;
 
     public EngineConfiguration() {
         this.packageNameList = HashSet.newHashSet(NumberConstant.COMMON_SIZE);
@@ -49,12 +49,12 @@ public class EngineConfiguration {
         return this;
     }
 
-    public UslScriptEngine getScriptEngine() {
-        return scriptEngine;
+    public UslScriptEngineManager getScriptEngineManager() {
+        return scriptEngineManager;
     }
 
-    public EngineConfiguration setScriptEngine(UslScriptEngine scriptEngine) {
-        this.scriptEngine = scriptEngine;
+    public EngineConfiguration setScriptEngineManager(UslScriptEngineManager scriptEngineManager) {
+        this.scriptEngineManager = scriptEngineManager;
         return this;
     }
 

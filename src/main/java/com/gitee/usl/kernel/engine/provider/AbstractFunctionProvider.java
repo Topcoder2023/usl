@@ -4,16 +4,17 @@ import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.engine.UslFunctionDefinition;
 import com.gitee.usl.kernel.engine.UslFunctionProvider;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.util.List;
 
 /**
  * @author hongda.li
  */
-public abstract class AbstractUslFunctionProvider implements UslFunctionProvider {
+public abstract class AbstractFunctionProvider implements UslFunctionProvider {
 
     @Override
-    public List<UslFunctionDefinition> provide(EngineConfiguration configuration) {
+    public List<AviatorFunction> provide(EngineConfiguration configuration) {
         return configuration.getPackageNameList()
                 .stream()
                 .flatMap(packageName -> ClassUtil.scanPackage(packageName, this::filter)
@@ -22,6 +23,9 @@ public abstract class AbstractUslFunctionProvider implements UslFunctionProvider
                                 .stream())
                         .toList()
                         .stream())
+                .toList()
+                .stream()
+                .map(this::definition2Func)
                 .toList();
     }
 
@@ -32,6 +36,14 @@ public abstract class AbstractUslFunctionProvider implements UslFunctionProvider
      * @return USL 函数定义信息集合
      */
     protected abstract List<UslFunctionDefinition> class2Definition(Class<?> clz);
+
+    /**
+     * 将函数定义信息转为函数实例
+     *
+     * @param definition 函数定义信息
+     * @return 函数实例
+     */
+    protected abstract AviatorFunction definition2Func(UslFunctionDefinition definition);
 
     /**
      * 过滤出声明式函数类

@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * @author hongda.li
  */
 @SuppressWarnings("UnstableApiUsage")
-public final class UslScriptEngine implements UslInitializer {
+public final class UslScriptEngineManager implements UslInitializer {
     private AviatorEvaluatorInstance instance;
     private UslConfiguration uslConfiguration;
     private CacheConfiguration cacheConfiguration;
@@ -52,7 +52,7 @@ public final class UslScriptEngine implements UslInitializer {
         this.instance.removeFunctionLoader(ClassPathConfigFunctionLoader.getInstance());
         this.instance.addFunctionLoader(name -> configuration.getFunctionMap().get(name));
 
-        configuration.setScriptEngine(this);
+        configuration.setScriptEngineManager(this);
     }
 
     /**
@@ -65,7 +65,7 @@ public final class UslScriptEngine implements UslInitializer {
     @SuppressWarnings({"unchecked", "ReassignedVariable"})
     public <T> UslResult<T> run(UslParam uslParam) {
         // 使用SHA512摘要算法生成唯一Key
-        String key = UslScriptEngine.generateKey(uslParam.getContent());
+        String key = UslScriptEngineManager.generateKey(uslParam.getContent());
 
         Expression expression;
 

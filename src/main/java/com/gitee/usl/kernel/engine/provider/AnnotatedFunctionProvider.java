@@ -5,7 +5,9 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.infra.proxy.UslInvocation;
+import com.gitee.usl.kernel.engine.UslFunction;
 import com.gitee.usl.kernel.engine.UslFunctionDefinition;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +17,15 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
+ * 注解函数提供者
+ * 根据配置类中的包路径信息
+ * 扫描包路径下的所有类文件并过滤出带有 @Func 注解的类
+ * 将过滤出来的类转为函数定义信息
+ * 最后将函数定义信息转为函数实例
+ *
  * @author hongda.li
  */
-public class PackageUslFunctionProvider extends AbstractUslFunctionProvider {
+public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -47,17 +55,9 @@ public class PackageUslFunctionProvider extends AbstractUslFunctionProvider {
                 .toList();
     }
 
-    /**
-     * 封装函数定义信息
-     *
-     * @param name     函数名称
-     * @param instance 函数所在的实例
-     * @param method   函数对应的方法
-     * @return 函数定义信息
-     */
-    private UslFunctionDefinition buildDefinition(String name, Object instance, Method method) {
-        UslFunctionDefinition definition = new UslFunctionDefinition(name);
-        return definition.setInvocation(new UslInvocation<>(instance, instance.getClass(), method, null));
+    @Override
+    protected AviatorFunction definition2Func(UslFunctionDefinition definition) {
+        return new UslFunction(definition);
     }
 
     /**
@@ -70,5 +70,18 @@ public class PackageUslFunctionProvider extends AbstractUslFunctionProvider {
     @Override
     protected boolean filter(Class<?> clz) {
         return AnnotationUtil.hasAnnotation(clz, Func.class);
+    }
+
+    /**
+     * 封装函数定义信息
+     *
+     * @param name     函数名称
+     * @param instance 函数所在的实例
+     * @param method   函数对应的方法
+     * @return 函数定义信息
+     */
+    private UslFunctionDefinition buildDefinition(String name, Object instance, Method method) {
+        UslFunctionDefinition definition = new UslFunctionDefinition(name);
+        return definition.setInvocation(new UslInvocation<>(instance, instance.getClass(), method, null));
     }
 }

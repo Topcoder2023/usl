@@ -7,7 +7,6 @@ import com.gitee.usl.infra.exception.UslNotFoundException;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
-import com.gitee.usl.kernel.engine.UslFunctionFactory;
 import com.gitee.usl.kernel.engine.UslFunctionProvider;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import org.slf4j.Logger;
@@ -33,13 +32,9 @@ public class UslFunctionProviderManager implements UslInitializer {
     private static final String NOT_FOUND = "There is no function factory that can support the creation of this type. [{}]";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @SuppressWarnings("ReassignedVariable")
     @Override
     public void doInit(UslConfiguration uslConfiguration) {
         EngineConfiguration configuration = uslConfiguration.getEngineConfiguration();
-
-        // 函数工厂
-        final List<UslFunctionFactory> factoryList = SpiServiceUtil.services(UslFunctionFactory.class);
 
         // 函数集合
         final Map<String, AviatorFunction> functionMap = configuration.getFunctionMap();
@@ -51,8 +46,8 @@ public class UslFunctionProviderManager implements UslInitializer {
             logger.info("USL function provider found - [{}]", provider.getClass().getName());
 
             // 根据函数提供者提供的函数定义信息依次注册函数
-            provider.provide(configuration).forEach(definition -> {
-                String name = definition.getName();
+            provider.provide(configuration).forEach(function -> {
+                String name = function.getName();
 
                 logger.info("Register USL function - [{}]", name);
 
@@ -62,16 +57,7 @@ public class UslFunctionProviderManager implements UslInitializer {
                     return;
                 }
 
-                // 根据函数工厂优先级依次创建函数实例
-                // 当函数工厂不支持该函数定义时则会返回空
-                // 若找不到合适的函数工厂或创建错误时，抛出异常
-                AviatorFunction function = null;
-                for (UslFunctionFactory factory : factoryList) {
-                    if ((function = factory.create(definition)) != null) {
-                        break;
-                    }
-                }
-                Assert.notNull(function, () -> new UslNotFoundException(NOT_FOUND, definition));
+                Assert.notNull(function, () -> new UslNotFoundException(NOT_FOUND, function));
 
                 functionMap.put(name, function);
             });

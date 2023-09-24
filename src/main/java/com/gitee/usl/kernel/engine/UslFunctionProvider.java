@@ -1,6 +1,7 @@
 package com.gitee.usl.kernel.engine;
 
 import com.gitee.usl.kernel.configure.EngineConfiguration;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.util.List;
 
@@ -15,5 +16,5 @@ public interface UslFunctionProvider {
      * @param configuration 脚本引擎配置
      * @return 函数定义信息集合
      */
-    List<UslFunctionDefinition> provide(EngineConfiguration configuration);
+    List<AviatorFunction> provide(EngineConfiguration configuration);
 }

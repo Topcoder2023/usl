@@ -1,2 +1,2 @@
-com.gitee.usl.kernel.engine.provider.AviatorUslFunctionProvider
-com.gitee.usl.kernel.engine.provider.PackageUslFunctionProvider
+com.gitee.usl.kernel.engine.provider.NativeFunctionProvider
+com.gitee.usl.kernel.engine.provider.AnnotatedFunctionProvider
