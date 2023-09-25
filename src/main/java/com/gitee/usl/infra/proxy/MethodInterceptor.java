@@ -1,6 +1,7 @@
 package com.gitee.usl.infra.proxy;
 
 import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.ReflectUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -49,18 +50,32 @@ public abstract class MethodInterceptor<E> implements InvocationHandler {
     }
 
     /**
+     * 过滤出需要代理的指定方法
+     *
+     * @param method 方法过滤器
+     * @return 默认不进行过滤
+     */
+    protected boolean filter(Method method) {
+        return true;
+    }
+
+    /**
      * 拦截指定方法
      *
-     * @param uslInvocation 拦截信息
-     * @param proxy         代理对象
+     * @param invocation 拦截信息
+     * @param proxy      代理对象
      * @return 实际方法返回值
      */
-    protected abstract Object intercept(Invocation<E> uslInvocation, Object proxy);
+    protected abstract Object intercept(Invocation<E> invocation, Object proxy);
 
     @Override
     public final Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        Invocation<E> invocation = new Invocation<>(this.target, this.targetType, method, args);
-        return this.intercept(invocation, proxy);
+        if (this.filter(method)) {
+            Invocation<E> invocation = new Invocation<>(this.target, this.targetType, method, args);
+            return this.intercept(invocation, proxy);
+        } else {
+            return ReflectUtil.invoke(this.target, method, args);
+        }
     }
 
     /**

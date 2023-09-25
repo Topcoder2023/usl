@@ -10,6 +10,7 @@ import com.googlecode.aviator.runtime.type.AviatorObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * USL 函数实例
@@ -28,7 +29,7 @@ public class AnnotatedFunction extends AbstractVariadicFunction implements UslFu
     @Override
     public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {
         // 基于插件来执行函数可以更好的动态扩展功能
-        return this.withPlugin(env, args);
+        return this.withPlugin(FunctionDefinition.from(this.definition), env, args);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class AnnotatedFunction extends AbstractVariadicFunction implements UslFu
 
     @Override
     public String getName() {
-        return this.definition.getName();
+        return Optional.ofNullable(this.definition).map(FunctionDefinition::getName).orElse(null);
     }
 
     @Override
@@ -48,7 +49,6 @@ public class AnnotatedFunction extends AbstractVariadicFunction implements UslFu
         return this.pluginList;
     }
 
-    @Override
     public FunctionDefinition getDefinition() {
         return definition;
     }

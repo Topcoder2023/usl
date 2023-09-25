@@ -16,7 +16,7 @@ class MethodInterceptorTest {
         Assertions.assertEquals("success",
                 new MethodInterceptor<>(DemoTest.class) {
                     @Override
-                    protected Object intercept(Invocation<DemoTest> uslInvocation, Object proxy) {
+                    protected Object intercept(Invocation<DemoTest> invocation, Object proxy) {
                         System.out.println("proxy method for interface");
                         return "success";
                     }
@@ -25,7 +25,7 @@ class MethodInterceptorTest {
         Assertions.assertEquals("success",
                 new MethodInterceptor<>(new DemoClassTest(), DemoTest.class) {
                     @Override
-                    protected Object intercept(Invocation<DemoTest> uslInvocation, Object proxy) {
+                    protected Object intercept(Invocation<DemoTest> invocation, Object proxy) {
                         System.out.println("proxy method for object");
                         return "success";
                     }

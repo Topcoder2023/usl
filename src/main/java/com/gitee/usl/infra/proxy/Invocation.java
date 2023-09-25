@@ -16,19 +16,6 @@ public record Invocation<E>(Object target,
                             Class<E> targetType,
                             Method method,
                             Object[] args) {
-
-    /**
-     * 复制一个新的 USL 调用记录类
-     *
-     * @param base 复制的基类
-     * @param args 新的参数
-     * @param <E>  复制的泛型
-     * @return 复制结果
-     */
-    public static <E> Invocation<E> from(Invocation<E> base, Object[] args) {
-        return new Invocation<>(base.target(), base.targetType, base.method(), args);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {

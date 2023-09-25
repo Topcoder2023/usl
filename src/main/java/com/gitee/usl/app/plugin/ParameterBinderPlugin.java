@@ -22,8 +22,6 @@ public class ParameterBinderPlugin implements UslBeginPlugin {
 
         Object[] args = null;
 
-        Invocation<?> from = Invocation.from(invocation, args);
-
-        definition.setInvocation(from);
+        definition.setInvocation(null);
     }
 }

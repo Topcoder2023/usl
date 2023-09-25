@@ -11,6 +11,7 @@ import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author hongda.li
  */
 public class NativeFunction extends MethodInterceptor<AviatorFunction> implements UslFunctionPluggable {
+    private static final String METHOD_NAME = "call";
     private final List<UslPlugin> pluginList;
     private final FunctionDefinition definition;
 
@@ -28,6 +30,11 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction> implement
         super(target, AviatorFunction.class);
         this.definition = definition;
         this.pluginList = new ArrayList<>(NumberConstant.COMMON_SIZE);
+    }
+
+    @Override
+    protected boolean filter(Method method) {
+        return METHOD_NAME.equals(method.getName());
     }
 
     @Override
@@ -43,14 +50,17 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction> implement
                 .map(AviatorObject.class::cast)
                 .toArray(AviatorObject[]::new);
 
-        return this.withPlugin(env, objects);
+        FunctionDefinition from = FunctionDefinition.from(this.definition);
+        from.setInvocation(invocation);
+
+        return this.withPlugin(from, env, objects);
     }
 
     @Override
     public Object handle(FunctionSession session) {
         Invocation<?> invocation = session.getDefinition().getInvocation();
 
-        Object[] args = new AviatorObject[session.getObjects().length + NumberConstant.ONE];
+        Object[] args = new Object[session.getObjects().length + NumberConstant.ONE];
         args[0] = session.getEnv();
         System.arraycopy(session.getObjects(), 0, args, 1, session.getObjects().length);
 
@@ -62,7 +72,6 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction> implement
         return this.pluginList;
     }
 
-    @Override
     public FunctionDefinition getDefinition() {
         return this.definition;
     }

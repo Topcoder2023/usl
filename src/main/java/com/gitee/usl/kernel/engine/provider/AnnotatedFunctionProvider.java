@@ -2,6 +2,7 @@ package com.gitee.usl.kernel.engine.provider;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.infra.proxy.Invocation;
@@ -69,7 +70,7 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
      */
     @Override
     protected boolean filter(Class<?> clz) {
-        return AnnotationUtil.hasAnnotation(clz, Func.class);
+        return AnnotationUtil.hasAnnotation(clz, Func.class) && ClassUtil.isNormalClass(clz);
     }
 
     /**

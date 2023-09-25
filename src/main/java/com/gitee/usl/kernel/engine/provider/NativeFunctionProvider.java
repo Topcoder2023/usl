@@ -1,8 +1,13 @@
 package com.gitee.usl.kernel.engine.provider;
 
+import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.ReflectUtil;
+import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,9 +16,29 @@ import java.util.List;
  * @author hongda.li
  */
 public class NativeFunctionProvider extends AbstractFunctionProvider {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
     protected List<FunctionDefinition> class2Definition(Class<?> clz) {
-        return Collections.emptyList();
+        AviatorFunction ifPossible = (AviatorFunction) ReflectUtil.newInstanceIfPossible(clz);
+
+        if (ifPossible == null) {
+            logger.warn("Unable to instantiate the aviator native class. - {}", clz.getName());
+            logger.warn("Consider providing a parameterless constructor or customizing UslFunctionLoader");
+
+            return Collections.emptyList();
+        }
+
+        String name = ifPossible.getName();
+
+        if (name == null) {
+            return Collections.emptyList();
+        }
+
+        FunctionDefinition definition = new FunctionDefinition(name);
+        definition.setInvocation(new Invocation<>(ifPossible, clz, null, null));
+
+        return Collections.singletonList(definition);
     }
 
     @Override
@@ -25,6 +50,6 @@ public class NativeFunctionProvider extends AbstractFunctionProvider {
 
     @Override
     protected boolean filter(Class<?> clz) {
-        return AviatorFunction.class.isAssignableFrom(clz);
+        return AviatorFunction.class.isAssignableFrom(clz) && ClassUtil.isNormalClass(clz);
     }
 }

@@ -7,6 +7,7 @@ package com.gitee.usl.kernel.engine;
  *
  * @author hongda.li
  */
+@FunctionalInterface
 public interface UslFunctionEnhancer {
     /**
      * 对已注册函数增强

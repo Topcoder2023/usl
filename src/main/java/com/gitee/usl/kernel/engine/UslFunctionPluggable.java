@@ -32,9 +32,9 @@ public interface UslFunctionPluggable {
      * @param args 调用的原始参数
      * @return 最终返回值
      */
-    default AviatorObject withPlugin(Map<String, Object> env, AviatorObject... args) {
+    default AviatorObject withPlugin(FunctionDefinition definition, Map<String, Object> env, AviatorObject... args) {
         // 封装本次调用会话
-        final FunctionSession session = new FunctionSession((Env) env, args, this.getDefinition());
+        final FunctionSession session = new FunctionSession((Env) env, args, definition);
 
         // 执行前置回调插件
         // 注意，如果前置回调插件出现异常是不会被失败回调插件捕获
@@ -99,13 +99,6 @@ public interface UslFunctionPluggable {
      * @return 插件集合
      */
     List<UslPlugin> getPluginList();
-
-    /**
-     * 获取函数定义信息
-     *
-     * @return 函数定义信息
-     */
-    FunctionDefinition getDefinition();
 
     /**
      * 执行插件
