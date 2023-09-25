@@ -50,7 +50,7 @@ public final class UslScriptEngineManager implements UslInitializer {
 
         this.instance = AviatorEvaluator.newInstance();
         this.instance.removeFunctionLoader(ClassPathConfigFunctionLoader.getInstance());
-        this.instance.addFunctionLoader(name -> configuration.getFunctionMap().get(name));
+        this.instance.addFunctionLoader(name -> configuration.getFunctionHolder().search(name));
 
         configuration.setScriptEngineManager(this);
     }

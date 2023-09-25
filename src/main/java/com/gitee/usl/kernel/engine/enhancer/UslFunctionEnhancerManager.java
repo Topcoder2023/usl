@@ -31,9 +31,8 @@ public class UslFunctionEnhancerManager implements UslInitializer {
         List<UslFunctionEnhancer> enhancers = SpiServiceUtil.services(UslFunctionEnhancer.class);
 
         uslConfiguration.getEngineConfiguration()
-                .getFunctionMap()
-                .values()
-                .forEach(function -> {
+                .getFunctionHolder()
+                .onVisit(function -> {
                     UslFunctionDefinition definition;
 
                     // 尝试从AviatorFunction实例中读取函数定义信息
