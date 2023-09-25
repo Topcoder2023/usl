@@ -18,8 +18,8 @@ import java.util.List;
  *
  * @author hongda.li
  */
-@Order(UslFunctionProviderManager.USL_FUNC_PROVIDER_ORDER)
-public class UslFunctionProviderManager implements UslInitializer {
+@Order(FunctionProviderManager.USL_FUNC_PROVIDER_ORDER)
+public class FunctionProviderManager implements UslInitializer {
     /**
      * 函数提供者管理器的优先级
      */

@@ -1,12 +1,20 @@
 package com.gitee.usl.kernel.cache;
 
 
+import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.googlecode.aviator.Expression;
 
 /**
  * @author hongda.li
  */
 public interface UslCache {
+    /**
+     * 初始化缓存
+     *
+     * @param configuration 缓存配置信息
+     */
+    void init(CacheConfiguration configuration);
+
     /**
      * 根据缓存键查询编译后的表达式
      *

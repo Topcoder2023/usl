@@ -3,31 +3,29 @@ package com.gitee.usl.infra.proxy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * 动态代理测试
  *
  * @author hongda.li
  */
-class UslMethodInterceptorTest {
+class MethodInterceptorTest {
 
     @Test
     void createProxy() {
 
         Assertions.assertEquals("success",
-                new UslMethodInterceptor<>(DemoTest.class) {
+                new MethodInterceptor<>(DemoTest.class) {
                     @Override
-                    protected Object intercept(UslInvocation<DemoTest> uslInvocation, Object proxy) {
+                    protected Object intercept(Invocation<DemoTest> uslInvocation, Object proxy) {
                         System.out.println("proxy method for interface");
                         return "success";
                     }
                 }.createProxy().method());
 
         Assertions.assertEquals("success",
-                new UslMethodInterceptor<>(new DemoClassTest(), DemoTest.class) {
+                new MethodInterceptor<>(new DemoClassTest(), DemoTest.class) {
                     @Override
-                    protected Object intercept(UslInvocation<DemoTest> uslInvocation, Object proxy) {
+                    protected Object intercept(Invocation<DemoTest> uslInvocation, Object proxy) {
                         System.out.println("proxy method for object");
                         return "success";
                     }

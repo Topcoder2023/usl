@@ -4,9 +4,9 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Func;
-import com.gitee.usl.infra.proxy.UslInvocation;
-import com.gitee.usl.kernel.engine.UslFunction;
-import com.gitee.usl.kernel.engine.UslFunctionDefinition;
+import com.gitee.usl.infra.proxy.Invocation;
+import com.gitee.usl.kernel.engine.AnnotatedFunction;
+import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    protected List<UslFunctionDefinition> class2Definition(Class<?> clz) {
+    protected List<FunctionDefinition> class2Definition(Class<?> clz) {
         Object ifPossible = ReflectUtil.newInstanceIfPossible(clz);
 
         if (ifPossible == null) {
@@ -56,8 +56,8 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
     }
 
     @Override
-    protected AviatorFunction definition2Func(UslFunctionDefinition definition) {
-        return new UslFunction(definition);
+    protected AviatorFunction definition2Func(FunctionDefinition definition) {
+        return new AnnotatedFunction(definition);
     }
 
     /**
@@ -80,8 +80,8 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
      * @param method   函数对应的方法
      * @return 函数定义信息
      */
-    private UslFunctionDefinition buildDefinition(String name, Object instance, Method method) {
-        UslFunctionDefinition definition = new UslFunctionDefinition(name);
-        return definition.setInvocation(new UslInvocation<>(instance, instance.getClass(), method, null));
+    private FunctionDefinition buildDefinition(String name, Object instance, Method method) {
+        FunctionDefinition definition = new FunctionDefinition(name);
+        return definition.setInvocation(new Invocation<>(instance, instance.getClass(), method, null));
     }
 }

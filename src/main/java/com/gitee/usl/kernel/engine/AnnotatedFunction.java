@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.engine;
 
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.infra.proxy.UslInvocation;
+import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.kernel.plugin.UslPlugin;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
@@ -16,11 +16,11 @@ import java.util.Map;
  *
  * @author hongda.li
  */
-public class UslFunction extends AbstractVariadicFunction implements UslFunctionPluggable {
+public class AnnotatedFunction extends AbstractVariadicFunction implements UslFunctionPluggable {
     private final transient List<UslPlugin> pluginList;
-    private final transient UslFunctionDefinition definition;
+    private final transient FunctionDefinition definition;
 
-    public UslFunction(UslFunctionDefinition definition) {
+    public AnnotatedFunction(FunctionDefinition definition) {
         this.definition = definition;
         this.pluginList = new ArrayList<>(NumberConstant.COMMON_SIZE);
     }
@@ -32,8 +32,8 @@ public class UslFunction extends AbstractVariadicFunction implements UslFunction
     }
 
     @Override
-    public Object handle(final UslFunctionSession session) {
-        UslInvocation<?> invocation = definition.getInvocation();
+    public Object handle(final FunctionSession session) {
+        Invocation<?> invocation = definition.getInvocation();
 
         return ReflectUtil.invoke(invocation.target(), invocation.method(), invocation.args());
     }
@@ -49,7 +49,7 @@ public class UslFunction extends AbstractVariadicFunction implements UslFunction
     }
 
     @Override
-    public UslFunctionDefinition getDefinition() {
+    public FunctionDefinition getDefinition() {
         return definition;
     }
 }

@@ -13,5 +13,5 @@ public interface UslFunctionEnhancer {
      *
      * @param definition 函数定义信息
      */
-    void enhance(UslFunctionDefinition definition);
+    void enhance(FunctionDefinition definition);
 }

@@ -1,6 +1,6 @@
 package com.gitee.usl.kernel.engine;
 
-import com.gitee.usl.infra.proxy.UslInvocation;
+import com.gitee.usl.infra.proxy.Invocation;
 
 import java.util.Map;
 import java.util.StringJoiner;
@@ -10,20 +10,20 @@ import java.util.StringJoiner;
  *
  * @author hongda.li
  */
-public class UslFunctionDefinition {
+public class FunctionDefinition {
     private final String name;
-    private UslInvocation<?> invocation;
+    private Invocation<?> invocation;
     private Map<String, Object> properties;
 
-    public UslFunctionDefinition(String name) {
+    public FunctionDefinition(String name) {
         this.name = name;
     }
 
-    public UslInvocation<?> getInvocation() {
+    public Invocation<?> getInvocation() {
         return invocation;
     }
 
-    public UslFunctionDefinition setInvocation(UslInvocation<?> invocation) {
+    public FunctionDefinition setInvocation(Invocation<?> invocation) {
         this.invocation = invocation;
         return this;
     }
@@ -32,7 +32,7 @@ public class UslFunctionDefinition {
         return properties;
     }
 
-    public UslFunctionDefinition setProperties(Map<String, Object> properties) {
+    public FunctionDefinition setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }
@@ -43,7 +43,7 @@ public class UslFunctionDefinition {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", UslFunctionDefinition.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", FunctionDefinition.class.getSimpleName() + "[", "]")
                 .add("name='" + name + "'")
                 .add("invocation=" + invocation)
                 .add("properties=" + properties)

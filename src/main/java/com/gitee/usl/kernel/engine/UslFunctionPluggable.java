@@ -23,7 +23,7 @@ public interface UslFunctionPluggable {
      * @param session 函数调用会话
      * @return 执行结果
      */
-    Object handle(final UslFunctionSession session);
+    Object handle(final FunctionSession session);
 
     /**
      * 将插件逻辑编织到实际处理逻辑前、成功、失败、后
@@ -34,7 +34,7 @@ public interface UslFunctionPluggable {
      */
     default AviatorObject withPlugin(Map<String, Object> env, AviatorObject... args) {
         // 封装本次调用会话
-        final UslFunctionSession session = new UslFunctionSession((Env) env, args, this.getDefinition());
+        final FunctionSession session = new FunctionSession((Env) env, args, this.getDefinition());
 
         // 执行前置回调插件
         // 注意，如果前置回调插件出现异常是不会被失败回调插件捕获
@@ -105,7 +105,7 @@ public interface UslFunctionPluggable {
      *
      * @return 函数定义信息
      */
-    UslFunctionDefinition getDefinition();
+    FunctionDefinition getDefinition();
 
     /**
      * 执行插件

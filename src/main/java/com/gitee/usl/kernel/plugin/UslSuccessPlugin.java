@@ -1,6 +1,6 @@
 package com.gitee.usl.kernel.plugin;
 
-import com.gitee.usl.kernel.engine.UslFunctionSession;
+import com.gitee.usl.kernel.engine.FunctionSession;
 
 /**
  * @author hongda.li
@@ -11,5 +11,5 @@ public interface UslSuccessPlugin extends UslPlugin {
      *
      * @param session 函数调用会话
      */
-    void onSuccess(UslFunctionSession session);
+    void onSuccess(FunctionSession session);
 }

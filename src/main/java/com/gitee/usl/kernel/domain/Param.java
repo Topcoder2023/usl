@@ -11,7 +11,7 @@ import java.util.StringJoiner;
  *
  * @author hongda.li
  */
-public class UslParam {
+public class Param {
     /**
      * 是否缓存表达式
      */
@@ -27,12 +27,12 @@ public class UslParam {
      */
     private Map<String, Object> context;
 
-    public UslParam() {
+    public Param() {
         this.cached = true;
         this.context = HashMap.newHashMap(NumberConstant.COMMON_SIZE);
     }
 
-    public UslParam setContext(String name, Object value) {
+    public Param setContext(String name, Object value) {
         this.context.put(name, value);
         return this;
     }
@@ -41,7 +41,7 @@ public class UslParam {
         return cached;
     }
 
-    public UslParam setCached(boolean cached) {
+    public Param setCached(boolean cached) {
         this.cached = cached;
         return this;
     }
@@ -50,7 +50,7 @@ public class UslParam {
         return content;
     }
 
-    public UslParam setContent(String content) {
+    public Param setContent(String content) {
         this.content = content;
         return this;
     }
@@ -59,14 +59,14 @@ public class UslParam {
         return context;
     }
 
-    public UslParam setContext(Map<String, Object> context) {
+    public Param setContext(Map<String, Object> context) {
         this.context = context;
         return this;
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", UslParam.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", Param.class.getSimpleName() + "[", "]")
                 .add("cached=" + cached)
                 .add("content='" + content + "'")
                 .add("context=" + context)

@@ -12,7 +12,7 @@ import java.lang.reflect.Proxy;
  *
  * @author hongda.li
  */
-public abstract class UslMethodInterceptor<E> implements InvocationHandler {
+public abstract class MethodInterceptor<E> implements InvocationHandler {
     /**
      * 被代理的目标对象
      * 若代理的目标是接口，则 target 为空
@@ -32,7 +32,7 @@ public abstract class UslMethodInterceptor<E> implements InvocationHandler {
      *
      * @param targetType 接口的类型
      */
-    protected UslMethodInterceptor(Class<E> targetType) {
+    protected MethodInterceptor(Class<E> targetType) {
         this.target = null;
         this.targetType = targetType;
     }
@@ -43,7 +43,7 @@ public abstract class UslMethodInterceptor<E> implements InvocationHandler {
      * @param target     代理对象的实例
      * @param targetType 需代理的接口类型
      */
-    protected UslMethodInterceptor(Object target, Class<E> targetType) {
+    protected MethodInterceptor(Object target, Class<E> targetType) {
         this.target = target;
         this.targetType = targetType;
     }
@@ -55,11 +55,11 @@ public abstract class UslMethodInterceptor<E> implements InvocationHandler {
      * @param proxy         代理对象
      * @return 实际方法返回值
      */
-    protected abstract Object intercept(UslInvocation<E> uslInvocation, Object proxy);
+    protected abstract Object intercept(Invocation<E> uslInvocation, Object proxy);
 
     @Override
     public final Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        UslInvocation<E> invocation = new UslInvocation<>(this.target, this.targetType, method, args);
+        Invocation<E> invocation = new Invocation<>(this.target, this.targetType, method, args);
         return this.intercept(invocation, proxy);
     }
 

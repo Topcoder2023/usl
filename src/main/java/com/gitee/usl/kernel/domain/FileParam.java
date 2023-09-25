@@ -12,16 +12,16 @@ import java.io.File;
  *
  * @author hongda.li
  */
-public class UslFileParam extends UslParam {
+public class FileParam extends Param {
     private static final String NOT_FOUND = "File not found in path [{}]";
     private final File file;
 
-    public UslFileParam(File file) {
+    public FileParam(File file) {
         this.file = file;
         init();
     }
 
-    public UslFileParam(String path) {
+    public FileParam(String path) {
         this(new File(path));
     }
 

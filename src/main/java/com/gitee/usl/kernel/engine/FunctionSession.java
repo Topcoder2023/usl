@@ -14,15 +14,15 @@ import java.util.StringJoiner;
  *
  * @author hongda.li
  */
-public final class UslFunctionSession {
+public final class FunctionSession {
     private Object result;
     private String content;
     private Exception exception;
     private final Env env;
     private final AviatorObject[] objects;
-    private final UslFunctionDefinition definition;
+    private final FunctionDefinition definition;
 
-    public UslFunctionSession(Env env, AviatorObject[] objects, UslFunctionDefinition definition) {
+    public FunctionSession(Env env, AviatorObject[] objects, FunctionDefinition definition) {
         this.env = env;
         this.objects = objects;
         this.definition = definition;
@@ -36,7 +36,7 @@ public final class UslFunctionSession {
         return content;
     }
 
-    public UslFunctionSession setContent(String content) {
+    public FunctionSession setContent(String content) {
         this.content = content;
         return this;
     }
@@ -45,7 +45,7 @@ public final class UslFunctionSession {
         return exception;
     }
 
-    public UslFunctionSession setException(Exception exception) {
+    public FunctionSession setException(Exception exception) {
         this.exception = exception;
         return this;
     }
@@ -54,7 +54,7 @@ public final class UslFunctionSession {
         return result;
     }
 
-    public UslFunctionSession setResult(Object result) {
+    public FunctionSession setResult(Object result) {
         this.result = result;
         return this;
     }
@@ -63,13 +63,13 @@ public final class UslFunctionSession {
         return objects;
     }
 
-    public UslFunctionDefinition getDefinition() {
+    public FunctionDefinition getDefinition() {
         return definition;
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", UslFunctionSession.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", FunctionSession.class.getSimpleName() + "[", "]")
                 .add("env=" + env)
                 .add("content='" + content + "'")
                 .add("objects=" + Arrays.toString(objects))

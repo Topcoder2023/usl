@@ -1,6 +1,6 @@
 package com.gitee.usl.kernel.configure;
 
-import com.gitee.usl.infra.thread.UslExecutorManager;
+import com.gitee.usl.infra.thread.ExecutorPoolManager;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,7 +14,7 @@ public class ThreadPoolConfiguration {
     private int queueSize;
     private int aliveTime;
     private TimeUnit timeUnit;
-    private UslExecutorManager uslExecutorManager;
+    private ExecutorPoolManager executorPoolManager;
 
     public ThreadPoolConfiguration() {
         // 获取CPU核心数
@@ -82,12 +82,12 @@ public class ThreadPoolConfiguration {
         return this;
     }
 
-    public UslExecutorManager getUslExecutorManager() {
-        return uslExecutorManager;
+    public ExecutorPoolManager getUslExecutorManager() {
+        return executorPoolManager;
     }
 
-    public ThreadPoolConfiguration setUslExecutorManager(UslExecutorManager uslExecutorManager) {
-        this.uslExecutorManager = uslExecutorManager;
+    public ThreadPoolConfiguration setUslExecutorManager(ExecutorPoolManager executorPoolManager) {
+        this.executorPoolManager = executorPoolManager;
         return this;
     }
 

@@ -2,7 +2,7 @@ package com.gitee.usl;
 
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.kernel.configure.UslConfiguration;
-import com.gitee.usl.kernel.domain.UslParam;
+import com.gitee.usl.kernel.domain.Param;
 
 /**
  * @author hongda.li
@@ -13,7 +13,7 @@ class UslRunnerTest {
         UslRunner runner = new UslRunner(new UslConfiguration()
                 .configEngine(eng -> eng.scan(UslRunnerTest.class)));
 
-        UslParam param = new UslParam()
+        Param param = new Param()
                 .setContent("1 + 100 * 100 * 200 + math.log(var)")
                 .setContext("var", 10.5);
 

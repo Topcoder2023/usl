@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author hongda.li
  */
 @Order(Integer.MIN_VALUE)
-public class UslExecutorManager implements UslInitializer {
+public class ExecutorPoolManager implements UslInitializer {
     /**
      * USL 线程名称前缀
      */

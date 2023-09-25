@@ -10,7 +10,7 @@ import java.util.StringJoiner;
  *
  * @author hongda.li
  */
-public class UslResult<T> {
+public class Result<T> {
     /**
      * 返回值
      */
@@ -26,27 +26,27 @@ public class UslResult<T> {
      */
     private final String message;
 
-    public static <T> UslResult<T> success() {
-        return new UslResult<>(ResultCode.SUCCESS, CharSequenceUtil.EMPTY, null);
+    public static <T> Result<T> success() {
+        return new Result<>(ResultCode.SUCCESS, CharSequenceUtil.EMPTY, null);
     }
 
-    public static <T> UslResult<T> success(T data) {
-        return new UslResult<>(ResultCode.SUCCESS, CharSequenceUtil.EMPTY, data);
+    public static <T> Result<T> success(T data) {
+        return new Result<>(ResultCode.SUCCESS, CharSequenceUtil.EMPTY, data);
     }
 
-    public static <T> UslResult<T> failure() {
-        return new UslResult<>(ResultCode.FAILURE, CharSequenceUtil.EMPTY, null);
+    public static <T> Result<T> failure() {
+        return new Result<>(ResultCode.FAILURE, CharSequenceUtil.EMPTY, null);
     }
 
-    public static <T> UslResult<T> failure(ResultCode resultCode) {
-        return new UslResult<>(resultCode, CharSequenceUtil.EMPTY, null);
+    public static <T> Result<T> failure(ResultCode resultCode) {
+        return new Result<>(resultCode, CharSequenceUtil.EMPTY, null);
     }
 
-    public static <T> UslResult<T> failure(ResultCode resultCode, String message) {
-        return new UslResult<>(resultCode, message, null);
+    public static <T> Result<T> failure(ResultCode resultCode, String message) {
+        return new Result<>(resultCode, message, null);
     }
 
-    public UslResult(ResultCode resultCode, String message, T data) {
+    public Result(ResultCode resultCode, String message, T data) {
         this.data = data;
         this.message = message;
         this.code = resultCode.getCode();
@@ -66,7 +66,7 @@ public class UslResult<T> {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", UslResult.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", Result.class.getSimpleName() + "[", "]")
                 .add("data=" + data)
                 .add("code=" + code)
                 .add("message='" + message + "'")

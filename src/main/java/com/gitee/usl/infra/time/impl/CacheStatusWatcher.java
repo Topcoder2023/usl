@@ -1,6 +1,7 @@
 package com.gitee.usl.infra.time.impl;
 
 import com.gitee.usl.infra.time.FixedRateTimedTask;
+import com.gitee.usl.kernel.cache.CacheManager;
 import com.gitee.usl.kernel.cache.UslCache;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 
@@ -29,7 +30,8 @@ public class CacheStatusWatcher implements FixedRateTimedTask {
 
     @Override
     public void doTask(UslConfiguration configuration) {
-        Optional.ofNullable(configuration.getCacheConfiguration().getUslCache())
+        Optional.ofNullable(configuration.getCacheConfiguration().getCacheManager())
+                .map(CacheManager::getUslCache)
                 .ifPresent(UslCache::snapshot);
     }
 }

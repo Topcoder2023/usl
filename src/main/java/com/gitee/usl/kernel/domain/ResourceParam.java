@@ -9,11 +9,11 @@ import com.gitee.usl.infra.exception.UslNotFoundException;
  *
  * @author hongda.li
  */
-public class UslResourceParam extends UslParam {
+public class ResourceParam extends Param {
     private static final String NOT_FOUND = "Resource not found in classpath [{}]";
     private final String resource;
 
-    public UslResourceParam(String resource) {
+    public ResourceParam(String resource) {
         this.resource = resource;
         init();
     }

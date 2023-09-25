@@ -4,8 +4,8 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.infra.proxy.UslInvocation;
-import com.gitee.usl.infra.proxy.UslMethodInterceptor;
+import com.gitee.usl.infra.proxy.Invocation;
+import com.gitee.usl.infra.proxy.MethodInterceptor;
 import com.gitee.usl.kernel.plugin.UslPlugin;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
@@ -20,18 +20,18 @@ import java.util.List;
  *
  * @author hongda.li
  */
-public class UslAviatorProxyFunction extends UslMethodInterceptor<AviatorFunction> implements UslFunctionPluggable {
+public class NativeFunction extends MethodInterceptor<AviatorFunction> implements UslFunctionPluggable {
     private final List<UslPlugin> pluginList;
-    private final UslFunctionDefinition definition;
+    private final FunctionDefinition definition;
 
-    public UslAviatorProxyFunction(UslFunctionDefinition definition, Object target) {
+    public NativeFunction(FunctionDefinition definition, Object target) {
         super(target, AviatorFunction.class);
         this.definition = definition;
         this.pluginList = new ArrayList<>(NumberConstant.COMMON_SIZE);
     }
 
     @Override
-    protected Object intercept(UslInvocation<AviatorFunction> invocation, Object proxy) {
+    protected Object intercept(Invocation<AviatorFunction> invocation, Object proxy) {
         Object[] args = invocation.args();
         Assert.isTrue(args.length >= NumberConstant.ONE);
 
@@ -47,8 +47,8 @@ public class UslAviatorProxyFunction extends UslMethodInterceptor<AviatorFunctio
     }
 
     @Override
-    public Object handle(UslFunctionSession session) {
-        UslInvocation<?> invocation = session.getDefinition().getInvocation();
+    public Object handle(FunctionSession session) {
+        Invocation<?> invocation = session.getDefinition().getInvocation();
 
         Object[] args = new AviatorObject[session.getObjects().length + NumberConstant.ONE];
         args[0] = session.getEnv();
@@ -63,7 +63,7 @@ public class UslAviatorProxyFunction extends UslMethodInterceptor<AviatorFunctio
     }
 
     @Override
-    public UslFunctionDefinition getDefinition() {
+    public FunctionDefinition getDefinition() {
         return this.definition;
     }
 }

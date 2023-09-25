@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.queue;
 
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.cache.UslCache;
-import com.gitee.usl.kernel.engine.UslScriptEngineManager;
+import com.gitee.usl.kernel.engine.ScriptEngineManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +20,11 @@ public class CompileCacheConsumer implements CompileConsumer {
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) throws Exception {
         final UslCache uslCache = event.getConfiguration()
                 .getCacheConfiguration()
+                .getCacheManager()
                 .getUslCache();
 
         // 生成唯一缓存键
-        String generated = UslScriptEngineManager.generateKey(event.getContent());
+        String generated = ScriptEngineManager.generateKey(event.getContent());
 
         // 缓存脚本编译结果
         uslCache.insert(generated, event.getExpression());

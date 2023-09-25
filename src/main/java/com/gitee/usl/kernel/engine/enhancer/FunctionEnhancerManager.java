@@ -4,9 +4,9 @@ import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.UslConfiguration;
-import com.gitee.usl.kernel.engine.UslAviatorProxyFunction;
-import com.gitee.usl.kernel.engine.UslFunction;
-import com.gitee.usl.kernel.engine.UslFunctionDefinition;
+import com.gitee.usl.kernel.engine.NativeFunction;
+import com.gitee.usl.kernel.engine.AnnotatedFunction;
+import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.kernel.engine.UslFunctionEnhancer;
 
 import java.util.List;
@@ -19,8 +19,8 @@ import java.util.Optional;
  *
  * @author hongda.li
  */
-@Order(UslFunctionEnhancerManager.USL_FUNC_ENHANCER_ORDER)
-public class UslFunctionEnhancerManager implements UslInitializer {
+@Order(FunctionEnhancerManager.USL_FUNC_ENHANCER_ORDER)
+public class FunctionEnhancerManager implements UslInitializer {
     /**
      * USL 函数增强器的优先级
      */
@@ -33,12 +33,12 @@ public class UslFunctionEnhancerManager implements UslInitializer {
         uslConfiguration.getEngineConfiguration()
                 .getFunctionHolder()
                 .onVisit(function -> {
-                    UslFunctionDefinition definition;
+                    FunctionDefinition definition;
 
                     // 尝试从AviatorFunction实例中读取函数定义信息
-                    if (function instanceof UslFunction uf) {
+                    if (function instanceof AnnotatedFunction uf) {
                         definition = uf.getDefinition();
-                    } else if (function instanceof UslAviatorProxyFunction up) {
+                    } else if (function instanceof NativeFunction up) {
                         definition = up.getDefinition();
                     } else {
                         definition = null;

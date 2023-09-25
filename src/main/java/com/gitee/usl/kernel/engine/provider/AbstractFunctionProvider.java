@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.engine.provider;
 
 import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
-import com.gitee.usl.kernel.engine.UslFunctionDefinition;
+import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.kernel.engine.UslFunctionProvider;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 
@@ -35,7 +35,7 @@ public abstract class AbstractFunctionProvider implements UslFunctionProvider {
      * @param clz 符合条件的类
      * @return USL 函数定义信息集合
      */
-    protected abstract List<UslFunctionDefinition> class2Definition(Class<?> clz);
+    protected abstract List<FunctionDefinition> class2Definition(Class<?> clz);
 
     /**
      * 将函数定义信息转为函数实例
@@ -43,7 +43,7 @@ public abstract class AbstractFunctionProvider implements UslFunctionProvider {
      * @param definition 函数定义信息
      * @return 函数实例
      */
-    protected abstract AviatorFunction definition2Func(UslFunctionDefinition definition);
+    protected abstract AviatorFunction definition2Func(FunctionDefinition definition);
 
     /**
      * 过滤出声明式函数类

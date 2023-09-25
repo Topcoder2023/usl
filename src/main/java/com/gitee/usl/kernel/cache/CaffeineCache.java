@@ -1,10 +1,7 @@
 package com.gitee.usl.kernel.cache;
 
-import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.api.annotation.Order;
-import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.CacheConfiguration;
-import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.stats.CacheStats;
@@ -15,8 +12,8 @@ import org.slf4j.LoggerFactory;
 /**
  * @author hongda.li
  */
-@Order(UslCaffeineCache.USL_CACHE_ORDER)
-public class UslCaffeineCache implements UslCache, UslInitializer {
+@Order(CaffeineCache.USL_CACHE_ORDER)
+public class CaffeineCache implements UslCache {
     /**
      * USL 缓存的优先级
      * 若想使用自定义缓存替代 USL 内置提供的 Caffeine 缓存
@@ -28,22 +25,11 @@ public class UslCaffeineCache implements UslCache, UslInitializer {
     private Cache<String, Expression> cache;
 
     @Override
-    public void doInit(UslConfiguration uslConfiguration) {
-        CacheConfiguration configuration = uslConfiguration.getCacheConfiguration();
-
-        // 根据SPI机制加载优先级最高的 UslCache 接口实现类
-        UslCache uslCache = SpiServiceUtil.firstService(UslCache.class);
-
-        // 若 UslCache 为 UslCaffeineCache
-        // 则根据缓存配置初始化 UslCaffeineCache 中的 Cache 成员变量
-        if (uslCache instanceof UslCaffeineCache uslCaffeineCache) {
-            uslCaffeineCache.cache = Caffeine.newBuilder()
-                    .maximumSize(10)
-                    .recordStats()
-                    .build();
-        }
-
-        configuration.setUslCache(uslCache);
+    public void init(CacheConfiguration configuration) {
+        this.cache = Caffeine.newBuilder()
+                .maximumSize(10)
+                .recordStats()
+                .build();
     }
 
     @Override

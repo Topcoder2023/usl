@@ -10,8 +10,8 @@ import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.QueueConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
-import com.gitee.usl.kernel.domain.UslParam;
-import com.gitee.usl.kernel.domain.UslResult;
+import com.gitee.usl.kernel.domain.Param;
+import com.gitee.usl.kernel.domain.Result;
 import com.gitee.usl.kernel.queue.CompileGeneratorConsumer;
 import com.gitee.usl.kernel.queue.CompileQueueManager;
 import com.google.common.hash.Hashing;
@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * @author hongda.li
  */
 @SuppressWarnings("UnstableApiUsage")
-public final class UslScriptEngineManager implements UslInitializer {
+public final class ScriptEngineManager implements UslInitializer {
     private AviatorEvaluatorInstance instance;
     private UslConfiguration uslConfiguration;
     private CacheConfiguration cacheConfiguration;
@@ -58,26 +58,27 @@ public final class UslScriptEngineManager implements UslInitializer {
     /**
      * 编译并执行脚本
      *
-     * @param uslParam 脚本执行参数
-     * @param <T>      脚本执行泛型
+     * @param param 脚本执行参数
+     * @param <T>   脚本执行泛型
      * @return 脚本执行结果
      */
     @SuppressWarnings({"unchecked", "ReassignedVariable"})
-    public <T> UslResult<T> run(UslParam uslParam) {
+    public <T> Result<T> run(Param param) {
         // 使用SHA512摘要算法生成唯一Key
-        String key = UslScriptEngineManager.generateKey(uslParam.getContent());
+        String key = ScriptEngineManager.generateKey(param.getContent());
+        UslCache cache = this.cacheConfiguration.getCacheManager().getUslCache();
 
         Expression expression;
 
         // 1.开启 USL 脚本编译缓存
-        if (uslParam.isCached()) {
+        if (param.isCached()) {
             // 1.1.直接从缓存中获取编译结果
-            expression = this.cacheConfiguration.getUslCache().select(key);
+            expression = cache.select(key);
 
             // 1.2.缓存中不存在
             if (expression == null) {
                 // 1.2.1.编译脚本
-                this.compile(uslParam.getContent());
+                this.compile(param.getContent());
 
                 // 1.2.2.获取编译结果
                 expression = this.getWithSpin(key);
@@ -87,24 +88,24 @@ public final class UslScriptEngineManager implements UslInitializer {
         // 2.未开启 USL 脚本编译缓存
         else {
             // 2.1.编译脚本
-            this.compile(uslParam.getContent());
+            this.compile(param.getContent());
 
             // 2.2.获取编译结果
             expression = this.getWithSpin(key);
 
             // 2.3.移除缓存
-            this.cacheConfiguration.getUslCache().remove(key);
+            cache.remove(key);
         }
 
         // 校验编译结果是否为有效结果
         if (this.isInvalid(expression)) {
-            return UslResult.failure(ResultCode.COMPILE_FAILURE);
+            return Result.failure(ResultCode.COMPILE_FAILURE);
         }
 
         try {
-            return UslResult.success((T) expression.execute(uslParam.getContext()));
+            return Result.success((T) expression.execute(param.getContext()));
         } catch (UslExecuteException executeException) {
-            return UslResult.failure(executeException.getResultCode(), executeException.getMessage());
+            return Result.failure(executeException.getResultCode(), executeException.getMessage());
         }
     }
 
@@ -127,7 +128,7 @@ public final class UslScriptEngineManager implements UslInitializer {
      */
     @SuppressWarnings("ReassignedVariable")
     private Expression getWithSpin(String key) {
-        UslCache uslCache = this.cacheConfiguration.getUslCache();
+        UslCache uslCache = this.cacheConfiguration.getCacheManager().getUslCache();
         Expression expression = null;
 
         // CPU 自旋阻塞获取编译后的表达式

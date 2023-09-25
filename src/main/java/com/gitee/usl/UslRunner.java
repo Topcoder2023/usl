@@ -4,8 +4,8 @@ import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.UslConfiguration;
-import com.gitee.usl.kernel.domain.UslParam;
-import com.gitee.usl.kernel.domain.UslResult;
+import com.gitee.usl.kernel.domain.Param;
+import com.gitee.usl.kernel.domain.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,14 +45,14 @@ public class UslRunner {
     /**
      * 执行 USL 脚本
      *
-     * @param uslParam USL 参数
+     * @param param USL 参数
      * @param <T>      USL 返回值泛型
      * @return USL 返回值
      */
-    public <T> UslResult<T> run(UslParam uslParam) {
+    public <T> Result<T> run(Param param) {
         return this.configuration.getEngineConfiguration()
                 .getScriptEngineManager()
-                .run(uslParam);
+                .run(param);
     }
 
     /**

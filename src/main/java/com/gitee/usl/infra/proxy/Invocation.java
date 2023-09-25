@@ -12,10 +12,10 @@ import java.util.StringJoiner;
  *
  * @author hongda.li
  */
-public record UslInvocation<E>(Object target,
-                               Class<E> targetType,
-                               Method method,
-                               Object[] args) {
+public record Invocation<E>(Object target,
+                            Class<E> targetType,
+                            Method method,
+                            Object[] args) {
 
     /**
      * 复制一个新的 USL 调用记录类
@@ -25,8 +25,8 @@ public record UslInvocation<E>(Object target,
      * @param <E>  复制的泛型
      * @return 复制结果
      */
-    public static <E> UslInvocation<E> from(UslInvocation<E> base, Object[] args) {
-        return new UslInvocation<>(base.target(), base.targetType, base.method(), args);
+    public static <E> Invocation<E> from(Invocation<E> base, Object[] args) {
+        return new Invocation<>(base.target(), base.targetType, base.method(), args);
     }
 
     @Override
@@ -37,7 +37,7 @@ public record UslInvocation<E>(Object target,
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UslInvocation<?> that = (UslInvocation<?>) o;
+        Invocation<?> that = (Invocation<?>) o;
         return Objects.equal(target, that.target)
                 && Objects.equal(targetType, that.targetType)
                 && Objects.equal(method, that.method)
@@ -51,7 +51,7 @@ public record UslInvocation<E>(Object target,
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", UslInvocation.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", Invocation.class.getSimpleName() + "[", "]")
                 .add("target=" + target)
                 .add("targetType=" + targetType)
                 .add("method=" + method)

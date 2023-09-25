@@ -1,19 +1,19 @@
 package com.gitee.usl.kernel.configure;
 
-import com.gitee.usl.kernel.cache.UslCache;
+import com.gitee.usl.kernel.cache.CacheManager;
 
 /**
  * @author hongda.li
  */
 public class CacheConfiguration {
-    private UslCache uslCache;
+    private CacheManager cacheManager;
 
-    public UslCache getUslCache() {
-        return uslCache;
+    public CacheManager getCacheManager() {
+        return cacheManager;
     }
 
-    public CacheConfiguration setUslCache(UslCache uslCache) {
-        this.uslCache = uslCache;
+    public CacheConfiguration setCacheManager(CacheManager cacheManager) {
+        this.cacheManager = cacheManager;
         return this;
     }
 }

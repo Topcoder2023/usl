@@ -1,6 +1,6 @@
-com.gitee.usl.infra.thread.UslExecutorManager
+com.gitee.usl.infra.thread.ExecutorPoolManager
 com.gitee.usl.infra.time.TimedTaskManager
-com.gitee.usl.kernel.cache.UslCaffeineCache
+com.gitee.usl.kernel.cache.CacheManager
 com.gitee.usl.kernel.queue.CompileQueueManager
-com.gitee.usl.kernel.engine.UslScriptEngineManager
-com.gitee.usl.kernel.engine.provider.UslFunctionProviderManager
+com.gitee.usl.kernel.engine.ScriptEngineManager
+com.gitee.usl.kernel.engine.provider.FunctionProviderManager
