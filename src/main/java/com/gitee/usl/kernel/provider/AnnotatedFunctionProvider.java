@@ -1,4 +1,4 @@
-package com.gitee.usl.kernel.engine.provider;
+package com.gitee.usl.kernel.provider;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.text.CharSequenceUtil;
@@ -81,7 +81,7 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
      * @param method   函数对应的方法
      * @return 函数定义信息
      */
-    private FunctionDefinition buildDefinition(String name, Object instance, Method method) {
+    protected FunctionDefinition buildDefinition(String name, Object instance, Method method) {
         FunctionDefinition definition = new FunctionDefinition(name);
         return definition.setInvocation(new Invocation<>(instance, instance.getClass(), method, null));
     }

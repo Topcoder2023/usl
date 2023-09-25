@@ -1,5 +1,7 @@
 package com.gitee.usl.kernel.engine;
 
+import com.googlecode.aviator.runtime.type.AviatorFunction;
+
 /**
  * USL 函数增强器
  * 对已注册成功的函数进行增强
@@ -12,7 +14,7 @@ public interface UslFunctionEnhancer {
     /**
      * 对已注册函数增强
      *
-     * @param definition 函数定义信息
+     * @param function 函数实例
      */
-    void enhance(FunctionDefinition definition);
+    void enhance(AviatorFunction function);
 }

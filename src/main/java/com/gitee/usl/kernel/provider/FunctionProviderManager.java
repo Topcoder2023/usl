@@ -1,4 +1,4 @@
-package com.gitee.usl.kernel.engine.provider;
+package com.gitee.usl.kernel.provider;
 
 import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.api.annotation.Order;

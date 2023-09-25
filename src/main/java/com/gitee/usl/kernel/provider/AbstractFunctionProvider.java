@@ -1,4 +1,4 @@
-package com.gitee.usl.kernel.engine.provider;
+package com.gitee.usl.kernel.provider;
 
 import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.kernel.configure.EngineConfiguration;

@@ -45,7 +45,7 @@ public class AnnotatedFunction extends AbstractVariadicFunction implements UslFu
     }
 
     @Override
-    public List<UslPlugin> getPluginList() {
+    public List<UslPlugin> plugins() {
         return this.pluginList;
     }
 

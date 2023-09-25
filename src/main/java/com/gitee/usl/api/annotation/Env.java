@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UslParam {
+public @interface Env {
     /**
      * 从函数调用上下文参数中，根据参数的名称取出指定参数
      *

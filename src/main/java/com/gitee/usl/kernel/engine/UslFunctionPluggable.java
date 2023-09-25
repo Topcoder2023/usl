@@ -98,7 +98,7 @@ public interface UslFunctionPluggable {
      *
      * @return 插件集合
      */
-    List<UslPlugin> getPluginList();
+    List<UslPlugin> plugins();
 
     /**
      * 执行插件
@@ -108,7 +108,7 @@ public interface UslFunctionPluggable {
      * @param <T>        插件泛型
      */
     private <T> void makePlugin(Class<T> pluginType, Consumer<T> consumer) {
-        getPluginList().stream()
+        plugins().stream()
                 .filter(plugin -> pluginType.isAssignableFrom(plugin.getClass()))
                 .map(pluginType::cast)
                 .forEach(consumer);
