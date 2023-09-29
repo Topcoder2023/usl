@@ -5,6 +5,7 @@ import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.stats.CacheStats;
+import com.google.auto.service.AutoService;
 import com.googlecode.aviator.Expression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
  * @author hongda.li
  */
 @Order(CaffeineCache.USL_CACHE_ORDER)
+@AutoService(UslCache.class)
 public class CaffeineCache implements UslCache {
     /**
      * USL 缓存的优先级

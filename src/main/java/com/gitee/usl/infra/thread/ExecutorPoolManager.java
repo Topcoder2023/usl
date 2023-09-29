@@ -6,6 +6,7 @@ import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.configure.ThreadPoolConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.google.auto.service.AutoService;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author hongda.li
  */
 @Order(Integer.MIN_VALUE)
+@AutoService(UslInitializer.class)
 public class ExecutorPoolManager implements UslInitializer {
     /**
      * USL 线程名称前缀

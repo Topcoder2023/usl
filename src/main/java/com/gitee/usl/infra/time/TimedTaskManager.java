@@ -5,6 +5,7 @@ import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.thread.NamedThreadFactory;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.google.auto.service.AutoService;
 
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -17,6 +18,7 @@ import java.util.function.Consumer;
  * @author hongda.li
  */
 @Order(Integer.MAX_VALUE - 100)
+@AutoService(UslInitializer.class)
 public class TimedTaskManager implements UslInitializer {
     public static final String PREFIX = "USL_Timed_Executor";
     private List<TimedTask> taskList;

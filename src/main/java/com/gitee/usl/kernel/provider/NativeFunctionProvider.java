@@ -5,6 +5,8 @@ import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
+import com.gitee.usl.kernel.engine.UslFunctionProvider;
+import com.google.auto.service.AutoService;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import java.util.List;
 /**
  * @author hongda.li
  */
+@AutoService(UslFunctionProvider.class)
 public class NativeFunctionProvider extends AbstractFunctionProvider {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

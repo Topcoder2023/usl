@@ -14,6 +14,7 @@ import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
 import com.gitee.usl.kernel.queue.CompileGeneratorConsumer;
 import com.gitee.usl.kernel.queue.CompileQueueManager;
+import com.google.auto.service.AutoService;
 import com.google.common.hash.Hashing;
 import com.googlecode.aviator.*;
 
@@ -34,6 +35,7 @@ import java.util.concurrent.TimeUnit;
  * @author hongda.li
  */
 @SuppressWarnings("UnstableApiUsage")
+@AutoService(UslInitializer.class)
 public final class ScriptEngineManager implements UslInitializer {
     private AviatorEvaluatorInstance instance;
     private UslConfiguration uslConfiguration;

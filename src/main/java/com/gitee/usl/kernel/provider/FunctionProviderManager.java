@@ -7,6 +7,7 @@ import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.kernel.domain.FunctionHolder;
 import com.gitee.usl.kernel.engine.UslFunctionProvider;
+import com.google.auto.service.AutoService;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
  * @author hongda.li
  */
 @Order(FunctionProviderManager.USL_FUNC_PROVIDER_ORDER)
+@AutoService(UslInitializer.class)
 public class FunctionProviderManager implements UslInitializer {
     /**
      * 函数提供者管理器的优先级

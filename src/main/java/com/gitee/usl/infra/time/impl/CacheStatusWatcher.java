@@ -1,9 +1,11 @@
 package com.gitee.usl.infra.time.impl;
 
 import com.gitee.usl.infra.time.FixedRateTimedTask;
+import com.gitee.usl.infra.time.TimedTask;
 import com.gitee.usl.kernel.cache.CacheManager;
 import com.gitee.usl.kernel.cache.UslCache;
 import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.google.auto.service.AutoService;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -11,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author hongda.li
  */
+@AutoService(TimedTask.class)
 public class CacheStatusWatcher implements FixedRateTimedTask {
     @Override
     public long cycle() {

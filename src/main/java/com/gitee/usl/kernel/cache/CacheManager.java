@@ -4,10 +4,12 @@ import com.gitee.usl.api.UslInitializer;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.google.auto.service.AutoService;
 
 /**
  * @author hongda.li
  */
+@AutoService(UslInitializer.class)
 public class CacheManager implements UslInitializer {
     private UslCache uslCache;
 

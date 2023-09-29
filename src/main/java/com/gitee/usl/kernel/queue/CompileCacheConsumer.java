@@ -3,6 +3,7 @@ package com.gitee.usl.kernel.queue;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.cache.UslCache;
 import com.gitee.usl.kernel.engine.ScriptEngineManager;
+import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
  * @author hongda.li
  */
 @Order(CompileGeneratorConsumer.GENERATOR_ORDER + 100)
+@AutoService(CompileConsumer.class)
 public class CompileCacheConsumer implements CompileConsumer {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

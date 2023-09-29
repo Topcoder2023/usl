@@ -5,6 +5,7 @@ import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.kernel.engine.UslFunctionEnhancer;
+import com.google.auto.service.AutoService;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * @author hongda.li
  */
 @Order(FunctionEnhancerManager.USL_FUNC_ENHANCER_ORDER)
+@AutoService(UslInitializer.class)
 public class FunctionEnhancerManager implements UslInitializer {
     /**
      * USL 函数增强器的优先级

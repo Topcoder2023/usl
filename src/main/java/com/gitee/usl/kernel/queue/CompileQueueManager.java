@@ -7,6 +7,7 @@ import com.gitee.usl.infra.utils.CompareUtil;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.QueueConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.google.auto.service.AutoService;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.EventHandlerGroup;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
  * @author hongda.li
  */
 @Order
+@AutoService(UslInitializer.class)
 public class CompileQueueManager implements UslInitializer {
     private static final String THREAD_PREFIX = "Usl_Queue_Disruptor";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

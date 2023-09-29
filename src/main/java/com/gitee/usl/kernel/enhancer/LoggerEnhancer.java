@@ -5,6 +5,7 @@ import com.gitee.usl.app.plugin.LoggerPlugin;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.engine.UslFunctionEnhancer;
+import com.google.auto.service.AutoService;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.lang.reflect.Proxy;
@@ -13,6 +14,7 @@ import java.lang.reflect.Proxy;
  * @author hongda.li
  */
 @Order(Integer.MAX_VALUE - 10)
+@AutoService(UslFunctionEnhancer.class)
 public class LoggerEnhancer implements UslFunctionEnhancer {
     @Override
     public void enhance(AviatorFunction function) {

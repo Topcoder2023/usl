@@ -2,6 +2,7 @@ package com.gitee.usl.kernel.queue;
 
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
+import com.google.auto.service.AutoService;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
 import com.googlecode.aviator.BaseExpression;
 import com.googlecode.aviator.Expression;
@@ -19,6 +20,7 @@ import java.util.Map;
  * @author hongda.li
  */
 @Order(CompileGeneratorConsumer.GENERATOR_ORDER)
+@AutoService(CompileConsumer.class)
 public class CompileGeneratorConsumer implements CompileConsumer {
 
     /**
