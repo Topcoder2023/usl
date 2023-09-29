@@ -12,7 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import static com.gitee.usl.infra.utils.LoggerUtil.info;
+import static com.gitee.usl.infra.utils.LoggerUtil.warn;
 
 /**
  * @author hongda.li
@@ -22,22 +26,23 @@ public class LoggerPlugin implements BeginPlugin, SuccessPlugin, FailurePlugin {
 
     @Override
     public void onBegin(FunctionSession session) {
-        if (logger.isInfoEnabled()) {
-            String name = session.getDefinition().getName();
-            logger.info("USL function execute params - [{}] : [{}]", name, this.format(session.getEnv(), session.getObjects()));
-        }
+        String name = session.getDefinition().getName();
+        Supplier<Object[]> supplier = () -> new Object[]{name, format(session.getEnv(), session.getObjects())};
+        info(logger, "USL function execute params - [{}] : [{}]", supplier);
     }
 
     @Override
     public void onFailure(FunctionSession session) {
         String name = session.getDefinition().getName();
-        logger.warn("USL function execute errors - [{}] : [{}]", name, session.getException().getMessage());
+        Supplier<Object[]> supplier = () -> new Object[]{name, session.getException().getMessage()};
+        warn(logger, "USL function execute errors - [{}] : [{}]", supplier);
     }
 
     @Override
     public void onSuccess(FunctionSession session) {
         String name = session.getDefinition().getName();
-        logger.info("USL function execute return - [{}] : [{}]", name, session.getResult());
+        Supplier<Object[]> supplier = () -> new Object[]{name, session.getResult()};
+        info(logger, "USL function execute return - [{}] : [{}]", supplier);
     }
 
     /**

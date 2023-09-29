@@ -1,8 +1,11 @@
 package com.gitee.usl;
 
+import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.infra.exception.UslException;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
+import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
@@ -12,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -21,6 +25,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author hongda.li
  */
 public class UslRunner {
+    /**
+     * USL Runner 名称前缀
+     */
     private static final String USL_RUNNER_NAME_PREFIX = "USL Runner-";
     private static final Logger LOGGER = LoggerFactory.getLogger(UslRunner.class);
 
@@ -45,22 +52,24 @@ public class UslRunner {
 
     public UslRunner(UslConfiguration configuration) {
         this.configuration = configuration;
-        int number = NUMBER.getAndIncrement();
-        String name = USL_RUNNER_NAME_PREFIX + number;
+    }
+
+    public String start() {
+        String name = USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement();
+
+        Assert.isFalse(ENGINE_CONTEXT.get().containsKey(name), () -> new UslException("USL Runner has been started."));
 
         try {
-            this.start(name);
+            LOGGER.info("{} - Starting...", name);
+            List<Initializer> initializers = SpiServiceUtil.services(Initializer.class);
+            initializers.forEach(initializer -> initializer.doInit(configuration));
+            LOGGER.info("{} - Start completed.", name);
             ENGINE_CONTEXT.get().put(name, this);
         } catch (Exception e) {
             ENGINE_CONTEXT.remove();
         }
-    }
 
-    private void start(String name) {
-        LOGGER.info("{} - Starting...", name);
-        List<Initializer> initializers = SpiServiceUtil.services(Initializer.class);
-        initializers.forEach(initializer -> initializer.doInit(configuration));
-        LOGGER.info("{} - Start completed.", name);
+        return name;
     }
 
     /**
@@ -71,9 +80,11 @@ public class UslRunner {
      * @return USL 返回值
      */
     public <T> Result<T> run(Param param) {
-        return this.configuration.getEngineConfiguration()
-                .getScriptEngineManager()
-                .run(param);
+        return Optional.ofNullable(this.configuration)
+                .map(UslConfiguration::getEngineConfiguration)
+                .map(EngineConfiguration::getScriptEngineManager)
+                .map(manager -> manager.<T>run(param))
+                .orElseThrow(() -> new UslException("USL Runner has not been started."));
     }
 
     /**
@@ -81,7 +92,7 @@ public class UslRunner {
      *
      * @return USL 配置类
      */
-    public UslConfiguration getConfiguration() {
+    public UslConfiguration configuration() {
         return configuration;
     }
 
