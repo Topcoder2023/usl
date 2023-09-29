@@ -6,7 +6,7 @@ import com.gitee.usl.api.annotation.CombineFunc;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.infra.proxy.MethodInterceptor;
 import com.gitee.usl.kernel.domain.Param;
-import com.gitee.usl.kernel.plugin.UslPlugin;
+import com.gitee.usl.kernel.plugin.Plugin;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.lang.reflect.Method;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author hongda.li
  */
-public class CombineFunction extends MethodInterceptor<AviatorFunction> implements UslFunctionPluggable {
+public class CombineFunction extends MethodInterceptor<AviatorFunction> implements FunctionPluggable {
     private final FunctionDefinition definition;
     private final String content;
     private final UslRunner runner;
@@ -44,7 +44,7 @@ public class CombineFunction extends MethodInterceptor<AviatorFunction> implemen
     }
 
     @Override
-    public List<UslPlugin> plugins() {
+    public List<Plugin> plugins() {
         return null;
     }
 }

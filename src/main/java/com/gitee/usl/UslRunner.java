@@ -1,6 +1,6 @@
 package com.gitee.usl;
 
-import com.gitee.usl.api.UslInitializer;
+import com.gitee.usl.api.Initializer;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.UslConfiguration;
@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -20,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author hongda.li
  */
 public class UslRunner {
+    private static final String USL_RUNNER_NAME_PREFIX = "USL Runner-";
     private static final Logger LOGGER = LoggerFactory.getLogger(UslRunner.class);
 
     /**
@@ -44,12 +46,21 @@ public class UslRunner {
     public UslRunner(UslConfiguration configuration) {
         this.configuration = configuration;
         int number = NUMBER.getAndIncrement();
-        LOGGER.info("USL Runner-{} - Starting...", number);
-        SpiServiceUtil.services(UslInitializer.class).forEach(initializer -> initializer.doInit(configuration));
-        LOGGER.info("USL Runner-{} - Start completed.", number);
+        String name = USL_RUNNER_NAME_PREFIX + number;
 
-        // 保存全局引擎缓存
-        ENGINE_CONTEXT.get().put("USL Runner-" + number, this);
+        try {
+            this.start(name);
+            ENGINE_CONTEXT.get().put(name, this);
+        } catch (Exception e) {
+            ENGINE_CONTEXT.remove();
+        }
+    }
+
+    private void start(String name) {
+        LOGGER.info("{} - Starting...", name);
+        List<Initializer> initializers = SpiServiceUtil.services(Initializer.class);
+        initializers.forEach(initializer -> initializer.doInit(configuration));
+        LOGGER.info("{} - Start completed.", name);
     }
 
     /**

@@ -3,7 +3,7 @@ package com.gitee.usl.kernel.provider;
 import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
-import com.gitee.usl.kernel.engine.UslFunctionProvider;
+import com.gitee.usl.kernel.engine.FunctionProvider;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author hongda.li
  */
-public abstract class AbstractFunctionProvider implements UslFunctionProvider {
+public abstract class AbstractFunctionProvider implements FunctionProvider {
 
     @Override
     public List<AviatorFunction> provide(EngineConfiguration configuration) {

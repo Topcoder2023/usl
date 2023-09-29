@@ -1,6 +1,6 @@
 package com.gitee.usl.kernel.cache;
 
-import com.gitee.usl.api.UslInitializer;
+import com.gitee.usl.api.Initializer;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
@@ -9,8 +9,8 @@ import com.google.auto.service.AutoService;
 /**
  * @author hongda.li
  */
-@AutoService(UslInitializer.class)
-public class CacheManager implements UslInitializer {
+@AutoService(Initializer.class)
+public class CacheManager implements Initializer {
     private UslCache uslCache;
 
     @Override

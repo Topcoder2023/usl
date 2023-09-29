@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author hongda.li
  */
-public interface UslFunctionProvider {
+public interface FunctionProvider {
 
     /**
      * 通过脚本引擎配置提供函数定义信息

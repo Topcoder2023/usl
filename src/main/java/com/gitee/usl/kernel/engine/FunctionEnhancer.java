@@ -10,7 +10,7 @@ import com.googlecode.aviator.runtime.type.AviatorFunction;
  * @author hongda.li
  */
 @FunctionalInterface
-public interface UslFunctionEnhancer {
+public interface FunctionEnhancer {
     /**
      * 对已注册函数增强
      *

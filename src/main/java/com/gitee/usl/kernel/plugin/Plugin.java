@@ -5,5 +5,5 @@ package com.gitee.usl.kernel.plugin;
  *
  * @author hongda.li
  */
-public interface UslPlugin {
+public interface Plugin {
 }

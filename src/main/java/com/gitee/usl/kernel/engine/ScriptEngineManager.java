@@ -1,7 +1,7 @@
 package com.gitee.usl.kernel.engine;
 
 import cn.hutool.core.thread.ThreadUtil;
-import com.gitee.usl.api.UslInitializer;
+import com.gitee.usl.api.Initializer;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.UslExecuteException;
@@ -35,8 +35,8 @@ import java.util.concurrent.TimeUnit;
  * @author hongda.li
  */
 @SuppressWarnings("UnstableApiUsage")
-@AutoService(UslInitializer.class)
-public final class ScriptEngineManager implements UslInitializer {
+@AutoService(Initializer.class)
+public final class ScriptEngineManager implements Initializer {
     private AviatorEvaluatorInstance instance;
     private UslConfiguration uslConfiguration;
     private CacheConfiguration cacheConfiguration;

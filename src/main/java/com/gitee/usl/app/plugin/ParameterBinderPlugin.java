@@ -8,7 +8,7 @@ import com.gitee.usl.infra.utils.NumberUtil;
 import com.gitee.usl.kernel.binder.ConverterFactory;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.kernel.engine.FunctionSession;
-import com.gitee.usl.kernel.plugin.UslBeginPlugin;
+import com.gitee.usl.kernel.plugin.BeginPlugin;
 import com.googlecode.aviator.utils.Env;
 
 import java.lang.reflect.Method;
@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 /**
  * @author hongda.li
  */
-public class ParameterBinderPlugin implements UslBeginPlugin {
+public class ParameterBinderPlugin implements BeginPlugin {
 
     @Override
     public void onBegin(FunctionSession session) {

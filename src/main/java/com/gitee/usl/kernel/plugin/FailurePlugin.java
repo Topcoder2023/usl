@@ -5,7 +5,7 @@ import com.gitee.usl.kernel.engine.FunctionSession;
 /**
  * @author hongda.li
  */
-public interface UslFailurePlugin extends UslPlugin {
+public interface FailurePlugin extends Plugin {
     /**
      * 函数执行失败回调函数
      *

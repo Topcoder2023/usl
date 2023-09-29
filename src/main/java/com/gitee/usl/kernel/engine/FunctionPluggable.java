@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  *
  * @author hongda.li
  */
-public interface UslFunctionPluggable {
+public interface FunctionPluggable {
     /**
      * 实际的处理逻辑
      *
@@ -40,7 +40,7 @@ public interface UslFunctionPluggable {
         // 注意，如果前置回调插件出现异常是不会被失败回调插件捕获
         // 这样设计的理由是，前置回调插件一定是在实际执行逻辑前调用
         // 前置回调插件有责任负责处理插件逻辑中可能出现的异常
-        this.makePlugin(UslBeginPlugin.class, plugin -> plugin.onBegin(session));
+        this.makePlugin(BeginPlugin.class, plugin -> plugin.onBegin(session));
 
         // 正常来说执行结果还没有被初始化，这里应该为空
         // 但如果不为空，说明前置插件已经设置了本次调用返回值
@@ -57,7 +57,7 @@ public interface UslFunctionPluggable {
             session.setResult(result);
 
             // 执行成功回调插件
-            this.makePlugin(UslSuccessPlugin.class, plugin -> plugin.onSuccess(session));
+            this.makePlugin(SuccessPlugin.class, plugin -> plugin.onSuccess(session));
 
             // 统一包装返回值
             // 这里的返回值取的是调用会话中的返回值
@@ -69,7 +69,7 @@ public interface UslFunctionPluggable {
             session.setException(e);
 
             // 设置失败回调插件
-            this.makePlugin(UslFailurePlugin.class, plugin -> plugin.onFailure(session));
+            this.makePlugin(FailurePlugin.class, plugin -> plugin.onFailure(session));
 
             // 正常来说当前调用异常一定不为空
             // 但是如果为空说明失败回调插件清空了当前调用异常
@@ -89,7 +89,7 @@ public interface UslFunctionPluggable {
         } finally {
 
             // 执行最终回调插件
-            this.makePlugin(UslFinallyPlugin.class, plugin -> plugin.onFinally(session));
+            this.makePlugin(FinallyPlugin.class, plugin -> plugin.onFinally(session));
         }
     }
 
@@ -98,7 +98,7 @@ public interface UslFunctionPluggable {
      *
      * @return 插件集合
      */
-    List<UslPlugin> plugins();
+    List<Plugin> plugins();
 
     /**
      * 执行插件

@@ -3,7 +3,7 @@ package com.gitee.usl.kernel.engine;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.Invocation;
-import com.gitee.usl.kernel.plugin.UslPlugin;
+import com.gitee.usl.kernel.plugin.Plugin;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 
@@ -17,8 +17,8 @@ import java.util.Optional;
  *
  * @author hongda.li
  */
-public class AnnotatedFunction extends AbstractVariadicFunction implements UslFunctionPluggable {
-    private final transient List<UslPlugin> pluginList;
+public class AnnotatedFunction extends AbstractVariadicFunction implements FunctionPluggable {
+    private final transient List<Plugin> pluginList;
     private final transient FunctionDefinition definition;
 
     public AnnotatedFunction(FunctionDefinition definition) {
@@ -45,7 +45,7 @@ public class AnnotatedFunction extends AbstractVariadicFunction implements UslFu
     }
 
     @Override
-    public List<UslPlugin> plugins() {
+    public List<Plugin> plugins() {
         return this.pluginList;
     }
 

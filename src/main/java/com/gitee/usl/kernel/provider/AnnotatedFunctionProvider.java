@@ -8,7 +8,7 @@ import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
-import com.gitee.usl.kernel.engine.UslFunctionProvider;
+import com.gitee.usl.kernel.engine.FunctionProvider;
 import com.google.auto.service.AutoService;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ import java.util.stream.Stream;
  *
  * @author hongda.li
  */
-@AutoService(UslFunctionProvider.class)
+@AutoService(FunctionProvider.class)
 public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

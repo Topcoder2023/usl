@@ -6,7 +6,7 @@ import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.infra.proxy.MethodInterceptor;
-import com.gitee.usl.kernel.plugin.UslPlugin;
+import com.gitee.usl.kernel.plugin.Plugin;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
@@ -21,8 +21,8 @@ import java.util.List;
  *
  * @author hongda.li
  */
-public class NativeFunction extends MethodInterceptor<AviatorFunction> implements UslFunctionPluggable {
-    private final List<UslPlugin> pluginList;
+public class NativeFunction extends MethodInterceptor<AviatorFunction> implements FunctionPluggable {
+    private final List<Plugin> pluginList;
     private final FunctionDefinition definition;
 
     public NativeFunction(FunctionDefinition definition, Object target) {
@@ -67,7 +67,7 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction> implement
     }
 
     @Override
-    public List<UslPlugin> plugins() {
+    public List<Plugin> plugins() {
         return this.pluginList;
     }
 

@@ -3,9 +3,9 @@ package com.gitee.usl.app.plugin;
 import cn.hutool.core.text.CharPool;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.kernel.engine.FunctionSession;
-import com.gitee.usl.kernel.plugin.UslBeginPlugin;
-import com.gitee.usl.kernel.plugin.UslFailurePlugin;
-import com.gitee.usl.kernel.plugin.UslSuccessPlugin;
+import com.gitee.usl.kernel.plugin.BeginPlugin;
+import com.gitee.usl.kernel.plugin.FailurePlugin;
+import com.gitee.usl.kernel.plugin.SuccessPlugin;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * @author hongda.li
  */
-public class LoggerPlugin implements UslBeginPlugin, UslSuccessPlugin, UslFailurePlugin {
+public class LoggerPlugin implements BeginPlugin, SuccessPlugin, FailurePlugin {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override

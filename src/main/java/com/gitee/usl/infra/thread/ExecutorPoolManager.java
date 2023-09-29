@@ -2,7 +2,7 @@ package com.gitee.usl.infra.thread;
 
 import cn.hutool.core.thread.ExecutorBuilder;
 import cn.hutool.core.thread.RejectPolicy;
-import com.gitee.usl.api.UslInitializer;
+import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.configure.ThreadPoolConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
@@ -16,8 +16,8 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author hongda.li
  */
 @Order(Integer.MIN_VALUE)
-@AutoService(UslInitializer.class)
-public class ExecutorPoolManager implements UslInitializer {
+@AutoService(Initializer.class)
+public class ExecutorPoolManager implements Initializer {
     /**
      * USL 线程名称前缀
      */

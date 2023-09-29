@@ -4,7 +4,7 @@ import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.app.plugin.LoggerPlugin;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
-import com.gitee.usl.kernel.engine.UslFunctionEnhancer;
+import com.gitee.usl.kernel.engine.FunctionEnhancer;
 import com.google.auto.service.AutoService;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 
@@ -14,8 +14,8 @@ import java.lang.reflect.Proxy;
  * @author hongda.li
  */
 @Order(Integer.MAX_VALUE - 10)
-@AutoService(UslFunctionEnhancer.class)
-public class LoggerEnhancer implements UslFunctionEnhancer {
+@AutoService(FunctionEnhancer.class)
+public class LoggerEnhancer implements FunctionEnhancer {
     @Override
     public void enhance(AviatorFunction function) {
         if (function instanceof AnnotatedFunction af) {

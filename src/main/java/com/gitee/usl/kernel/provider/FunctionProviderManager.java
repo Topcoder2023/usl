@@ -1,12 +1,12 @@
 package com.gitee.usl.kernel.provider;
 
-import com.gitee.usl.api.UslInitializer;
+import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.SpiServiceUtil;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.kernel.domain.FunctionHolder;
-import com.gitee.usl.kernel.engine.UslFunctionProvider;
+import com.gitee.usl.kernel.engine.FunctionProvider;
 import com.google.auto.service.AutoService;
 
 import java.util.List;
@@ -20,8 +20,8 @@ import java.util.List;
  * @author hongda.li
  */
 @Order(FunctionProviderManager.USL_FUNC_PROVIDER_ORDER)
-@AutoService(UslInitializer.class)
-public class FunctionProviderManager implements UslInitializer {
+@AutoService(Initializer.class)
+public class FunctionProviderManager implements Initializer {
     /**
      * 函数提供者管理器的优先级
      */
@@ -35,7 +35,7 @@ public class FunctionProviderManager implements UslInitializer {
         final FunctionHolder holder = configuration.getFunctionHolder();
 
         // 加载所有函数定义信息提供者
-        List<UslFunctionProvider> providers = SpiServiceUtil.services(UslFunctionProvider.class);
+        List<FunctionProvider> providers = SpiServiceUtil.services(FunctionProvider.class);
 
         // 根据函数提供者提供的函数定义信息依次注册函数
         providers.forEach(provider -> provider.provide(configuration).forEach(holder::register));

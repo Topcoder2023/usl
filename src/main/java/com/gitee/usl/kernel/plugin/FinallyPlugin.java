@@ -5,7 +5,7 @@ import com.gitee.usl.kernel.engine.FunctionSession;
 /**
  * @author hongda.li
  */
-public interface UslFinallyPlugin extends UslPlugin {
+public interface FinallyPlugin extends Plugin {
     /**
      * 函数执行完成时的回调函数
      *
