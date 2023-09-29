@@ -1,20 +1,18 @@
 package com.gitee.usl.app.plugin;
 
 import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.convert.Convert;
-import com.gitee.usl.api.annotation.Env;
+import com.gitee.usl.api.annotation.Var;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.infra.utils.NumberUtil;
-import com.gitee.usl.infra.utils.SpiServiceUtil;
-import com.gitee.usl.kernel.binder.UslConverter;
+import com.gitee.usl.kernel.binder.ConverterFactory;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.kernel.plugin.UslBeginPlugin;
+import com.googlecode.aviator.utils.Env;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -22,11 +20,6 @@ import java.util.stream.IntStream;
  * @author hongda.li
  */
 public class ParameterBinderPlugin implements UslBeginPlugin {
-    private final List<UslConverter> converterList;
-
-    public ParameterBinderPlugin() {
-        converterList = SpiServiceUtil.services(UslConverter.class);
-    }
 
     @Override
     public void onBegin(FunctionSession session) {
@@ -45,7 +38,7 @@ public class ParameterBinderPlugin implements UslBeginPlugin {
 
         NumberUtil.IntWrapper wrapper = NumberUtil.ofIntWrapper();
 
-        com.googlecode.aviator.utils.Env env = session.getEnv();
+        Env env = session.getEnv();
 
         Object[] args = IntStream.range(NumberConstant.ZERO, length)
                 .filter(index -> index < length)
@@ -53,27 +46,56 @@ public class ParameterBinderPlugin implements UslBeginPlugin {
                     Parameter parameter = parameters[index];
                     Class<?> type = parameter.getType();
 
-                    String envName = AnnotationUtil.getAnnotationValue(parameter, Env.class);
-
-                    if (envName != null) {
-                        wrapper.increment();
-                        return env.get(envName);
-                    }
-
-                    if (com.googlecode.aviator.utils.Env.class.equals(type)) {
+                    if (Env.class.equals(type)) {
                         return env;
                     }
 
-                    Object unconverted = Optional.ofNullable(session.getObjects()[index - wrapper.get()])
-                            .map(obj -> obj.getValue(env))
-                            .orElse(null);
+                    Object unconverted = Optional.ofNullable(AnnotationUtil.getAnnotationValue(parameter, Var.class))
+                            .map(name -> {
+                                wrapper.increment();
+                                return this.load(String.valueOf(name), env);
+                            })
+                            .orElseGet(() -> Optional.ofNullable(session.getObjects()[index - wrapper.get()])
+                                    .map(obj -> obj.getValue(env))
+                                    .orElse(null));
 
-                    return Convert.convert(type, unconverted);
+                    // 如无需转换则不进行转换
+                    if (unconverted != null && type.isAssignableFrom(unconverted.getClass())) {
+                        return type.cast(unconverted);
+                    }
+
+                    return ConverterFactory.getInstance().getConverter(type).convert(unconverted);
                 })
                 .toArray();
 
         // 构建参数绑定逻辑完成后调用信息
         Invocation<?> bind = new Invocation<>(invocation.target(), invocation.targetType(), method, args);
         definition.setInvocation(bind);
+    }
+
+    /**
+     * 加载环境变量的值
+     *
+     * @param name 环境变量的名称
+     * @param env  当前上下文环境
+     * @return 环境变量的值
+     */
+    private Object load(String name, Env env) {
+        Object fromEnv;
+        if ((fromEnv = env.get(name)) != null) {
+            return fromEnv;
+        }
+
+        Object fromSystem;
+        if ((fromSystem = System.getenv(name)) != null) {
+            return fromSystem;
+        }
+
+        Object fromProperties;
+        if ((fromProperties = System.getProperty(name)) != null) {
+            return fromProperties;
+        }
+
+        return null;
     }
 }

@@ -99,12 +99,14 @@
             <groupId>io.github.clarkdian</groupId>
             <artifactId>dbmasker</artifactId>
             <version>${dbmasker.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
             <version>${commons-pool2.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>

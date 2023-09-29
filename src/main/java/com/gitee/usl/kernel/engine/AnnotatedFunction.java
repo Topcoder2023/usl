@@ -49,7 +49,7 @@ public class AnnotatedFunction extends AbstractVariadicFunction implements UslFu
         return this.pluginList;
     }
 
-    public FunctionDefinition getDefinition() {
+    public FunctionDefinition definition() {
         return definition;
     }
 }

@@ -9,6 +9,8 @@ import com.gitee.usl.kernel.domain.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -28,6 +30,11 @@ public class UslRunner {
      */
     private static final AtomicInteger NUMBER = new AtomicInteger(NumberConstant.ONE);
 
+    /**
+     * USL Runner 实例全局缓存
+     */
+    private static final ThreadLocal<Map<String, UslRunner>> ENGINE_CONTEXT = ThreadLocal.withInitial(HashMap::new);
+
     private final UslConfiguration configuration;
 
     public UslRunner() {
@@ -40,13 +47,16 @@ public class UslRunner {
         LOGGER.info("USL Runner-{} - Starting...", number);
         SpiServiceUtil.services(UslInitializer.class).forEach(initializer -> initializer.doInit(configuration));
         LOGGER.info("USL Runner-{} - Start completed.", number);
+
+        // 保存全局引擎缓存
+        ENGINE_CONTEXT.get().put("USL Runner-" + number, this);
     }
 
     /**
      * 执行 USL 脚本
      *
      * @param param USL 参数
-     * @param <T>      USL 返回值泛型
+     * @param <T>   USL 返回值泛型
      * @return USL 返回值
      */
     public <T> Result<T> run(Param param) {
@@ -62,5 +72,15 @@ public class UslRunner {
      */
     public UslConfiguration getConfiguration() {
         return configuration;
+    }
+
+    /**
+     * 根据 USL Runner 名称获取实例
+     *
+     * @param name 名称
+     * @return 实例
+     */
+    public static UslRunner findRunnerByName(String name) {
+        return ENGINE_CONTEXT.get().get(name);
     }
 }

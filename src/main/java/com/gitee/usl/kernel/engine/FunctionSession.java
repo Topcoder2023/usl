@@ -16,7 +16,6 @@ import java.util.StringJoiner;
  */
 public final class FunctionSession {
     private Object result;
-    private String content;
     private Exception exception;
     private final Env env;
     private final AviatorObject[] objects;
@@ -30,15 +29,6 @@ public final class FunctionSession {
 
     public Env getEnv() {
         return env;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public FunctionSession setContent(String content) {
-        this.content = content;
-        return this;
     }
 
     public Exception getException() {
@@ -71,7 +61,6 @@ public final class FunctionSession {
     public String toString() {
         return new StringJoiner(", ", FunctionSession.class.getSimpleName() + "[", "]")
                 .add("env=" + env)
-                .add("content='" + content + "'")
                 .add("objects=" + Arrays.toString(objects))
                 .add("definition=" + definition)
                 .add("result=" + result)

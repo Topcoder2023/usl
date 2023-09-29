@@ -22,7 +22,6 @@ import java.util.List;
  * @author hongda.li
  */
 public class NativeFunction extends MethodInterceptor<AviatorFunction> implements UslFunctionPluggable {
-    private static final String METHOD_NAME = "call";
     private final List<UslPlugin> pluginList;
     private final FunctionDefinition definition;
 
@@ -72,7 +71,7 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction> implement
         return this.pluginList;
     }
 
-    public FunctionDefinition getDefinition() {
+    public FunctionDefinition definition() {
         return this.definition;
     }
 }

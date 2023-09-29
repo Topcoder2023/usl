@@ -1,12 +1,15 @@
 package com.gitee.usl;
 
+import cn.hutool.core.util.TypeUtil;
 import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.kernel.binder.UslConverter;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.kernel.domain.Param;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.runtime.type.AviatorString;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
@@ -15,6 +18,9 @@ import java.util.Map;
 class UslRunnerTest {
 
     public static void main(String[] args) {
+        Type argument = TypeUtil.getTypeArgument(TestConverter.class);
+        System.out.println(argument.getTypeName());
+
         UslRunner runner = new UslRunner(new UslConfiguration()
                 .configEngine(eng -> eng.scan(UslRunnerTest.class)));
 
@@ -31,6 +37,14 @@ class UslRunnerTest {
         param.setContent("native()");
 
         System.out.println(runner.run(param));
+    }
+
+    public static class TestConverter implements UslConverter<Long> {
+
+        @Override
+        public Long convert(Object sourceValue) {
+            return Long.parseLong(String.valueOf(sourceValue));
+        }
     }
 
     @Func

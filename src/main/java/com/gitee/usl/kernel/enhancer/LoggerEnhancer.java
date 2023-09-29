@@ -1,5 +1,6 @@
 package com.gitee.usl.kernel.enhancer;
 
+import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.app.plugin.LoggerPlugin;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
@@ -11,6 +12,7 @@ import java.lang.reflect.Proxy;
 /**
  * @author hongda.li
  */
+@Order(Integer.MAX_VALUE - 10)
 public class LoggerEnhancer implements UslFunctionEnhancer {
     @Override
     public void enhance(AviatorFunction function) {

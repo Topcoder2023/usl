@@ -14,6 +14,8 @@ import java.lang.reflect.Proxy;
  * @author hongda.li
  */
 public abstract class MethodInterceptor<E> implements InvocationHandler {
+    protected static final String METHOD_NAME = "call";
+
     /**
      * 被代理的目标对象
      * 若代理的目标是接口，则 target 为空
