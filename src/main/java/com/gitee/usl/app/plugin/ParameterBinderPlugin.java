@@ -4,7 +4,7 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import com.gitee.usl.api.annotation.Var;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.Invocation;
-import com.gitee.usl.infra.utils.NumberUtil;
+import com.gitee.usl.infra.utils.NumberWrapper;
 import com.gitee.usl.kernel.binder.ConverterFactory;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.kernel.engine.FunctionSession;
@@ -36,7 +36,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
         Parameter[] parameters = method.getParameters();
         int length = parameters.length;
 
-        NumberUtil.IntWrapper wrapper = NumberUtil.ofIntWrapper();
+        NumberWrapper.IntWrapper wrapper = NumberWrapper.ofIntWrapper();
 
         Env env = session.getEnv();
 

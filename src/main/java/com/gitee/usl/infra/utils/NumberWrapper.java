@@ -5,8 +5,8 @@ import com.gitee.usl.infra.constant.NumberConstant;
 /**
  * @author hongda.li
  */
-public class NumberUtil {
-    private NumberUtil() {
+public class NumberWrapper {
+    private NumberWrapper() {
     }
 
     public static IntWrapper ofIntWrapper() {

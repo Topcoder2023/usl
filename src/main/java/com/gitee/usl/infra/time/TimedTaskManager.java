@@ -3,7 +3,7 @@ package com.gitee.usl.infra.time;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.thread.NamedThreadFactory;
-import com.gitee.usl.infra.utils.SpiServiceUtil;
+import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.google.auto.service.AutoService;
 
@@ -26,7 +26,7 @@ public class TimedTaskManager implements Initializer {
 
     @Override
     public void doInit(UslConfiguration configuration) {
-        taskList = SpiServiceUtil.services(TimedTask.class);
+        taskList = ServiceSearcher.searchAll(TimedTask.class);
         executor = new ScheduledThreadPoolExecutor(taskList.size(), new NamedThreadFactory(PREFIX));
 
         // 初始化固定执行频率的定时任务

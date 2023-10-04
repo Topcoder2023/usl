@@ -7,8 +7,8 @@ import java.util.function.Supplier;
 /**
  * @author hongda.li
  */
-public class LoggerUtil {
-    private LoggerUtil() {
+public class EnabledLogger {
+    private EnabledLogger() {
     }
 
     public static void debug(Logger logger, String message, Supplier<Object[]> arguments) {

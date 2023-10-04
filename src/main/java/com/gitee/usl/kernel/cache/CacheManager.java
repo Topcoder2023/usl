@@ -1,7 +1,7 @@
 package com.gitee.usl.kernel.cache;
 
 import com.gitee.usl.api.Initializer;
-import com.gitee.usl.infra.utils.SpiServiceUtil;
+import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.google.auto.service.AutoService;
@@ -15,7 +15,7 @@ public class CacheManager implements Initializer {
 
     @Override
     public void doInit(UslConfiguration uslConfiguration) {
-        UslCache found = SpiServiceUtil.firstService(UslCache.class);
+        UslCache found = ServiceSearcher.searchFirst(UslCache.class);
         if (found == null) {
             return;
         }

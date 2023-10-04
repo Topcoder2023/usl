@@ -3,8 +3,8 @@ package com.gitee.usl.kernel.queue;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.thread.NamedThreadFactory;
-import com.gitee.usl.infra.utils.CompareUtil;
-import com.gitee.usl.infra.utils.SpiServiceUtil;
+import com.gitee.usl.infra.utils.AnnotatedComparator;
+import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.QueueConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.google.auto.service.AutoService;
@@ -62,9 +62,9 @@ public class CompileQueueManager implements Initializer {
         // 设置独立消费者
         // 每个消费者互相独立消费
         // 即前一个消费者消费事件后，后面的消费者仍可继续消费
-        Iterator<Map.Entry<Integer, List<CompileConsumer>>> iterator = SpiServiceUtil.services(CompileConsumer.class)
+        Iterator<Map.Entry<Integer, List<CompileConsumer>>> iterator = ServiceSearcher.searchAll(CompileConsumer.class)
                 .stream()
-                .collect(Collectors.groupingBy(consumer -> CompareUtil.getOrder(consumer.getClass()), LinkedHashMap::new, Collectors.toList()))
+                .collect(Collectors.groupingBy(consumer -> AnnotatedComparator.getOrder(consumer.getClass()), LinkedHashMap::new, Collectors.toList()))
                 .entrySet()
                 .iterator();
 

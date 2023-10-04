@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.enhancer;
 
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
-import com.gitee.usl.infra.utils.SpiServiceUtil;
+import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.kernel.engine.FunctionEnhancer;
 import com.google.auto.service.AutoService;
@@ -26,7 +26,7 @@ public class FunctionEnhancerManager implements Initializer {
 
     @Override
     public void doInit(UslConfiguration uslConfiguration) {
-        List<FunctionEnhancer> enhancers = SpiServiceUtil.services(FunctionEnhancer.class);
+        List<FunctionEnhancer> enhancers = ServiceSearcher.searchAll(FunctionEnhancer.class);
 
         uslConfiguration.getEngineConfiguration()
                 .getFunctionHolder()

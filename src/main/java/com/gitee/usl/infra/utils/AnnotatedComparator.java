@@ -10,9 +10,9 @@ import java.util.Optional;
 /**
  * @author hongda.li
  */
-public class CompareUtil {
+public class AnnotatedComparator {
 
-    private CompareUtil() {
+    private AnnotatedComparator() {
     }
 
     /**
@@ -43,8 +43,8 @@ public class CompareUtil {
             Class<?> clz2 = element2.getClass();
 
             // 获取元素对象的类上的 @Order 注解中的 value值
-            Integer value1 = CompareUtil.getOrder(clz1);
-            Integer value2 = CompareUtil.getOrder(clz2);
+            Integer value1 = AnnotatedComparator.getOrder(clz1);
+            Integer value2 = AnnotatedComparator.getOrder(clz2);
 
             // 调用 Int 类型的比较方法
             // 默认按从小到大的顺序排序

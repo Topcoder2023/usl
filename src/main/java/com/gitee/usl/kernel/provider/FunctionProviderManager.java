@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.provider;
 
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
-import com.gitee.usl.infra.utils.SpiServiceUtil;
+import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.kernel.domain.FunctionHolder;
@@ -35,7 +35,7 @@ public class FunctionProviderManager implements Initializer {
         final FunctionHolder holder = configuration.getFunctionHolder();
 
         // 加载所有函数定义信息提供者
-        List<FunctionProvider> providers = SpiServiceUtil.services(FunctionProvider.class);
+        List<FunctionProvider> providers = ServiceSearcher.searchAll(FunctionProvider.class);
 
         // 根据函数提供者提供的函数定义信息依次注册函数
         providers.forEach(provider -> provider.provide(configuration).forEach(holder::register));

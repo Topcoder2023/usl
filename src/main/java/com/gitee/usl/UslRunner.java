@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.exception.UslException;
-import com.gitee.usl.infra.utils.SpiServiceUtil;
+import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.kernel.domain.Param;
@@ -44,6 +44,7 @@ public class UslRunner {
      */
     private static final ThreadLocal<Map<String, UslRunner>> ENGINE_CONTEXT = ThreadLocal.withInitial(HashMap::new);
 
+    private final String name;
     private final UslConfiguration configuration;
 
     public UslRunner() {
@@ -52,24 +53,21 @@ public class UslRunner {
 
     public UslRunner(UslConfiguration configuration) {
         this.configuration = configuration;
+        this.name = USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement();
     }
 
-    public String start() {
-        String name = USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement();
-
+    public void start() {
         Assert.isFalse(ENGINE_CONTEXT.get().containsKey(name), () -> new UslException("USL Runner has been started."));
 
         try {
             LOGGER.info("{} - Starting...", name);
-            List<Initializer> initializers = SpiServiceUtil.services(Initializer.class);
+            List<Initializer> initializers = ServiceSearcher.searchAll(Initializer.class);
             initializers.forEach(initializer -> initializer.doInit(configuration));
             LOGGER.info("{} - Start completed.", name);
             ENGINE_CONTEXT.get().put(name, this);
         } catch (Exception e) {
             ENGINE_CONTEXT.remove();
         }
-
-        return name;
     }
 
     /**
@@ -94,6 +92,15 @@ public class UslRunner {
      */
     public UslConfiguration configuration() {
         return configuration;
+    }
+
+    /**
+     * 获取当前 USL 执行器的名称
+     *
+     * @return USL 执行器名称
+     */
+    public String name() {
+        return name;
     }
 
     /**

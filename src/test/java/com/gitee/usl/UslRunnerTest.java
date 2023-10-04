@@ -23,7 +23,7 @@ class UslRunnerTest {
 
         UslRunner runner = new UslRunner(new UslConfiguration()
                 .configEngine(eng -> eng.scan(UslRunnerTest.class)));
-        String start = runner.start();
+        runner.start();
 
         Param param = new Param()
                 .setContent("1 + 100 * 100 * 200 + math.log(var)")
@@ -31,7 +31,7 @@ class UslRunnerTest {
 
         System.out.println(runner.run(param).getData());
 
-        param.setContent("test()");
+        param.setContent("test.a()");
 
         System.out.println(runner.run(param).getData());
 
@@ -51,7 +51,7 @@ class UslRunnerTest {
     @Func
     public static class FuncTest {
 
-        @Func({"测试", "test"})
+        @Func({"测试", "test.a"})
         public String runTest() {
             return "success";
         }

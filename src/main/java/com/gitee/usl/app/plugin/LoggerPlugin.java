@@ -15,8 +15,8 @@ import java.util.Arrays;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.gitee.usl.infra.utils.LoggerUtil.info;
-import static com.gitee.usl.infra.utils.LoggerUtil.warn;
+import static com.gitee.usl.infra.utils.EnabledLogger.info;
+import static com.gitee.usl.infra.utils.EnabledLogger.warn;
 
 /**
  * @author hongda.li

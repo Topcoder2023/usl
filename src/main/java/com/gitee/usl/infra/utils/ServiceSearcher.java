@@ -14,16 +14,16 @@ import java.util.*;
  *
  * @author hongda.li
  */
-public class SpiServiceUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpiServiceUtil.class);
+public class ServiceSearcher {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceSearcher.class);
     private static final Set<Class<?>> EXCLUDE_TYPES;
 
-    private SpiServiceUtil() {
+    private ServiceSearcher() {
     }
 
     static {
         EXCLUDE_TYPES = HashSet.newHashSet(NumberConstant.COMMON_SIZE);
-        List<Excluded> excludedList = services(Excluded.class);
+        List<Excluded> excludedList = searchAll(Excluded.class);
         excludedList.forEach(excluded -> EXCLUDE_TYPES.addAll(excluded.targets()));
     }
 
@@ -35,7 +35,7 @@ public class SpiServiceUtil {
      * @param <T>         服务泛型
      * @return 服务实现集合
      */
-    public static <T> List<T> services(Class<T> serviceType) {
+    public static <T> List<T> searchAll(Class<T> serviceType) {
         // 根据SPI机制加载所有可用服务
         // 但排除指定的服务及其子类
         List<T> elements = new ArrayList<>(ServiceLoaderUtil.loadList(serviceType)
@@ -48,7 +48,7 @@ public class SpiServiceUtil {
         }
 
         // 若服务不为空则排序后返回
-        CompareUtil.sort(elements);
+        AnnotatedComparator.sort(elements);
 
         elements.forEach(item -> LOGGER.debug("Spi Service found - [{} - {}]", serviceType.getName(), item.getClass().getName()));
 
@@ -64,9 +64,9 @@ public class SpiServiceUtil {
      * @param <T>         服务泛型
      * @return 首个可用的服务实现
      */
-    public static <T> T firstService(Class<T> serviceType) {
+    public static <T> T searchFirst(Class<T> serviceType) {
         // 加载所有可用服务并排序
-        Iterator<T> iterator = SpiServiceUtil.services(serviceType).iterator();
+        Iterator<T> iterator = ServiceSearcher.searchAll(serviceType).iterator();
 
         // 若服务不为空则返回首个可用服务
         return iterator.hasNext() ? iterator.next() : null;

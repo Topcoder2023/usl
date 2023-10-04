@@ -3,7 +3,7 @@ package com.gitee.usl.kernel.binder;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.TypeUtil;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.infra.utils.SpiServiceUtil;
+import com.gitee.usl.infra.utils.ServiceSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,7 @@ public class ConverterFactory {
 
     static {
         CONVERTER_MAP = HashMap.newHashMap(NumberConstant.COMMON_SIZE);
-        SpiServiceUtil.services(UslConverter.class).forEach(converter -> {
+        ServiceSearcher.searchAll(UslConverter.class).forEach(converter -> {
             Type type = TypeUtil.getTypeArgument(converter.getClass());
             CONVERTER_MAP.put((Class<?>) type, converter);
             LOGGER.info("Register USL converter - [{}]", converter.getClass().getName());
