@@ -1,12 +1,10 @@
 package com.gitee.usl.kernel.engine;
 
-import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.structure.Plugins;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,7 +25,7 @@ public class AnnotatedFunction extends AbstractVariadicFunction implements Funct
     @Override
     public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {
         // 基于插件来执行函数可以更好的动态扩展功能
-        return this.withPlugin(FunctionPluggable.super.buildSession((Env) env, args, this.definition));
+        return this.withPlugin(new FunctionSession((Env) env, args, this.definition));
     }
 
     @Override

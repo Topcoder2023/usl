@@ -7,11 +7,9 @@ import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.infra.proxy.MethodInterceptor;
 import com.gitee.usl.infra.structure.Plugins;
 import com.gitee.usl.kernel.domain.Param;
-import com.gitee.usl.kernel.plugin.Plugin;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 /**
  * @author hongda.li

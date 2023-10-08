@@ -2,7 +2,6 @@ package com.gitee.usl.kernel.provider;
 
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
-import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;

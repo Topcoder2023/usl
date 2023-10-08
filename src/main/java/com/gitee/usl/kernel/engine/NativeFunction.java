@@ -47,7 +47,7 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction> implement
                 .toArray(AviatorObject[]::new);
 
         // 交由插件增强部分功能
-        FunctionSession session = FunctionPluggable.super.buildSession(env, args, this.definition);
+        FunctionSession session = new FunctionSession(env, args, this.definition);
         session.setInvocation(invocation);
 
         return this.withPlugin(session);

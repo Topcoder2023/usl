@@ -5,12 +5,8 @@ import com.gitee.usl.infra.structure.Plugins;
 import com.gitee.usl.kernel.plugin.*;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorObject;
-import com.googlecode.aviator.utils.Env;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * 可插件化的接口
@@ -27,16 +23,11 @@ public interface FunctionPluggable {
     Object handle(final FunctionSession session);
 
     /**
-     * 构造 Session 会话
+     * 获取插件集合
      *
-     * @param env        上下文环境
-     * @param args       调用参数
-     * @param definition 函数定义信息
-     * @return 函数调用会话
+     * @return 插件集合
      */
-    default FunctionSession buildSession(Env env, AviatorObject[] args, FunctionDefinition definition) {
-        return new FunctionSession(env, args, definition);
-    }
+    Plugins plugins();
 
     /**
      * 将插件逻辑编织到实际处理逻辑前、成功、失败、后
@@ -49,7 +40,7 @@ public interface FunctionPluggable {
         // 注意，如果前置回调插件出现异常是不会被失败回调插件捕获
         // 这样设计的理由是，前置回调插件一定是在实际执行逻辑前调用
         // 前置回调插件有责任负责处理插件逻辑中可能出现的异常
-        this.plugins().makePlugin(BeginPlugin.class, plugin -> plugin.onBegin(session));
+        this.plugins().execute(BeginPlugin.class, plugin -> plugin.onBegin(session));
 
         // 正常来说执行结果还没有被初始化，这里应该为空
         // 但如果不为空，说明前置插件已经设置了本次调用返回值
@@ -66,7 +57,7 @@ public interface FunctionPluggable {
             session.setResult(result);
 
             // 执行成功回调插件
-            this.plugins().makePlugin(SuccessPlugin.class, plugin -> plugin.onSuccess(session));
+            this.plugins().execute(SuccessPlugin.class, plugin -> plugin.onSuccess(session));
 
             // 统一包装返回值
             // 这里的返回值取的是调用会话中的返回值
@@ -78,7 +69,7 @@ public interface FunctionPluggable {
             session.setException(e);
 
             // 设置失败回调插件
-            this.plugins().makePlugin(FailurePlugin.class, plugin -> plugin.onFailure(session));
+            this.plugins().execute(FailurePlugin.class, plugin -> plugin.onFailure(session));
 
             // 正常来说当前调用异常一定不为空
             // 但是如果为空说明失败回调插件清空了当前调用异常
@@ -98,14 +89,7 @@ public interface FunctionPluggable {
         } finally {
 
             // 执行最终回调插件
-            this.plugins().makePlugin(FinallyPlugin.class, plugin -> plugin.onFinally(session));
+            this.plugins().execute(FinallyPlugin.class, plugin -> plugin.onFinally(session));
         }
     }
-
-    /**
-     * 获取插件集合
-     *
-     * @return 插件集合
-     */
-    Plugins plugins();
 }

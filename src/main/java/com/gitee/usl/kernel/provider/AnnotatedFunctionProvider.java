@@ -5,7 +5,6 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Func;
-import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
