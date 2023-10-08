@@ -1,9 +1,9 @@
 package com.gitee.usl.infra.utils;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.ServiceLoaderUtil;
-import com.gitee.usl.api.Excluded;
-import com.gitee.usl.infra.constant.NumberConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,15 +16,18 @@ import java.util.*;
  */
 public class ServiceSearcher {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceSearcher.class);
-    private static final Set<Class<?>> EXCLUDE_TYPES;
+    private static final String DISABLE_SERVICE = "usl.disable.service";
+    private static final Set<String> EXCLUDE_TYPES;
 
     private ServiceSearcher() {
     }
 
     static {
-        EXCLUDE_TYPES = HashSet.newHashSet(NumberConstant.COMMON_SIZE);
-        List<Excluded> excludedList = searchAll(Excluded.class);
-        excludedList.forEach(excluded -> EXCLUDE_TYPES.addAll(excluded.targets()));
+        EXCLUDE_TYPES = Optional.ofNullable(System.getProperty(DISABLE_SERVICE))
+                .map(names -> ((Set<String>) new HashSet<>(CharSequenceUtil.split(names, StrPool.COMMA))))
+                .orElse(Collections.emptySet());
+
+        EXCLUDE_TYPES.forEach(name -> LOGGER.info("Disable service by name - {}", name));
     }
 
     /**
@@ -37,10 +40,10 @@ public class ServiceSearcher {
      */
     public static <T> List<T> searchAll(Class<T> serviceType) {
         // 根据SPI机制加载所有可用服务
-        // 但排除指定的服务及其子类
+        // 但排除指定的服务
         List<T> elements = new ArrayList<>(ServiceLoaderUtil.loadList(serviceType)
                 .stream()
-                .filter(element -> EXCLUDE_TYPES.stream().noneMatch(excludeType -> excludeType.isAssignableFrom(element.getClass())))
+                .filter(element -> !EXCLUDE_TYPES.contains(element.getClass().getName()))
                 .toList());
 
         if (CollUtil.isEmpty(elements)) {
