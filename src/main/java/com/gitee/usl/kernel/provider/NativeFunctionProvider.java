@@ -3,6 +3,7 @@ package com.gitee.usl.kernel.provider;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.infra.proxy.Invocation;
+import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.kernel.engine.FunctionProvider;
@@ -39,7 +40,7 @@ public class NativeFunctionProvider extends AbstractFunctionProvider {
         }
 
         FunctionDefinition definition = new FunctionDefinition(name);
-        definition.setInvocation(new Invocation<>(ifPossible, clz, null, null));
+        definition.setMethodMeta(new MethodMeta<>(ifPossible, clz, null));
 
         return Collections.singletonList(definition);
     }
@@ -48,7 +49,7 @@ public class NativeFunctionProvider extends AbstractFunctionProvider {
     protected AviatorFunction definition2Func(FunctionDefinition definition) {
         // 创建 USL-Aviator 代理函数
         // 动态代理 AviatorFunction 接口中的 call() 方法
-        return new NativeFunction(definition, definition.getInvocation().target()).createProxy();
+        return new NativeFunction(definition, definition.methodMeta().target()).createProxy();
     }
 
     @Override

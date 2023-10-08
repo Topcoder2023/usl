@@ -6,6 +6,7 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.infra.proxy.Invocation;
+import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.kernel.engine.FunctionProvider;
@@ -86,6 +87,6 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
      */
     protected FunctionDefinition buildDefinition(String name, Object instance, Method method) {
         FunctionDefinition definition = new FunctionDefinition(name);
-        return definition.setInvocation(new Invocation<>(instance, instance.getClass(), method, null));
+        return definition.setMethodMeta(new MethodMeta<>(instance, instance.getClass(), method));
     }
 }

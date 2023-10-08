@@ -5,6 +5,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.CombineFunc;
 import com.gitee.usl.infra.proxy.Invocation;
+import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.CombineFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
@@ -56,6 +57,6 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
      */
     protected FunctionDefinition buildDefinition(String name, Class<?> clazz, Method method) {
         FunctionDefinition definition = new FunctionDefinition(name);
-        return definition.setInvocation(new Invocation<>(null, clazz, method, null));
+        return definition.setMethodMeta(new MethodMeta<>(null, clazz, method));
     }
 }

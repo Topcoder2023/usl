@@ -26,22 +26,22 @@ public class LoggerPlugin implements BeginPlugin, SuccessPlugin, FailurePlugin {
 
     @Override
     public void onBegin(FunctionSession session) {
-        String name = session.getDefinition().getName();
-        Supplier<Object[]> supplier = () -> new Object[]{name, format(session.getEnv(), session.getObjects())};
+        String name = session.definition().name();
+        Supplier<Object[]> supplier = () -> new Object[]{name, format(session.env(), session.objects())};
         info(logger, "USL function execute params - [{}] : [{}]", supplier);
     }
 
     @Override
     public void onFailure(FunctionSession session) {
-        String name = session.getDefinition().getName();
-        Supplier<Object[]> supplier = () -> new Object[]{name, session.getException().getMessage()};
+        String name = session.definition().name();
+        Supplier<Object[]> supplier = () -> new Object[]{name, session.exception().getMessage()};
         warn(logger, "USL function execute errors - [{}] : [{}]", supplier);
     }
 
     @Override
     public void onSuccess(FunctionSession session) {
-        String name = session.getDefinition().getName();
-        Supplier<Object[]> supplier = () -> new Object[]{name, session.getResult()};
+        String name = session.definition().name();
+        Supplier<Object[]> supplier = () -> new Object[]{name, session.result()};
         info(logger, "USL function execute return - [{}] : [{}]", supplier);
     }
 

@@ -31,11 +31,11 @@ class UslRunnerTest {
 
         System.out.println(runner.run(param).getData());
 
-        param.setContent("test.a()");
+        param.setContent("test.a(1)");
 
         System.out.println(runner.run(param).getData());
 
-        param.setContent("native()");
+        param.setContent("native(10.5)");
 
         System.out.println(runner.run(param));
     }
@@ -52,8 +52,8 @@ class UslRunnerTest {
     public static class FuncTest {
 
         @Func({"测试", "test.a"})
-        public String runTest() {
-            return "success";
+        public String runTest(Integer a) {
+            return "success : " + a;
         }
     }
 
@@ -65,8 +65,8 @@ class UslRunnerTest {
         }
 
         @Override
-        public AviatorObject call(Map<String, Object> env) {
-            return new AviatorString("native success.");
+        public AviatorObject call(Map<String, Object> env, AviatorObject object) {
+            return new AviatorString("native success." + object.getValue(env));
         }
     }
 }

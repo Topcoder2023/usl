@@ -5,6 +5,7 @@ import com.gitee.usl.UslRunner;
 import com.gitee.usl.api.annotation.CombineFunc;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.infra.proxy.MethodInterceptor;
+import com.gitee.usl.infra.structure.Plugins;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.plugin.Plugin;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
@@ -23,7 +24,7 @@ public class CombineFunction extends MethodInterceptor<AviatorFunction> implemen
     public CombineFunction(FunctionDefinition definition) {
         super(AviatorFunction.class);
         this.definition = definition;
-        CombineFunc combineFunc = AnnotationUtil.getAnnotation(definition.getInvocation().method(), CombineFunc.class);
+        CombineFunc combineFunc = AnnotationUtil.getAnnotation(definition.methodMeta().method(), CombineFunc.class);
         this.content = combineFunc.content();
         this.runner = UslRunner.findRunnerByName(combineFunc.engineName());
     }
@@ -44,7 +45,7 @@ public class CombineFunction extends MethodInterceptor<AviatorFunction> implemen
     }
 
     @Override
-    public List<Plugin> plugins() {
+    public Plugins plugins() {
         return null;
     }
 }

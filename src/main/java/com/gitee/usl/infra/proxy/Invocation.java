@@ -1,5 +1,6 @@
 package com.gitee.usl.infra.proxy;
 
+import cn.hutool.core.util.ReflectUtil;
 import com.google.common.base.Objects;
 
 import java.lang.reflect.Method;
@@ -16,6 +17,16 @@ public record Invocation<E>(Object target,
                             Class<E> targetType,
                             Method method,
                             Object[] args) {
+
+    /**
+     * 调用方法
+     *
+     * @return 调用结果
+     */
+    public Object invoke() {
+        return ReflectUtil.invoke(target, method, args);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

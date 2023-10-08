@@ -1,14 +1,12 @@
 package com.gitee.usl.kernel.engine;
 
-import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.infra.proxy.Invocation;
-import com.gitee.usl.kernel.plugin.Plugin;
+import com.gitee.usl.infra.structure.Plugins;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.googlecode.aviator.utils.Env;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,35 +16,33 @@ import java.util.Optional;
  * @author hongda.li
  */
 public class AnnotatedFunction extends AbstractVariadicFunction implements FunctionPluggable {
-    private final transient List<Plugin> pluginList;
+    private final transient Plugins plugins;
     private final transient FunctionDefinition definition;
 
     public AnnotatedFunction(FunctionDefinition definition) {
         this.definition = definition;
-        this.pluginList = new ArrayList<>(NumberConstant.COMMON_SIZE);
+        this.plugins = new Plugins();
     }
 
     @Override
     public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {
         // 基于插件来执行函数可以更好的动态扩展功能
-        return this.withPlugin(FunctionDefinition.from(this.definition), env, args);
+        return this.withPlugin(FunctionPluggable.super.buildSession((Env) env, args, this.definition));
     }
 
     @Override
     public Object handle(final FunctionSession session) {
-        Invocation<?> invocation = definition.getInvocation();
-
-        return ReflectUtil.invoke(invocation.target(), invocation.method(), invocation.args());
+        return session.invocation().invoke();
     }
 
     @Override
     public String getName() {
-        return Optional.ofNullable(this.definition).map(FunctionDefinition::getName).orElse(null);
+        return Optional.ofNullable(this.definition).map(FunctionDefinition::name).orElse(null);
     }
 
     @Override
-    public List<Plugin> plugins() {
-        return this.pluginList;
+    public Plugins plugins() {
+        return this.plugins;
     }
 
     public FunctionDefinition definition() {

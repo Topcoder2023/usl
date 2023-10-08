@@ -1,4 +1,4 @@
-package com.gitee.usl.kernel.domain;
+package com.gitee.usl.infra.structure;
 
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.infra.constant.NumberConstant;

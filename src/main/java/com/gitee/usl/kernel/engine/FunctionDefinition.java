@@ -1,6 +1,7 @@
 package com.gitee.usl.kernel.engine;
 
-import com.gitee.usl.infra.proxy.Invocation;
+import com.gitee.usl.infra.proxy.MethodMeta;
+import com.gitee.usl.infra.structure.AttributeMeta;
 
 import java.util.*;
 
@@ -11,39 +12,27 @@ import java.util.*;
  */
 public class FunctionDefinition {
     private final String name;
-    private Invocation<?> invocation;
-    private Map<String, Object> properties;
-
-    public static FunctionDefinition from(FunctionDefinition definition) {
-        FunctionDefinition from = new FunctionDefinition(definition.name);
-        from.invocation = definition.invocation;
-        Optional.ofNullable(definition.properties).ifPresent(p -> from.properties = p);
-        return from;
-    }
+    private MethodMeta<?> methodMeta;
+    private final AttributeMeta attribute = new AttributeMeta();
 
     public FunctionDefinition(String name) {
         this.name = name;
     }
 
-    public Invocation<?> getInvocation() {
-        return invocation;
+    public MethodMeta<?> methodMeta() {
+        return methodMeta;
     }
 
-    public FunctionDefinition setInvocation(Invocation<?> invocation) {
-        this.invocation = invocation;
+    public FunctionDefinition setMethodMeta(MethodMeta<?> methodMeta) {
+        this.methodMeta = methodMeta;
         return this;
     }
 
-    public Map<String, Object> getProperties() {
-        return properties;
+    public AttributeMeta attribute() {
+        return attribute;
     }
 
-    public FunctionDefinition setProperties(Map<String, Object> properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    public String getName() {
+    public String name() {
         return name;
     }
 
@@ -51,8 +40,8 @@ public class FunctionDefinition {
     public String toString() {
         return new StringJoiner(", ", FunctionDefinition.class.getSimpleName() + "[", "]")
                 .add("name='" + name + "'")
-                .add("invocation=" + invocation)
-                .add("properties=" + properties)
+                .add("methodMeta=" + methodMeta)
+                .add("attribute=" + attribute)
                 .toString();
     }
 }

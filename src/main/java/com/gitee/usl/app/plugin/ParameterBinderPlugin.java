@@ -3,7 +3,7 @@ package com.gitee.usl.app.plugin;
 import cn.hutool.core.annotation.AnnotationUtil;
 import com.gitee.usl.api.annotation.Var;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.infra.proxy.Invocation;
+import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.utils.NumberWrapper;
 import com.gitee.usl.kernel.binder.ConverterFactory;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
@@ -23,12 +23,12 @@ public class ParameterBinderPlugin implements BeginPlugin {
 
     @Override
     public void onBegin(FunctionSession session) {
-        FunctionDefinition definition = session.getDefinition();
+        FunctionDefinition definition = session.definition();
 
-        Invocation<?> invocation = definition.getInvocation();
+        MethodMeta<?> methodMeta = definition.methodMeta();
 
         // 跳过无参函数
-        Method method = invocation.method();
+        Method method = methodMeta.method();
         if (method.getParameterCount() == NumberConstant.ZERO) {
             return;
         }
@@ -38,7 +38,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
 
         NumberWrapper.IntWrapper wrapper = NumberWrapper.ofIntWrapper();
 
-        Env env = session.getEnv();
+        Env env = session.env();
 
         Object[] args = IntStream.range(NumberConstant.ZERO, length)
                 .filter(index -> index < length)
@@ -55,7 +55,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
                                 wrapper.increment();
                                 return this.load(String.valueOf(name), env);
                             })
-                            .orElseGet(() -> Optional.ofNullable(session.getObjects()[index - wrapper.get()])
+                            .orElseGet(() -> Optional.ofNullable(session.objects()[index - wrapper.get()])
                                     .map(obj -> obj.getValue(env))
                                     .orElse(null));
 
@@ -69,8 +69,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
                 .toArray();
 
         // 构建参数绑定逻辑完成后调用信息
-        Invocation<?> bind = new Invocation<>(invocation.target(), invocation.targetType(), method, args);
-        definition.setInvocation(bind);
+        session.setInvocation(methodMeta.toInvocation(args));
     }
 
     /**

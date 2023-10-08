@@ -19,12 +19,12 @@ public class LoggerEnhancer implements FunctionEnhancer {
     @Override
     public void enhance(AviatorFunction function) {
         if (function instanceof AnnotatedFunction af) {
-            af.plugins().add(new LoggerPlugin());
+            af.plugins().install(new LoggerPlugin());
         }
 
         boolean isProxy = Proxy.isProxyClass(function.getClass());
         if (isProxy && Proxy.getInvocationHandler(function) instanceof NativeFunction nf) {
-            nf.plugins().add(new LoggerPlugin());
+            nf.plugins().install(new LoggerPlugin());
         }
     }
 }

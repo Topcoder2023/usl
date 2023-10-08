@@ -19,6 +19,6 @@ public class ParameterBinderEnhancer implements FunctionEnhancer {
             return;
         }
 
-        ((AnnotatedFunction) function).plugins().add(new ParameterBinderPlugin());
+        ((AnnotatedFunction) function).plugins().install(new ParameterBinderPlugin());
     }
 }

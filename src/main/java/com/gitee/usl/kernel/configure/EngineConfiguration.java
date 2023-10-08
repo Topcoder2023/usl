@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.configure;
 
 import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.kernel.domain.FunctionHolder;
+import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.kernel.engine.ScriptEngineManager;
 
 import java.util.*;
