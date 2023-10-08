@@ -2,7 +2,7 @@ package com.gitee.usl;
 
 import cn.hutool.core.util.TypeUtil;
 import com.gitee.usl.api.annotation.Func;
-import com.gitee.usl.kernel.binder.UslConverter;
+import com.gitee.usl.kernel.binder.Converter;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.kernel.domain.Param;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
@@ -40,7 +40,7 @@ class UslRunnerTest {
         System.out.println(runner.run(param));
     }
 
-    public static class TestConverter implements UslConverter<Long> {
+    public static class TestConverter implements Converter<Long> {
 
         @Override
         public Long convert(Object sourceValue) {

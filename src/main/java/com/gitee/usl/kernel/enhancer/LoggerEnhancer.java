@@ -4,7 +4,7 @@ import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.app.plugin.LoggerPlugin;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
-import com.gitee.usl.kernel.engine.FunctionEnhancer;
+import com.gitee.usl.api.FunctionEnhancer;
 import com.google.auto.service.AutoService;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 

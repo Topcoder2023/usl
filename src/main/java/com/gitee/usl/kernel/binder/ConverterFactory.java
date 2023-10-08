@@ -18,11 +18,11 @@ import java.util.Optional;
 public class ConverterFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConverterFactory.class);
     private static final ConverterFactory INSTANCE = new ConverterFactory();
-    private static final Map<Class<?>, UslConverter<?>> CONVERTER_MAP;
+    private static final Map<Class<?>, Converter<?>> CONVERTER_MAP;
 
     static {
         CONVERTER_MAP = HashMap.newHashMap(NumberConstant.COMMON_SIZE);
-        ServiceSearcher.searchAll(UslConverter.class).forEach(converter -> {
+        ServiceSearcher.searchAll(Converter.class).forEach(converter -> {
             Type type = TypeUtil.getTypeArgument(converter.getClass());
             CONVERTER_MAP.put((Class<?>) type, converter);
             LOGGER.info("Register USL converter - [{}]", converter.getClass().getName());
@@ -37,8 +37,8 @@ public class ConverterFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <C> UslConverter<C> getConverter(Class<C> type) {
-        return Optional.ofNullable((UslConverter<C>) CONVERTER_MAP.get(type))
+    public <C> Converter<C> getConverter(Class<C> type) {
+        return Optional.ofNullable((Converter<C>) CONVERTER_MAP.get(type))
                 .orElse(target -> Convert.convert(type, target));
     }
 }

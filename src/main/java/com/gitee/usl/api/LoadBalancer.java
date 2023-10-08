@@ -1,11 +1,13 @@
-package com.gitee.usl.infra.remote;
+package com.gitee.usl.api;
+
+import com.gitee.usl.infra.remote.UslRemoteService;
 
 import java.util.List;
 
 /**
  * @author hongda.li
  */
-public interface UslLoadBalancer {
+public interface LoadBalancer {
 
     /**
      * 从给定的远程服务列表中选择其中一个服务

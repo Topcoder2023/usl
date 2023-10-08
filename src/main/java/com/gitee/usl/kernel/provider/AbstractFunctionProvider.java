@@ -3,7 +3,7 @@ package com.gitee.usl.kernel.provider;
 import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
-import com.gitee.usl.kernel.engine.FunctionProvider;
+import com.gitee.usl.api.FunctionProvider;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.util.List;

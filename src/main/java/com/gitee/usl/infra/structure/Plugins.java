@@ -2,7 +2,7 @@ package com.gitee.usl.infra.structure;
 
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.kernel.plugin.Plugin;
+import com.gitee.usl.api.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;

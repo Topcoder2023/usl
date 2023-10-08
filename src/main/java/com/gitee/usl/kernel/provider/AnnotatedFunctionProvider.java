@@ -8,7 +8,7 @@ import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
-import com.gitee.usl.kernel.engine.FunctionProvider;
+import com.gitee.usl.api.FunctionProvider;
 import com.google.auto.service.AutoService;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import org.slf4j.Logger;

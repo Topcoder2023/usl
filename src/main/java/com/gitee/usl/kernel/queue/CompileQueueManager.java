@@ -1,5 +1,6 @@
 package com.gitee.usl.kernel.queue;
 
+import com.gitee.usl.api.CompileConsumer;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.thread.NamedThreadFactory;

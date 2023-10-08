@@ -7,7 +7,7 @@ import com.googlecode.aviator.Expression;
 /**
  * @author hongda.li
  */
-public interface UslCache {
+public interface Cache {
     /**
      * 初始化缓存
      *

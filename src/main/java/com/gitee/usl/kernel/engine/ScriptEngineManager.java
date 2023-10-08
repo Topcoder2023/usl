@@ -5,7 +5,7 @@ import com.gitee.usl.api.Initializer;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.UslExecuteException;
-import com.gitee.usl.kernel.cache.UslCache;
+import com.gitee.usl.kernel.cache.Cache;
 import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.QueueConfiguration;
@@ -68,7 +68,7 @@ public final class ScriptEngineManager implements Initializer {
     public <T> Result<T> run(Param param) {
         // 使用SHA512摘要算法生成唯一Key
         String key = ScriptEngineManager.generateKey(param.getContent());
-        UslCache cache = this.cacheConfiguration.getCacheManager().getUslCache();
+        Cache cache = this.cacheConfiguration.getCacheManager().getUslCache();
 
         Expression expression;
 
@@ -130,12 +130,12 @@ public final class ScriptEngineManager implements Initializer {
      */
     @SuppressWarnings("ReassignedVariable")
     private Expression getWithSpin(String key) {
-        UslCache uslCache = this.cacheConfiguration.getCacheManager().getUslCache();
+        Cache cache = this.cacheConfiguration.getCacheManager().getUslCache();
         Expression expression = null;
 
         // CPU 自旋阻塞获取编译后的表达式
         while (expression == null) {
-            expression = uslCache.select(key);
+            expression = cache.select(key);
 
             if (expression == null) {
                 // 减少CPU自旋的次数

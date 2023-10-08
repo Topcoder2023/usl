@@ -11,23 +11,23 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(Initializer.class)
 public class CacheManager implements Initializer {
-    private UslCache uslCache;
+    private Cache cache;
 
     @Override
     public void doInit(UslConfiguration uslConfiguration) {
-        UslCache found = ServiceSearcher.searchFirst(UslCache.class);
+        Cache found = ServiceSearcher.searchFirst(Cache.class);
         if (found == null) {
             return;
         }
 
-        this.uslCache = found;
+        this.cache = found;
 
         CacheConfiguration configuration = uslConfiguration.getCacheConfiguration();
-        this.uslCache.init(configuration);
+        this.cache.init(configuration);
         configuration.setCacheManager(this);
     }
 
-    public UslCache getUslCache() {
-        return uslCache;
+    public Cache getUslCache() {
+        return cache;
     }
 }

@@ -1,4 +1,4 @@
-package com.gitee.usl.kernel.plugin;
+package com.gitee.usl.api.plugin;
 
 import com.gitee.usl.kernel.engine.FunctionSession;
 

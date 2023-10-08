@@ -1,5 +1,6 @@
-package com.gitee.usl.kernel.queue;
+package com.gitee.usl.api;
 
+import com.gitee.usl.kernel.queue.CompileEvent;
 import com.lmax.disruptor.EventHandler;
 
 /**

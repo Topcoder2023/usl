@@ -2,6 +2,7 @@ package com.gitee.usl.kernel.engine;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import com.gitee.usl.UslRunner;
+import com.gitee.usl.api.FunctionPluggable;
 import com.gitee.usl.api.annotation.CombineFunc;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.infra.proxy.MethodInterceptor;

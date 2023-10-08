@@ -1,7 +1,8 @@
 package com.gitee.usl.kernel.queue;
 
+import com.gitee.usl.api.CompileConsumer;
 import com.gitee.usl.api.annotation.Order;
-import com.gitee.usl.kernel.cache.UslCache;
+import com.gitee.usl.kernel.cache.Cache;
 import com.gitee.usl.kernel.engine.ScriptEngineManager;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ public class CompileCacheConsumer implements CompileConsumer {
 
     @Override
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) throws Exception {
-        final UslCache uslCache = event.getConfiguration()
+        final Cache cache = event.getConfiguration()
                 .getCacheConfiguration()
                 .getCacheManager()
                 .getUslCache();
@@ -29,7 +30,7 @@ public class CompileCacheConsumer implements CompileConsumer {
         String generated = ScriptEngineManager.generateKey(event.getContent());
 
         // 缓存脚本编译结果
-        uslCache.insert(generated, event.getExpression());
+        cache.insert(generated, event.getExpression());
 
         logger.debug("Cache expression:\nKey : [{}]\nContent : [{}]", generated, event.getContent());
     }

@@ -4,7 +4,7 @@ package com.gitee.usl.kernel.binder;
  * @author hongda.li
  */
 @FunctionalInterface
-public interface UslConverter<T> {
+public interface Converter<T> {
     /**
      * 转换指定目标类型的参数
      *

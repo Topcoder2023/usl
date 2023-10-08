@@ -6,7 +6,7 @@ import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.infra.structure.FunctionHolder;
-import com.gitee.usl.kernel.engine.FunctionProvider;
+import com.gitee.usl.api.FunctionProvider;
 import com.google.auto.service.AutoService;
 
 import java.util.List;

@@ -4,7 +4,7 @@ import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.UslConfiguration;
-import com.gitee.usl.kernel.engine.FunctionEnhancer;
+import com.gitee.usl.api.FunctionEnhancer;
 import com.google.auto.service.AutoService;
 
 import java.util.List;

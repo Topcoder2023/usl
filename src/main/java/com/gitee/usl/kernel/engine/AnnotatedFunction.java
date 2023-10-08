@@ -1,5 +1,6 @@
 package com.gitee.usl.kernel.engine;
 
+import com.gitee.usl.api.FunctionPluggable;
 import com.gitee.usl.infra.structure.Plugins;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
