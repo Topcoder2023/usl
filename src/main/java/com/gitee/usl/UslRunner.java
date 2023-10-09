@@ -2,6 +2,7 @@ package com.gitee.usl;
 
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.Shutdown;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.exception.UslException;
 import com.gitee.usl.infra.utils.ServiceSearcher;
@@ -12,10 +13,8 @@ import com.gitee.usl.kernel.domain.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -42,10 +41,20 @@ public class UslRunner {
     /**
      * USL Runner 实例全局缓存
      */
-    private static final ThreadLocal<Map<String, UslRunner>> ENGINE_CONTEXT = ThreadLocal.withInitial(HashMap::new);
-
+    private static final Map<String, UslRunner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.EIGHT);
     private final String name;
     private final UslConfiguration configuration;
+
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            List<Shutdown> shutdowns = ServiceSearcher.searchAll(Shutdown.class);
+            ENGINE_CONTEXT.values().forEach(runner -> {
+                LOGGER.info("{} - Shutdown initiated.", runner.name);
+                shutdowns.forEach(shutdown -> shutdown.close(runner.configuration));
+                LOGGER.info("{} - Shutdown completed.", runner.name);
+            });
+        }));
+    }
 
     public UslRunner() {
         this(defaultConfiguration());
@@ -57,16 +66,16 @@ public class UslRunner {
     }
 
     public void start() {
-        Assert.isFalse(ENGINE_CONTEXT.get().containsKey(name), () -> new UslException("USL Runner has been started."));
+        Assert.isFalse(ENGINE_CONTEXT.containsKey(name), () -> new UslException("USL Runner has been started."));
 
         try {
             LOGGER.info("{} - Starting...", name);
             List<Initializer> initializers = ServiceSearcher.searchAll(Initializer.class);
             initializers.forEach(initializer -> initializer.doInit(configuration));
             LOGGER.info("{} - Start completed.", name);
-            ENGINE_CONTEXT.get().put(name, this);
+            ENGINE_CONTEXT.put(name, this);
         } catch (Exception e) {
-            ENGINE_CONTEXT.remove();
+            ENGINE_CONTEXT.values().removeIf(runner -> runner.equals(this));
         }
     }
 
@@ -119,6 +128,6 @@ public class UslRunner {
      * @return 实例
      */
     public static UslRunner findRunnerByName(String name) {
-        return ENGINE_CONTEXT.get().get(name);
+        return ENGINE_CONTEXT.get(name);
     }
 }

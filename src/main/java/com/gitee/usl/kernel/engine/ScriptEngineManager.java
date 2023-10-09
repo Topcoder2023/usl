@@ -45,7 +45,7 @@ public final class ScriptEngineManager implements Initializer {
     public void doInit(UslConfiguration uslConfiguration) {
         this.uslConfiguration = uslConfiguration;
         this.cacheConfiguration = uslConfiguration.getCacheConfiguration();
-        this.queueConfiguration = uslConfiguration.getQueueConfiguration();
+        this.queueConfiguration = uslConfiguration.queueConfiguration();
 
         EngineConfiguration configuration = uslConfiguration.getEngineConfiguration();
 

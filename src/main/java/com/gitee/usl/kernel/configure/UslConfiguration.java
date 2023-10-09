@@ -91,7 +91,7 @@ public final class UslConfiguration {
         return cacheConfiguration;
     }
 
-    public QueueConfiguration getQueueConfiguration() {
+    public QueueConfiguration queueConfiguration() {
         return queueConfiguration;
     }
 
@@ -103,7 +103,7 @@ public final class UslConfiguration {
         return engineConfiguration;
     }
 
-    public ThreadPoolConfiguration getThreadPoolConfiguration() {
+    public ThreadPoolConfiguration threadPoolConfiguration() {
         return threadPoolConfiguration;
     }
 }

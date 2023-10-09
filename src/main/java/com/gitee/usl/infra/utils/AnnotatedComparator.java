@@ -21,10 +21,9 @@ public class AnnotatedComparator {
      *
      * @param elements 待排序的元素列表
      * @param <T>      元素的泛型
-     * @return 排序后的元素列表
      */
-    public static <T> List<T> sort(List<T> elements) {
-        return sort(elements, false);
+    public static <T> void sort(List<T> elements) {
+        sort(elements, false);
     }
 
     /**
@@ -35,9 +34,8 @@ public class AnnotatedComparator {
      * @param elements 待排序的元素列表
      * @param reverse  是否选择逆序
      * @param <T>      元素的泛型
-     * @return 排序后的元素列表
      */
-    public static <T> List<T> sort(List<T> elements, boolean reverse) {
+    public static <T> void sort(List<T> elements, boolean reverse) {
         elements.sort((element1, element2) -> {
             Class<?> clz1 = element1.getClass();
             Class<?> clz2 = element2.getClass();
@@ -51,8 +49,6 @@ public class AnnotatedComparator {
             // 若选择逆序排列，则按从大到小的顺序排序
             return reverse ? value2.compareTo(value1) : value1.compareTo(value2);
         });
-
-        return elements;
     }
 
     /**

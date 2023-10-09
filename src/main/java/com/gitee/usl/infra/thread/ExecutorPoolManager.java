@@ -39,7 +39,7 @@ public class ExecutorPoolManager implements Initializer {
 
     @Override
     public void doInit(UslConfiguration uslConfiguration) {
-        ThreadPoolConfiguration configuration = uslConfiguration.getThreadPoolConfiguration();
+        ThreadPoolConfiguration configuration = uslConfiguration.threadPoolConfiguration();
 
         this.executor = ExecutorBuilder.create()
                 // 最大线程数
@@ -67,7 +67,7 @@ public class ExecutorPoolManager implements Initializer {
      *
      * @return 线程池实例
      */
-    public ThreadPoolExecutor getExecutor() {
+    public ThreadPoolExecutor executor() {
         return executor;
     }
 }

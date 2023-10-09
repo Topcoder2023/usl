@@ -82,7 +82,7 @@ public class ThreadPoolConfiguration {
         return this;
     }
 
-    public ExecutorPoolManager getUslExecutorManager() {
+    public ExecutorPoolManager executorManager() {
         return executorPoolManager;
     }
 

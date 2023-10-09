@@ -6,6 +6,7 @@ import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 
+import java.io.Serial;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,6 +16,8 @@ import java.util.Optional;
  * @author hongda.li
  */
 public class AnnotatedFunction extends AbstractVariadicFunction implements FunctionPluggable {
+    @Serial
+    private static final long serialVersionUID = 2613339911646206249L;
     private final transient Plugins plugins;
     private final transient FunctionDefinition definition;
 
