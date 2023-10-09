@@ -33,7 +33,7 @@ public class CacheStatusWatcher implements FixedRateTimedTask {
 
     @Override
     public void doTask(UslConfiguration configuration) {
-        Optional.ofNullable(configuration.getCacheConfiguration().cacheManager())
+        Optional.ofNullable(configuration.configCache().cacheManager())
                 .map(CacheManager::cache)
                 .ifPresent(Cache::snapshot);
     }

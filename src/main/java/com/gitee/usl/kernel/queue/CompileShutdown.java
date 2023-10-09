@@ -11,7 +11,7 @@ import com.google.auto.service.AutoService;
 public class CompileShutdown implements Shutdown {
     @Override
     public void close(UslConfiguration configuration) {
-        configuration.queueConfiguration()
+        configuration.configQueue()
                 .compileQueueManager()
                 .disruptor()
                 .shutdown();

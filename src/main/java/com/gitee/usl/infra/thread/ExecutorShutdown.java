@@ -18,7 +18,7 @@ public class ExecutorShutdown implements Shutdown {
 
     @Override
     public void close(UslConfiguration configuration) {
-        try (ThreadPoolExecutor executor = configuration.threadPoolConfiguration()
+        try (ThreadPoolExecutor executor = configuration.configThreadPool()
                 .executorManager()
                 .executor()) {
             executor.shutdown();

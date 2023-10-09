@@ -26,7 +26,7 @@ public class ThreadStatusWatcher implements FixedRateTimedTask {
 
     @Override
     public void doTask(UslConfiguration configuration) {
-        final ThreadPoolExecutor executor = configuration.threadPoolConfiguration()
+        final ThreadPoolExecutor executor = configuration.configThreadPool()
                 .executorManager()
                 .executor();
 

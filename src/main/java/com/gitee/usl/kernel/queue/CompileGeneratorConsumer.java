@@ -44,7 +44,7 @@ public class CompileGeneratorConsumer implements CompileConsumer {
 
     @Override
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) throws Exception {
-        EngineConfiguration configuration = event.getConfiguration().getEngineConfiguration();
+        EngineConfiguration configuration = event.getConfiguration().configEngine();
         AviatorEvaluatorInstance instance = configuration.getScriptEngineManager().getInstance();
 
         @SuppressWarnings("ReassignedVariable") Expression expression;

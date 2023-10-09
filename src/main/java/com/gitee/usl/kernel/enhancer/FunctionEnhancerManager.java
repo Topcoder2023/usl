@@ -28,7 +28,7 @@ public class FunctionEnhancerManager implements Initializer {
     public void doInit(UslConfiguration uslConfiguration) {
         List<FunctionEnhancer> enhancers = ServiceSearcher.searchAll(FunctionEnhancer.class);
 
-        uslConfiguration.getEngineConfiguration()
+        uslConfiguration.configEngine()
                 .getFunctionHolder()
                 .onVisit(function -> enhancers.forEach(enhancer -> enhancer.enhance(function)));
     }

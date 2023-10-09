@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
  * @author hongda.li
  */
 public class ThreadPoolConfiguration {
+    private final UslConfiguration configuration;
     private int corePoolSize;
     private int maxPoolSize;
     private boolean allowedTimeout;
@@ -16,16 +17,12 @@ public class ThreadPoolConfiguration {
     private TimeUnit timeUnit;
     private ExecutorPoolManager executorPoolManager;
 
-    public ThreadPoolConfiguration() {
-        // 获取CPU核心数
-        int processor = Runtime.getRuntime().availableProcessors();
+    public ThreadPoolConfiguration(UslConfiguration configuration) {
+        this.configuration = configuration;
+    }
 
-        this.corePoolSize = processor;
-        this.maxPoolSize = processor << 2;
-        this.allowedTimeout = false;
-        this.queueSize = processor << 3;
-        this.aliveTime = 60;
-        this.timeUnit = TimeUnit.SECONDS;
+    public UslConfiguration finish() {
+        return this.configuration;
     }
 
     public int getCorePoolSize() {

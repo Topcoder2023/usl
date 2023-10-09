@@ -49,7 +49,7 @@ public class CompileQueueManager implements Initializer {
 
     @Override
     public void doInit(UslConfiguration uslConfiguration) {
-        QueueConfiguration configuration = uslConfiguration.queueConfiguration();
+        QueueConfiguration configuration = uslConfiguration.configQueue();
         configuration.compileQueueManager(this);
 
         // 构造编译任务队列

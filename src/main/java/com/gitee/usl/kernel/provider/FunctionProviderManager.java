@@ -29,7 +29,7 @@ public class FunctionProviderManager implements Initializer {
 
     @Override
     public void doInit(UslConfiguration uslConfiguration) {
-        EngineConfiguration configuration = uslConfiguration.getEngineConfiguration();
+        EngineConfiguration configuration = uslConfiguration.configEngine();
 
         // 函数容器
         final FunctionHolder holder = configuration.getFunctionHolder();

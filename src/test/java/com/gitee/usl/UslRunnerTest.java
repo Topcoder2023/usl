@@ -23,7 +23,9 @@ class UslRunnerTest {
         System.out.println(argument.getTypeName());
 
         UslRunner runner = new UslRunner(new UslConfiguration()
-                .configEngine(eng -> eng.scan(UslRunnerTest.class)));
+                .configEngine()
+                .scan(UslRunnerTest.class)
+                .finish());
         runner.start();
 
         Param param = new Param()

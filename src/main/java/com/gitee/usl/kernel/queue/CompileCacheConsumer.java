@@ -22,7 +22,7 @@ public class CompileCacheConsumer implements CompileConsumer {
     @Override
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) throws Exception {
         final Cache cache = event.getConfiguration()
-                .getCacheConfiguration()
+                .configCache()
                 .cacheManager()
                 .cache();
 

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -74,6 +75,8 @@ public class UslRunner {
         } catch (Exception e) {
             ENGINE_CONTEXT.values().removeIf(runner -> runner.equals(this));
         }
+
+        this.configuration.interaction().start(this);
     }
 
     public void close() {
@@ -91,7 +94,7 @@ public class UslRunner {
      */
     public <T> Result<T> run(Param param) {
         return Optional.ofNullable(this.configuration)
-                .map(UslConfiguration::getEngineConfiguration)
+                .map(UslConfiguration::configEngine)
                 .map(EngineConfiguration::getScriptEngineManager)
                 .map(manager -> manager.<T>run(param))
                 .orElseThrow(() -> new UslException("USL Runner has not been started."));
@@ -112,7 +115,18 @@ public class UslRunner {
      * @return USL 配置类
      */
     public static UslConfiguration defaultConfiguration() {
-        return new UslConfiguration().configEngine(engine -> engine.scan(UslRunner.class));
+        return new UslConfiguration()
+                .configEngine()
+                .scan(UslRunner.class)
+                .finish()
+                .configThreadPool()
+                .setCorePoolSize(8)
+                .setMaxPoolSize(16)
+                .setQueueSize(1024)
+                .setAliveTime(60)
+                .setAllowedTimeout(false)
+                .setTimeUnit(TimeUnit.SECONDS)
+                .finish();
     }
 
     /**

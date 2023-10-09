@@ -22,9 +22,9 @@ public class CacheManager implements Initializer {
 
         this.cache = found;
 
-        CacheConfiguration configuration = uslConfiguration.getCacheConfiguration();
+        CacheConfiguration configuration = uslConfiguration.configCache();
         this.cache.init(configuration);
-        configuration.cacheManager(this);
+        configuration.setCacheManager(this);
     }
 
     public Cache cache() {

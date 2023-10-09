@@ -44,10 +44,10 @@ public final class ScriptEngineManager implements Initializer {
     @Override
     public void doInit(UslConfiguration uslConfiguration) {
         this.uslConfiguration = uslConfiguration;
-        this.cacheConfiguration = uslConfiguration.getCacheConfiguration();
-        this.queueConfiguration = uslConfiguration.queueConfiguration();
+        this.cacheConfiguration = uslConfiguration.configCache();
+        this.queueConfiguration = uslConfiguration.configQueue();
 
-        EngineConfiguration configuration = uslConfiguration.getEngineConfiguration();
+        EngineConfiguration configuration = uslConfiguration.configEngine();
 
         this.instance = AviatorEvaluator.newInstance();
         this.instance.removeFunctionLoader(ClassPathConfigFunctionLoader.getInstance());

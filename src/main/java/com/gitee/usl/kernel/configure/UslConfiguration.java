@@ -1,10 +1,11 @@
 package com.gitee.usl.kernel.configure;
 
-import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.api.Interaction;
+import com.gitee.usl.app.interaction.EmptyInteraction;
+import com.gitee.usl.infra.utils.ServiceSearcher;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * USL 配置类
@@ -20,90 +21,58 @@ import java.util.function.Consumer;
  * @author hongda.li
  */
 public final class UslConfiguration {
+    private Interaction interaction = EmptyInteraction.getInstance();
     /**
      * 缓存配置类
      */
-    private final CacheConfiguration cacheConfiguration;
+    private final CacheConfiguration cacheConfiguration = new CacheConfiguration(this);
 
     /**
      * 编译队列配置类
      */
-    private final QueueConfiguration queueConfiguration;
+    private final QueueConfiguration queueConfiguration = new QueueConfiguration(this);
 
     /**
      * 自定义扩展配置类
      */
-    private final Map<String, Object> customConfiguration;
+    private final Map<String, Object> customConfiguration = new ConcurrentHashMap<>();
 
     /**
      * 脚本引擎配置类
      */
-    private final EngineConfiguration engineConfiguration;
+    private final EngineConfiguration engineConfiguration = new EngineConfiguration(this);
 
     /**
      * 线程池配置类
      */
-    private final ThreadPoolConfiguration threadPoolConfiguration;
+    private final ThreadPoolConfiguration threadPoolConfiguration = new ThreadPoolConfiguration(this);
 
-    public UslConfiguration() {
-        this(new CacheConfiguration(),
-                new QueueConfiguration(),
-                HashMap.newHashMap(NumberConstant.COMMON_SIZE),
-                new EngineConfiguration(),
-                new ThreadPoolConfiguration());
-    }
-
-    public UslConfiguration(CacheConfiguration cacheConfiguration,
-                            QueueConfiguration queueConfiguration,
-                            Map<String, Object> customConfiguration,
-                            EngineConfiguration engineConfiguration,
-                            ThreadPoolConfiguration threadPoolConfiguration) {
-        this.cacheConfiguration = cacheConfiguration;
-        this.queueConfiguration = queueConfiguration;
-        this.customConfiguration = customConfiguration;
-        this.engineConfiguration = engineConfiguration;
-        this.threadPoolConfiguration = threadPoolConfiguration;
-    }
-
-    /**
-     * 配置脚本引擎
-     *
-     * @param consumer 脚本引擎配置消费者
-     * @return 链式调用
-     */
-    public UslConfiguration configEngine(Consumer<EngineConfiguration> consumer) {
-        consumer.accept(engineConfiguration);
+    public UslConfiguration changeInteraction(Class<? extends Interaction> interaction) {
+        this.interaction = ServiceSearcher.searchFirst(interaction);
         return this;
     }
 
-    /**
-     * 配置线程池
-     *
-     * @param consumer 线程池配置消费者
-     * @return 链式调用
-     */
-    public UslConfiguration configThreadPool(Consumer<ThreadPoolConfiguration> consumer) {
-        consumer.accept(threadPoolConfiguration);
-        return this;
+    public Interaction interaction() {
+        return this.interaction;
     }
 
-    public CacheConfiguration getCacheConfiguration() {
+    public CacheConfiguration configCache() {
         return cacheConfiguration;
     }
 
-    public QueueConfiguration queueConfiguration() {
+    public QueueConfiguration configQueue() {
         return queueConfiguration;
     }
 
-    public Map<String, Object> getCustomConfiguration() {
+    public Map<String, Object> configCustom() {
         return customConfiguration;
     }
 
-    public EngineConfiguration getEngineConfiguration() {
+    public EngineConfiguration configEngine() {
         return engineConfiguration;
     }
 
-    public ThreadPoolConfiguration threadPoolConfiguration() {
+    public ThreadPoolConfiguration configThreadPool() {
         return threadPoolConfiguration;
     }
 }
