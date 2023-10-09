@@ -6,25 +6,20 @@ import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.api.FunctionEnhancer;
 import com.google.auto.service.AutoService;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
-
-import java.lang.reflect.Proxy;
 
 /**
  * @author hongda.li
  */
 @Order(Integer.MAX_VALUE - 10)
 @AutoService(FunctionEnhancer.class)
-public class LoggerEnhancer implements FunctionEnhancer {
+public class LoggerEnhancer extends AbstractFunctionEnhancer {
     @Override
-    public void enhance(AviatorFunction function) {
-        if (function instanceof AnnotatedFunction af) {
-            af.plugins().install(new LoggerPlugin());
-        }
+    protected void enhanceNativeFunction(NativeFunction nf) {
+        nf.plugins().install(new LoggerPlugin());
+    }
 
-        boolean isProxy = Proxy.isProxyClass(function.getClass());
-        if (isProxy && Proxy.getInvocationHandler(function) instanceof NativeFunction nf) {
-            nf.plugins().install(new LoggerPlugin());
-        }
+    @Override
+    protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
+        af.plugins().install(new LoggerPlugin());
     }
 }

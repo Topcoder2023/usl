@@ -3,10 +3,14 @@ package com.gitee.usl.infra.exception;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.infra.enums.ResultCode;
 
+import java.io.Serial;
+
 /**
  * @author hongda.li
  */
 public class UslExecuteException extends UslException {
+    @Serial
+    private static final long serialVersionUID = -2700399654507293658L;
     private final ResultCode resultCode;
 
     public UslExecuteException() {

@@ -17,7 +17,12 @@ public enum ResultCode {
     /**
      * 编译失败
      */
-    COMPILE_FAILURE(510),;
+    COMPILE_FAILURE(510),
+
+    /**
+     * 等待超时
+     */
+    TIMEOUT(520);
 
     private final int code;
 

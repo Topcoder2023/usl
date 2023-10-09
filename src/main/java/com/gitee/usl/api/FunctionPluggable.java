@@ -40,20 +40,17 @@ public interface FunctionPluggable {
      * @return 最终返回值
      */
     default AviatorObject withPlugin(final FunctionSession session) {
-        // 执行前置回调插件
-        // 注意，如果前置回调插件出现异常是不会被失败回调插件捕获
-        // 这样设计的理由是，前置回调插件一定是在实际执行逻辑前调用
-        // 前置回调插件有责任负责处理插件逻辑中可能出现的异常
-        this.plugins().execute(BeginPlugin.class, plugin -> plugin.onBegin(session));
-
-        // 正常来说执行结果还没有被初始化，这里应该为空
-        // 但如果不为空，说明前置插件已经设置了本次调用返回值
-        // 那么就直接将前置插件的返回值作为最终结果
-        if (session.result() != null) {
-            return FunctionUtils.wrapReturn(session.result());
-        }
-
         try {
+            // 执行前置回调插件
+            this.plugins().execute(BeginPlugin.class, plugin -> plugin.onBegin(session));
+
+            // 正常来说执行结果还没有被初始化，这里应该为空
+            // 但如果不为空，说明前置插件已经设置了本次调用返回值
+            // 那么就直接将前置插件的返回值作为最终结果
+            if (session.result() != null) {
+                return FunctionUtils.wrapReturn(session.result());
+            }
+
             // 调用实际处理逻辑
             Object result = this.handle(session);
 
