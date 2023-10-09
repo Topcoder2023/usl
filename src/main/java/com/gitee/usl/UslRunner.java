@@ -48,7 +48,7 @@ public class UslRunner {
     private final UslConfiguration configuration;
 
     public UslRunner() {
-        this(new UslConfiguration());
+        this(defaultConfiguration());
     }
 
     public UslRunner(UslConfiguration configuration) {
@@ -92,6 +92,15 @@ public class UslRunner {
      */
     public UslConfiguration configuration() {
         return configuration;
+    }
+
+    /**
+     * 获取默认的 USL 配置类
+     *
+     * @return USL 配置类
+     */
+    public static UslConfiguration defaultConfiguration() {
+        return new UslConfiguration().configEngine(engine -> engine.scan(UslRunner.class));
     }
 
     /**

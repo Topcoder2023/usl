@@ -10,6 +10,7 @@ import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.runtime.type.AviatorString;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -27,11 +28,12 @@ class UslRunnerTest {
 
         Param param = new Param()
                 .setContent("1 + 100 * 100 * 200 + math.log(var)")
-                .setContext("var", 10.5);
+                .setContext("var", 10.5)
+                .setContext("date", new Date());
 
         System.out.println(runner.run(param).getData());
 
-        param.setContent("test.a(1)");
+        param.setContent("json.to(date)");
 
         System.out.println(runner.run(param).getData());
 

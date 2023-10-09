@@ -47,7 +47,7 @@ public class CompileQueueManager implements Initializer {
     @Override
     public void doInit(UslConfiguration uslConfiguration) {
         QueueConfiguration configuration = uslConfiguration.getQueueConfiguration();
-        configuration.setCompileQueueManager(this);
+        configuration.compileQueueManager(this);
 
         // 构造编译任务队列
         this.disruptor = new Disruptor<>(new CompileEventFactory(),
@@ -98,11 +98,11 @@ public class CompileQueueManager implements Initializer {
         return consumers.stream().map(consumer -> consumer.getClass().getName()).toList();
     }
 
-    public CompileEventProducer getProducer() {
+    public CompileEventProducer producer() {
         return producer;
     }
 
-    public Disruptor<CompileEvent> getDisruptor() {
+    public Disruptor<CompileEvent> disruptor() {
         return disruptor;
     }
 }

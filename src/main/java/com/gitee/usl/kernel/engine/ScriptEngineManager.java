@@ -13,7 +13,6 @@ import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
 import com.gitee.usl.kernel.queue.CompileGeneratorConsumer;
-import com.gitee.usl.kernel.queue.CompileQueueManager;
 import com.google.auto.service.AutoService;
 import com.google.common.hash.Hashing;
 import com.googlecode.aviator.*;
@@ -68,7 +67,7 @@ public final class ScriptEngineManager implements Initializer {
     public <T> Result<T> run(Param param) {
         // 使用SHA512摘要算法生成唯一Key
         String key = ScriptEngineManager.generateKey(param.getContent());
-        Cache cache = this.cacheConfiguration.getCacheManager().getUslCache();
+        Cache cache = this.cacheConfiguration.cacheManager().cache();
 
         Expression expression;
 
@@ -100,14 +99,14 @@ public final class ScriptEngineManager implements Initializer {
         }
 
         // 校验编译结果是否为有效结果
-        if (this.isInvalid(expression)) {
+        if (CompileGeneratorConsumer.isInvalid(expression)) {
             return Result.failure(ResultCode.COMPILE_FAILURE);
         }
 
         try {
             return Result.success((T) expression.execute(param.getContext()));
-        } catch (UslExecuteException executeException) {
-            return Result.failure(executeException.getResultCode(), executeException.getMessage());
+        } catch (UslExecuteException exception) {
+            return Result.failure(exception.getResultCode(), exception.getMessage());
         }
     }
 
@@ -117,8 +116,9 @@ public final class ScriptEngineManager implements Initializer {
      * @param content 脚本的内容
      */
     private void compile(String content) {
-        CompileQueueManager queueManager = queueConfiguration.getCompileQueueManager();
-        queueManager.getProducer().produce(content, this.uslConfiguration);
+        queueConfiguration.compileQueueManager()
+                .producer()
+                .produce(content, this.uslConfiguration);
     }
 
     /**
@@ -130,7 +130,7 @@ public final class ScriptEngineManager implements Initializer {
      */
     @SuppressWarnings("ReassignedVariable")
     private Expression getWithSpin(String key) {
-        Cache cache = this.cacheConfiguration.getCacheManager().getUslCache();
+        Cache cache = this.cacheConfiguration.cacheManager().cache();
         Expression expression = null;
 
         // CPU 自旋阻塞获取编译后的表达式
@@ -145,16 +145,6 @@ public final class ScriptEngineManager implements Initializer {
         }
 
         return expression;
-    }
-
-    /**
-     * 是否为无效编译结果
-     *
-     * @param expression 无效编译结果
-     * @return 判断结果
-     */
-    private boolean isInvalid(Expression expression) {
-        return CompileGeneratorConsumer.EMPTY_PLACE_HOLDER.equals(expression);
     }
 
     /**

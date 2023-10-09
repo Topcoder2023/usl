@@ -25,12 +25,11 @@ public class QueueConfiguration {
         return this;
     }
 
-    public CompileQueueManager getCompileQueueManager() {
+    public CompileQueueManager compileQueueManager() {
         return compileQueueManager;
     }
 
-    public QueueConfiguration setCompileQueueManager(CompileQueueManager compileQueueManager) {
+    public void compileQueueManager(CompileQueueManager compileQueueManager) {
         this.compileQueueManager = compileQueueManager;
-        return this;
     }
 }

@@ -8,12 +8,11 @@ import com.gitee.usl.kernel.cache.CacheManager;
 public class CacheConfiguration {
     private CacheManager cacheManager;
 
-    public CacheManager getCacheManager() {
+    public CacheManager cacheManager() {
         return cacheManager;
     }
 
-    public CacheConfiguration setCacheManager(CacheManager cacheManager) {
+    public void cacheManager(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
-        return this;
     }
 }

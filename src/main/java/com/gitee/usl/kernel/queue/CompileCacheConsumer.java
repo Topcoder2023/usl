@@ -23,8 +23,8 @@ public class CompileCacheConsumer implements CompileConsumer {
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) throws Exception {
         final Cache cache = event.getConfiguration()
                 .getCacheConfiguration()
-                .getCacheManager()
-                .getUslCache();
+                .cacheManager()
+                .cache();
 
         // 生成唯一缓存键
         String generated = ScriptEngineManager.generateKey(event.getContent());

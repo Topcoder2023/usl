@@ -28,7 +28,7 @@ public class CompileGeneratorConsumer implements CompileConsumer {
      * 空的表达式占位对象
      * 用以替代 null 的 Expression
      */
-    public static final Expression EMPTY_PLACE_HOLDER = new BaseExpression(null, null, null) {
+    private static final Expression EMPTY_PLACE_HOLDER = new BaseExpression(null, null, null) {
         @Override
         public Object executeDirectly(Map<String, Object> env) {
             return null;
@@ -52,7 +52,7 @@ public class CompileGeneratorConsumer implements CompileConsumer {
         try {
             expression = this.compileExpression(event, instance);
         } catch (Exception compileError) {
-            expression = CompileGeneratorConsumer.emptyExpression();
+            expression = EMPTY_PLACE_HOLDER;
             logger.error("Compile expression failed.", compileError);
         }
 
@@ -68,7 +68,7 @@ public class CompileGeneratorConsumer implements CompileConsumer {
         return new ExpressionParser(instance, lexer, codeGenerator).parse();
     }
 
-    private static Expression emptyExpression() {
-        return EMPTY_PLACE_HOLDER;
+    public static boolean isInvalid(Expression expression) {
+        return EMPTY_PLACE_HOLDER.equals(expression);
     }
 }
