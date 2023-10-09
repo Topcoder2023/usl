@@ -42,17 +42,14 @@ public class UslRunner {
      * USL Runner 实例全局缓存
      */
     private static final Map<String, UslRunner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.EIGHT);
+    private static List<Shutdown> shutdowns;
     private final String name;
     private final UslConfiguration configuration;
 
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            List<Shutdown> shutdowns = ServiceSearcher.searchAll(Shutdown.class);
-            ENGINE_CONTEXT.values().forEach(runner -> {
-                LOGGER.info("{} - Shutdown initiated.", runner.name);
-                shutdowns.forEach(shutdown -> shutdown.close(runner.configuration));
-                LOGGER.info("{} - Shutdown completed.", runner.name);
-            });
+            shutdowns = ServiceSearcher.searchAll(Shutdown.class);
+            ENGINE_CONTEXT.values().forEach(UslRunner::close);
         }));
     }
 
@@ -77,6 +74,12 @@ public class UslRunner {
         } catch (Exception e) {
             ENGINE_CONTEXT.values().removeIf(runner -> runner.equals(this));
         }
+    }
+
+    public void close() {
+        LOGGER.info("{} - Shutdown initiated.", this.name);
+        shutdowns.forEach(shutdown -> shutdown.close(this.configuration));
+        LOGGER.info("{} - Shutdown completed.", this.name);
     }
 
     /**
