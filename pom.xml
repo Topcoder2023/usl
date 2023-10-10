@@ -47,6 +47,12 @@
         <dbmasker.version>0.0.6</dbmasker.version>
         <commons-pool2.version>2.11.1</commons-pool2.version>
         <auto-service.version>1.1.1</auto-service.version>
+        <jline.version>3.23.0</jline.version>
+        <fastjson2.version>2.0.41</fastjson2.version>
+        <guava-retrying.version>2.0.0</guava-retrying.version>
+        <jsqlparser.version>4.7</jsqlparser.version>
+        <image-combiner.version>2.6.5</image-combiner.version>
+        <sensitive-word.version>0.8.0</sensitive-word.version>
 
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
@@ -119,38 +125,49 @@
         <dependency>
             <groupId>com.github.houbb</groupId>
             <artifactId>sensitive-word</artifactId>
-            <version>0.8.0</version>
+            <version>${sensitive-word.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.freewayso</groupId>
             <artifactId>image-combiner</artifactId>
-            <version>2.6.5</version>
+            <version>${image-combiner.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.github.jsqlparser</groupId>
             <artifactId>jsqlparser</artifactId>
-            <version>4.7</version>
+            <version>${jsqlparser.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.github.rholder</groupId>
             <artifactId>guava-retrying</artifactId>
-            <version>2.0.0</version>
+            <version>${guava-retrying.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
-            <version>2.0.41</version>
+            <version>${fastjson2.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>${jline.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
-            <!--仅在测试期生效-->
             <scope>test</scope>
         </dependency>
     </dependencies>
