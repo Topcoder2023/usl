@@ -47,6 +47,11 @@ public final class UslConfiguration {
      */
     private final ThreadPoolConfiguration threadPoolConfiguration = new ThreadPoolConfiguration(this);
 
+    /**
+     * 网络服务配置类
+     */
+    private final WebServerConfiguration webServerConfiguration = new WebServerConfiguration(this);
+
     public UslConfiguration changeInteraction(Class<? extends Interaction> interaction) {
         this.interaction = ServiceSearcher.searchFirst(interaction);
         return this;
@@ -74,5 +79,9 @@ public final class UslConfiguration {
 
     public ThreadPoolConfiguration configThreadPool() {
         return threadPoolConfiguration;
+    }
+
+    public WebServerConfiguration configWebServer() {
+        return webServerConfiguration;
     }
 }
