@@ -10,6 +10,11 @@ public final class NumberConstant {
     }
 
     /**
+     * 数字负一
+     */
+    public static final int MINUS_ONE = -1;
+
+    /**
      * 数字零
      */
     public static final int ZERO = 0;

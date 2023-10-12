@@ -47,9 +47,10 @@ public class FunctionDefinition {
     }
 
     private void initUrl() {
-        this.url = NamingCase.toSymbolCase(CharSequenceUtil.lowerFirst(this.methodMeta.targetType().getName()), CharPool.SLASH)
-                + CharPool.SLASH
-                + NamingCase.toSymbolCase(this.methodMeta.method().getName(), CharPool.SLASH);
+        this.url = NamingCase.toSymbolCase(CharSequenceUtil.lowerFirst(this.methodMeta.targetType().getName()), CharPool.SLASH);
+        if (this.methodMeta.method() != null) {
+            this.url = this.url + CharPool.SLASH + NamingCase.toSymbolCase(this.methodMeta.method().getName(), CharPool.SLASH);
+        }
     }
 
     @Override

@@ -13,13 +13,15 @@ import com.google.auto.service.AutoService;
 @Order(Integer.MAX_VALUE - 10)
 @AutoService(FunctionEnhancer.class)
 public class LoggerEnhancer extends AbstractFunctionEnhancer {
+    private final LoggerPlugin singletonPlugin = new LoggerPlugin();
+
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        nf.plugins().install(new LoggerPlugin());
+        nf.plugins().install(singletonPlugin);
     }
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        af.plugins().install(new LoggerPlugin());
+        af.plugins().install(singletonPlugin);
     }
 }

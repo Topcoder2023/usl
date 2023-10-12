@@ -12,9 +12,10 @@ import com.google.auto.service.AutoService;
 @Order(Integer.MIN_VALUE + 10)
 @AutoService(FunctionEnhancer.class)
 public class ParameterBinderEnhancer extends AbstractFunctionEnhancer {
+    private final ParameterBinderPlugin singletonPlugin = new ParameterBinderPlugin();
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        af.plugins().install(new ParameterBinderPlugin());
+        af.plugins().install(singletonPlugin);
     }
 }

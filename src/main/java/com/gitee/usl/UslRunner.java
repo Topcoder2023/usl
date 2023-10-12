@@ -74,6 +74,8 @@ public class UslRunner {
             ENGINE_CONTEXT.put(name, this);
         } catch (Exception e) {
             ENGINE_CONTEXT.values().removeIf(runner -> runner.equals(this));
+            LOGGER.error("{} - Start failed.", name);
+            throw e;
         }
 
         this.configuration.interaction().start(this);

@@ -1,5 +1,6 @@
 package com.gitee.usl;
 
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.TypeUtil;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.kernel.binder.Converter;
@@ -19,27 +20,19 @@ import java.util.Map;
 class UslRunnerTest {
 
     public static void main(String[] args) {
-        Type argument = TypeUtil.getTypeArgument(TestConverter.class);
-        System.out.println(argument.getTypeName());
-
-        UslRunner runner = new UslRunner(new UslConfiguration()
+        UslRunner runner = new UslRunner(UslRunner.defaultConfiguration()
                 .configEngine()
                 .scan(UslRunnerTest.class)
                 .finish());
         runner.start();
 
-        Param param = new Param()
-                .setContent("1 + 100 * 100 * 200 + math.log(var)")
-                .setContext("var", 10.5)
-                .setContext("date", new Date());
+        Param param = new Param().setContent("str.size('hello')");
 
-        System.out.println(runner.run(param).getData());
+        System.out.println(runner.run(param));
 
-        param.setContent("json.to(date)");
+        System.out.println(runner.run(param));
 
-        System.out.println(runner.run(param).getData());
-
-        param.setContent("native(10.5)");
+        ThreadUtil.sleep(6000);
 
         System.out.println(runner.run(param));
     }

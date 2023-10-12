@@ -18,8 +18,10 @@ public class RateLimitEnhancer extends AbstractFunctionEnhancer {
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
         Limited limited = AnnotationUtil.getAnnotation(af.definition().methodMeta().method(), Limited.class);
-        if (limited != null) {
-            af.plugins().install(new RateLimitPlugin(limited.value(), limited.timeout(), limited.unit()));
+        if (limited == null) {
+            return;
         }
+
+        af.plugins().install(new RateLimitPlugin(limited.value(), limited.timeout(), limited.unit()));
     }
 }
