@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 /**
  * @author hongda.li
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Cacheable {
     /**

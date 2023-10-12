@@ -9,6 +9,7 @@ import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.api.annotation.Retryable;
 import com.gitee.usl.app.plugin.RetryPlugin;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
+import com.gitee.usl.kernel.engine.NativeFunction;
 import com.github.rholder.retry.*;
 import com.google.auto.service.AutoService;
 
@@ -28,6 +29,22 @@ public class RetryableEnhancer extends AbstractFunctionEnhancer {
             return;
         }
 
+        // 安装重试插件
+        af.plugins().install(this.newRetryPlugin(retryable));
+    }
+
+    @Override
+    protected void enhanceNativeFunction(NativeFunction nf) {
+        Retryable retryable = AnnotationUtil.getAnnotation(nf.definition().methodMeta().targetType(), Retryable.class);
+        if (retryable == null) {
+            return;
+        }
+
+        // 安装重试插件
+        nf.plugins().install(this.newRetryPlugin(retryable));
+    }
+
+    private RetryPlugin newRetryPlugin(Retryable retryable) {
         // 支持为每一个函数单独设置重试器
         // 但通一个class对应的实例为单例
         Retryer<Object> retryer = Optional.ofNullable(retryable.value())
@@ -37,7 +54,6 @@ public class RetryableEnhancer extends AbstractFunctionEnhancer {
                 .map(RetryBuilderFactory::create)
                 .orElse(new RetryPlugin.DefaultRetryBuilderFactory(retryable).create());
 
-        // 安装重试插件
-        af.plugins().install(new RetryPlugin(retryer));
+        return new RetryPlugin(retryer);
     }
 }

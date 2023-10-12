@@ -5,6 +5,7 @@ import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.api.annotation.Cacheable;
 import com.gitee.usl.app.plugin.CacheablePlugin;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
+import com.gitee.usl.kernel.engine.NativeFunction;
 import com.google.auto.service.AutoService;
 
 /**
@@ -21,5 +22,15 @@ public class CacheableEnhancer extends AbstractFunctionEnhancer {
         }
 
         af.plugins().install(new CacheablePlugin(cacheable.expired(), cacheable.unit()));
+    }
+
+    @Override
+    protected void enhanceNativeFunction(NativeFunction nf) {
+        Cacheable cacheable = AnnotationUtil.getAnnotation(nf.definition().methodMeta().targetType(), Cacheable.class);
+        if (cacheable == null) {
+            return;
+        }
+
+        nf.plugins().install(new CacheablePlugin(cacheable.expired(), cacheable.unit()));
     }
 }

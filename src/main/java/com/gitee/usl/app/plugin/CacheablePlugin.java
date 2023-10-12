@@ -37,19 +37,23 @@ public class CacheablePlugin implements BeginPlugin, SuccessPlugin {
         }
 
         // 缓存未设置永不过期且过期直接跳过
-        long between = DateUtil.between(cacheTime, new Date(), this.unit, true);
-        if (NumberConstant.ZERO >= expired && between >= expired) {
+        boolean neverExpired = expired <= NumberConstant.ZERO;
+        if (!neverExpired && DateUtil.between(cacheTime, new Date(), this.unit, true) > expired) {
             logger.debug("Cache is expired. Try to re-execute and cache.");
+            this.cache = null;
             return;
         }
 
         // 直接将缓存的结果设置为本次执行结果
         session.setResult(cache);
-        logger.debug("Cache is exists. Return result by cache.");
     }
 
     @Override
     public void onSuccess(FunctionSession session) {
+        if (this.cache != null) {
+            return;
+        }
+
         this.cacheTime = new Date();
         this.cache = session.result();
         logger.debug("Cache updated success.");

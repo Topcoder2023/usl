@@ -3,59 +3,61 @@ package com.gitee.usl.app.plugin;
 import cn.hutool.core.thread.ThreadUtil;
 import com.gitee.usl.UslRunner;
 import com.gitee.usl.api.annotation.Asynchronous;
+import com.gitee.usl.api.annotation.Cacheable;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.kernel.domain.Param;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.type.AviatorNil;
 import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.googlecode.aviator.runtime.type.AviatorString;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author hongda.li
  */
-class AsyncPluginTest {
+class CacheablePluginTest {
     @Test
     void test() {
         UslRunner runner = new UslRunner(UslRunner.defaultConfiguration()
                 .configEngine()
-                .scan(AsyncPluginTest.class)
+                .scan(CacheablePluginTest.class)
                 .finish());
 
         runner.start();
 
-        runner.run(new Param().setScript("wait()"));
+        runner.run(new Param().setScript("cache()"));
+        runner.run(new Param().setScript("cache()"));
 
-        runner.run(new Param().setScript("wait_native()"));
+        runner.run(new Param().setScript("cache_native()"));
+        runner.run(new Param().setScript("cache_native()"));
     }
 
 
     @Func
     static class AsyncClass {
 
-        @Asynchronous
-        @Func("wait")
-        public void waitFunc() {
-            // 睡眠六十秒
-            ThreadUtil.sleep(1000 * 60);
+        @Cacheable
+        @Func("cache")
+        public String waitFunc() {
+            return "success";
         }
     }
 
-    @Asynchronous
+    @Cacheable
     static class AsyncFunction extends AbstractVariadicFunction {
 
         @Override
         public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {
-            // 睡眠六十秒
-            ThreadUtil.sleep(1000 * 60);
-            return AviatorNil.NIL;
+            return new AviatorString("success");
         }
 
         @Override
         public String getName() {
-            return "wait_native";
+            return "cache_native";
         }
     }
 }

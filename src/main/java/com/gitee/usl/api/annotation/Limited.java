@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author hongda.li
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Limited {
     /**

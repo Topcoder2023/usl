@@ -8,6 +8,7 @@ import com.gitee.usl.api.TimeWatchListener;
 import com.gitee.usl.api.annotation.TimeWatchable;
 import com.gitee.usl.app.plugin.TimeWatchPlugin;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
+import com.gitee.usl.kernel.engine.NativeFunction;
 import com.google.auto.service.AutoService;
 
 import java.util.Optional;
@@ -25,12 +26,26 @@ public class TimeWatchEnhancer extends AbstractFunctionEnhancer {
             return;
         }
 
+        af.plugins().install(this.newTimeWatchPlugin(watchable));
+    }
+
+    @Override
+    protected void enhanceNativeFunction(NativeFunction nf) {
+        TimeWatchable watchable = AnnotationUtil.getAnnotation(nf.definition().methodMeta().targetType(), TimeWatchable.class);
+        if (watchable == null) {
+            return;
+        }
+
+        nf.plugins().install(this.newTimeWatchPlugin(watchable));
+    }
+
+    private TimeWatchPlugin newTimeWatchPlugin(TimeWatchable watchable) {
         final TimeWatchListener listener = Optional.ofNullable(watchable.listener())
                 .filter(ClassUtil::isNormalClass)
                 .map(Singleton::get)
                 .map(TimeWatchListener.class::cast)
                 .orElse(new TimeWatchPlugin.DefaultTimeWatchListener(watchable.unit()));
 
-        af.plugins().install(new TimeWatchPlugin(watchable.threshold(), watchable.unit(), listener));
+        return new TimeWatchPlugin(watchable.threshold(), watchable.unit(), listener);
     }
 }
