@@ -35,7 +35,7 @@ public class CombineFunction extends MethodInterceptor<AviatorFunction> implemen
 
     @Override
     protected Object intercept(Invocation<AviatorFunction> invocation, Object proxy) {
-        return runner.run(new Param().setContent(this.content).setCached(true).setContent(null)).getData();
+        return runner.run(new Param().setScript(this.content).setCached(true).setScript(null)).getData();
     }
 
     @Override

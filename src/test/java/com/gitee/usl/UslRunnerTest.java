@@ -1,17 +1,13 @@
 package com.gitee.usl;
 
 import cn.hutool.core.thread.ThreadUtil;
-import cn.hutool.core.util.TypeUtil;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.kernel.binder.Converter;
-import com.gitee.usl.kernel.configure.UslConfiguration;
 import com.gitee.usl.kernel.domain.Param;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.runtime.type.AviatorString;
 
-import java.lang.reflect.Type;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -26,7 +22,7 @@ class UslRunnerTest {
                 .finish());
         runner.start();
 
-        Param param = new Param().setContent("str.size('hello')");
+        Param param = new Param().setScript("str.size('hello')");
 
         System.out.println(runner.run(param));
 

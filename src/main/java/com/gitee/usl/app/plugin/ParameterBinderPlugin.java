@@ -30,6 +30,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
         // 跳过无参函数
         Method method = methodMeta.method();
         if (method.getParameterCount() == NumberConstant.ZERO) {
+            session.setInvocation(methodMeta.toInvocation(null));
             return;
         }
 

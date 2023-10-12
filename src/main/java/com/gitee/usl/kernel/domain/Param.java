@@ -20,7 +20,7 @@ public class Param {
     /**
      * 脚本内容
      */
-    private String content;
+    private String script;
 
     /**
      * 上下文变量
@@ -46,12 +46,12 @@ public class Param {
         return this;
     }
 
-    public String getContent() {
-        return content;
+    public String getScript() {
+        return script;
     }
 
-    public Param setContent(String content) {
-        this.content = content;
+    public Param setScript(String script) {
+        this.script = script;
         return this;
     }
 
@@ -68,7 +68,7 @@ public class Param {
     public String toString() {
         return new StringJoiner(", ", Param.class.getSimpleName() + "[", "]")
                 .add("cached=" + cached)
-                .add("content='" + content + "'")
+                .add("content='" + script + "'")
                 .add("context=" + context)
                 .toString();
     }

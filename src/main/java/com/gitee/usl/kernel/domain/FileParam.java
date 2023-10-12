@@ -29,7 +29,7 @@ public class FileParam extends Param {
         Assert.isTrue(this.file.exists(), () -> new UslNotFoundException(NOT_FOUND, file.getAbsolutePath()));
 
         FileReader reader = new FileReader(this.file);
-        this.setContent(reader.readString());
+        this.setScript(reader.readString());
     }
 
     public File getFile() {

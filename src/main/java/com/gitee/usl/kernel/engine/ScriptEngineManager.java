@@ -66,7 +66,7 @@ public final class ScriptEngineManager implements Initializer {
     @SuppressWarnings({"unchecked", "ReassignedVariable"})
     public <T> Result<T> run(Param param) {
         // 使用SHA512摘要算法生成唯一Key
-        String key = ScriptEngineManager.generateKey(param.getContent());
+        String key = ScriptEngineManager.generateKey(param.getScript());
         Cache cache = this.cacheConfiguration.cacheManager().cache();
 
         Expression expression;
@@ -79,7 +79,7 @@ public final class ScriptEngineManager implements Initializer {
             // 1.2.缓存中不存在
             if (expression == null) {
                 // 1.2.1.编译脚本
-                this.compile(param.getContent());
+                this.compile(param.getScript());
 
                 // 1.2.2.获取编译结果
                 expression = this.getWithSpin(key);
@@ -89,7 +89,7 @@ public final class ScriptEngineManager implements Initializer {
         // 2.未开启 USL 脚本编译缓存
         else {
             // 2.1.编译脚本
-            this.compile(param.getContent());
+            this.compile(param.getScript());
 
             // 2.2.获取编译结果
             expression = this.getWithSpin(key);
