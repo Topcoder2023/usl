@@ -1,6 +1,7 @@
 package com.gitee.usl.api.annotation;
 
 import cn.hutool.core.date.DateUnit;
+import com.gitee.usl.infra.constant.NumberConstant;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,11 +16,11 @@ import java.lang.annotation.Target;
 public @interface Cacheable {
     /**
      * 缓存过期时间
-     * -1表示永不过期
+     * 非正数表示永不过期
      *
      * @return 过期时间
      */
-    long expired() default -1;
+    long expired() default NumberConstant.MINUS_ONE;
 
     /**
      * 缓存过期时间单位
