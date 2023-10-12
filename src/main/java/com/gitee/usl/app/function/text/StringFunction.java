@@ -1,6 +1,7 @@
 package com.gitee.usl.app.function.text;
 
 import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.api.annotation.Retryable;
 import com.gitee.usl.infra.constant.NumberConstant;
 
 /**
@@ -10,7 +11,8 @@ import com.gitee.usl.infra.constant.NumberConstant;
 public class StringFunction {
 
     @Func({"str.size", "str.length"})
+    @Retryable
     public int size(String str) {
-        return str == null ? NumberConstant.ZERO : str.length();
+        throw new NullPointerException();
     }
 }

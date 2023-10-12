@@ -48,6 +48,11 @@ public interface FunctionPluggable {
             // 但如果不为空，说明前置插件已经设置了本次调用返回值
             // 那么就直接将前置插件的返回值作为最终结果
             if (session.result() != null) {
+                // 如果前置插件设置了返回值，则会被视为执行成功
+                // 因此同样会执行成功回调插件
+                this.plugins().execute(SuccessPlugin.class, plugin -> plugin.onSuccess(session));
+
+                // 统一包装返回值
                 return FunctionUtils.wrapReturn(session.result());
             }
 
