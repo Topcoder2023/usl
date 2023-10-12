@@ -68,10 +68,10 @@ public class UslRunner {
 
         try {
             LOGGER.info("{} - Starting...", name);
+            ENGINE_CONTEXT.put(name, this);
             List<Initializer> initializers = ServiceSearcher.searchAll(Initializer.class);
             initializers.forEach(initializer -> initializer.doInit(configuration));
             LOGGER.info("{} - Start completed.", name);
-            ENGINE_CONTEXT.put(name, this);
         } catch (Exception e) {
             ENGINE_CONTEXT.values().removeIf(runner -> runner.equals(this));
             LOGGER.error("{} - Start failed.", name);
