@@ -1,4 +1,4 @@
-package com.gitee.usl.infra.logger;
+package com.gitee.usl.logger;
 
 import org.slf4j.helpers.LegacyAbstractLogger;
 

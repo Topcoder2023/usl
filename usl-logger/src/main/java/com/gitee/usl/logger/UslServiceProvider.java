@@ -1,4 +1,4 @@
-package com.gitee.usl.infra.logger;
+package com.gitee.usl.logger;
 
 import com.google.auto.service.AutoService;
 import org.slf4j.ILoggerFactory;

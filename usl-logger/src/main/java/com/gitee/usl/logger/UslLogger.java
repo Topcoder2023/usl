@@ -1,4 +1,4 @@
-package com.gitee.usl.infra.logger;
+package com.gitee.usl.logger;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.lang.ansi.AnsiColor;

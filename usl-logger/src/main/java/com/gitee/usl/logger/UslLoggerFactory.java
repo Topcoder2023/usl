@@ -1,6 +1,5 @@
-package com.gitee.usl.infra.logger;
+package com.gitee.usl.logger;
 
-import com.gitee.usl.infra.constant.NumberConstant;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 
@@ -20,7 +19,7 @@ public final class UslLoggerFactory implements ILoggerFactory {
     private final Map<String, UslLogger> loggerCache;
 
     public UslLoggerFactory() {
-        loggerCache = new ConcurrentHashMap<>(NumberConstant.COMMON_SIZE);
+        loggerCache = new ConcurrentHashMap<>(2 << 4);
     }
 
     @Override
