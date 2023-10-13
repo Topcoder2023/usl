@@ -1,11 +1,11 @@
 package com.gitee.usl.plugin.impl;
 
 import cn.hutool.core.annotation.AnnotationUtil;
+import cn.hutool.core.convert.Convert;
 import com.gitee.usl.api.annotation.Var;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.utils.NumberWrapper;
-import com.gitee.usl.kernel.binder.ConverterFactory;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.api.plugin.BeginPlugin;
@@ -65,7 +65,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
                         return type.cast(unconverted);
                     }
 
-                    return ConverterFactory.getInstance().getConverter(type).convert(unconverted);
+                    return Convert.convert(type, unconverted);
                 })
                 .toArray();
 
