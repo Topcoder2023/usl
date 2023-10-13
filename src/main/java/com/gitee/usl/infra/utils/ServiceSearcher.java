@@ -4,10 +4,14 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.ServiceLoaderUtil;
+import com.gitee.usl.infra.constant.NumberConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * SPI 服务发现机制工具类
@@ -15,19 +19,47 @@ import java.util.*;
  * @author hongda.li
  */
 public class ServiceSearcher {
+    public static final String DISABLE_SERVICE = "usl.disable.service";
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceSearcher.class);
-    private static final String DISABLE_SERVICE = "usl.disable.service";
-    private static final Set<String> EXCLUDE_TYPES;
+    private static final Set<String> EXCLUDE_TYPES = HashSet.newHashSet(NumberConstant.COMMON_SIZE);
+    private static final AtomicBoolean INIT_FLAG = new AtomicBoolean(false);
 
     private ServiceSearcher() {
     }
 
-    static {
-        EXCLUDE_TYPES = Optional.ofNullable(System.getProperty(DISABLE_SERVICE))
-                .map(names -> ((Set<String>) new HashSet<>(CharSequenceUtil.split(names, StrPool.COMMA))))
-                .orElse(Collections.emptySet());
+    /**
+     * 快速禁用指定的 SPI 服务
+     * 此方法需要在 start() 方法前调用
+     * 否则可能会导致服务禁用失败
+     *
+     * @param services 指定服务列表
+     */
+    public void disable(Class<?>... services) {
+        String disabledName = Stream.of(services)
+                .map(Class::getName)
+                .collect(Collectors.joining(StrPool.COMMA));
 
-        EXCLUDE_TYPES.forEach(name -> LOGGER.info("Disable service by name - {}", name));
+        String property = System.getProperty(DISABLE_SERVICE);
+        if (property == null) {
+            System.setProperty(DISABLE_SERVICE, disabledName);
+        } else {
+            System.setProperty(DISABLE_SERVICE, property + StrPool.COMMA + disabledName);
+        }
+    }
+
+    /**
+     * 初始化服务查找器
+     * 读取系统环境变量中的被禁用服务
+     * 并保存这些被禁用服务的全类名
+     */
+    private static void initSelf() {
+        if (INIT_FLAG.get()) {
+            return;
+        }
+        EXCLUDE_TYPES.addAll(Optional.ofNullable(System.getProperty(DISABLE_SERVICE))
+                .map(names -> ((Set<String>) new HashSet<>(CharSequenceUtil.split(names, StrPool.COMMA))))
+                .orElse(Collections.emptySet()));
+        INIT_FLAG.compareAndSet(false, true);
     }
 
     /**
@@ -39,6 +71,9 @@ public class ServiceSearcher {
      * @return 服务实现集合
      */
     public static <T> List<T> searchAll(Class<T> serviceType) {
+        // 初始化服务
+        initSelf();
+
         // 根据SPI机制加载所有可用服务
         // 但排除指定的服务
         List<T> elements = new ArrayList<>(ServiceLoaderUtil.loadList(serviceType)
