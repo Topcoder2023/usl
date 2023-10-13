@@ -52,7 +52,7 @@ public class LoggerPlugin implements BeginPlugin, SuccessPlugin, FailurePlugin {
      */
     protected String format(Env env, AviatorObject[] objects) {
         return Arrays.stream(objects)
-                .map(item -> item.desc(env))
+                .map(item -> String.valueOf(item.getValue(env)))
                 .collect(Collectors.joining(CharPool.COMMA + CharSequenceUtil.SPACE));
     }
 }

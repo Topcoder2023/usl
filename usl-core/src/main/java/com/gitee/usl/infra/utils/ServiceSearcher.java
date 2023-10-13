@@ -93,7 +93,6 @@ public class ServiceSearcher {
         serviceFinder = Optional.ofNullable(ServiceLoaderUtil.loadFirst(ServiceFinder.class)).orElse(ServiceLoaderUtil::loadList);
 
         INIT_FLAG.compareAndSet(false, true);
-        LOGGER.debug("Service searcher initialized finish.");
     }
 
     /**

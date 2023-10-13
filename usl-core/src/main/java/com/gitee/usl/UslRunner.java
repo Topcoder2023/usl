@@ -3,6 +3,9 @@ package com.gitee.usl;
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.Shutdown;
+import com.gitee.usl.app.Interactive;
+import com.gitee.usl.app.cli.CliInteractive;
+import com.gitee.usl.app.web.WebInteractive;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
 import com.gitee.usl.infra.exception.UslException;
@@ -169,6 +172,11 @@ public class UslRunner {
                 .setAliveTime(60)
                 .setAllowedTimeout(false)
                 .setTimeUnit(TimeUnit.SECONDS)
+                .finish()
+                .configWebServer()
+                .setPath("/remote/call")
+                .setPort(10086)
+                .setDebug(false)
                 .finish();
     }
 
@@ -191,7 +199,20 @@ public class UslRunner {
         return ENGINE_CONTEXT.get(name);
     }
 
+    /**
+     * 开启交互
+     *
+     * @param mode 交互模式
+     */
     private void interactive(InteractiveMode mode) {
-        // todo 实现交互模式
+        final Interactive defaultInteractive = runner -> {
+        };
+        var interactive = switch (mode) {
+            case CLI -> new CliInteractive();
+            case WEB -> new WebInteractive();
+            case NONE -> defaultInteractive;
+        };
+
+        interactive.open(this);
     }
 }
