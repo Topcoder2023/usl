@@ -1,5 +1,6 @@
 package com.gitee.usl.kernel.engine;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.gitee.usl.api.FunctionPluggable;
 import com.gitee.usl.infra.structure.Plugins;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
@@ -28,8 +29,15 @@ public class AnnotatedFunction extends AbstractVariadicFunction implements Funct
 
     @Override
     public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {
+        // 封装调用会话
+        FunctionSession session = new FunctionSession((Env) env, args, this.definition);
+
+        // 封装参数，但若后续存在参数绑定插件，则会重写此参数
+        Object[] params = ArrayUtil.append(new Object[]{env}, args);
+        session.setInvocation(this.definition.methodMeta().toInvocation(params));
+
         // 基于插件来执行函数可以更好的动态扩展功能
-        return this.withPlugin(new FunctionSession((Env) env, args, this.definition));
+        return this.withPlugin(session);
     }
 
     @Override

@@ -32,14 +32,14 @@ public class CacheablePlugin implements BeginPlugin, SuccessPlugin {
     public void onBegin(FunctionSession session) {
         // 缓存为空直接跳过
         if (cache == null || cacheTime == null) {
-            logger.debug("Cache is empty. Try to re-execute and cache.");
+            logger.debug("Cache is empty. Try to update cache.");
             return;
         }
 
         // 缓存未设置永不过期且过期直接跳过
         boolean neverExpired = expired <= NumberConstant.ZERO;
         if (!neverExpired && DateUtil.between(cacheTime, new Date(), this.unit, true) > expired) {
-            logger.debug("Cache is expired. Try to re-execute and cache.");
+            logger.debug("Cache is expired. Try to update cache.");
             this.cache = null;
             return;
         }
