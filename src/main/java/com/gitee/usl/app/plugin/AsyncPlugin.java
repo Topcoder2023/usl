@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author hongda.li
  */
 public class AsyncPlugin implements BeginPlugin {
-    private static final Object RESULT_PLACEHOLDER = new Object() {
+    private static final Object ASYNC_PLACEHOLDER = new Object() {
         @Override
         public String toString() {
             return "[Async_Call_Result]";
@@ -29,6 +29,6 @@ public class AsyncPlugin implements BeginPlugin {
 
         // 此处设置非空返回值
         // 目的是避免重复调用
-        session.setResult(RESULT_PLACEHOLDER);
+        session.setResult(ASYNC_PLACEHOLDER);
     }
 }
