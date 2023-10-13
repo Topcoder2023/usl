@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.ServiceLoaderUtil;
-import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.api.ServiceFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,16 +19,47 @@ import java.util.stream.Stream;
  * @author hongda.li
  */
 public class ServiceSearcher {
-    public static final String DISABLE_SERVICE = "usl.disable.service";
+    /**
+     * 待禁止服务的系统属性的名称
+     * 待禁止服务的全类名存储在 excludeServiceNames 变量中
+     */
+    public static final String DISABLE_SERVICE = "usl.disabled.service";
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceSearcher.class);
-    private static final Set<String> EXCLUDE_TYPES = HashSet.newHashSet(NumberConstant.COMMON_SIZE);
+
+    /**
+     * ServiceSearcher 初始化标识
+     * 初始化方法会在第一次调用 searchAll() 方法时被懒加载调用
+     * 这样的好处是将 excludeServiceNames 变量和 serviceFinder 变量的初始化尽可能延后
+     * 以便于其它调用方扩展它们
+     * 此处使用 AtomicBoolean 类型，当返回值为 true 时，表示 ServiceSearcher 已初始化完成
+     */
     private static final AtomicBoolean INIT_FLAG = new AtomicBoolean(false);
+
+    /**
+     * 需要排除的服务的全类名集合
+     * 当调用方不希望某些扩展服务实现类被使用时
+     * 可以通过调用 disable() 方法并传入需要禁止的服务类
+     * 也可以通过设置 System.setProperty(DISABLE_SERVICE, "serviceName") 来实现同样的目的
+     */
+    private static Set<String> excludeServiceNames;
+
+    /**
+     * 服务发现者
+     * 用以发现指定类型的服务实现
+     * 默认使用 JDK 内置的 SPI 服务发现机制
+     * 即在 META-INF/services/目录下创建服务接口的全类名文件
+     * 并在文件中声明所有可直接实例化的具有无参构造器的实现类的全类名
+     * 此处变量的声明是为了自定义拓展服务发现机制
+     * 例如，当 Spring 项目可以使用 (type) -> ApplicationContext.getBean(type) 来实现服务发现
+     * 也可以将两者组合起来，先从容器中获取组件，再基于 SPI 获取组件
+     */
+    private static ServiceFinder serviceFinder;
 
     private ServiceSearcher() {
     }
 
     /**
-     * 快速禁用指定的 SPI 服务
+     * 快速禁用指定的服务
      * 此方法需要在 start() 方法前调用
      * 否则可能会导致服务禁用失败
      *
@@ -56,10 +87,13 @@ public class ServiceSearcher {
         if (INIT_FLAG.get()) {
             return;
         }
-        EXCLUDE_TYPES.addAll(Optional.ofNullable(System.getProperty(DISABLE_SERVICE))
+        excludeServiceNames = Optional.ofNullable(System.getProperty(DISABLE_SERVICE))
                 .map(names -> ((Set<String>) new HashSet<>(CharSequenceUtil.split(names, StrPool.COMMA))))
-                .orElse(Collections.emptySet()));
+                .orElse(Collections.emptySet());
+        serviceFinder = Optional.ofNullable(ServiceLoaderUtil.loadFirst(ServiceFinder.class)).orElse(ServiceLoaderUtil::loadList);
+
         INIT_FLAG.compareAndSet(false, true);
+        LOGGER.debug("Service searcher initialized finish.");
     }
 
     /**
@@ -76,9 +110,9 @@ public class ServiceSearcher {
 
         // 根据SPI机制加载所有可用服务
         // 但排除指定的服务
-        List<T> elements = new ArrayList<>(ServiceLoaderUtil.loadList(serviceType)
+        List<T> elements = new ArrayList<>(serviceFinder.findAll(serviceType)
                 .stream()
-                .filter(element -> !EXCLUDE_TYPES.contains(element.getClass().getName()))
+                .filter(element -> !excludeServiceNames.contains(element.getClass().getName()))
                 .toList());
 
         if (CollUtil.isEmpty(elements)) {
@@ -88,7 +122,7 @@ public class ServiceSearcher {
         // 若服务不为空则排序后返回
         AnnotatedComparator.sort(elements);
 
-        elements.forEach(item -> LOGGER.debug("Spi Service found - [{} - {}]", serviceType.getName(), item.getClass().getName()));
+        elements.forEach(item -> LOGGER.debug("Service instance found - [{} - {}]", serviceType.getName(), item.getClass().getName()));
 
         return elements;
     }
