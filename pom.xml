@@ -17,6 +17,7 @@
         <module>usl-function-math</module>
         <module>usl-function-db</module>
         <module>usl-logger</module>
+        <module>usl-all</module>
     </modules>
     <groupId>com.gitee</groupId>
     <artifactId>usl</artifactId>
@@ -82,6 +83,54 @@
             <dependency>
                 <groupId>com.gitee</groupId>
                 <artifactId>usl-logger</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gitee</groupId>
+                <artifactId>usl-plugin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gitee</groupId>
+                <artifactId>usl-function-date</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gitee</groupId>
+                <artifactId>usl-function-db</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gitee</groupId>
+                <artifactId>usl-function-json</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gitee</groupId>
+                <artifactId>usl-function-math</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gitee</groupId>
+                <artifactId>usl-function-system</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gitee</groupId>
+                <artifactId>usl-function-text</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gitee</groupId>
+                <artifactId>usl-function-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
