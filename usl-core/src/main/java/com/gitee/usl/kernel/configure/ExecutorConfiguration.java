@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  * @author hongda.li
  */
 public class ExecutorConfiguration {
-    private final UslConfiguration configuration;
+    private final Configuration configuration;
     private int corePoolSize;
     private int maxPoolSize;
     private boolean allowedTimeout;
@@ -17,11 +17,11 @@ public class ExecutorConfiguration {
     private TimeUnit timeUnit;
     private ExecutorPoolManager executorPoolManager;
 
-    public ExecutorConfiguration(UslConfiguration configuration) {
+    public ExecutorConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
-    public UslConfiguration finish() {
+    public Configuration finish() {
         return this.configuration;
     }
 

@@ -6,15 +6,15 @@ import java.util.StringJoiner;
  * @author hongda.li
  */
 public class WebServerConfiguration {
-    private final UslConfiguration configuration;
+    private final Configuration configuration;
     private String name;
     private int port;
 
-    public WebServerConfiguration(UslConfiguration configuration) {
+    public WebServerConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
-    public UslConfiguration getConfiguration() {
+    public Configuration getConfiguration() {
         return configuration;
     }
 

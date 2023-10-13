@@ -9,7 +9,7 @@ import com.gitee.usl.kernel.cache.Cache;
 import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.QueueConfiguration;
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
 import com.gitee.usl.kernel.queue.CompileGeneratorConsumer;
@@ -37,13 +37,13 @@ import java.util.concurrent.TimeUnit;
 @AutoService(Initializer.class)
 public final class ScriptEngineManager implements Initializer {
     private AviatorEvaluatorInstance instance;
-    private UslConfiguration uslConfiguration;
+    private Configuration configuration;
     private CacheConfiguration cacheConfiguration;
     private QueueConfiguration queueConfiguration;
 
     @Override
-    public void doInit(UslConfiguration uslConfiguration) {
-        this.uslConfiguration = uslConfiguration;
+    public void doInit(Configuration uslConfiguration) {
+        this.configuration = uslConfiguration;
         this.cacheConfiguration = uslConfiguration.configCache();
         this.queueConfiguration = uslConfiguration.configQueue();
 
@@ -118,7 +118,7 @@ public final class ScriptEngineManager implements Initializer {
     private void compile(String content) {
         queueConfiguration.compileQueueManager()
                 .producer()
-                .produce(content, this.uslConfiguration);
+                .produce(content, this.configuration);
     }
 
     /**

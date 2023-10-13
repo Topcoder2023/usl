@@ -6,14 +6,14 @@ import com.gitee.usl.kernel.cache.CacheManager;
  * @author hongda.li
  */
 public class CacheConfiguration {
-    private final UslConfiguration configuration;
+    private final Configuration configuration;
     private CacheManager cacheManager;
 
-    public CacheConfiguration(UslConfiguration configuration) {
+    public CacheConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
-    public UslConfiguration finish() {
+    public Configuration finish() {
         return this.configuration;
     }
 

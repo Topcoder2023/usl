@@ -1,7 +1,7 @@
 package com.gitee.usl.kernel.queue;
 
 import cn.hutool.core.util.IdUtil;
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 import com.googlecode.aviator.Expression;
 
 /**
@@ -13,7 +13,7 @@ public class CompileEvent {
     private final String eventId;
     private String content;
     private Expression expression;
-    private UslConfiguration configuration;
+    private Configuration configuration;
 
     public CompileEvent() {
         // 雪花ID作为唯一ID
@@ -42,11 +42,11 @@ public class CompileEvent {
         return this;
     }
 
-    public UslConfiguration getConfiguration() {
+    public Configuration getConfiguration() {
         return configuration;
     }
 
-    public CompileEvent setConfiguration(UslConfiguration configuration) {
+    public CompileEvent setConfiguration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }

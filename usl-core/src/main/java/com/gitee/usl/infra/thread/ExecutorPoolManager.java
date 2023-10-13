@@ -5,7 +5,7 @@ import cn.hutool.core.thread.RejectPolicy;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.configure.ExecutorConfiguration;
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 import com.google.auto.service.AutoService;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -38,7 +38,7 @@ public class ExecutorPoolManager implements Initializer {
     }
 
     @Override
-    public void doInit(UslConfiguration uslConfiguration) {
+    public void doInit(Configuration uslConfiguration) {
         ExecutorConfiguration configuration = uslConfiguration.configExecutor();
 
         this.executor = ExecutorBuilder.create()

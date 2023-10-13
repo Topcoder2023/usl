@@ -9,16 +9,16 @@ import com.gitee.usl.kernel.queue.CompileQueueManager;
  * @author hongda.li
  */
 public class QueueConfiguration {
-    private final UslConfiguration configuration;
+    private final Configuration configuration;
     private int bufferSize;
     private CompileQueueManager compileQueueManager;
 
-    public QueueConfiguration(UslConfiguration configuration) {
+    public QueueConfiguration(Configuration configuration) {
         this.bufferSize = NumberConstant.EIGHT;
         this.configuration = configuration;
     }
 
-    public UslConfiguration finish() {
+    public Configuration finish() {
         return this.configuration;
     }
 

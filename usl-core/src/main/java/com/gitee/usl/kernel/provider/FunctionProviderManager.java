@@ -4,7 +4,7 @@ import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.api.FunctionProvider;
 import com.google.auto.service.AutoService;
@@ -28,7 +28,7 @@ public class FunctionProviderManager implements Initializer {
     public static final int USL_FUNC_PROVIDER_ORDER = Integer.MIN_VALUE + 1000;
 
     @Override
-    public void doInit(UslConfiguration uslConfiguration) {
+    public void doInit(Configuration uslConfiguration) {
         EngineConfiguration configuration = uslConfiguration.configEngine();
 
         // 函数容器

@@ -1,6 +1,6 @@
 package com.gitee.usl.api;
 
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 
 /**
  * 初始化器
@@ -14,5 +14,5 @@ public interface Initializer {
      *
      * @param configuration USL 配置类
      */
-    void doInit(UslConfiguration configuration);
+    void doInit(Configuration configuration);
 }

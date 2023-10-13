@@ -2,7 +2,7 @@ package com.gitee.usl.infra.time.impl;
 
 import com.gitee.usl.infra.time.FixedRateTimedTask;
 import com.gitee.usl.infra.time.TimedTask;
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class ThreadStatusWatcher implements FixedRateTimedTask {
     }
 
     @Override
-    public void doTask(UslConfiguration configuration) {
+    public void doTask(Configuration configuration) {
         final ThreadPoolExecutor executor = configuration.configExecutor()
                 .executorManager()
                 .executor();

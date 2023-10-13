@@ -11,12 +11,12 @@ import java.util.*;
  * @author hongda.li
  */
 public class EngineConfiguration {
-    private final UslConfiguration configuration;
+    private final Configuration configuration;
     private final Set<String> packageNameList;
     private final FunctionHolder functionHolder;
     private ScriptEngineManager scriptEngineManager;
 
-    public EngineConfiguration(UslConfiguration configuration) {
+    public EngineConfiguration(Configuration configuration) {
         this.configuration = configuration;
         this.packageNameList = HashSet.newHashSet(NumberConstant.COMMON_SIZE);
         this.functionHolder = new FunctionHolder();
@@ -26,7 +26,7 @@ public class EngineConfiguration {
         return packageNameList;
     }
 
-    public UslConfiguration finish() {
+    public Configuration finish() {
         return this.configuration;
     }
 

@@ -1,6 +1,6 @@
 package com.gitee.usl.kernel.queue;
 
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 import com.lmax.disruptor.RingBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public class CompileEventProducer {
         this.ringBuffer = ringBuffer;
     }
 
-    public void produce(String expression, UslConfiguration configuration) {
+    public void produce(String expression, Configuration configuration) {
         this.ringBuffer.publishEvent((unpublished, sequence) -> {
             unpublished.setContent(expression);
             unpublished.setConfiguration(configuration);

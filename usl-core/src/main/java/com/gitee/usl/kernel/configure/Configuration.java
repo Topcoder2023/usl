@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author hongda.li
  */
-public final class UslConfiguration {
+public final class Configuration {
     /**
      * 缓存配置类
      */

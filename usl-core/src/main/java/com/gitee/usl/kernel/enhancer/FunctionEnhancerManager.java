@@ -3,7 +3,7 @@ package com.gitee.usl.kernel.enhancer;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.ServiceSearcher;
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.api.FunctionEnhancer;
 import com.google.auto.service.AutoService;
 
@@ -25,10 +25,10 @@ public class FunctionEnhancerManager implements Initializer {
     public static final int USL_FUNC_ENHANCER_ORDER = Integer.MAX_VALUE - 10;
 
     @Override
-    public void doInit(UslConfiguration uslConfiguration) {
+    public void doInit(Configuration configuration) {
         List<FunctionEnhancer> enhancers = ServiceSearcher.searchAll(FunctionEnhancer.class);
 
-        uslConfiguration.configEngine()
+        configuration.configEngine()
                 .getFunctionHolder()
                 .onVisit(function -> enhancers.forEach(enhancer -> enhancer.enhance(function)));
     }

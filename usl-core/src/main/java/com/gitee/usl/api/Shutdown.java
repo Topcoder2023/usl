@@ -1,6 +1,6 @@
 package com.gitee.usl.api;
 
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 
 /**
  * @author hongda.li
@@ -11,5 +11,5 @@ public interface Shutdown {
      *
      * @param configuration 配置类
      */
-    void close(UslConfiguration configuration);
+    void close(Configuration configuration);
 }

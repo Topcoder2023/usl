@@ -7,7 +7,7 @@ import com.gitee.usl.infra.thread.NamedThreadFactory;
 import com.gitee.usl.infra.utils.AnnotatedComparator;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.QueueConfiguration;
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 import com.google.auto.service.AutoService;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -48,7 +48,7 @@ public class CompileQueueManager implements Initializer {
     private Disruptor<CompileEvent> disruptor;
 
     @Override
-    public void doInit(UslConfiguration uslConfiguration) {
+    public void doInit(Configuration uslConfiguration) {
         QueueConfiguration configuration = uslConfiguration.configQueue();
         configuration.compileQueueManager(this);
 

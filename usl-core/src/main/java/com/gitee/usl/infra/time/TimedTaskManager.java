@@ -4,7 +4,7 @@ import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.thread.NamedThreadFactory;
 import com.gitee.usl.infra.utils.ServiceSearcher;
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 import com.google.auto.service.AutoService;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class TimedTaskManager implements Initializer {
     private ScheduledExecutorService executor;
 
     @Override
-    public void doInit(UslConfiguration configuration) {
+    public void doInit(Configuration configuration) {
         taskList = ServiceSearcher.searchAll(TimedTask.class);
         executor = new ScheduledThreadPoolExecutor(taskList.size(), new NamedThreadFactory(PREFIX));
 

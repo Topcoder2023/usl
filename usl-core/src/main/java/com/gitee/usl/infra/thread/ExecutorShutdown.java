@@ -2,7 +2,7 @@ package com.gitee.usl.infra.thread;
 
 import com.gitee.usl.api.Shutdown;
 import com.gitee.usl.api.annotation.Order;
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 import com.google.auto.service.AutoService;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -17,7 +17,7 @@ public class ExecutorShutdown implements Shutdown {
     private static final long TIMEOUT = 30L;
 
     @Override
-    public void close(UslConfiguration configuration) {
+    public void close(Configuration configuration) {
         try (ThreadPoolExecutor executor = configuration.configExecutor()
                 .executorManager()
                 .executor()) {

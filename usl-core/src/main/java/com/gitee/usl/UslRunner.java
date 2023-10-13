@@ -4,10 +4,11 @@ import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.Shutdown;
 import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.infra.enums.InteractiveMode;
 import com.gitee.usl.infra.exception.UslException;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
 import org.slf4j.Logger;
@@ -43,27 +44,72 @@ public class UslRunner {
      * USL Runner 实例全局缓存
      */
     private static final Map<String, UslRunner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.EIGHT);
-    private static List<Shutdown> shutdowns;
+
+    /**
+     * USL Runner的名称
+     * 每一个执行器的名称应该唯一
+     */
     private final String name;
-    private final UslConfiguration configuration;
+
+    /**
+     * 在 JVM 关闭前的回调函数
+     */
+    private static List<Shutdown> shutdowns;
+
+    /**
+     * USL Runner的配置选项
+     * 支持为每一个执行器设置单独的配置
+     */
+    private final Configuration configuration;
 
     static {
+        // 绑定 JVM 生命周期钩子，在关闭 JVM 之前执行 USL 关闭回调函数
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            // 仅在关闭前再初始化回调函数
             shutdowns = ServiceSearcher.searchAll(Shutdown.class);
-            ENGINE_CONTEXT.values().forEach(UslRunner::close);
+            // 若存在多个 USL 执行器实例则依次关闭
+            ENGINE_CONTEXT.values().forEach(runner -> {
+                LOGGER.info("{} - Shutdown initiated.", runner.name);
+                shutdowns.forEach(shutdown -> shutdown.close(runner.configuration));
+                LOGGER.info("{} - Shutdown completed.", runner.name);
+            });
         }));
     }
 
+    /**
+     * 根据默认配置类构造 USL 执行器
+     */
     public UslRunner() {
         this(defaultConfiguration());
     }
 
-    public UslRunner(UslConfiguration configuration) {
+    /**
+     * 根据指定配置类构造 USL 执行器
+     *
+     * @param configuration 指定配置类
+     */
+    public UslRunner(Configuration configuration) {
         this.configuration = configuration;
         this.name = USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement();
     }
 
+    /**
+     * 启动 USL 执行器
+     * USL 执行器仅在启动后才能执行脚本
+     * 默认不采用任何交互模式
+     */
     public void start() {
+        this.start(InteractiveMode.NONE);
+    }
+
+    /**
+     * 启动 USL 执行器
+     * 当交互模式为 WEB 时，会在启动后加载 WEB 服务
+     * 当交互模式为 CLI 时，会在启动后开启命令行界面
+     *
+     * @param mode 指定的交互模式
+     */
+    public void start(InteractiveMode mode) {
         Assert.isFalse(ENGINE_CONTEXT.containsKey(name), () -> new UslException("USL Runner has been started."));
 
         try {
@@ -77,12 +123,9 @@ public class UslRunner {
             LOGGER.error("{} - Start failed.", name);
             throw e;
         }
-    }
 
-    public void close() {
-        LOGGER.info("{} - Shutdown initiated.", this.name);
-        shutdowns.forEach(shutdown -> shutdown.close(this.configuration));
-        LOGGER.info("{} - Shutdown completed.", this.name);
+        // 开启交互
+        this.interactive(mode);
     }
 
     /**
@@ -94,7 +137,7 @@ public class UslRunner {
      */
     public <T> Result<T> run(Param param) {
         return Optional.ofNullable(this.configuration)
-                .map(UslConfiguration::configEngine)
+                .map(Configuration::configEngine)
                 .map(EngineConfiguration::getScriptEngineManager)
                 .map(manager -> manager.<T>run(param))
                 .orElseThrow(() -> new UslException("USL Runner has not been started."));
@@ -105,7 +148,7 @@ public class UslRunner {
      *
      * @return USL 配置类
      */
-    public UslConfiguration configuration() {
+    public Configuration configuration() {
         return configuration;
     }
 
@@ -114,8 +157,8 @@ public class UslRunner {
      *
      * @return USL 配置类
      */
-    public static UslConfiguration defaultConfiguration() {
-        return new UslConfiguration()
+    public static Configuration defaultConfiguration() {
+        return new Configuration()
                 .configEngine()
                 .scan(UslRunner.class)
                 .finish()
@@ -146,5 +189,9 @@ public class UslRunner {
      */
     public static UslRunner findRunnerByName(String name) {
         return ENGINE_CONTEXT.get(name);
+    }
+
+    private void interactive(InteractiveMode mode) {
+        // todo 实现交互模式
     }
 }

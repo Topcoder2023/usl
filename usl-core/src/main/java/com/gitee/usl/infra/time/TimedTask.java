@@ -1,7 +1,7 @@
 package com.gitee.usl.infra.time;
 
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.kernel.configure.UslConfiguration;
+import com.gitee.usl.kernel.configure.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +17,7 @@ public interface TimedTask {
      *
      * @param configuration USL 配置类
      */
-    void doTask(UslConfiguration configuration);
+    void doTask(Configuration configuration);
 
     /**
      * 初始延迟时间
