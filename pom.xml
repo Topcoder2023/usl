@@ -37,6 +37,17 @@
         </developer>
 
         <developer>
+            <id>XSS</id>
+            <name>shuaishuai.xu</name>
+            <roles>
+                <role>Developer</role>
+                <role>Maintainer</role>
+                <role>Contributor</role>
+            </roles>
+            <email>2364704998@qq.com</email>
+        </developer>
+
+        <developer>
             <id>ZJS</id>
             <name>jingshu.zeng</name>
             <roles>
