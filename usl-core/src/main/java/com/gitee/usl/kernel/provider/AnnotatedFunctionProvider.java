@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -56,7 +57,7 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
                         return Stream.of(accept).map(name -> this.buildDefinition(name, ifPossible, method));
                     }
                 })
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override

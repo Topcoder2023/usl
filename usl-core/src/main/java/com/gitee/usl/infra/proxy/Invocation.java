@@ -13,10 +13,34 @@ import java.util.StringJoiner;
  *
  * @author hongda.li
  */
-public record Invocation<E>(Object target,
-                            Class<E> targetType,
-                            Method method,
-                            Object[] args) {
+public final class Invocation<E> {
+    private final Object target;
+    private final Class<E> targetType;
+    private final Method method;
+    private final Object[] args;
+
+    public Invocation(Object target, Class<E> targetType, Method method, Object[] args) {
+        this.target = target;
+        this.targetType = targetType;
+        this.method = method;
+        this.args = args;
+    }
+
+    public Object target() {
+        return target;
+    }
+
+    public Class<E> targetType() {
+        return targetType;
+    }
+
+    public Method method() {
+        return method;
+    }
+
+    public Object[] args() {
+        return args;
+    }
 
     /**
      * 调用方法

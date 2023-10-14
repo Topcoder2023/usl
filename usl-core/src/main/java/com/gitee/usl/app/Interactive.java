@@ -1,6 +1,6 @@
 package com.gitee.usl.app;
 
-import com.gitee.usl.UslRunner;
+import com.gitee.usl.USLRunner;
 
 /**
  * 交互接口
@@ -14,5 +14,5 @@ public interface Interactive {
      *
      * @param runner USL 执行器实例
      */
-    void open(UslRunner runner);
+    void open(USLRunner runner);
 }

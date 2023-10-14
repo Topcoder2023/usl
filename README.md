@@ -1,7 +1,7 @@
 # **USL —— Universal Script Language** (通用脚本语言)
 
 <p style="text-align:center">
-<img src="https://img.shields.io/badge/JDK-17-brightgreen" alt="">
+<img src="https://img.shields.io/badge/JDK-1.8+-brightgreen" alt="">
 <img src="https://img.shields.io/badge/Aviator-5.4.1-brightgreen" alt="">
 <img src="https://img.shields.io/badge/Caffeine-3.1.8-brightgreen" alt="">
 <img src="https://img.shields.io/badge/Disruptor-3.4.4-brightgreen" alt="">

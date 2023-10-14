@@ -16,7 +16,7 @@ public class AttributeMeta {
     private final Map<String, Object> container;
 
     public AttributeMeta() {
-        this.container = HashMap.newHashMap(NumberConstant.COMMON_SIZE);
+        this.container = new HashMap<>(NumberConstant.COMMON_SIZE);
     }
 
     public void insert(String name, Object value) {

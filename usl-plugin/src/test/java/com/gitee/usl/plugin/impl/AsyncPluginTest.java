@@ -1,7 +1,7 @@
 package com.gitee.usl.plugin.impl;
 
 import cn.hutool.core.thread.ThreadUtil;
-import com.gitee.usl.UslRunner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.plugin.annotation.Asynchronous;
@@ -18,7 +18,7 @@ import java.util.Map;
 class AsyncPluginTest {
     @Test
     void test() {
-        UslRunner runner = new UslRunner();
+        USLRunner runner = new USLRunner();
 
         runner.start();
 

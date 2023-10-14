@@ -1,5 +1,7 @@
 package com.gitee.usl.api.annotation;
 
+import com.gitee.usl.infra.constant.StringConstant;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,5 +29,30 @@ public @interface FuncClient {
      *
      * @return 函数客户端调用的目标服务
      */
-    @SuppressWarnings("JavadocLinkAsPlainText") String[] value();
+    @SuppressWarnings("JavadocLinkAsPlainText") String name();
+
+    /**
+     * 调用的脚本内容
+     *
+     * @return 脚本内容
+     */
+    String script();
+
+    /**
+     * 函数名称
+     * 默认取方法或类的名称并将首字母小写
+     * 支持指定多个名称
+     *
+     * @return 函数名称数组
+     */
+    String[] value() default {};
+
+    /**
+     * 指定 HTTP 客户端所使用的配置
+     * 因客户端配置与执行器绑定
+     * 因此仅需返回执行器的名称
+     *
+     * @return 执行器的名称
+     */
+    String runnerName() default StringConstant.FIRST_USL_RUNNER_NAME;
 }

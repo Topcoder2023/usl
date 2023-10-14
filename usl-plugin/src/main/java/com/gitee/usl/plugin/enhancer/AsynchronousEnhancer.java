@@ -1,7 +1,7 @@
 package com.gitee.usl.plugin.enhancer;
 
 import cn.hutool.core.annotation.AnnotationUtil;
-import com.gitee.usl.UslRunner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
@@ -42,7 +42,7 @@ public class AsynchronousEnhancer extends AbstractFunctionEnhancer {
     }
 
     private AsyncPlugin newAsyncPlugin(Asynchronous async) {
-        Configuration configuration = UslRunner.findRunnerByName(async.value()).configuration();
+        Configuration configuration = USLRunner.findRunnerByName(async.value()).configuration();
         ThreadPoolExecutor executor = configuration.configExecutor().executorManager().executor();
         return new AsyncPlugin(executor);
     }

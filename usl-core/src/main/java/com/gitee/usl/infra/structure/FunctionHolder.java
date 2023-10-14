@@ -24,7 +24,7 @@ public class FunctionHolder {
     private final Map<String, AviatorFunction> container;
 
     public FunctionHolder() {
-        this.container = HashMap.newHashMap(NumberConstant.COMMON_SIZE);
+        this.container = new HashMap<>(NumberConstant.COMMON_SIZE);
     }
 
     /**

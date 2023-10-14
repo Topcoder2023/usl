@@ -1,6 +1,6 @@
 package com.gitee.usl.plugin.annotation;
 
-import com.gitee.usl.api.annotation.CombineFunc;
+import com.gitee.usl.infra.constant.StringConstant;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -20,5 +20,5 @@ public @interface Asynchronous {
      *
      * @return 执行器的名称
      */
-    String value() default CombineFunc.DEFAULT_ENGINE_NAME;
+    String value() default StringConstant.FIRST_USL_RUNNER_NAME;
 }

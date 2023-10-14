@@ -3,26 +3,30 @@ package com.gitee.usl.kernel.provider;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
-import com.gitee.usl.api.annotation.CombineFunc;
+import com.gitee.usl.api.FunctionProvider;
+import com.gitee.usl.api.annotation.FuncClient;
 import com.gitee.usl.infra.proxy.MethodMeta;
-import com.gitee.usl.kernel.engine.CombineFunction;
+import com.gitee.usl.kernel.engine.ClientFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
+import com.google.auto.service.AutoService;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * @author hongda.li
  */
-public class CombineFunctionProvider extends AbstractFunctionProvider {
+@AutoService(FunctionProvider.class)
+public class ClientFunctionProvider extends AbstractFunctionProvider {
     @Override
     protected List<FunctionDefinition> class2Definition(Class<?> clz) {
-        return Arrays.stream(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, CombineFunc.class)))
+        return Arrays.stream(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, FuncClient.class)))
                 .flatMap(method -> {
-                    String[] accept = AnnotationUtil.getAnnotationValue(method, CombineFunc.class);
+                    String[] accept = AnnotationUtil.getAnnotationValue(method, FuncClient.class);
 
                     if (accept == null) {
                         // 未指定函数名称，则取方法名转下划线
@@ -33,17 +37,17 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
                         return Stream.of(accept).map(name -> this.buildDefinition(name, clz, method));
                     }
                 })
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
     protected AviatorFunction definition2Func(FunctionDefinition definition) {
-        return new CombineFunction(definition).createProxy();
+        return new ClientFunction(definition);
     }
 
     @Override
     protected boolean filter(Class<?> clz) {
-        return clz.isInterface() && AnnotationUtil.hasAnnotation(clz, CombineFunc.class);
+        return clz.isInterface() && AnnotationUtil.hasAnnotation(clz, FuncClient.class);
     }
 
     /**

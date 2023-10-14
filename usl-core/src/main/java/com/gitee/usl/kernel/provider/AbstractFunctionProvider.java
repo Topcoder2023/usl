@@ -7,6 +7,7 @@ import com.gitee.usl.api.FunctionProvider;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author hongda.li
@@ -20,12 +21,12 @@ public abstract class AbstractFunctionProvider implements FunctionProvider {
                 .flatMap(packageName -> ClassUtil.scanPackage(packageName, this::filter)
                         .stream()
                         .flatMap(clz -> this.class2Definition(clz).stream())
-                        .toList()
+                        .collect(Collectors.toList())
                         .stream())
-                .toList()
+                .collect(Collectors.toList())
                 .stream()
                 .map(this::definition2Func)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**

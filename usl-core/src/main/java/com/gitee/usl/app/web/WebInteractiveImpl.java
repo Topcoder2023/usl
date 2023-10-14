@@ -1,7 +1,7 @@
 package com.gitee.usl.app.web;
 
 import cn.hutool.core.net.NetUtil;
-import com.gitee.usl.UslRunner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.kernel.configure.WebServerConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class WebInteractiveImpl implements WebInteractive {
     }
 
     @Override
-    public void open(UslRunner runner) {
+    public void open(USLRunner runner) {
         WebServerConfiguration config = runner.configuration().configWebServer();
         String host = NetUtil.getLocalhostStr();
 

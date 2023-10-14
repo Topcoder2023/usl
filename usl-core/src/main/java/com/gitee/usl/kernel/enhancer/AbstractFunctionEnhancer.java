@@ -13,16 +13,20 @@ import java.lang.reflect.Proxy;
 public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
     @Override
     public void enhance(AviatorFunction function) {
-        if (function instanceof AnnotatedFunction af) {
-            this.enhanceAnnotatedFunction(af);
-        }
-
         boolean isProxy = Proxy.isProxyClass(function.getClass());
-        if (isProxy && Proxy.getInvocationHandler(function) instanceof NativeFunction nf) {
-            this.enhanceNativeFunction(nf);
-        }
 
-        this.enhanceFunction(function);
+        // 增强注解函数
+        if (function instanceof AnnotatedFunction) {
+            this.enhanceAnnotatedFunction((AnnotatedFunction) function);
+        }
+        // 增强代理函数
+        else if (isProxy && Proxy.getInvocationHandler(function) instanceof NativeFunction) {
+            this.enhanceNativeFunction((NativeFunction) Proxy.getInvocationHandler(function));
+        }
+        // 增强其余函数
+        else {
+            this.enhanceFunction(function);
+        }
     }
 
     protected void enhanceFunction(AviatorFunction func) {

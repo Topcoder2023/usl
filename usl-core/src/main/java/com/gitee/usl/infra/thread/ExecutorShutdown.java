@@ -18,9 +18,11 @@ public class ExecutorShutdown implements Shutdown {
 
     @Override
     public void close(Configuration configuration) {
-        try (ThreadPoolExecutor executor = configuration.configExecutor()
+        ThreadPoolExecutor executor = configuration.configExecutor()
                 .executorManager()
-                .executor()) {
+                .executor();
+
+        try {
             executor.shutdown();
 
             if (!executor.awaitTermination(TIMEOUT, TimeUnit.SECONDS)) {

@@ -29,6 +29,8 @@ public class CompileGeneratorConsumer implements CompileConsumer {
      * 用以替代 null 的 Expression
      */
     private static final Expression EMPTY_PLACE_HOLDER = new BaseExpression(null, null, null) {
+        private static final long serialVersionUID = -3628284719346231510L;
+
         @Override
         public Object executeDirectly(Map<String, Object> env) {
             return null;

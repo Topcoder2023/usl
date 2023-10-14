@@ -83,8 +83,8 @@ public interface FunctionPluggable {
             Optional.ofNullable(session.exception()).ifPresent(error -> {
                 // 如果调用异常不为空，则将调用异常统一包装为 USL-Execute 异常
                 // 这样做是为了更好的区分整个脚本执行周期中的异常来源
-                if (error instanceof UslExecuteException ue) {
-                    throw ue;
+                if (error instanceof UslExecuteException) {
+                    throw (UslExecuteException) error;
                 } else {
                     throw new UslExecuteException(error);
                 }

@@ -6,6 +6,7 @@ import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.kernel.engine.ScriptEngineManager;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author hongda.li
@@ -18,8 +19,8 @@ public class EngineConfiguration {
 
     public EngineConfiguration(Configuration configuration) {
         this.configuration = configuration;
-        this.packageNameList = HashSet.newHashSet(NumberConstant.COMMON_SIZE);
         this.functionHolder = new FunctionHolder();
+        this.packageNameList = new HashSet<>(NumberConstant.COMMON_SIZE);
     }
 
     public Set<String> getPackageNameList() {
@@ -50,7 +51,9 @@ public class EngineConfiguration {
     }
 
     public EngineConfiguration scan(Set<Class<?>> scanner) {
-        List<String> nameList = scanner.stream().map(ClassUtil::getPackage).toList();
+        List<String> nameList = scanner.stream()
+                .map(ClassUtil::getPackage)
+                .collect(Collectors.toList());
         this.packageNameList.addAll(nameList);
         return this;
     }

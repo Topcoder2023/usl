@@ -29,7 +29,7 @@ public class Param {
 
     public Param() {
         this.cached = true;
-        this.context = HashMap.newHashMap(NumberConstant.COMMON_SIZE);
+        this.context = new HashMap<>(NumberConstant.COMMON_SIZE);
     }
 
     public Param setContext(String name, Object value) {

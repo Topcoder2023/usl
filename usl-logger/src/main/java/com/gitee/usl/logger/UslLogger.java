@@ -38,13 +38,27 @@ public class UslLogger extends AbstractUslEnabledLogger {
     /**
      * 日志级别与日志对应的颜色映射关系
      */
-    private static final Function<Level, AnsiColor> COLOR_MAPPING = (level -> switch (level) {
-        case DEBUG -> AnsiColor.WHITE;
-        case INFO -> AnsiColor.BRIGHT_CYAN;
-        case ERROR -> AnsiColor.BRIGHT_RED;
-        case TRACE -> AnsiColor.BRIGHT_BLUE;
-        case WARN -> AnsiColor.BRIGHT_YELLOW;
-    });
+    private static final Function<Level, AnsiColor> COLOR_MAPPING = level -> {
+        AnsiColor color;
+        switch (level) {
+            case INFO:
+                color = AnsiColor.BRIGHT_CYAN;
+                break;
+            case ERROR:
+                color = AnsiColor.BRIGHT_RED;
+                break;
+            case TRACE:
+                color = AnsiColor.BRIGHT_BLUE;
+                break;
+            case WARN:
+                color = AnsiColor.BRIGHT_YELLOW;
+                break;
+            case DEBUG:
+            default:
+                color = AnsiColor.WHITE;
+        }
+        return color;
+    };
 
     @Override
     protected String getFullyQualifiedCallerName() {

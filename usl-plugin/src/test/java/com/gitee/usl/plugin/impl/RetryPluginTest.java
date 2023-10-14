@@ -1,6 +1,6 @@
 package com.gitee.usl.plugin.impl;
 
-import com.gitee.usl.UslRunner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.plugin.annotation.Retryable;
@@ -16,7 +16,7 @@ import java.util.Map;
 class RetryPluginTest {
     @Test
     void test() {
-        UslRunner runner = new UslRunner();
+        USLRunner runner = new USLRunner();
 
         runner.start();
 

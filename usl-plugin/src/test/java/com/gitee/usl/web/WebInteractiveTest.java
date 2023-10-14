@@ -1,6 +1,6 @@
 package com.gitee.usl.web;
 
-import com.gitee.usl.UslRunner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.infra.enums.InteractiveMode;
 
@@ -10,7 +10,7 @@ import com.gitee.usl.infra.enums.InteractiveMode;
 class WebInteractiveTest {
 
     public static void main(String[] args) {
-        new UslRunner().start(InteractiveMode.WEB);
+        new USLRunner().start(InteractiveMode.WEB);
     }
 
     @Func

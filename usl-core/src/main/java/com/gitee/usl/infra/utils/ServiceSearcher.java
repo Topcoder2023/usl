@@ -109,10 +109,10 @@ public class ServiceSearcher {
 
         // 根据SPI机制加载所有可用服务
         // 但排除指定的服务
-        List<T> elements = new ArrayList<>(serviceFinder.findAll(serviceType)
+        List<T> elements = serviceFinder.findAll(serviceType)
                 .stream()
                 .filter(element -> !excludeServiceNames.contains(element.getClass().getName()))
-                .toList());
+                .collect(Collectors.toList());
 
         if (CollUtil.isEmpty(elements)) {
             return Collections.emptyList();

@@ -1,13 +1,13 @@
 package com.gitee.usl.app.cli;
 
-import com.gitee.usl.UslRunner;
+import com.gitee.usl.USLRunner;
 
 /**
  * @author hongda.li
  */
 public class CliInteractiveImpl implements CliInteractive {
     @Override
-    public void open(UslRunner runner) {
+    public void open(USLRunner runner) {
 
     }
 }

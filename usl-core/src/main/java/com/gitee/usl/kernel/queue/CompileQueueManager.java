@@ -99,7 +99,9 @@ public class CompileQueueManager implements Initializer {
      * @return 名称集合
      */
     private List<String> getConsumerNames(List<CompileConsumer> consumers) {
-        return consumers.stream().map(consumer -> consumer.getClass().getName()).toList();
+        return consumers.stream()
+                .map(consumer -> consumer.getClass().getName())
+                .collect(Collectors.toList());
     }
 
     public CompileEventProducer producer() {

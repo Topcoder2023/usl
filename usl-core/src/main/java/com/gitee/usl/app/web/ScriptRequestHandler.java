@@ -3,7 +3,7 @@ package com.gitee.usl.app.web;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.TypeReference;
-import com.gitee.usl.UslRunner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.kernel.domain.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +26,12 @@ public class ScriptRequestHandler extends HttpServerHandler {
     private static final String SCRIPT_NAME = "script";
     private static final byte[] NONE_MATCHED = "The request path does not match, please check the request path.".getBytes(StandardCharsets.UTF_8);
     private final String path;
-    private final UslRunner runner;
+    private final USLRunner runner;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private static final TypeReference<Map<String, Object>> REFERENCE = new TypeReference<>() {
+    private static final TypeReference<Map<String, Object>> REFERENCE = new TypeReference<Map<String, Object>>() {
     };
 
-    public ScriptRequestHandler(UslRunner runner) {
+    public ScriptRequestHandler(USLRunner runner) {
         this.runner = runner;
         this.path = runner.configuration().configWebServer().getPath();
     }

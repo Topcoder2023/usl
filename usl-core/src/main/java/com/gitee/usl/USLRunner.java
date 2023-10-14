@@ -9,6 +9,7 @@ import com.gitee.usl.app.cli.CliInteractiveImpl;
 import com.gitee.usl.app.web.WebInteractive;
 import com.gitee.usl.app.web.WebInteractiveImpl;
 import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
 import com.gitee.usl.infra.exception.UslException;
 import com.gitee.usl.infra.utils.ServiceSearcher;
@@ -30,12 +31,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author hongda.li
  */
-public class UslRunner {
-    /**
-     * USL Runner 名称前缀
-     */
-    private static final String USL_RUNNER_NAME_PREFIX = "USL Runner-";
-    private static final Logger LOGGER = LoggerFactory.getLogger(UslRunner.class);
+@SuppressWarnings("AlibabaClassNamingShouldBeCamel")
+public class USLRunner {
+    private static final Logger LOGGER = LoggerFactory.getLogger(USLRunner.class);
 
     /**
      * USL Runner 实例的数量
@@ -48,7 +46,7 @@ public class UslRunner {
     /**
      * USL Runner 实例全局缓存
      */
-    private static final Map<String, UslRunner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.EIGHT);
+    private static final Map<String, USLRunner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.EIGHT);
 
     /**
      * USL Runner的名称
@@ -84,7 +82,7 @@ public class UslRunner {
     /**
      * 根据默认配置类构造 USL 执行器
      */
-    public UslRunner() {
+    public USLRunner() {
         this(defaultConfiguration());
     }
 
@@ -93,9 +91,9 @@ public class UslRunner {
      *
      * @param configuration 指定配置类
      */
-    public UslRunner(Configuration configuration) {
+    public USLRunner(Configuration configuration) {
         this.configuration = configuration;
-        this.name = USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement();
+        this.name = StringConstant.USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement();
     }
 
     /**
@@ -165,7 +163,7 @@ public class UslRunner {
     public static Configuration defaultConfiguration() {
         return new Configuration()
                 .configEngine()
-                .scan(UslRunner.class)
+                .scan(USLRunner.class)
                 .finish()
                 .configExecutor()
                 .setCorePoolSize(8)
@@ -197,7 +195,7 @@ public class UslRunner {
      * @param name 名称
      * @return 实例
      */
-    public static UslRunner findRunnerByName(String name) {
+    public static USLRunner findRunnerByName(String name) {
         return ENGINE_CONTEXT.get(name);
     }
 
@@ -207,15 +205,22 @@ public class UslRunner {
      * @param mode 交互模式
      */
     private void interactive(InteractiveMode mode) {
-        final Interactive defaultInteractive = runner -> {
-        };
-        var interactive = switch (mode) {
-            case CLI -> Optional.ofNullable(ServiceSearcher.searchFirst(CliInteractive.class))
-                    .orElse(new CliInteractiveImpl());
-            case WEB -> Optional.ofNullable(ServiceSearcher.searchFirst(WebInteractive.class))
-                    .orElse(new WebInteractiveImpl());
-            case NONE -> defaultInteractive;
-        };
+        final Interactive interactive;
+        switch (mode) {
+            case CLI:
+                interactive = Optional.ofNullable(ServiceSearcher.searchFirst(CliInteractive.class))
+                        .orElse(new CliInteractiveImpl());
+                break;
+            case WEB:
+                interactive = Optional.ofNullable(ServiceSearcher.searchFirst(WebInteractive.class))
+                        .orElse(new WebInteractiveImpl());
+                break;
+            case NONE:
+            default:
+                interactive = runner -> {
+                };
+                break;
+        }
 
         interactive.open(this);
     }
