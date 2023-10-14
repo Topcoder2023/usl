@@ -1,5 +1,10 @@
 package com.gitee.usl.infra.enums;
 
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * @author hongda.li
  */
@@ -24,13 +29,23 @@ public enum ResultCode {
      */
     TIMEOUT(520);
 
-    private final int code;
+    private final Integer code;
 
     ResultCode(int code) {
         this.code = code;
     }
 
-    public int getCode() {
+    public Integer code() {
         return code;
+    }
+
+    private static final Map<Integer, ResultCode> LOOK_UP;
+
+    static {
+        LOOK_UP = Stream.of(values()).collect(Collectors.toMap(ResultCode::code, Function.identity()));
+    }
+
+    public static ResultCode of(Integer code) {
+        return LOOK_UP.get(code);
     }
 }

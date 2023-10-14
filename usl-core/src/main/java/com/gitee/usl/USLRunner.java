@@ -174,7 +174,6 @@ public class USLRunner {
                 .setTimeUnit(TimeUnit.SECONDS)
                 .finish()
                 .configWebServer()
-                .setPath("/remote/call")
                 .setPort(10086)
                 .setDebug(false)
                 .finish();

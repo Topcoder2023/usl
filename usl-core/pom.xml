@@ -64,11 +64,6 @@
         </dependency>
 
         <dependency>
-            <groupId>cn.zhxu</groupId>
-            <artifactId>okhttps-fastjson2</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>

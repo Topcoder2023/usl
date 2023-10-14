@@ -77,7 +77,6 @@
         <image-combiner.version>2.6.5</image-combiner.version>
         <sensitive-word.version>0.8.0</sensitive-word.version>
         <druid.version>1.2.20</druid.version>
-        <okhttps.version>4.0.1</okhttps.version>
 
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -235,12 +234,6 @@
                 <artifactId>jline</artifactId>
                 <version>${jline.version}</version>
                 <optional>true</optional>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.zhxu</groupId>
-                <artifactId>okhttps-fastjson2</artifactId>
-                <version>${okhttps.version}</version>
             </dependency>
 
             <dependency>

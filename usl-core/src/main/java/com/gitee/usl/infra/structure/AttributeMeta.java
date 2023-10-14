@@ -32,7 +32,7 @@ public class AttributeMeta {
     }
 
     public Map<String, Object> asMap() {
-        return this.container;
+        return new HashMap<>(container);
     }
 
     @Override

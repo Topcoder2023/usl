@@ -49,7 +49,7 @@ public class Result<T> {
     public Result(ResultCode resultCode, String message, T data) {
         this.data = data;
         this.message = message;
-        this.code = resultCode.getCode();
+        this.code = resultCode.code();
     }
 
     public Integer getCode() {

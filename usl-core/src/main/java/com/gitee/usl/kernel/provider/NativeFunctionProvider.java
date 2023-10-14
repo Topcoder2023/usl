@@ -3,6 +3,7 @@ package com.gitee.usl.kernel.provider;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.infra.proxy.MethodMeta;
+import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.api.FunctionProvider;
@@ -53,6 +54,9 @@ public class NativeFunctionProvider extends AbstractFunctionProvider {
 
     @Override
     protected boolean filter(Class<?> clz) {
-        return AviatorFunction.class.isAssignableFrom(clz) && ClassUtil.isNormalClass(clz);
+        return AviatorFunction.class.isAssignableFrom(clz)
+                && ClassUtil.isNormalClass(clz)
+                // 跳过基于注解的函数
+                && !AnnotatedFunction.class.isAssignableFrom(clz);
     }
 }

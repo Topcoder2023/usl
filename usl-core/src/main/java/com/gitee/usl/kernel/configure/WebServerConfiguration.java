@@ -10,7 +10,6 @@ public class WebServerConfiguration {
     private String name;
     private int port;
     private boolean debug;
-    private String path;
 
     public WebServerConfiguration(Configuration configuration) {
         this.configuration = configuration;
@@ -48,15 +47,6 @@ public class WebServerConfiguration {
 
     public WebServerConfiguration setDebug(boolean debug) {
         this.debug = debug;
-        return this;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public WebServerConfiguration setPath(String path) {
-        this.path = path;
         return this;
     }
 

@@ -47,11 +47,6 @@ public final class Configuration {
      */
     private final WebServerConfiguration webServerConfiguration = new WebServerConfiguration(this);
 
-    /**
-     * 网络客户端配置类
-     */
-    private final WebClientConfiguration webClientConfiguration = new WebClientConfiguration();
-
     public CacheConfiguration configCache() {
         return cacheConfiguration;
     }
@@ -74,9 +69,5 @@ public final class Configuration {
 
     public WebServerConfiguration configWebServer() {
         return webServerConfiguration;
-    }
-
-    public WebClientConfiguration configWebClient() {
-        return webClientConfiguration;
     }
 }
