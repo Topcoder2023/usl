@@ -16,18 +16,22 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
+ * 脚本请求处理器
+ * 从参数中解析出脚本与脚本参数
+ * 并调用 USL 执行器执行并返回
+ *
  * @author hongda.li
  */
-public class RequestDispatcher extends HttpServerHandler {
+public class ScriptRequestHandler extends HttpServerHandler {
     private static final String SCRIPT_NAME = "script";
     private static final byte[] NONE_MATCHED = "The request path does not match, please check the request path.".getBytes(StandardCharsets.UTF_8);
-    private final UslRunner runner;
     private final String path;
+    private final UslRunner runner;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private static final TypeReference<Map<String, Object>> REFERENCE = new TypeReference<>() {
     };
 
-    public RequestDispatcher(UslRunner runner) {
+    public ScriptRequestHandler(UslRunner runner) {
         this.runner = runner;
         this.path = runner.configuration().configWebServer().getPath();
     }

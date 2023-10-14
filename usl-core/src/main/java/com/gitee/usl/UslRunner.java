@@ -5,7 +5,9 @@ import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.Shutdown;
 import com.gitee.usl.app.Interactive;
 import com.gitee.usl.app.cli.CliInteractive;
+import com.gitee.usl.app.cli.CliInteractiveImpl;
 import com.gitee.usl.app.web.WebInteractive;
+import com.gitee.usl.app.web.WebInteractiveImpl;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
 import com.gitee.usl.infra.exception.UslException;
@@ -208,8 +210,10 @@ public class UslRunner {
         final Interactive defaultInteractive = runner -> {
         };
         var interactive = switch (mode) {
-            case CLI -> new CliInteractive();
-            case WEB -> new WebInteractive();
+            case CLI -> Optional.ofNullable(ServiceSearcher.searchFirst(CliInteractive.class))
+                    .orElse(new CliInteractiveImpl());
+            case WEB -> Optional.ofNullable(ServiceSearcher.searchFirst(WebInteractive.class))
+                    .orElse(new WebInteractiveImpl());
             case NONE -> defaultInteractive;
         };
 
