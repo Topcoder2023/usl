@@ -51,7 +51,7 @@ public final class ScriptEngineManager implements Initializer {
 
         this.instance = AviatorEvaluator.newInstance();
         this.instance.removeFunctionLoader(ClassPathConfigFunctionLoader.getInstance());
-        this.instance.addFunctionLoader(name -> configuration.getFunctionHolder().search(name));
+        this.instance.addFunctionLoader(name -> configuration.functionHolder().search(name));
 
         configuration.setScriptEngineManager(this);
     }

@@ -29,7 +29,7 @@ public class FunctionEnhancerManager implements Initializer {
         List<FunctionEnhancer> enhancers = ServiceSearcher.searchAll(FunctionEnhancer.class);
 
         configuration.configEngine()
-                .getFunctionHolder()
+                .functionHolder()
                 .onVisit(function -> enhancers.forEach(enhancer -> enhancer.enhance(function)));
     }
 }

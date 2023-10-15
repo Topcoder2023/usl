@@ -32,7 +32,7 @@ public class FunctionProviderManager implements Initializer {
         EngineConfiguration configuration = uslConfiguration.configEngine();
 
         // 函数容器
-        final FunctionHolder holder = configuration.getFunctionHolder();
+        final FunctionHolder holder = configuration.functionHolder();
 
         // 加载所有函数定义信息提供者
         List<FunctionProvider> providers = ServiceSearcher.searchAll(FunctionProvider.class);

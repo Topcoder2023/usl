@@ -21,9 +21,12 @@ import java.util.function.Predicate;
  */
 public class FunctionHolder {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final List<Predicate<AviatorFunction>> filterList;
     private final Map<String, AviatorFunction> container;
 
+
     public FunctionHolder() {
+        this.filterList = new ArrayList<>(NumberConstant.EIGHT);
         this.container = new HashMap<>(NumberConstant.COMMON_SIZE);
     }
 
@@ -33,7 +36,15 @@ public class FunctionHolder {
      * @param function 非空的函数实例
      */
     public void register(AviatorFunction function) {
-        Assert.notNull(function);
+        Assert.notNull(function, "An empty function instance can not be registered");
+
+        // 过滤非法函数实例
+        for (Predicate<AviatorFunction> predicate : filterList) {
+            if (!predicate.test(function)) {
+                return;
+            }
+        }
+
         String name = function.getName();
 
         if (this.container.containsKey(name)) {
@@ -82,6 +93,15 @@ public class FunctionHolder {
         }
 
         return function;
+    }
+
+    /**
+     * 添加函数名称过滤器
+     *
+     * @param filter 函数名称过滤器
+     */
+    public void addFilter(Predicate<AviatorFunction> filter) {
+        this.filterList.add(filter);
     }
 
     public List<AviatorFunction> toList() {

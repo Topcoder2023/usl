@@ -4,8 +4,10 @@ import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.kernel.engine.ScriptEngineManager;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +60,12 @@ public class EngineConfiguration {
         return this;
     }
 
-    public ScriptEngineManager getScriptEngineManager() {
+    public EngineConfiguration filter(Predicate<AviatorFunction> filter) {
+        this.functionHolder.addFilter(filter);
+        return this;
+    }
+
+    public ScriptEngineManager scriptEngineManager() {
         return scriptEngineManager;
     }
 
@@ -67,7 +74,7 @@ public class EngineConfiguration {
         return this;
     }
 
-    public FunctionHolder getFunctionHolder() {
+    public FunctionHolder functionHolder() {
         return functionHolder;
     }
 }

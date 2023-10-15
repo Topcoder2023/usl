@@ -141,7 +141,7 @@ public class USLRunner {
     public <T> Result<T> run(Param param) {
         return Optional.ofNullable(this.configuration)
                 .map(Configuration::configEngine)
-                .map(EngineConfiguration::getScriptEngineManager)
+                .map(EngineConfiguration::scriptEngineManager)
                 .map(manager -> manager.<T>run(param))
                 .orElseThrow(() -> new UslException("USL Runner has not been started."));
     }
