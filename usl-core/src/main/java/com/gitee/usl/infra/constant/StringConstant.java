@@ -4,6 +4,7 @@ package com.gitee.usl.infra.constant;
  * @author hongda.li
  */
 public final class StringConstant {
+
     private StringConstant() {
     }
 
@@ -13,5 +14,9 @@ public final class StringConstant {
 
     public static final String REMOTE_CALL_PATH = "/remote/call";
 
+    public static final String PARAMS_NAME = "paramsName";
+
     public static final String SCRIPT_NAME = "script";
+
+    public static final String RUNNER_NAME = "runner";
 }
