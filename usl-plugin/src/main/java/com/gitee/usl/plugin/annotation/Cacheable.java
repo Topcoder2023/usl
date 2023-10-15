@@ -1,12 +1,13 @@
 package com.gitee.usl.plugin.annotation;
 
-import cn.hutool.core.date.DateUnit;
 import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.plugin.api.CacheKeyGenerator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author hongda.li
@@ -15,17 +16,31 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Cacheable {
     /**
+     * 缓存的最大数量
+     *
+     * @return 数量
+     */
+    long maxSize() default Long.MAX_VALUE;
+
+    /**
      * 缓存过期时间
      * 非正数表示永不过期
      *
      * @return 过期时间
      */
-    long expired() default NumberConstant.MINUS_ONE;
+    long expired() default NumberConstant.FIVE;
 
     /**
      * 缓存过期时间单位
      *
      * @return 时间单位
      */
-    DateUnit unit() default DateUnit.SECOND;
+    TimeUnit unit() default TimeUnit.MINUTES;
+
+    /**
+     * 唯一缓存键生成器
+     *
+     * @return 唯一缓存键生成器
+     */
+    Class<? extends CacheKeyGenerator> generator() default CacheKeyGenerator.class;
 }

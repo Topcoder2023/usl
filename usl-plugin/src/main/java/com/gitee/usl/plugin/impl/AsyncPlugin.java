@@ -25,7 +25,7 @@ public class AsyncPlugin implements BeginPlugin {
 
     @Override
     public void onBegin(FunctionSession session) {
-        executor.execute(() -> session.invocation().invoke());
+        executor.execute(() -> session.handler().apply(session));
 
         // 此处设置非空返回值
         // 目的是避免重复调用

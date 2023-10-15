@@ -6,6 +6,7 @@ import com.googlecode.aviator.utils.Env;
 
 import java.util.Arrays;
 import java.util.StringJoiner;
+import java.util.function.Function;
 
 /**
  * 当前函数执行会话
@@ -22,6 +23,12 @@ public final class FunctionSession {
     private Invocation<?> invocation;
     private final AviatorObject[] objects;
     private final FunctionDefinition definition;
+    /**
+     * 实际的处理逻辑
+     * 即插件化 FunctionPluggable 接口的 handle() 方法
+     * 暴露出来便于部分插件在 onBegin() 时提前执行实际处理逻辑
+     */
+    private Function<FunctionSession, Object> handler;
 
     public FunctionSession(Env env, AviatorObject[] objects, FunctionDefinition definition) {
         this.env = env;
@@ -63,9 +70,16 @@ public final class FunctionSession {
         return invocation;
     }
 
-    public FunctionSession setInvocation(Invocation<?> invocation) {
+    public void setInvocation(Invocation<?> invocation) {
         this.invocation = invocation;
-        return this;
+    }
+
+    public Function<FunctionSession, Object> handler() {
+        return handler;
+    }
+
+    public void setHandler(Function<FunctionSession, Object> handler) {
+        this.handler = handler;
     }
 
     @Override

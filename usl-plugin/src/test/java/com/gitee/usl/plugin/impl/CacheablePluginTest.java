@@ -30,7 +30,7 @@ class CacheablePluginTest {
 
 
     @Func
-    static class AsyncClass {
+    static class CacheClass {
 
         @Cacheable
         @Func("cache")
@@ -40,7 +40,7 @@ class CacheablePluginTest {
     }
 
     @Cacheable
-    static class AsyncFunction extends AbstractVariadicFunction {
+    static class CacheFunction extends AbstractVariadicFunction {
 
         @Override
         public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {

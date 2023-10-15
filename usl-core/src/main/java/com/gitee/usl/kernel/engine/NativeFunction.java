@@ -50,6 +50,7 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction> implement
         // 交由插件增强部分功能
         FunctionSession session = new FunctionSession(env, args, this.definition);
         session.setInvocation(invocation);
+        session.setHandler(this::handle);
 
         return this.withPlugin(session);
     }

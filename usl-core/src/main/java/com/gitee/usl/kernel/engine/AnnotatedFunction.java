@@ -42,6 +42,7 @@ public class AnnotatedFunction extends AbstractVariadicFunction implements Funct
             params = list.toArray();
         }
         session.setInvocation(this.definition.methodMeta().toInvocation(params));
+        session.setHandler(this::handle);
 
         // 基于插件来执行函数可以更好的动态扩展功能
         return this.withPlugin(session);
