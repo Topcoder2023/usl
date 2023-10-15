@@ -9,7 +9,7 @@
         <version>1.0.0.sunshine</version>
     </parent>
 
-    <artifactId>usl-function-json</artifactId>
+    <artifactId>usl-function-base</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

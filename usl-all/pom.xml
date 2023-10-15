@@ -25,6 +25,12 @@
 
         <dependency>
             <groupId>com.gitee</groupId>
+            <artifactId>usl-logger</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gitee</groupId>
             <artifactId>usl-plugin</artifactId>
         </dependency>
 
@@ -40,7 +46,7 @@
 
         <dependency>
             <groupId>com.gitee</groupId>
-            <artifactId>usl-function-json</artifactId>
+            <artifactId>usl-function-base</artifactId>
         </dependency>
 
         <dependency>
@@ -61,6 +67,12 @@
         <dependency>
             <groupId>com.gitee</groupId>
             <artifactId>usl-function-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

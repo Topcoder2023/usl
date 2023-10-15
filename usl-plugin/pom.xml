@@ -24,6 +24,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.gitee</groupId>
+            <artifactId>usl-logger</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.rholder</groupId>
             <artifactId>guava-retrying</artifactId>
         </dependency>

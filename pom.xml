@@ -11,7 +11,7 @@
         <module>usl-plugin</module>
         <module>usl-function-web</module>
         <module>usl-function-text</module>
-        <module>usl-function-json</module>
+        <module>usl-function-base</module>
         <module>usl-function-system</module>
         <module>usl-function-date</module>
         <module>usl-function-math</module>
@@ -117,7 +117,7 @@
 
             <dependency>
                 <groupId>com.gitee</groupId>
-                <artifactId>usl-function-json</artifactId>
+                <artifactId>usl-function-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

@@ -32,7 +32,7 @@ public class Param {
         this.context = new HashMap<>(NumberConstant.COMMON_SIZE);
     }
 
-    public Param setContext(String name, Object value) {
+    public Param addContext(String name, Object value) {
         this.context.put(name, value);
         return this;
     }
