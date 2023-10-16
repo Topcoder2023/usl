@@ -2,6 +2,7 @@ package com.gitee.usl.kernel.provider;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Func;
@@ -48,7 +49,7 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
                 .flatMap(method -> {
                     String[] accept = AnnotationUtil.getAnnotationValue(method, Func.class);
 
-                    if (accept == null) {
+                    if (ArrayUtil.isEmpty(accept)) {
                         // 未指定函数名称，则取方法名转下划线
                         String defaultName = CharSequenceUtil.toUnderlineCase(method.getName());
                         return Stream.of(this.buildDefinition(defaultName, ifPossible, method));

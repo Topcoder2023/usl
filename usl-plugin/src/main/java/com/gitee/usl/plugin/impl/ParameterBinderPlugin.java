@@ -1,31 +1,34 @@
 package com.gitee.usl.plugin.impl;
 
-import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.convert.Convert;
-import com.gitee.usl.api.annotation.Var;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.utils.NumberWrapper;
-import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.api.plugin.BeginPlugin;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 /**
+ * 参数绑定插件
+ * 原生的参数格式为 [Env, AviatorObject1, AviatorObject2...]
+ * 因此需要手动通过 obj1.getValue(env) 的方式获取真正的值
+ * 参数绑定插件将按照方法定义的参数类型和格式，从传入的参数值中动态绑定
+ * 以减少手动获取参数值的冗余逻辑
+ *
  * @author hongda.li
  */
 public class ParameterBinderPlugin implements BeginPlugin {
 
+    @SuppressWarnings("ReassignedVariable")
     @Override
     public void onBegin(FunctionSession session) {
-        FunctionDefinition definition = session.definition();
-
-        MethodMeta<?> methodMeta = definition.methodMeta();
+        MethodMeta<?> methodMeta = session.definition().methodMeta();
 
         // 跳过无参函数
         Method method = methodMeta.method();
@@ -34,31 +37,66 @@ public class ParameterBinderPlugin implements BeginPlugin {
             return;
         }
 
+        // 当前方法的参数列表及预期的参数长度
         Parameter[] parameters = method.getParameters();
         int length = parameters.length;
 
-        NumberWrapper.IntWrapper wrapper = NumberWrapper.ofIntWrapper();
+        // 当前函数的实际参数及实际的参数长度
+        AviatorObject[] objects = session.objects();
+        int maxLength = objects.length;
 
-        Env env = session.env();
+        // 当前的上下文环境
+        final Env env = session.env();
+
+        NumberWrapper.IntWrapper wrapper = NumberWrapper.ofIntWrapper();
 
         Object[] args = IntStream.range(NumberConstant.ZERO, length)
                 .filter(index -> index < length)
                 .mapToObj(index -> {
+                    // 避免数组越界，直接用 null 填充
+                    // 此处可能产生的原因是方法定义了 N 个参数，但实际传入的参数小于 N
+                    if (index - wrapper.get() > maxLength - 1) {
+                        return null;
+                    }
+
+                    // 当前参数的类型
                     Parameter parameter = parameters[index];
                     Class<?> type = parameter.getType();
 
+                    // 如果是 Env 类型的参数，则返回上下文环境
                     if (Env.class.equals(type)) {
+                        wrapper.increment();
                         return env;
                     }
 
-                    Object unconverted = Optional.ofNullable(AnnotationUtil.getAnnotationValue(parameter, Var.class))
-                            .map(name -> {
-                                wrapper.increment();
-                                return this.load(String.valueOf(name), env);
-                            })
-                            .orElseGet(() -> Optional.ofNullable(session.objects()[index - wrapper.get()])
-                                    .map(obj -> obj.getValue(env))
-                                    .orElse(null));
+                    // 如果是 FunctionSession 类型的参数，则返回会话信息
+                    if (FunctionSession.class.equals(type)) {
+                        wrapper.increment();
+                        return session;
+                    }
+
+                    // 如果是 AviatorObject 类型的参数，则直接返回
+                    if (AviatorObject.class.isAssignableFrom(type)) {
+                        return objects[index - wrapper.get()];
+                    }
+
+                    // 如果是数组或可变长度的参数
+                    if (type.isArray()) {
+                        Object array;
+                        Class<?> elementType = type.getComponentType();
+                        // 构造一个长度为 实际传入参数个数 - 已绑定的参数个数(除来自于环境变量以外的参数) 的数组
+                        array = Array.newInstance(elementType, objects.length - index + wrapper.get());
+                        boolean isRaw = AviatorObject.class.isAssignableFrom(elementType);
+
+                        // 将剩余所有参数都填充到这个数组中
+                        for (int j = index - wrapper.get(); j < objects.length; j++) {
+                            Object converted = Convert.convert(elementType, objects[j].getValue(env));
+                            Array.set(array, j - index + wrapper.get(), isRaw ? objects[j] : converted);
+                        }
+                        return array;
+                    }
+
+                    Object unconverted = objects[index - wrapper.get()].getValue(env);
 
                     // 如无需转换则不进行转换
                     if (unconverted != null && type.isAssignableFrom(unconverted.getClass())) {
@@ -71,31 +109,5 @@ public class ParameterBinderPlugin implements BeginPlugin {
 
         // 构建参数绑定逻辑完成后调用信息
         session.setInvocation(methodMeta.toInvocation(args));
-    }
-
-    /**
-     * 加载环境变量的值
-     *
-     * @param name 环境变量的名称
-     * @param env  当前上下文环境
-     * @return 环境变量的值
-     */
-    private Object load(String name, Env env) {
-        Object fromEnv;
-        if ((fromEnv = env.get(name)) != null) {
-            return fromEnv;
-        }
-
-        Object fromSystem;
-        if ((fromSystem = System.getenv(name)) != null) {
-            return fromSystem;
-        }
-
-        Object fromProperties;
-        if ((fromProperties = System.getProperty(name)) != null) {
-            return fromProperties;
-        }
-
-        return null;
     }
 }

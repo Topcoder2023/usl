@@ -3,7 +3,6 @@
 <p style="text-align:center">
 <img src="https://img.shields.io/badge/JDK-1.8+-brightgreen" alt="">
 <img src="https://img.shields.io/badge/Aviator-5.4.1-brightgreen" alt="">
-<img src="https://img.shields.io/badge/Caffeine-3.1.8-brightgreen" alt="">
 <img src="https://img.shields.io/badge/Disruptor-3.4.4-brightgreen" alt="">
 </p>
 
@@ -280,7 +279,7 @@ class LoggerEnhancer extends AbstractFunctionEnhancer {
 ### 6.服务注册与发现
 在前几节中，除了通过配置项声明的固定参数以外，大部分的扩展机制都是可以动态替换的，核心原理基于`SPI`机制实现，即在`META-INF/services`中，
 声明接口的全类名，以及在配置文件中，声明实现类的全类名。`USL`在`JDK`内置的`SPI`机制基础上，做了进一步封装，支持为同一个接口的多个服务实现类
-进行排序，优先级越高的实现类越先被执行，优先级的声明依赖于`@Order`注解。于此同时，`USL`也提供了自定义服务发现接口，以供扩展，例如：
+进行排序，优先级越高的实现类越先被执行，优先级的声明依赖于`@Order`注解。与此同时，`USL`也提供了自定义服务发现接口，以供扩展，例如：
 ```java
 class SpringServiceFinder implements ServiceFinder, ApplicationContextAware {
     private static ApplicationContext context;

@@ -87,9 +87,6 @@ public final class FunctionSession {
         return new StringJoiner(", ", FunctionSession.class.getSimpleName() + "[", "]")
                 .add("result=" + result)
                 .add("exception=" + exception)
-                .add("env=" + env)
-                .add("invocation=" + invocation)
-                .add("objects=" + Arrays.toString(objects))
                 .add("definition=" + definition)
                 .toString();
     }
