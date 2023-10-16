@@ -1,15 +1,16 @@
 package com.gitee.usl.plugin.impl;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.ArrayUtil;
 import com.gitee.usl.api.plugin.BeginPlugin;
 import com.gitee.usl.api.plugin.SuccessPlugin;
-import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.plugin.api.CacheKeyGenerator;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,19 +72,27 @@ public class CacheablePlugin implements BeginPlugin, SuccessPlugin {
     public static final class DefaultCacheKeyGenerator implements CacheKeyGenerator {
         @Override
         public String generateKey(String name, Invocation<?> invocation) {
-            final StringBuilder builder = new StringBuilder(name);
-
             Object[] args = invocation.args();
-            if (ArrayUtil.isEmpty(args) || args[NumberConstant.ZERO] instanceof Env) {
-                return builder.toString();
+            if (ArrayUtil.isEmpty(args)) {
+                return name;
             }
 
-            return builder.append(StrPool.DASHED)
-                    .append(Stream.of(args)
-                            .filter(arg -> !Env.class.equals(arg.getClass()))
-                            .map(String::valueOf)
-                            .collect(Collectors.joining(StrPool.DASHED)))
-                    .toString();
+            final Object envIfIsNative = args[0];
+
+            final String argsName = Stream.of(args)
+                    .filter(arg -> !Env.class.equals(arg.getClass()))
+                    .map(obj -> {
+                        Object val;
+                        if (obj instanceof AviatorObject && envIfIsNative instanceof Env) {
+                            val = ((AviatorObject) obj).getValue((Env) envIfIsNative);
+                        } else {
+                            val = obj;
+                        }
+                        return String.valueOf(val);
+                    })
+                    .collect(Collectors.joining(StrPool.DASHED));
+
+            return CharSequenceUtil.isEmpty(argsName) ? name : name + StrPool.DASHED + argsName;
         }
     }
 }

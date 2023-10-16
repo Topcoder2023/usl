@@ -21,11 +21,11 @@ class CacheablePluginTest {
 
         runner.start();
 
-        runner.run(new Param().setScript("cache()"));
-        runner.run(new Param().setScript("cache()"));
+        runner.run(new Param().setScript("cache(5)"));
+        runner.run(new Param().setScript("cache(5)"));
 
-        runner.run(new Param().setScript("cache_native()"));
-        runner.run(new Param().setScript("cache_native()"));
+        runner.run(new Param().setScript("cache_native(10)"));
+        runner.run(new Param().setScript("cache_native(10)"));
     }
 
 
@@ -34,8 +34,8 @@ class CacheablePluginTest {
 
         @Cacheable
         @Func("cache")
-        public String waitFunc() {
-            return "success";
+        public String waitFunc(int id) {
+            return "success : " + id;
         }
     }
 
@@ -44,7 +44,7 @@ class CacheablePluginTest {
 
         @Override
         public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {
-            return new AviatorString("success");
+            return new AviatorString("success : " + args[0].getValue(env));
         }
 
         @Override
