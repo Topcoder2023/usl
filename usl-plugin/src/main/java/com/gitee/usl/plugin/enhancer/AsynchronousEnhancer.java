@@ -3,6 +3,7 @@ package com.gitee.usl.plugin.enhancer;
 import cn.hutool.core.annotation.AnnotationUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.FunctionEnhancer;
+import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
@@ -16,6 +17,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * @author hongda.li
  */
+@Order(Integer.MAX_VALUE)
 @AutoService(FunctionEnhancer.class)
 public class AsynchronousEnhancer extends AbstractFunctionEnhancer {
 

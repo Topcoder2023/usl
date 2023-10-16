@@ -10,9 +10,13 @@ import com.google.auto.service.AutoService;
 /**
  * @author hongda.li
  */
-@Order(Integer.MIN_VALUE + 10)
+@Order(ParameterBinderEnhancer.PARAM_BINDER_ORDER)
 @AutoService(FunctionEnhancer.class)
 public class ParameterBinderEnhancer extends AbstractFunctionEnhancer {
+    /**
+     * 参数绑定插件生效的优先级
+     */
+    public static final int PARAM_BINDER_ORDER = Integer.MIN_VALUE + 10;
     private final ParameterBinderPlugin singletonPlugin = new ParameterBinderPlugin();
 
     @Override

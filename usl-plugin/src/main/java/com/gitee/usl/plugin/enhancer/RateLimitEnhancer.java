@@ -13,7 +13,7 @@ import com.google.auto.service.AutoService;
 /**
  * @author hongda.li
  */
-@Order(Integer.MIN_VALUE + 10)
+@Order(ParameterBinderEnhancer.PARAM_BINDER_ORDER + 10)
 @AutoService(FunctionEnhancer.class)
 public class RateLimitEnhancer extends AbstractFunctionEnhancer {
 

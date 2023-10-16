@@ -8,6 +8,9 @@ import com.googlecode.aviator.runtime.type.AviatorFunction;
 import java.lang.reflect.Proxy;
 
 /**
+ * 使用模板模式构建函数增强逻辑
+ * 抽象父类并不实现具体的逻辑而是交由子类实现
+ *
  * @author hongda.li
  */
 public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
