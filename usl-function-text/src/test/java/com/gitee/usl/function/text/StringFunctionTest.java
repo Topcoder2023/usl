@@ -21,15 +21,15 @@ class StringFunctionTest {
 
     @Test
     void strIsEmpty() {
-        assertEquals(true, runner.run(new Param().setScript("str.isEmpty('')")).getData());
-        assertEquals(false, runner.run(new Param().setScript("str.isEmpty('str')")).getData());
-    }
+        Param param1 = new Param().setScript("str.isEmpty('')");
+        assertEquals(true, runner.run(param1).getData());
 
-    @Test
-    void strIsBlank() {
-    }
+        Param param2 = new Param().setScript("str.isEmpty('str')");
+        assertEquals(false, runner.run(param2).getData());
 
-    @Test
-    void strEmptyToDefault() {
+        Param param3 = new Param()
+                .setScript("str.nullToDefault(var, 'def')")
+                .addContext("var", null);
+        assertEquals("def", runner.run(param3).getData());
     }
 }

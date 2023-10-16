@@ -17,4 +17,28 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.gitee</groupId>
+            <artifactId>usl-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gitee</groupId>
+            <artifactId>usl-plugin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gitee</groupId>
+            <artifactId>usl-logger</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
