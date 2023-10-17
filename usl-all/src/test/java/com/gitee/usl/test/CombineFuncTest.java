@@ -16,7 +16,10 @@ class CombineFuncTest {
     void test() {
         USLRunner runner = new USLRunner();
         runner.start();
-        Result<Object> run = runner.run(new com.gitee.usl.kernel.domain.Param().setScript("combine(4, 6)"));
+
+        runner.run(new com.gitee.usl.kernel.domain.Param().setScript("random.chinese()"));
+
+        Result<Object> run = runner.run(new com.gitee.usl.kernel.domain.Param().setScript("combine2(4, 6)"));
         System.out.println(run);
     }
 
@@ -24,7 +27,7 @@ class CombineFuncTest {
     @Func
     interface CombineFuncA {
 
-        @Func("combine")
+        @Func({"combine", "combine2", "combine3"})
         @CombineFunc("(var1 + var2) * 100")
         int method(@Param("var1") int a, @Param("var2") int b);
     }

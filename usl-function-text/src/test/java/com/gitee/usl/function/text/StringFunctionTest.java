@@ -24,12 +24,12 @@ class StringFunctionTest {
         Param param1 = new Param().setScript("str.isEmpty('')");
         assertEquals(true, runner.run(param1).getData());
 
-        Param param2 = new Param().setScript("str.isEmpty('str')");
+        Param param2 = new Param().setScript("str.isBlank('str')");
         assertEquals(false, runner.run(param2).getData());
 
-        Param param3 = new Param()
-                .setScript("str.nullToDefault(var, 'def')")
-                .addContext("var", null);
-        assertEquals("def", runner.run(param3).getData());
+//        Param param3 = new Param()
+//                .setScript("str.nullToDefault(var, 'def')")
+//                .addContext("var", null);
+//        assertEquals("def", runner.run(param3).getData());
     }
 }

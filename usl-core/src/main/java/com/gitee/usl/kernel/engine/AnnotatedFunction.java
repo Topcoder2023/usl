@@ -1,6 +1,7 @@
 package com.gitee.usl.kernel.engine;
 
 import cn.hutool.core.util.ArrayUtil;
+import com.gitee.usl.api.Definable;
 import com.gitee.usl.api.FunctionPluggable;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.structure.Plugins;
@@ -17,7 +18,8 @@ import java.util.stream.Stream;
  *
  * @author hongda.li
  */
-public class AnnotatedFunction extends AbstractVariadicFunction implements FunctionPluggable {
+public class AnnotatedFunction extends AbstractVariadicFunction
+        implements FunctionPluggable, Definable {
     private static final long serialVersionUID = 2613339911646206249L;
     private final transient Plugins plugins;
     private final transient FunctionDefinition definition;
@@ -63,6 +65,7 @@ public class AnnotatedFunction extends AbstractVariadicFunction implements Funct
         return this.plugins;
     }
 
+    @Override
     public FunctionDefinition definition() {
         return definition;
     }

@@ -6,6 +6,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
@@ -46,16 +47,21 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
         }
 
         return Stream.of(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, Func.class)))
-                .flatMap(method -> {
+                .map(method -> {
                     String[] accept = AnnotationUtil.getAnnotationValue(method, Func.class);
 
                     if (ArrayUtil.isEmpty(accept)) {
                         // 未指定函数名称，则取方法名转下划线
                         String defaultName = CharSequenceUtil.toUnderlineCase(method.getName());
-                        return Stream.of(this.buildDefinition(defaultName, ifPossible, method));
+                        return this.buildDefinition(defaultName, ifPossible, method);
                     } else {
                         // 指定了函数名称，则取指定的函数名称
-                        return Stream.of(accept).map(name -> this.buildDefinition(name, ifPossible, method));
+                        String firstName = accept[NumberConstant.ZERO];
+                        FunctionDefinition definition = this.buildDefinition(firstName, ifPossible, method);
+                        if (accept.length > NumberConstant.ONE) {
+                            definition.addAlias(ArrayUtil.sub(accept, NumberConstant.ONE, accept.length));
+                        }
+                        return definition;
                     }
                 })
                 .collect(Collectors.toList());

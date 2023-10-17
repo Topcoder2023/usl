@@ -16,7 +16,7 @@ public class AttributeMeta {
     private final Map<String, Object> container;
 
     public AttributeMeta() {
-        this.container = new HashMap<>(NumberConstant.COMMON_SIZE);
+        this.container = new HashMap<>(NumberConstant.EIGHT);
     }
 
     public void insert(String name, Object value) {
@@ -29,6 +29,10 @@ public class AttributeMeta {
 
     public <T> T search(String name, Class<T> type) {
         return Convert.convert(type, this.search(name));
+    }
+
+    public void insertAll(Map<String, Object> data) {
+        this.container.putAll(data);
     }
 
     public Map<String, Object> asMap() {

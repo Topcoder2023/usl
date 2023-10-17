@@ -1,15 +1,13 @@
 package com.gitee.usl.infra.structure;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -23,11 +21,12 @@ public class FunctionHolder {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final List<Predicate<AviatorFunction>> filterList;
     private final Map<String, AviatorFunction> container;
-
+    private final Map<String, String> aliasMap;
 
     public FunctionHolder() {
         this.filterList = new ArrayList<>(NumberConstant.EIGHT);
         this.container = new HashMap<>(NumberConstant.COMMON_SIZE);
+        this.aliasMap = new HashMap<>(NumberConstant.EIGHT);
     }
 
     /**
@@ -55,6 +54,18 @@ public class FunctionHolder {
         this.container.put(name, function);
 
         logger.info("Register USL function - [{}]", name);
+    }
+
+    public void register(AviatorFunction function, Set<String> alias) {
+        this.register(function);
+
+        if (CollUtil.isNotEmpty(alias)) {
+            String actualName = function.getName();
+            alias.forEach(aliasName -> {
+                this.aliasMap.put(aliasName, actualName);
+                logger.info("Alias USL function - [{} - {}]", actualName, aliasName);
+            });
+        }
     }
 
     /**
@@ -86,7 +97,14 @@ public class FunctionHolder {
      * @return 函数实例
      */
     public AviatorFunction search(String name) {
-        AviatorFunction function = this.container.get(name);
+        final String key;
+        if (!this.container.containsKey(name)) {
+            key = this.aliasMap.get(name);
+        } else {
+            key = name;
+        }
+
+        AviatorFunction function = this.container.get(key);
 
         if (function == null) {
             logger.warn("USL function not found - [{}]", name);

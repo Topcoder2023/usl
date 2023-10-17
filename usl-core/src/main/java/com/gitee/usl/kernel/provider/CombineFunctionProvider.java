@@ -10,6 +10,7 @@ import com.gitee.usl.api.FunctionProvider;
 import com.gitee.usl.api.annotation.CombineFunc;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.api.annotation.Param;
+import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.AttributeMeta;
@@ -35,7 +36,7 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
     protected List<FunctionDefinition> class2Definition(Class<?> clz) {
         return Stream.of(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, Func.class)
                         && AnnotationUtil.hasAnnotation(method, CombineFunc.class)))
-                .flatMap(method -> {
+                .map(method -> {
                     CombineFunc combine = AnnotationUtil.getAnnotation(method, CombineFunc.class);
                     String script = combine.value();
                     USLRunner runner = USLRunner.findRunnerByName(combine.runnerName());
@@ -50,10 +51,15 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
                     if (accept == null) {
                         // 未指定函数名称，则取方法名转下划线
                         String defaultName = CharSequenceUtil.toUnderlineCase(method.getName());
-                        return Stream.of(this.buildDefinition(defaultName, clz, method, script, runner, names));
+                        return this.buildDefinition(defaultName, clz, method, script, runner, names);
                     } else {
                         // 指定了函数名称，则取指定的函数名称
-                        return Stream.of(accept).map(name -> this.buildDefinition(name, clz, method, script, runner, names));
+                        String firstName = accept[NumberConstant.ZERO];
+                        FunctionDefinition definition = this.buildDefinition(firstName, clz, method, script, runner, names);
+                        if (accept.length > NumberConstant.ONE) {
+                            definition.addAlias(ArrayUtil.sub(accept, NumberConstant.ONE, accept.length));
+                        }
+                        return definition;
                     }
                 })
                 .collect(Collectors.toList());

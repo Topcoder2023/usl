@@ -1,9 +1,6 @@
 package com.gitee.usl.kernel.engine;
 
-import cn.hutool.core.text.CharPool;
-import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.text.NamingCase;
-import cn.hutool.core.text.StrPool;
+import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.AttributeMeta;
 
@@ -18,7 +15,7 @@ public class FunctionDefinition {
     private final String name;
     private MethodMeta<?> methodMeta;
     private final AttributeMeta attribute = new AttributeMeta();
-    private String url;
+    private final Set<String> alias = new HashSet<>(NumberConstant.EIGHT);
 
     public FunctionDefinition(String name) {
         this.name = name;
@@ -30,7 +27,6 @@ public class FunctionDefinition {
 
     public FunctionDefinition setMethodMeta(MethodMeta<?> methodMeta) {
         this.methodMeta = methodMeta;
-        this.initUrl();
         return this;
     }
 
@@ -42,15 +38,12 @@ public class FunctionDefinition {
         return name;
     }
 
-    public String url() {
-        return url;
+    public Set<String> alias() {
+        return alias;
     }
 
-    private void initUrl() {
-        this.url = NamingCase.toSymbolCase(CharSequenceUtil.lowerFirst(this.methodMeta.targetType().getName()), CharPool.SLASH);
-        if (this.methodMeta.method() != null) {
-            this.url = this.url + CharPool.SLASH + NamingCase.toSymbolCase(this.methodMeta.method().getName(), CharPool.SLASH);
-        }
+    public void addAlias(String... names) {
+        this.alias.addAll(Arrays.asList(names));
     }
 
     @Override
@@ -59,7 +52,6 @@ public class FunctionDefinition {
                 .add("name='" + name + "'")
                 .add("methodMeta=" + methodMeta)
                 .add("attribute=" + attribute)
-                .add("url=" + url)
                 .toString();
     }
 }

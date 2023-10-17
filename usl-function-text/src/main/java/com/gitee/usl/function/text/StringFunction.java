@@ -11,10 +11,6 @@ import static cn.hutool.core.text.CharSequenceUtil.*;
  */
 @Func
 public class StringFunction {
-    @Func("str.isBlank")
-    public boolean strIsBlank(String str) {
-        return isBlank(str);
-    }
 
     @Func("str.isNotBlank")
     public boolean strIsNotBlank(String str) {
@@ -29,11 +25,6 @@ public class StringFunction {
     @Func("str.isAllBlank")
     public boolean strIsAllBlank(String... strings) {
         return isAllBlank(strings);
-    }
-
-    @Func("str.isEmpty")
-    public boolean strIsEmpty(String str) {
-        return isEmpty(str);
     }
 
     @Func("str.isNotEmpty")
@@ -59,5 +50,35 @@ public class StringFunction {
     @Func("str.emptyToDefault")
     public String strEmptyToDefault(String str, String defaultStr) {
         return emptyToDefault(str, defaultStr);
+    }
+
+    @Func("str.blankToDefault")
+    public String strBlankToDefault(String str, String defaultStr) {
+        return blankToDefault(str, defaultStr);
+    }
+
+    @Func("str.emptyToNull")
+    public String strEmptyToNull(String str) {
+        return emptyToNull(str);
+    }
+
+    @Func("str.hasEmpty")
+    public boolean strHasEmpty(String... strings) {
+        return hasEmpty(strings);
+    }
+
+    @Func("str.isAllEmpty")
+    public boolean strIsAllEmpty(String... strings) {
+        return isAllEmpty(strings);
+    }
+
+    @Func("str.isAllNotEmpty")
+    public boolean strIsAllNotEmpty(String... strings) {
+        return isAllNotEmpty(strings);
+    }
+
+    @Func("str.isAllNotBlank")
+    public boolean strIsAllNotBlank(String... strings) {
+        return isAllNotBlank(strings);
     }
 }
