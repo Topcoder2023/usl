@@ -2,8 +2,11 @@ package com.gitee.usl.function.text;
 
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.kernel.domain.Param;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,6 +20,8 @@ class StringFunctionTest {
     static void before() {
         runner = new USLRunner();
         runner.start();
+        List<AviatorFunction> functions = runner.functions();
+        System.out.println(functions);
     }
 
     @Test

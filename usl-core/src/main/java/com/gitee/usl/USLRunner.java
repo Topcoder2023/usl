@@ -12,11 +12,13 @@ import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
 import com.gitee.usl.infra.exception.UslException;
+import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -177,6 +179,19 @@ public class USLRunner {
                 .setPort(10086)
                 .setDebug(false)
                 .finish();
+    }
+
+    /**
+     * 返回所有可用的函数实例
+     *
+     * @return 函数实例集合
+     */
+    public List<AviatorFunction> functions() {
+        return Optional.ofNullable(this.configuration)
+                .map(Configuration::configEngine)
+                .map(EngineConfiguration::functionHolder)
+                .map(FunctionHolder::toList)
+                .orElse(Collections.emptyList());
     }
 
     /**
