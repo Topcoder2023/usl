@@ -21,7 +21,7 @@
     </modules>
     <groupId>com.gitee</groupId>
     <artifactId>usl</artifactId>
-    <version>1.0.0.sunshine</version>
+    <version>v1.0.0.SNAPSHOT</version>
     <description>Universal Script Language (通用脚本语言)</description>
 
     <developers>
@@ -77,6 +77,8 @@
         <image-combiner.version>2.6.5</image-combiner.version>
         <sensitive-word.version>0.8.0</sensitive-word.version>
         <druid.version>1.2.20</druid.version>
+        <groovy-jsr223.version>3.0.19</groovy-jsr223.version>
+        <jython-standalone.version>2.7.3</jython-standalone.version>
 
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -233,6 +235,20 @@
                 <groupId>org.jline</groupId>
                 <artifactId>jline</artifactId>
                 <version>${jline.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-jsr223</artifactId>
+                <version>${groovy-jsr223.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <groupId>org.python</groupId>
+                <artifactId>jython-standalone</artifactId>
+                <version>${jython-standalone.version}</version>
                 <optional>true</optional>
             </dependency>
 

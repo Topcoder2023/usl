@@ -15,7 +15,7 @@ public class Plugins {
     private final List<Plugin> container;
 
     public Plugins() {
-        container = new ArrayList<>(NumberConstant.COMMON_SIZE);
+        container = new ArrayList<>(NumberConstant.EIGHT);
     }
 
     /**
@@ -25,7 +25,10 @@ public class Plugins {
      */
     public void install(Plugin plugin) {
         Assert.notNull(plugin);
-        this.container.add(plugin);
+        boolean exists = this.container.stream().anyMatch(item -> item.getClass().equals(plugin.getClass()));
+        if (!exists) {
+            this.container.add(plugin);
+        }
     }
 
     /**

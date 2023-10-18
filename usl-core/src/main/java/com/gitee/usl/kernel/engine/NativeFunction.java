@@ -2,6 +2,7 @@ package com.gitee.usl.kernel.engine;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
+import com.gitee.usl.api.Definable;
 import com.gitee.usl.api.FunctionPluggable;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.Invocation;
@@ -19,7 +20,8 @@ import java.util.Arrays;
  *
  * @author hongda.li
  */
-public class NativeFunction extends MethodInterceptor<AviatorFunction> implements FunctionPluggable {
+public class NativeFunction extends MethodInterceptor<AviatorFunction>
+        implements FunctionPluggable, Definable {
     private final Plugins plugins;
     private final FunctionDefinition definition;
 
@@ -65,6 +67,7 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction> implement
         return this.plugins;
     }
 
+    @Override
     public FunctionDefinition definition() {
         return this.definition;
     }

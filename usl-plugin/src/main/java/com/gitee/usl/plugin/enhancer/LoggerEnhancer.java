@@ -1,5 +1,6 @@
 package com.gitee.usl.plugin.enhancer;
 
+import cn.hutool.core.lang.Singleton;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
@@ -14,15 +15,14 @@ import com.google.auto.service.AutoService;
 @Order(Integer.MAX_VALUE - 10)
 @AutoService(FunctionEnhancer.class)
 public class LoggerEnhancer extends AbstractFunctionEnhancer {
-    private final LoggerPlugin singletonPlugin = new LoggerPlugin();
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        nf.plugins().install(singletonPlugin);
+        nf.plugins().install(Singleton.get(LoggerPlugin.class));
     }
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        af.plugins().install(singletonPlugin);
+        af.plugins().install(Singleton.get(LoggerPlugin.class));
     }
 }

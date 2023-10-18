@@ -2,8 +2,11 @@ package com.gitee.usl.function.text;
 
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.kernel.domain.Param;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,19 +20,21 @@ class StringFunctionTest {
     static void before() {
         runner = new USLRunner();
         runner.start();
+        List<AviatorFunction> functions = runner.functions();
+        System.out.println(functions);
     }
 
     @Test
     void strIsEmpty() {
-        assertEquals(true, runner.run(new Param().setScript("str.isEmpty('')")).getData());
-        assertEquals(false, runner.run(new Param().setScript("str.isEmpty('str')")).getData());
-    }
+        Param param1 = new Param().setScript("string.isEmpty('')");
+        assertEquals(true, runner.run(param1).getData());
 
-    @Test
-    void strIsBlank() {
-    }
+        Param param2 = new Param().setScript("string.isBlank('str')");
+        assertEquals(false, runner.run(param2).getData());
 
-    @Test
-    void strEmptyToDefault() {
+//        Param param3 = new Param()
+//                .setScript("str.nullToDefault(var, 'def')")
+//                .addContext("var", null);
+//        assertEquals("def", runner.run(param3).getData());
     }
 }

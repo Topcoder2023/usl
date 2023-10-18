@@ -1,5 +1,6 @@
 package com.gitee.usl.kernel.provider;
 
+import com.gitee.usl.api.Definable;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.ServiceSearcher;
@@ -10,6 +11,7 @@ import com.gitee.usl.api.FunctionProvider;
 import com.google.auto.service.AutoService;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * USL 函数定义信息提供器管理者
@@ -38,6 +40,13 @@ public class FunctionProviderManager implements Initializer {
         List<FunctionProvider> providers = ServiceSearcher.searchAll(FunctionProvider.class);
 
         // 根据函数提供者提供的函数定义信息依次注册函数
-        providers.forEach(provider -> provider.provide(configuration).forEach(holder::register));
+        providers.forEach(provider -> provider.provide(configuration).forEach(function -> {
+            if (function instanceof Definable) {
+                Set<String> alias = ((Definable) function).definition().alias();
+                holder.register(function, alias);
+            } else {
+                holder.register(function);
+            }
+        }));
     }
 }

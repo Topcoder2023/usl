@@ -6,8 +6,11 @@ import com.gitee.usl.kernel.configure.WebServerConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartboot.http.server.HttpBootstrap;
+import org.smartboot.http.server.handler.HttpRouteHandler;
 
 /**
+ * B-S架构
+ * 接收来自外部的请求
  * 采用内嵌式 WEB-SERVER 实现
  * 考虑到轻量级依赖，此处未选择 Tomcat、Undertow、Jetty 等，而是选择了 Smart-http-server
  *
@@ -32,7 +35,8 @@ public class WebInteractiveImpl implements WebInteractive {
                 .debug(config.isDebug())
                 .serverName(config.getName());
 
-        bootstrap.httpHandler(new ScriptRequestHandler(runner));
+        bootstrap.httpHandler(new HttpRouteHandler()
+                .route(ScriptRequestHandler.PATH, new ScriptRequestHandler(runner)));
         bootstrap.setPort(config.getPort());
         bootstrap.start();
 

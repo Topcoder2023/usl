@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.gitee</groupId>
         <artifactId>usl</artifactId>
-        <version>1.0.0.sunshine</version>
+        <version>v1.0.0.SNAPSHOT</version>
     </parent>
 
     <artifactId>usl-function-date</artifactId>

@@ -1,5 +1,6 @@
 package com.gitee.usl.plugin.enhancer;
 
+import cn.hutool.core.lang.Singleton;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.api.FunctionEnhancer;
@@ -17,10 +18,9 @@ public class ParameterBinderEnhancer extends AbstractFunctionEnhancer {
      * 参数绑定插件生效的优先级
      */
     public static final int PARAM_BINDER_ORDER = Integer.MIN_VALUE + 10;
-    private final ParameterBinderPlugin singletonPlugin = new ParameterBinderPlugin();
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        af.plugins().install(singletonPlugin);
+        af.plugins().install(Singleton.get(ParameterBinderPlugin.class));
     }
 }

@@ -1,6 +1,6 @@
 package com.gitee.usl.api.annotation;
 
-import com.gitee.usl.infra.constant.StringConstant;
+import com.gitee.usl.infra.enums.EngineName;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,18 +12,13 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CombineFunc {
+public @interface Engine {
     /**
-     * 脚本内容
+     * 使用的脚本引擎名称
+     * 默认使用 JavaScript 脚本引擎
+     * 该脚本引擎内置于 JDK8 中，无需额外引入依赖
      *
-     * @return 脚本内容
+     * @return 引擎名称
      */
-    String value();
-
-    /**
-     * 执行器的名称
-     *
-     * @return 执行器名称
-     */
-    String runnerName() default StringConstant.FIRST_USL_RUNNER_NAME;
+    EngineName value() default EngineName.JS;
 }

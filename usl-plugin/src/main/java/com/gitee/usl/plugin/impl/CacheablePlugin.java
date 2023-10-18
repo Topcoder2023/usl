@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 /**
  * 缓存插件
+ * 对于计算量大，调用频繁，但执行结果固定的函数，可以考虑使用缓存插件
  *
  * @author hongda.li
  */
