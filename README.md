@@ -4,6 +4,7 @@
 <img src="https://img.shields.io/badge/JDK-1.8+-brightgreen" alt="">
 <img src="https://img.shields.io/badge/Aviator-5.4.1-brightgreen" alt="">
 <img src="https://img.shields.io/badge/Disruptor-3.4.4-brightgreen" alt="">
+<img src="https://jitpack.io/v/com.gitee.yixi-dlmu/usl.svg" alt="">
 </p>
 
 <br/>
@@ -34,9 +35,24 @@
 5. 发起`pull request`，将本地新分支合并到远程`master`主分支上，并等待审核
 
 ## 五、安装与使用
-> 项目于`2023年9月12日`正式立项，计划第一个正式版本于`2024年1月1日`正式发布
+> 项目于`2023年9月12日`正式立项，计划第一个正式版本于`2024年1月1日`正式发布，目前可以通过以下方式提前试用：
+1. 将此仓库地址添加到您的`pom.xml`或者`setting.xml`中
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
 ```
-It will be developed soon, please looking forward to it
+
+2. 将此依赖添加到您的`dependency`中
+```xml
+<dependency>
+    <groupId>com.gitee.yixi-dlmu</groupId>
+    <artifactId>usl</artifactId>
+    <version>v1.0.0.RELEASE</version>
+</dependency>
 ```
 
 ### 1.执行脚本/表达式
