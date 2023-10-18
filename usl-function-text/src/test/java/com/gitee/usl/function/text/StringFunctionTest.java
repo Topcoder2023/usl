@@ -21,10 +21,10 @@ class StringFunctionTest {
 
     @Test
     void strIsEmpty() {
-        Param param1 = new Param().setScript("str.isEmpty('')");
+        Param param1 = new Param().setScript("string.isEmpty('')");
         assertEquals(true, runner.run(param1).getData());
 
-        Param param2 = new Param().setScript("str.isBlank('str')");
+        Param param2 = new Param().setScript("string.isBlank('str')");
         assertEquals(false, runner.run(param2).getData());
 
 //        Param param3 = new Param()
