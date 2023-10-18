@@ -1,7 +1,7 @@
 package com.gitee.usl.test;
 
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.annotation.CombineFunc;
+import com.gitee.usl.api.annotation.Combine;
 import com.gitee.usl.api.annotation.Engine;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.api.annotation.Param;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author hongda.li
  */
-class CombineFuncTest {
+class CombineTest {
 
     @Test
     void test() {
@@ -29,7 +29,7 @@ class CombineFuncTest {
     interface CombineFuncA {
 
         @Func({"combine", "combine2", "combine3"})
-        @CombineFunc("function process(){\n" +
+        @Combine("function process(){\n" +
                 "var a=10\n" +
                 "var b=3\n" +
                 "return a*b-c\n" +

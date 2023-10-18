@@ -7,7 +7,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.FunctionProvider;
-import com.gitee.usl.api.annotation.CombineFunc;
+import com.gitee.usl.api.annotation.Combine;
 import com.gitee.usl.api.annotation.Engine;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.api.annotation.Param;
@@ -40,7 +40,7 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
     @Override
     protected List<FunctionDefinition> class2Definition(Class<?> clz) {
         return Stream.of(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, Func.class)
-                        && AnnotationUtil.hasAnnotation(method, CombineFunc.class)))
+                        && AnnotationUtil.hasAnnotation(method, Combine.class)))
                 .map(method -> {
                     String[] accept = AnnotationUtil.getAnnotationValue(method, Func.class);
 
@@ -81,7 +81,7 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
      */
     protected FunctionDefinition buildDefinition(String name, Class<?> clz, Method method) {
         // 获取组合函数注解以及注解中的脚本内容
-        CombineFunc combine = AnnotationUtil.getAnnotation(method, CombineFunc.class);
+        Combine combine = AnnotationUtil.getAnnotation(method, Combine.class);
         String script = combine.value();
 
         // 获取脚本引擎注解，可能为空
