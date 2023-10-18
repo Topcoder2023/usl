@@ -95,7 +95,7 @@ public class Function extends AnnotatedFunction {
             return this.next(true);
         }
 
-        public FunctionBuilder next(boolean clear) {
+        public FunctionBuilder next(boolean reuse) {
             // 方法名称不能为空
             // 当存在多个同名方法时，默认取第一个
             // 因此存在多个同名方法不建议使用此模式构造函数
@@ -154,8 +154,8 @@ public class Function extends AnnotatedFunction {
             functionList.add(function);
             finished = true;
 
-            // 如果设置清除构造信息，则将所有变量置空
-            if (clear) {
+            // 如果设置不复用构造信息，则将所有变量置空
+            if (!reuse) {
                 this.clear();
             }
 
