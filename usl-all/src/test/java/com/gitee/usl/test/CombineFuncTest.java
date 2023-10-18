@@ -2,6 +2,7 @@ package com.gitee.usl.test;
 
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.CombineFunc;
+import com.gitee.usl.api.annotation.Engine;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.api.annotation.Param;
 import com.gitee.usl.kernel.domain.Result;
@@ -19,7 +20,7 @@ class CombineFuncTest {
 
         runner.run(new com.gitee.usl.kernel.domain.Param().setScript("random.chinese()"));
 
-        Result<Object> run = runner.run(new com.gitee.usl.kernel.domain.Param().setScript("combine2(4, 6)"));
+        Result<Object> run = runner.run(new com.gitee.usl.kernel.domain.Param().setScript("combine2(10)"));
         System.out.println(run);
     }
 
@@ -28,7 +29,13 @@ class CombineFuncTest {
     interface CombineFuncA {
 
         @Func({"combine", "combine2", "combine3"})
-        @CombineFunc("(var1 + var2) * 100")
-        int method(@Param("var1") int a, @Param("var2") int b);
+        @CombineFunc("function process(){\n" +
+                "var a=10\n" +
+                "var b=3\n" +
+                "return a*b-c\n" +
+                "}\n" +
+                "process()")
+        @Engine
+        int method(@Param("c") int var);
     }
 }

@@ -14,6 +14,9 @@ import com.gitee.usl.infra.structure.StringList;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
 
+import javax.script.CompiledScript;
+import javax.script.ScriptException;
+import javax.script.SimpleBindings;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -26,6 +29,7 @@ public class CombineFunction extends AnnotatedFunction {
     private final String script;
     private final transient USLRunner runner;
     private final transient StringList params;
+    private final transient CompiledScript compiledScript;
 
     public CombineFunction(FunctionDefinition definition) {
         super(definition);
@@ -33,6 +37,7 @@ public class CombineFunction extends AnnotatedFunction {
         this.script = attribute.search(StringConstant.SCRIPT_NAME, String.class);
         this.runner = attribute.search(StringConstant.RUNNER_NAME, USLRunner.class);
         this.params = attribute.search(StringConstant.PARAMS_NAME, StringList.class);
+        this.compiledScript = attribute.search(StringConstant.COMPILED_SCRIPT, CompiledScript.class);
     }
 
     @Override
@@ -48,6 +53,14 @@ public class CombineFunction extends AnnotatedFunction {
             IntStream.range(NumberConstant.ZERO, args.length)
                     .filter(i -> i < args.length)
                     .forEach(i -> context.put(params.get(i), args[i]));
+        }
+
+        if (compiledScript != null) {
+            try {
+                return compiledScript.eval(new SimpleBindings(context));
+            } catch (ScriptException e) {
+                throw new UslExecuteException(e);
+            }
         }
 
         Param param = new Param()

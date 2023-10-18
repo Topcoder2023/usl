@@ -12,6 +12,8 @@ public final class StringConstant {
 
     public static final String FIRST_USL_RUNNER_NAME = "USL Runner-1";
 
+    public static final String COMPILED_SCRIPT = "compiledScript";
+
     public static final String PARAMS_NAME = "paramsName";
 
     public static final String SCRIPT_NAME = "script";
@@ -19,4 +21,6 @@ public final class StringConstant {
     public static final String RUNNER_NAME = "runner";
 
     public static final String USL_CLI_PREFIX = "USL > ";
+
+    public static final String USL_ENGINE = "USL-ENGINE";
 }

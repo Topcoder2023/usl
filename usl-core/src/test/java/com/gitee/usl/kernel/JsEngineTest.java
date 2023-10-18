@@ -14,7 +14,13 @@ class JsEngineTest {
     void test() throws ScriptException {
         // 获得javascript的脚本引擎
         ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-        ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("javascript");
+
+        for (ScriptEngineFactory factory : scriptEngineManager.getEngineFactories()) {
+            System.out.println(factory.getEngineName());
+            System.out.println(factory.getEngineVersion());
+        }
+
+        ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("JavaScript");
 
         // 进行脚本编译
         String script = "function process(){\n" +

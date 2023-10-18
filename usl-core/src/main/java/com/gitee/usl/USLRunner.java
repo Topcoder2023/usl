@@ -195,6 +195,9 @@ public class USLRunner {
      * @return 实例
      */
     public static USLRunner findRunnerByName(String name) {
+        if (name == null) {
+            return null;
+        }
         return ENGINE_CONTEXT.get(name);
     }
 
