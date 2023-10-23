@@ -18,6 +18,7 @@
         <module>usl-function-db</module>
         <module>usl-logger</module>
         <module>usl-all</module>
+        <module>usl-function-media</module>
     </modules>
     <groupId>com.gitee</groupId>
     <artifactId>usl</artifactId>
@@ -79,6 +80,7 @@
         <druid.version>1.2.20</druid.version>
         <groovy-jsr223.version>3.0.19</groovy-jsr223.version>
         <jython-standalone.version>2.7.3</jython-standalone.version>
+        <jave.version>3.3.1</jave.version>
 
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -249,6 +251,13 @@
                 <groupId>org.python</groupId>
                 <artifactId>jython-standalone</artifactId>
                 <version>${jython-standalone.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <groupId>ws.schild</groupId>
+                <artifactId>jave-all-deps</artifactId>
+                <version>${jave.version}</version>
                 <optional>true</optional>
             </dependency>
 
