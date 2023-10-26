@@ -1,5 +1,8 @@
 package com.gitee.usl.plugin.impl;
 
+import com.gitee.usl.api.plugin.FailurePlugin;
+import com.gitee.usl.api.plugin.SuccessPlugin;
+import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.plugin.api.TimeWatchListener;
 import com.gitee.usl.api.plugin.BeginPlugin;
 import com.gitee.usl.api.plugin.FinallyPlugin;
@@ -8,17 +11,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 执行时长监控插件
  *
  * @author hongda.li
  */
-public class TimeWatchPlugin implements BeginPlugin, FinallyPlugin {
+public class TimeWatchPlugin implements BeginPlugin, SuccessPlugin, FailurePlugin, FinallyPlugin {
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeWatchPlugin.class);
     private final ThreadLocal<Long> start = new ThreadLocal<>();
     private final long threshold;
     private final TimeWatchListener listener;
+    private final AtomicLong totalCount = new AtomicLong(NumberConstant.ZERO);
+    private final AtomicLong successCount = new AtomicLong(NumberConstant.ZERO);
+    private final AtomicLong failureCount = new AtomicLong(NumberConstant.ZERO);
 
     public TimeWatchPlugin(long threshold, TimeUnit unit, TimeWatchListener listener) {
         this.listener = listener;
@@ -32,6 +39,9 @@ public class TimeWatchPlugin implements BeginPlugin, FinallyPlugin {
 
     @Override
     public void onFinally(FunctionSession session) {
+        // 执行次数自增
+        totalCount.incrementAndGet();
+
         // 执行的总时间
         long totalTime = System.nanoTime() - start.get();
 
@@ -42,6 +52,30 @@ public class TimeWatchPlugin implements BeginPlugin, FinallyPlugin {
         if (totalTime >= threshold) {
             listener.onListen(session, totalTime);
         }
+    }
+
+    @Override
+    public void onFailure(FunctionSession session) {
+        // 执行失败次数自增
+        failureCount.incrementAndGet();
+    }
+
+    @Override
+    public void onSuccess(FunctionSession session) {
+        // 执行成功次数自增
+        successCount.incrementAndGet();
+    }
+
+    public long getTotalCount() {
+        return totalCount.get();
+    }
+
+    public long getSuccessCount() {
+        return successCount.get();
+    }
+
+    public long getFailureCount() {
+        return failureCount.get();
     }
 
     public static final class DefaultTimeWatchListener implements TimeWatchListener {
