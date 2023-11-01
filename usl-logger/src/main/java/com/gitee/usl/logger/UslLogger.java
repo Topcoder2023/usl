@@ -20,6 +20,7 @@ import static java.lang.System.out;
  * @author hongda.li
  */
 public class UslLogger extends AbstractUslEnabledLogger {
+    private static final long serialVersionUID = -6857629823140297158L;
 
     public UslLogger(String name) {
         this.name = name;
