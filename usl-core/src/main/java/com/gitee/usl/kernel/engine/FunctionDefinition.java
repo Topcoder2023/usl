@@ -1,10 +1,13 @@
 package com.gitee.usl.kernel.engine;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.AttributeMeta;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * USL 函数定义
@@ -43,7 +46,13 @@ public class FunctionDefinition {
     }
 
     public void addAlias(String... names) {
-        this.alias.addAll(Arrays.asList(names));
+        this.addAlias(null, names);
+    }
+
+    public void addAlias(String prefix, String... names) {
+        this.alias.addAll(Stream.of(names)
+                .map(str -> CharSequenceUtil.addPrefixIfNot(str, prefix))
+                .collect(Collectors.toList()));
     }
 
     @Override

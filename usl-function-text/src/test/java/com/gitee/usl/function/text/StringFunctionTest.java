@@ -20,21 +20,17 @@ class StringFunctionTest {
     static void before() {
         runner = new USLRunner();
         runner.start();
-        List<AviatorFunction> functions = runner.functions();
-        System.out.println(functions);
     }
 
     @Test
-    void strIsEmpty() {
-        Param param1 = new Param().setScript("string.isEmpty('')");
+    void stringTest() {
+        Param param1 = new Param("string.isEmpty('')");
         assertEquals(true, runner.run(param1).getData());
 
-        Param param2 = new Param().setScript("string.isBlank('str')");
+        Param param2 = new Param("string.isBlank('str')");
         assertEquals(false, runner.run(param2).getData());
 
-//        Param param3 = new Param()
-//                .setScript("str.nullToDefault(var, 'def')")
-//                .addContext("var", null);
-//        assertEquals("def", runner.run(param3).getData());
+        Param param3 = new Param("string.trim('       hello    \n\n    ')");
+        assertEquals("hello", runner.run(param3).getData());
     }
 }

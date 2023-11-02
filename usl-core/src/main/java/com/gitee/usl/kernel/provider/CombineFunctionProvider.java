@@ -39,21 +39,26 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
 
     @Override
     protected List<FunctionDefinition> class2Definition(Class<?> clz) {
+        Func func = AnnotationUtil.getAnnotation(clz, Func.class);
+        String prefix = ArrayUtil.isNotEmpty(func.value()) && func.value().length == NumberConstant.ONE
+                ? func.value()[NumberConstant.ZERO]
+                : null;
+
         return Stream.of(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, Func.class)
                         && AnnotationUtil.hasAnnotation(method, Combine.class)))
                 .map(method -> {
                     String[] accept = AnnotationUtil.getAnnotationValue(method, Func.class);
 
                     if (accept == null) {
-                        // 未指定函数名称，则取方法名转下划线
-                        String defaultName = CharSequenceUtil.toUnderlineCase(method.getName());
-                        return this.buildDefinition(defaultName, clz, method);
+                        // 未指定函数名称，则取方法名
+                        String defaultName = CharSequenceUtil.addPrefixIfNot(method.getName(), prefix);
+                        return this.toDef(defaultName, clz, method);
                     } else {
                         // 指定了函数名称，则取指定的函数名称
-                        String firstName = accept[NumberConstant.ZERO];
-                        FunctionDefinition definition = this.buildDefinition(firstName, clz, method);
+                        String firstName = CharSequenceUtil.addPrefixIfNot(accept[NumberConstant.ZERO], prefix);
+                        FunctionDefinition definition = this.toDef(firstName, clz, method);
                         if (accept.length > NumberConstant.ONE) {
-                            definition.addAlias(ArrayUtil.sub(accept, NumberConstant.ONE, accept.length));
+                            definition.addAlias(prefix, ArrayUtil.sub(accept, NumberConstant.ONE, accept.length));
                         }
                         return definition;
                     }
@@ -79,7 +84,7 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
      * @param method 函数对应的方法
      * @return 函数定义信息
      */
-    protected FunctionDefinition buildDefinition(String name, Class<?> clz, Method method) {
+    protected FunctionDefinition toDef(String name, Class<?> clz, Method method) {
         // 获取组合函数注解以及注解中的脚本内容
         Combine combine = AnnotationUtil.getAnnotation(method, Combine.class);
         String script = combine.value();

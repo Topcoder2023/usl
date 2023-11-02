@@ -17,7 +17,7 @@ public class StringFunctionProvider implements FunctionProvider {
     /**
      * 字符串类函数的统一前缀
      */
-    private static final String STRING_FUNCTION_PREFIX = "string.";
+    public static final String STRING_FUNCTION_PREFIX = "string.";
 
     @Override
     public List<AviatorFunction> provide(EngineConfiguration configuration) {
