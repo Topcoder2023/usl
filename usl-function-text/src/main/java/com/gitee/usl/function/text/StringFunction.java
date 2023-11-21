@@ -3,6 +3,10 @@ package com.gitee.usl.function.text;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.api.annotation.Func;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 /**
  * @author hongda.li
  */
@@ -22,5 +26,15 @@ public class StringFunction {
     @Func
     public String trimEnd(String str) {
         return CharSequenceUtil.trimEnd(str);
+    }
+
+    @Func
+    public String urlEncode(String url) throws UnsupportedEncodingException {
+        return URLEncoder.encode(url, StandardCharsets.UTF_8.displayName());
+    }
+
+    @Func
+    public String urlDecode(String url) throws UnsupportedEncodingException {
+        return URLEncoder.encode(url, StandardCharsets.UTF_8.displayName());
     }
 }
