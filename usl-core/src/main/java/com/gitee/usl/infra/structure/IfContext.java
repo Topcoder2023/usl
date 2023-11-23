@@ -1,4 +1,4 @@
-package com.gitee.usl.infra.design;
+package com.gitee.usl.infra.structure;
 
 /**
  * @author hongda.li

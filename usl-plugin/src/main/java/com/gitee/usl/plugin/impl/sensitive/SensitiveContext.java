@@ -1,6 +1,6 @@
 package com.gitee.usl.plugin.impl.sensitive;
 
-import com.gitee.usl.infra.design.IfContext;
+import com.gitee.usl.infra.structure.IfContext;
 
 import java.util.StringJoiner;
 

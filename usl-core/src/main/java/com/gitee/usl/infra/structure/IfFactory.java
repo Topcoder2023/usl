@@ -1,4 +1,4 @@
-package com.gitee.usl.infra.design;
+package com.gitee.usl.infra.structure;
 
 import java.util.List;
 
@@ -7,31 +7,28 @@ import java.util.List;
  */
 public class IfFactory<I, C extends IfContext<I>> {
     private final List<If<I, C>> ifList;
+    private final If<I, C> emptyIf = new If<I, C>() {
+        @Override
+        public boolean condition(C context) {
+            return true;
+        }
+
+        @Override
+        public void accept(C c) {
+            // do nothing
+        }
+    };
 
     protected IfFactory(List<If<I, C>> ifList) {
         this.ifList = ifList;
     }
 
     public void handleAll(C context) {
-        for (If<I, C> item : this.ifList) {
-            if (item.condition(context)) {
-                item.accept(context);
-            }
-        }
+        ifList.stream().filter(item -> item.condition(context)).forEach(item -> item.accept(context));
     }
 
     public void handleFirst(C context) {
-        this.handleFirstOrElse(context, new If<I, C>() {
-            @Override
-            public boolean condition(C context) {
-                return true;
-            }
-
-            @Override
-            public void accept(C c) {
-                // do nothing
-            }
-        });
+        this.handleFirstOrElse(context, emptyIf);
     }
 
     public void handleFirstOrElse(C context, If<I, C> defaultOne) {

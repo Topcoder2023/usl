@@ -17,12 +17,12 @@ public class NamedThreadFactory implements ThreadFactory {
     /**
      * 线程创建成功时的信息
      */
-    private static final String THREAD_CREATE = "Thread created success - {}";
+    private static final String THREAD_CREATE = "线程创建成功 - {}";
 
     /**
      * 线程执行发生异常时的信息
      */
-    private static final String THREAD_ERROR = "An error occurred during thread execution. [{} - {}]";
+    private static final String THREAD_ERROR = "线程执行出现错误 - [{} - {}]";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -42,6 +42,7 @@ public class NamedThreadFactory implements ThreadFactory {
         this.count = new AtomicLong(NumberConstant.ZERO);
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public Thread newThread(Runnable runnable) {
         Thread thread = new Thread(runnable);
