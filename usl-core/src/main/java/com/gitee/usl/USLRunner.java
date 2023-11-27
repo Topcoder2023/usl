@@ -165,16 +165,14 @@ public class USLRunner {
     public static Configuration defaultConfiguration() {
         return new Configuration()
                 .configEngine()
-                .scan(USLRunner.class)
-                .finish()
+                .scan(USLRunner.class).finish()
                 .configExecutor()
                 .setCorePoolSize(8)
                 .setMaxPoolSize(16)
                 .setQueueSize(1024)
                 .setAliveTime(60)
                 .setAllowedTimeout(false)
-                .setTimeUnit(TimeUnit.SECONDS)
-                .finish()
+                .setTimeUnit(TimeUnit.SECONDS).finish()
                 .configWebServer()
                 .setPort(10086)
                 .setDebug(false)
@@ -225,12 +223,10 @@ public class USLRunner {
         final Interactive interactive;
         switch (mode) {
             case CLI:
-                interactive = Optional.ofNullable(ServiceSearcher.searchFirst(CliInteractive.class))
-                        .orElse(new CliInteractiveImpl());
+                interactive = ServiceSearcher.searchFirst(CliInteractive.class);
                 break;
             case WEB:
-                interactive = Optional.ofNullable(ServiceSearcher.searchFirst(WebInteractive.class))
-                        .orElse(new WebInteractiveImpl());
+                interactive = ServiceSearcher.searchFirst(WebInteractive.class);
                 break;
             case NONE:
             default:
@@ -239,6 +235,6 @@ public class USLRunner {
                 break;
         }
 
-        interactive.open(this);
+        Optional.ofNullable(interactive).ifPresent(item -> item.open(this));
     }
 }

@@ -2,7 +2,9 @@ package com.gitee.usl.app.web;
 
 import cn.hutool.core.net.NetUtil;
 import com.gitee.usl.USLRunner;
+import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.configure.WebServerConfiguration;
+import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartboot.http.server.HttpBootstrap;
@@ -16,6 +18,8 @@ import org.smartboot.http.server.handler.HttpRouteHandler;
  *
  * @author hongda.li
  */
+@Order(Integer.MAX_VALUE)
+@AutoService(WebInteractive.class)
 public class WebInteractiveImpl implements WebInteractive {
     private final HttpBootstrap bootstrap;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
