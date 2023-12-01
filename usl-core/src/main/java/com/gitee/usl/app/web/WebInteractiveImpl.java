@@ -10,11 +10,19 @@ import com.gitee.usl.kernel.configure.WebServerConfiguration;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartboot.http.common.enums.HttpStatus;
+import org.smartboot.http.common.utils.AntPathMatcher;
 import org.smartboot.http.server.HttpBootstrap;
+import org.smartboot.http.server.HttpRequest;
+import org.smartboot.http.server.HttpResponse;
 import org.smartboot.http.server.HttpServerHandler;
-import org.smartboot.http.server.handler.HttpRouteHandler;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * B-S架构
@@ -27,11 +35,20 @@ import java.util.List;
 @Order(Integer.MAX_VALUE)
 @AutoService(WebInteractive.class)
 public class WebInteractiveImpl extends HttpServerHandler implements WebInteractive {
+    private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
+    private final String host;
     private final HttpBootstrap bootstrap;
+    private final List<WebFilter> filterList;
+    private final Map<String, WebHandler> handlerMap;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public WebInteractiveImpl() {
-        bootstrap = new HttpBootstrap();
+        this.bootstrap = new HttpBootstrap();
+        this.host = NetUtil.getLocalhostStr();
+        this.filterList = ServiceSearcher.searchAll(WebFilter.class);
+        this.handlerMap = ServiceSearcher.searchAll(WebHandler.class)
+                .stream()
+                .collect(Collectors.toMap(WebHandler::getRoute, Function.identity()));
     }
 
     @Override
@@ -39,7 +56,6 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
         Singleton.put(StringConstant.RUNNER_NAME, runner);
 
         WebServerConfiguration config = runner.configuration().configWebServer();
-        String host = NetUtil.getLocalhostStr();
 
         bootstrap.configuration()
                 .host(host)
@@ -47,11 +63,56 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
                 .debug(config.isDebug())
                 .serverName(config.getName());
 
-        HttpRouteHandler routeHandler = new HttpRouteHandler();
-        List<AbstractWebHandler> handlers = ServiceSearcher.searchAll(AbstractWebHandler.class);
-        handlers.forEach(handler -> routeHandler.route(handler.getRoute(), handler));
+        bootstrap.httpHandler(new HttpServerHandler() {
+            @Override
+            public void handle(HttpRequest request, HttpResponse response) throws Throwable {
+                String uri = request.getRequestURI();
+                if (uri == null) {
+                    response.setHttpStatus(HttpStatus.NOT_FOUND);
+                    return;
+                }
 
-        bootstrap.httpHandler(routeHandler);
+                WebHandler handler = Optional.ofNullable(handlerMap.get(uri))
+                        .orElse(handlerMap.entrySet()
+                                .stream()
+                                .filter(entry -> PATH_MATCHER.match(entry.getKey(), uri))
+                                .findFirst()
+                                .map(Map.Entry::getValue)
+                                .orElse(null));
+
+                if (handler == null) {
+                    response.setHttpStatus(HttpStatus.NOT_FOUND);
+                    return;
+                }
+
+                WebServerHelper.setRequest(request);
+                WebServerHelper.setResponse(response);
+
+                try {
+                    for (WebFilter filter : filterList) {
+                        boolean release;
+
+                        String accept = filter.accept();
+                        if (accept == null
+                                || Objects.equals(uri, accept)
+                                || PATH_MATCHER.match(accept, uri)) {
+                            release = filter.doFilter(request, response);
+                        } else {
+                            release = true;
+                        }
+
+                        if (!release) {
+                            return;
+                        }
+                    }
+
+                    handler.doHandle(request, response);
+                } finally {
+                    WebServerHelper.remove();
+                }
+            }
+        });
+
         bootstrap.setPort(config.getPort());
         bootstrap.start();
 

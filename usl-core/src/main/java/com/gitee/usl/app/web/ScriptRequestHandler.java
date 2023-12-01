@@ -1,6 +1,7 @@
 package com.gitee.usl.app.web;
 
-import cn.hutool.core.lang.Singleton;
+import cn.hutool.core.lang.Assert;
+import com.alibaba.fastjson2.JSON;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.exception.UslNotFoundException;
@@ -15,6 +16,7 @@ import org.smartboot.http.server.HttpResponse;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 脚本请求处理器
@@ -26,17 +28,10 @@ import java.util.Map;
  *
  * @author hongda.li
  */
-@AutoService(AbstractWebHandler.class)
-public class ScriptRequestHandler extends AbstractWebHandler {
+@AutoService(WebHandler.class)
+public class ScriptRequestHandler implements WebHandler {
     private static final String PATH = "/remote/call";
-    private final USLRunner runner;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    public ScriptRequestHandler() {
-        this.runner = Singleton.get(StringConstant.RUNNER_NAME, () -> {
-            throw new UslNotFoundException("USL Runner has not been initialized.");
-        });
-    }
 
     @Override
     public String getRoute() {
@@ -44,11 +39,19 @@ public class ScriptRequestHandler extends AbstractWebHandler {
     }
 
     @Override
-    public void handle(HttpRequest request, HttpResponse response) throws Throwable {
+    public void doHandle(HttpRequest request, HttpResponse response) {
         try {
             Map<String, Object> context = this.parseToMap(request);
 
-            logger.debug("收到脚本请求 : {}", context);
+            if (logger.isDebugEnabled()) {
+                logger.debug("收到脚本请求 : {}", JSON.toJSONString(context));
+            }
+
+            USLRunner runner = USLRunner.findRunnerByName(Optional
+                    .ofNullable(context.get(StringConstant.RUNNER_NAME))
+                    .map(String::valueOf)
+                    .orElse(StringConstant.FIRST_USL_RUNNER_NAME));
+            Assert.notNull(runner, () -> new UslNotFoundException("USL Runner has not been initialized."));
 
             Result<?> result = runner.run(new Param()
                     .setCached(false)
@@ -62,7 +65,7 @@ public class ScriptRequestHandler extends AbstractWebHandler {
         } catch (Exception e) {
             logger.error("脚本计算异常 : {}", e.getMessage());
             response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-            response.write(e.getMessage().getBytes(StandardCharsets.UTF_8));
+            this.writeToText(response, e.getMessage());
         }
     }
 }

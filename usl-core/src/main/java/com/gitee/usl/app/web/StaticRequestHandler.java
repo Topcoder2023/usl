@@ -12,10 +12,13 @@ import org.smartboot.http.server.HttpResponse;
 import java.util.Optional;
 
 /**
+ * 静态资源处理
+ * 处理 classpath://static/ 下的静态资源
+ *
  * @author hongda.li
  */
-@AutoService(AbstractWebHandler.class)
-public class StaticRequestHandler extends AbstractWebHandler {
+@AutoService(WebHandler.class)
+public class StaticRequestHandler implements WebHandler {
     private static final String PATH_PREFIX = "/static";
     private static final String PATH = PATH_PREFIX + "/**";
     private static final String DEFAULT_FILE_TYPE = ".html";
@@ -27,7 +30,7 @@ public class StaticRequestHandler extends AbstractWebHandler {
     }
 
     @Override
-    public void handle(HttpRequest request, HttpResponse response) {
+    public void doHandle(HttpRequest request, HttpResponse response) {
         String suffix = request.getRequestURI().substring(PATH_PREFIX.length() + 1);
 
         String resourceName;
