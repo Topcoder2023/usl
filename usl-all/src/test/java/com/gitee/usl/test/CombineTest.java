@@ -5,6 +5,7 @@ import com.gitee.usl.api.annotation.Combine;
 import com.gitee.usl.api.annotation.Engine;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.api.annotation.Param;
+import com.gitee.usl.infra.enums.InteractiveMode;
 import com.gitee.usl.kernel.domain.Result;
 import org.junit.jupiter.api.Test;
 
@@ -13,10 +14,15 @@ import org.junit.jupiter.api.Test;
  */
 class CombineTest {
 
+    public static void main(String[] args) {
+        USLRunner runner = new USLRunner();
+        runner.start(InteractiveMode.WEB);
+    }
+
     @Test
     void test() {
         USLRunner runner = new USLRunner();
-        runner.start();
+        runner.start(InteractiveMode.WEB);
 
         runner.run(new com.gitee.usl.kernel.domain.Param().setScript("random.chinese()"));
 
