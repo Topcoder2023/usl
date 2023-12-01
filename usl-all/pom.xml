@@ -36,6 +36,11 @@
 
         <dependency>
             <groupId>com.gitee</groupId>
+            <artifactId>usl-resource</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gitee</groupId>
             <artifactId>usl-function-date</artifactId>
         </dependency>
 

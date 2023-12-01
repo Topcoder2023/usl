@@ -11,6 +11,7 @@ import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartboot.http.server.HttpBootstrap;
+import org.smartboot.http.server.HttpServerHandler;
 import org.smartboot.http.server.handler.HttpRouteHandler;
 
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @Order(Integer.MAX_VALUE)
 @AutoService(WebInteractive.class)
-public class WebInteractiveImpl implements WebInteractive {
+public class WebInteractiveImpl extends HttpServerHandler implements WebInteractive {
     private final HttpBootstrap bootstrap;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
