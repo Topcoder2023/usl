@@ -85,8 +85,8 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
                     return;
                 }
 
-                WebServerHelper.setRequest(request);
-                WebServerHelper.setResponse(response);
+                WebHelper.REQUEST_THREAD_LOCAL.set(request);
+                WebHelper.RESPONSE_THREAD_LOCAL.set(response);
 
                 try {
                     for (WebFilter filter : filterList) {
@@ -102,13 +102,15 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
                         }
 
                         if (!release) {
+                            response.setHttpStatus(HttpStatus.NO_CONTENT);
                             return;
                         }
                     }
 
                     handler.doHandle(request, response);
                 } finally {
-                    WebServerHelper.remove();
+                    WebHelper.REQUEST_THREAD_LOCAL.remove();
+                    WebHelper.REQUEST_THREAD_LOCAL.remove();
                 }
             }
         });

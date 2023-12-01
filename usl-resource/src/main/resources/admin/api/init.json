@@ -87,7 +87,7 @@
           "child": [
             {
               "title": "登录-1",
-              "href": "page/login-1.html",
+              "href": "../login",
               "icon": "fa fa-stumbleupon-circle",
               "target": "_blank"
             },

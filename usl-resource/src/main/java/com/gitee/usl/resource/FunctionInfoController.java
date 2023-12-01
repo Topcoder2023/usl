@@ -19,6 +19,6 @@ public class FunctionInfoController implements WebHandler {
 
     @Override
     public void doHandle(HttpRequest request, HttpResponse response) {
-
+        redirect("/static/admin/index");
     }
 }

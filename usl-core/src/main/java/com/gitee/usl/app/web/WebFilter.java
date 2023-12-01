@@ -6,8 +6,7 @@ import org.smartboot.http.server.HttpResponse;
 /**
  * @author hongda.li
  */
-@FunctionalInterface
-public interface WebFilter {
+public interface WebFilter extends WebHelper {
     /**
      * 匹配的路由
      * 为空则接受全部路由

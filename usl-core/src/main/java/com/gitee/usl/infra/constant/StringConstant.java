@@ -23,4 +23,6 @@ public final class StringConstant {
     public static final String USL_CLI_PREFIX = "USL > ";
 
     public static final String USL_ENGINE = "USL-ENGINE";
+
+    public static final String CONTENT_TYPE_SUFFIX = "; charset=utf-8";
 }

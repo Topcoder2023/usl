@@ -41,7 +41,7 @@ public class ScriptRequestHandler implements WebHandler {
     @Override
     public void doHandle(HttpRequest request, HttpResponse response) {
         try {
-            Map<String, Object> context = this.parseToMap(request);
+            Map<String, Object> context = this.parseToMap();
 
             if (logger.isDebugEnabled()) {
                 logger.debug("收到脚本请求 : {}", JSON.toJSONString(context));
@@ -60,12 +60,12 @@ public class ScriptRequestHandler implements WebHandler {
 
             logger.debug("脚本计算完成 : {}", result);
 
-            this.writeToJson(response, result);
+            this.writeToJson(result);
 
         } catch (Exception e) {
             logger.error("脚本计算异常 : {}", e.getMessage());
             response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-            this.writeToText(response, e.getMessage());
+            this.writeToText(e.getMessage());
         }
     }
 }
