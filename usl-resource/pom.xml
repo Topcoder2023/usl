@@ -30,6 +30,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.smartboot.http</groupId>
+            <artifactId>smart-http-server</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>

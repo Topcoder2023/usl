@@ -1,6 +1,5 @@
 package com.gitee.usl.resource.handler;
 
-import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.resource.Returns;
 import com.gitee.usl.resource.api.WebHandler;
 import com.gitee.usl.resource.filter.SecurityFilter;

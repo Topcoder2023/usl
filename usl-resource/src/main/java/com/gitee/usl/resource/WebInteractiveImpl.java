@@ -11,6 +11,7 @@ import com.gitee.usl.kernel.configure.WebServerConfiguration;
 import com.gitee.usl.resource.api.WebFilter;
 import com.gitee.usl.resource.api.WebHandler;
 import com.gitee.usl.resource.api.WebHelper;
+import com.gitee.usl.resource.filter.SecurityFilter;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,6 +122,6 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
         bootstrap.setPort(config.getPort());
         bootstrap.start();
 
-        logger.info("Web-Interactive start success - [{}://{}:{}]", "http", host, config.getPort());
+        logger.info("Web-Interactive start success - [{}://{}:{}]", "http", host, config.getPort() + SecurityFilter.LOGIN_PAGE);
     }
 }

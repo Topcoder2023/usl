@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 @AutoService(WebFilter.class)
 public class SecurityFilter implements WebFilter {
     public static final String TOKEN_NAME = "access_token";
-    private static final String LOGIN_PAGE = "usl/login";
+    public static final String LOGIN_PAGE = "/usl/public/login";
     private static final String TOKEN_VALUE;
 
     static {
