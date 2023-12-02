@@ -1,12 +1,16 @@
-package com.gitee.usl.app.web;
+package com.gitee.usl.resource;
 
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.net.NetUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Order;
+import com.gitee.usl.api.WebInteractive;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.WebServerConfiguration;
+import com.gitee.usl.resource.api.WebFilter;
+import com.gitee.usl.resource.api.WebHandler;
+import com.gitee.usl.resource.api.WebHelper;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,7 +106,6 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
                         }
 
                         if (!release) {
-                            response.setHttpStatus(HttpStatus.NO_CONTENT);
                             return;
                         }
                     }

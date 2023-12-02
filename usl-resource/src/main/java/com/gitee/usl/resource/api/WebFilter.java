@@ -1,4 +1,4 @@
-package com.gitee.usl.app.web;
+package com.gitee.usl.resource.api;
 
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;

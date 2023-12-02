@@ -1,5 +1,6 @@
-package com.gitee.usl.app.web;
+package com.gitee.usl.resource.api;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
@@ -73,6 +74,19 @@ public interface WebHelper {
      */
     default void writeToStream(InputStream stream) {
         IoUtil.copy(stream, RESPONSE_THREAD_LOCAL.get().getOutputStream());
+    }
+
+    /**
+     * 获取指定类型的参数
+     *
+     * @param name 参数名称
+     * @param type 参数类型
+     * @param <T>  参数泛型
+     * @return 参数值
+     */
+    default <T> T getParam(String name, Class<T> type) {
+        HttpRequest request = REQUEST_THREAD_LOCAL.get();
+        return Convert.convert(type, request.getParameter(name));
     }
 
     /**

@@ -1,5 +1,6 @@
-package com.gitee.usl.app.web;
+package com.gitee.usl.resource.filter;
 
+import com.gitee.usl.resource.api.WebFilter;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

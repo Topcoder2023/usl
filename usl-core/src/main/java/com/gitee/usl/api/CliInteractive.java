@@ -1,6 +1,4 @@
-package com.gitee.usl.app.cli;
-
-import com.gitee.usl.app.Interactive;
+package com.gitee.usl.api;
 
 /**
  * @author hongda.li

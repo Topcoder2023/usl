@@ -25,4 +25,8 @@ public final class StringConstant {
     public static final String USL_ENGINE = "USL-ENGINE";
 
     public static final String CONTENT_TYPE_SUFFIX = "; charset=utf-8";
+
+    public static final String SUCCESS = "success";
+
+    public static final String FAILURE = "failure";
 }
