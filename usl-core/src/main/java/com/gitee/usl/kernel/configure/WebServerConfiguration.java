@@ -10,6 +10,7 @@ public class WebServerConfiguration {
     private String name;
     private int port;
     private boolean debug;
+    private String password;
 
     public WebServerConfiguration(Configuration configuration) {
         this.configuration = configuration;
@@ -47,6 +48,15 @@ public class WebServerConfiguration {
 
     public WebServerConfiguration setDebug(boolean debug) {
         this.debug = debug;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public WebServerConfiguration setPassword(String password) {
+        this.password = password;
         return this;
     }
 

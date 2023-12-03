@@ -24,6 +24,10 @@ public class Returns {
         return new Returns().setCode(StringConstant.FAILURE);
     }
 
+    public static Returns failure(String message) {
+        return new Returns().setCode(StringConstant.FAILURE).setMessage(message);
+    }
+
     public String getCode() {
         return code;
     }

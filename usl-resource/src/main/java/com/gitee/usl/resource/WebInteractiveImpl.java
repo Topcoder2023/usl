@@ -1,13 +1,16 @@
 package com.gitee.usl.resource;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.net.NetUtil;
+import cn.hutool.core.util.ArrayUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.api.WebInteractive;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.WebServerConfiguration;
+import com.gitee.usl.resource.api.FilterRoute;
 import com.gitee.usl.resource.api.WebFilter;
 import com.gitee.usl.resource.api.WebHandler;
 import com.gitee.usl.resource.api.WebHelper;
@@ -24,10 +27,10 @@ import org.smartboot.http.server.HttpServerHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * B-S架构
@@ -97,10 +100,11 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
                     for (WebFilter filter : filterList) {
                         boolean release;
 
-                        String accept = filter.accept();
-                        if (accept == null
-                                || Objects.equals(uri, accept)
-                                || PATH_MATCHER.match(accept, uri)) {
+                        String[] routes = AnnotationUtil.getAnnotationValue(filter.getClass(), FilterRoute.class);
+
+                        if (routes == null
+                                || ArrayUtil.contains(routes, uri)
+                                || Stream.of(routes).anyMatch(pattern -> PATH_MATCHER.match(pattern, uri))) {
                             release = filter.doFilter(request, response);
                         } else {
                             release = true;
@@ -113,8 +117,7 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
 
                     handler.doHandle(request, response);
                 } finally {
-                    WebHelper.REQUEST_THREAD_LOCAL.remove();
-                    WebHelper.REQUEST_THREAD_LOCAL.remove();
+                    WebHelper.remove();
                 }
             }
         });

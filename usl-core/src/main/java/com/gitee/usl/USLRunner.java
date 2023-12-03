@@ -92,8 +92,17 @@ public class USLRunner {
      * @param configuration 指定配置类
      */
     public USLRunner(Configuration configuration) {
+        this(StringConstant.USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement(), configuration);
+    }
+
+    /**
+     * 根据指定配置类构造 USL 执行器
+     *
+     * @param configuration 指定配置类
+     */
+    public USLRunner(String name, Configuration configuration) {
+        this.name = name;
         this.configuration = configuration;
-        this.name = StringConstant.USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement();
     }
 
     /**

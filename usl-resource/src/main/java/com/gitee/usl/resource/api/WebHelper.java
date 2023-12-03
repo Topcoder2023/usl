@@ -5,6 +5,7 @@ import cn.hutool.core.io.IoUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.TypeReference;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.exception.UslExecuteException;
 import org.smartboot.http.common.enums.HeaderNameEnum;
@@ -25,6 +26,16 @@ import java.util.Map;
 public interface WebHelper {
     ThreadLocal<HttpRequest> REQUEST_THREAD_LOCAL = new ThreadLocal<>();
     ThreadLocal<HttpResponse> RESPONSE_THREAD_LOCAL = new ThreadLocal<>();
+    ThreadLocal<USLRunner> RUNNER_THREAD_LOCAL = new ThreadLocal<>();
+
+    /**
+     * 清空所有的线程变量
+     */
+    static void remove() {
+        RUNNER_THREAD_LOCAL.remove();
+        REQUEST_THREAD_LOCAL.remove();
+        RESPONSE_THREAD_LOCAL.remove();
+    }
 
     /**
      * 重定向

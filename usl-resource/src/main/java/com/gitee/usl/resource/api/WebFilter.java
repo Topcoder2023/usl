@@ -8,16 +8,6 @@ import org.smartboot.http.server.HttpResponse;
  */
 public interface WebFilter extends WebHelper {
     /**
-     * 匹配的路由
-     * 为空则接受全部路由
-     *
-     * @return 路由
-     */
-    default String accept() {
-        return null;
-    }
-
-    /**
      * 执行过滤逻辑
      *
      * @param request  请求

@@ -17,13 +17,8 @@ layui.use(['form'], function () {
     // 登录操作
     form.on('submit(login)', function (data) {
         data = data.field;
-        if (data.username === '') {
-            layer.msg('用户名不能为空');
-            return false;
-        }
-
-        if (data.password === '') {
-            layer.msg('密码不能为空');
+        if (data.runner === '') {
+            layer.msg('实例名不能为空');
             return false;
         }
 
@@ -35,6 +30,7 @@ layui.use(['form'], function () {
                     anim: 5
                 }, function () {
                     $.removeCookie('access_token');
+                    $.cookie.raw = true;
                     $.cookie('access_token', result.data, {
                         path: '/usl',
                         expires: 1
@@ -47,7 +43,7 @@ layui.use(['form'], function () {
                     time: 1500,
                     anim: 5
                 }, function () {
-                    $('#username').val('')
+                    $('#runner').val('')
                     $('#password').val('')
                 })
             } else {
@@ -56,7 +52,7 @@ layui.use(['form'], function () {
                     time: 1500,
                     anim: 5
                 }, function () {
-                    $('#username').val('')
+                    $('#runner').val('')
                     $('#password').val('')
                 })
             }
