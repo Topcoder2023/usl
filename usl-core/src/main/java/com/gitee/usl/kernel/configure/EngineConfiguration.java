@@ -1,5 +1,6 @@
 package com.gitee.usl.kernel.configure;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.structure.FunctionHolder;
@@ -14,12 +15,14 @@ import java.util.stream.Collectors;
  * @author hongda.li
  */
 public class EngineConfiguration {
+    private String scriptPath;
     private final Configuration configuration;
     private final Set<String> packageNameList;
     private final FunctionHolder functionHolder;
     private ScriptEngineManager scriptEngineManager;
 
     public EngineConfiguration(Configuration configuration) {
+        this.scriptPath = FileUtil.getTmpDirPath();
         this.configuration = configuration;
         this.functionHolder = new FunctionHolder();
         this.packageNameList = new HashSet<>(NumberConstant.COMMON_SIZE);
@@ -62,6 +65,15 @@ public class EngineConfiguration {
 
     public EngineConfiguration filter(Predicate<AviatorFunction> filter) {
         this.functionHolder.addFilter(filter);
+        return this;
+    }
+
+    public String getScriptPath() {
+        return scriptPath;
+    }
+
+    public EngineConfiguration setScriptPath(String scriptPath) {
+        this.scriptPath = scriptPath;
         return this;
     }
 

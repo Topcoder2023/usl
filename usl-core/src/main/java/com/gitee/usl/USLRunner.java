@@ -55,6 +55,11 @@ public class USLRunner {
     private final String name;
 
     /**
+     * 实例启动时间
+     */
+    private final Date startTime;
+
+    /**
      * 在 JVM 关闭前的回调函数
      */
     private static List<Shutdown> shutdowns;
@@ -102,6 +107,7 @@ public class USLRunner {
      */
     public USLRunner(String name, Configuration configuration) {
         this.name = name;
+        this.startTime = new Date();
         this.configuration = configuration;
     }
 
@@ -209,6 +215,15 @@ public class USLRunner {
     }
 
     /**
+     * 获取当前 USL 执行器的启动时间
+     *
+     * @return 启动时间
+     */
+    public Date startTime() {
+        return startTime;
+    }
+
+    /**
      * 根据 USL Runner 名称获取实例
      *
      * @param name 名称
@@ -219,6 +234,15 @@ public class USLRunner {
             return null;
         }
         return ENGINE_CONTEXT.get(name);
+    }
+
+    /**
+     * 返回所有 USL Runner 的数量
+     *
+     * @return USL Runner 实例数量
+     */
+    public static int findRunnerCount() {
+        return ENGINE_CONTEXT.size();
     }
 
     /**

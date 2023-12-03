@@ -8,6 +8,8 @@ public final class StringConstant {
     private StringConstant() {
     }
 
+    public static final String VERSION = "v1.0.0.release";
+
     public static final String USL_RUNNER_NAME_PREFIX = "USL Runner-";
 
     public static final String FIRST_USL_RUNNER_NAME = "USL Runner-1";
@@ -31,4 +33,6 @@ public final class StringConstant {
     public static final String FAILURE = "failure";
 
     public static final String PASSWORD = "password";
+
+    public static final String SCRIPT_SUFFIX = "usl";
 }

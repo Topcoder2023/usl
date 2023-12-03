@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 @AutoService(WebHandler.class)
 public class LoginHandler implements WebHandler {
-    private static final String PATH = "/api/login";
+    private static final String PATH = "/usl/api/login";
 
     @Override
     public String getRoute() {

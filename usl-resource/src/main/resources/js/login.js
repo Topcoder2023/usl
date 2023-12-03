@@ -22,7 +22,7 @@ layui.use(['form'], function () {
             return false;
         }
 
-        $.post('/api/login', data, function (result) {
+        $.post('/usl/api/login', data, function (result) {
             if (result.code === 'success') {
                 layer.msg('登录成功', {
                     icon: 1,

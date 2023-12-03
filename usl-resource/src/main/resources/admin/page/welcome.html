@@ -41,12 +41,12 @@
                                             <div class="panel layui-bg-number">
                                                 <div class="panel-body">
                                                     <div class="panel-title">
-                                                        <span class="label pull-right layui-bg-cyan">函数</span>
-                                                        <h5>函数统计</h5>
+                                                        <span class="label pull-right layui-bg-orange">插件</span>
+                                                        <h5>插件统计</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">600</h1>
-                                                        <small>当前实例下函数数</small>
+                                                        <h1 class="no-margins">7</h1>
+                                                        <small>已使用的总插件数</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -55,12 +55,12 @@
                                             <div class="panel layui-bg-number">
                                                 <div class="panel-body">
                                                     <div class="panel-title">
-                                                        <span class="label pull-right layui-bg-orange">插件</span>
-                                                        <h5>插件统计</h5>
+                                                        <span class="label pull-right layui-bg-cyan">函数</span>
+                                                        <h5>函数统计</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">7</h1>
-                                                        <small>当前实例下总插件数</small>
+                                                        <h1 class="no-margins">600</h1>
+                                                        <small>当前实例下函数数量</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -74,7 +74,7 @@
                                                     </div>
                                                     <div class="panel-content">
                                                         <h1 class="no-margins">20</h1>
-                                                        <small>当前实例下总脚本数</small>
+                                                        <small>当前实例下脚本数量</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -326,6 +326,10 @@
             echarts = layui.echarts;
 
         miniTab.listen();
+
+        $.post('/usl/admin/api/welcome', function (result) {
+            console.log(result);
+        })
 
         /**
          * 查看公告信息
