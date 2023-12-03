@@ -1,9 +1,7 @@
 package com.gitee.usl.kernel.engine;
 
-import cn.hutool.core.collection.ConcurrentHashSet;
 import cn.hutool.core.thread.ThreadUtil;
 import com.gitee.usl.api.Initializer;
-import com.gitee.usl.api.plugin.Plugin;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.UslExecuteException;
@@ -20,7 +18,6 @@ import com.google.common.hash.Hashing;
 import com.googlecode.aviator.*;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -39,7 +36,6 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("UnstableApiUsage")
 @AutoService(Initializer.class)
 public final class ScriptEngineManager implements Initializer {
-    private static final Set<Class<? extends Plugin>> PLUGIN_SET = new ConcurrentHashSet<>(NumberConstant.COMMON_SIZE);
     private AviatorEvaluatorInstance instance;
     private Configuration configuration;
     private CacheConfiguration cacheConfiguration;
@@ -173,14 +169,5 @@ public final class ScriptEngineManager implements Initializer {
                 .putString(content, StandardCharsets.UTF_8)
                 .hash()
                 .toString();
-    }
-
-    /**
-     * 获取所有的插件类型
-     *
-     * @return 插件类型
-     */
-    public static Set<Class<? extends Plugin>> getPluginSet() {
-        return PLUGIN_SET;
     }
 }

@@ -3,7 +3,6 @@ package com.gitee.usl.infra.structure;
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.api.plugin.Plugin;
-import com.gitee.usl.kernel.engine.ScriptEngineManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,6 @@ public class Plugins {
         boolean exists = this.container.stream().anyMatch(item -> item.getClass().equals(plugin.getClass()));
         if (!exists) {
             this.container.add(plugin);
-            ScriptEngineManager.getPluginSet().add(plugin.getClass());
         }
     }
 

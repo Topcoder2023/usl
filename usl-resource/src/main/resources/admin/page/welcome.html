@@ -19,7 +19,7 @@
                 <div class="layui-row layui-col-space15">
                     <div class="layui-col-md6">
                         <div class="layui-card">
-                            <div class="layui-card-header"><i class="fa fa-warning icon"></i>数据统计</div>
+                            <div class="layui-card-header"><i class="fa fa-tasks icon"></i>数据统计</div>
                             <div class="layui-card-body">
                                 <div class="welcome-module">
                                     <div class="layui-row layui-col-space10">
@@ -27,12 +27,12 @@
                                             <div class="panel layui-bg-number">
                                                 <div class="panel-body">
                                                     <div class="panel-title">
-                                                        <span class="label pull-right layui-bg-blue">实例</span>
-                                                        <h5>USL实例统计</h5>
+                                                        <span class="label pull-right layui-bg-blue">Initializer</span>
+                                                        <h3 class="h3-title">初始化器总数量</h3>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">4</h1>
-                                                        <small>总实例数</small>
+                                                        <h1 class="no-margins" id="data-initializer"></h1>
+                                                        <small>所有实例共享</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -41,12 +41,12 @@
                                             <div class="panel layui-bg-number">
                                                 <div class="panel-body">
                                                     <div class="panel-title">
-                                                        <span class="label pull-right layui-bg-orange">插件</span>
-                                                        <h5>插件统计</h5>
+                                                        <span class="label pull-right layui-bg-orange">Enhancer</span>
+                                                        <h3 class="h3-title">增强器总数量</h3>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">7</h1>
-                                                        <small>已使用的总插件数</small>
+                                                        <h1 class="no-margins" id="data-enhancer"></h1>
+                                                        <small>所有实例共享</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -55,12 +55,12 @@
                                             <div class="panel layui-bg-number">
                                                 <div class="panel-body">
                                                     <div class="panel-title">
-                                                        <span class="label pull-right layui-bg-cyan">函数</span>
-                                                        <h5>函数统计</h5>
+                                                        <span class="label pull-right layui-bg-cyan">Function</span>
+                                                        <h3 class="h3-title">函数总数量</h3>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">600</h1>
-                                                        <small>当前实例下函数数量</small>
+                                                        <h1 class="no-margins" id="data-function"></h1>
+                                                        <small>当前实例独享</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -69,12 +69,12 @@
                                             <div class="panel layui-bg-number">
                                                 <div class="panel-body">
                                                     <div class="panel-title">
-                                                        <span class="label pull-right layui-bg-green">脚本</span>
-                                                        <h5>脚本统计</h5>
+                                                        <span class="label pull-right layui-bg-green">Script</span>
+                                                        <h3 class="h3-title">脚本总数量</h3>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">20</h1>
-                                                        <small>当前实例下脚本数量</small>
+                                                        <h1 class="no-margins" id="data-script"></h1>
+                                                        <small>当前实例独享</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -93,58 +93,58 @@
                                     <div class="layui-row layui-col-space10 layuimini-qiuck">
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
                                             <a href="javascript:;" layuimini-content-href="page/menu.html"
-                                               data-title="菜单管理" data-icon="fa fa-window-maximize">
+                                               data-title="初始化器列表" data-icon="fa fa-window-maximize">
                                                 <i class="fa fa-window-maximize"></i>
-                                                <cite>菜单管理</cite>
+                                                <cite>初始化器列表</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
                                             <a href="javascript:;" layuimini-content-href="page/setting.html"
-                                               data-title="系统设置" data-icon="fa fa-gears">
+                                               data-title="增强器列表" data-icon="fa fa-gears">
                                                 <i class="fa fa-gears"></i>
-                                                <cite>系统设置</cite>
+                                                <cite>增强器列表</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
                                             <a href="javascript:;" layuimini-content-href="page/table.html"
-                                               data-title="表格示例" data-icon="fa fa-file-text">
+                                               data-title="函数列表" data-icon="fa fa-file-text">
                                                 <i class="fa fa-file-text"></i>
-                                                <cite>表格示例</cite>
+                                                <cite>函数列表</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
                                             <a href="javascript:;" layuimini-content-href="page/icon.html"
-                                               data-title="图标列表" data-icon="fa fa-dot-circle-o">
+                                               data-title="脚本管理" data-icon="fa fa-dot-circle-o">
                                                 <i class="fa fa-dot-circle-o"></i>
-                                                <cite>图标列表</cite>
+                                                <cite>脚本管理</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
                                             <a href="javascript:;" layuimini-content-href="page/form.html"
-                                               data-title="表单示例" data-icon="fa fa-calendar">
+                                               data-title="配置信息" data-icon="fa fa-calendar">
                                                 <i class="fa fa-calendar"></i>
-                                                <cite>表单示例</cite>
+                                                <cite>配置信息</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
                                             <a href="javascript:;" layuimini-content-href="page/404.html"
                                                data-title="404页面" data-icon="fa fa-hourglass-end">
                                                 <i class="fa fa-hourglass-end"></i>
-                                                <cite>404页面</cite>
+                                                <cite>系统信息</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
                                             <a href="javascript:;" layuimini-content-href="page/button.html"
                                                data-title="按钮示例" data-icon="fa fa-snowflake-o">
                                                 <i class="fa fa-snowflake-o"></i>
-                                                <cite>按钮示例</cite>
+                                                <cite>帮助文档</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
                                             <a href="javascript:;" layuimini-content-href="https://www.baidu.com"
-                                               data-title="百度搜索" data-icon="fa fa-search">
+                                               data-title="系统信息" data-icon="fa fa-search">
                                                 <i class="fa fa-search"></i>
-                                                <cite>百度搜索</cite>
+                                                <cite>源码下载</cite>
                                             </a>
                                         </div>
                                     </div>
@@ -257,42 +257,32 @@
                 </div>
 
                 <div class="layui-card">
-                    <div class="layui-card-header"><i class="fa fa-fire icon"></i>版本信息</div>
+                    <div class="layui-card-header"><i class="fa fa-fire icon"></i>实例信息</div>
                     <div class="layui-card-body layui-text">
                         <table class="layui-table">
                             <colgroup>
-                                <col width="100">
                                 <col>
                             </colgroup>
                             <tbody>
                             <tr>
                                 <td>实例名称</td>
-                                <td>
-                                    USL Runner-1
-                                </td>
+                                <td id="instance-name"></td>
                             </tr>
                             <tr>
                                 <td>运行时长</td>
-                                <td>4h:30m:25s</td>
+                                <td id="instance-time"></td>
                             </tr>
                             <tr>
                                 <td>运行版本</td>
-                                <td>v1.0.0.release</td>
+                                <td id="instance-version"></td>
                             </tr>
                             <tr>
                                 <td>源码地址</td>
-                                <td>
-                                    iframe版-v2：<a href="http://layuimini.99php.cn/iframe/v2/index.html"
-                                                   target="_blank">点击查看</a><br>
-                                </td>
+                                <td id="instance-source"></td>
                             </tr>
                             <tr>
                                 <td>帮助文档</td>
-                                <td>
-                                    iframe版-v2：<a href="https://github.com/zhongshaofa/layuimini/tree/v2"
-                                                   target="_blank">github</a> / <a
-                                        href="https://gitee.com/zhongshaofa/layuimini/tree/v2" target="_blank">gitee</a><br>
-                                </td>
+                                <td id="instance-help"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -300,15 +290,16 @@
                 </div>
 
                 <div class="layui-card">
-                    <div class="layui-card-header"><i class="fa fa-paper-plane-o icon"></i>作者心语</div>
+                    <div class="layui-card-header"><i class="fa fa-paper-plane-o icon"></i>关于USL</div>
                     <div class="layui-card-body layui-text layadmin-text">
-                        <p>本模板基于layui2.5.4以及font-awesome-4.7.0进行实现。layui开发文档地址：<a
-                                class="layui-btn layui-btn-xs layui-btn-danger" target="_blank"
-                                href="http://www.layui.com/doc">layui文档</a></p>
-                        <p>技术交流QQ群（716235988）：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=7TMTuAJv"><img
-                                border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="layuimini"
-                                title="layuimini"></a>（加群请备注来源：如gitee、github、官网等）</p>
-                        <p>喜欢此后台模板的可以给我的GitHub和Gitee加个Star支持一下</p>
+                        <p>USL——Universal Script Language（通用脚本语言开发框架）</p>
+                        <p>框架核心——Aviator</p>
+                        <p>前端页面——Layui-Admin</p>
+                        <p>后端服务——Smart-http</p>
+                        <p>缓存组件——Caffeine</p>
+                        <p>消费队列——Disruptor</p>
+                        <p>工具类库——Hutool</p>
+                        <p>制品仓库——Jitpack</p>
                     </div>
                 </div>
 
@@ -318,116 +309,6 @@
 </div>
 <script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
-<script>
-    layui.use(['layer', 'miniTab', 'echarts'], function () {
-        var $ = layui.jquery,
-            layer = layui.layer,
-            miniTab = layui.miniTab,
-            echarts = layui.echarts;
-
-        miniTab.listen();
-
-        $.post('/usl/admin/api/welcome', function (result) {
-            console.log(result);
-        })
-
-        /**
-         * 查看公告信息
-         **/
-        $('body').on('click', '.layuimini-notice', function () {
-            var title = $(this).children('.layuimini-notice-title').text(),
-                noticeTime = $(this).children('.layuimini-notice-extra').text(),
-                content = $(this).children('.layuimini-notice-content').html();
-            var html = '<div style="padding:15px 20px; text-align:justify; line-height: 22px;border-bottom:1px solid #e2e2e2;background-color: #2f4056;color: #ffffff">\n' +
-                '<div style="text-align: center;margin-bottom: 20px;font-weight: bold;border-bottom:1px solid #718fb5;padding-bottom: 5px"><h4 class="text-danger">' + title + '</h4></div>\n' +
-                '<div style="font-size: 12px">' + content + '</div>\n' +
-                '</div>\n';
-            parent.layer.open({
-                type: 1,
-                title: '系统公告' + '<span style="float: right;right: 1px;font-size: 12px;color: #b1b3b9;margin-top: 1px">' + noticeTime + '</span>',
-                area: '300px;',
-                shade: 0.8,
-                id: 'layuimini-notice',
-                btn: ['查看', '取消'],
-                btnAlign: 'c',
-                moveType: 1,
-                content: html,
-                success: function (layero) {
-                    var btn = layero.find('.layui-layer-btn');
-                    btn.find('.layui-layer-btn0').attr({
-                        href: 'https://gitee.com/zhongshaofa/layuimini',
-                        target: '_blank'
-                    });
-                }
-            });
-        });
-
-        /**
-         * 报表功能
-         */
-        var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
-        var optionRecords = {
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [
-                {
-                    name: '邮件营销',
-                    type: 'line',
-                    data: [120, 132, 101, 134, 90, 230, 210]
-                },
-                {
-                    name: '联盟广告',
-                    type: 'line',
-                    data: [220, 182, 191, 234, 290, 330, 310]
-                },
-                {
-                    name: '视频广告',
-                    type: 'line',
-                    data: [150, 232, 201, 154, 190, 330, 410]
-                },
-                {
-                    name: '直接访问',
-                    type: 'line',
-                    data: [320, 332, 301, 334, 390, 330, 320]
-                },
-                {
-                    name: '搜索引擎',
-                    type: 'line',
-                    data: [820, 932, 901, 934, 1290, 1330, 1320]
-                }
-            ]
-        };
-        echartsRecords.setOption(optionRecords);
-
-        // echarts 窗口缩放自适应
-        window.onresize = function () {
-            echartsRecords.resize();
-        }
-
-    });
-</script>
+<script src="../js/welcome.js" charset="utf-8"></script>
 </body>
 </html>

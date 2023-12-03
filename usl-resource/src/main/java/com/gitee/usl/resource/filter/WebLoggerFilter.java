@@ -1,5 +1,6 @@
 package com.gitee.usl.resource.filter;
 
+import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.resource.api.WebFilter;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.smartboot.http.server.HttpResponse;
 /**
  * @author hongda.li
  */
+@Order(Integer.MIN_VALUE + 10)
 @AutoService(WebFilter.class)
 public class WebLoggerFilter implements WebFilter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

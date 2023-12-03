@@ -18,6 +18,12 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
+ * 安全权限拦截处理
+ * 拦截未设置 access_token 的请求
+ * <p>
+ * /usl/admin/page/** 对应所有管理页面
+ * /usl/admin/api/** 对应所有管理页面的 WebHandler 路径
+ *
  * @author hongda.li
  */
 @FilterRoute({"/usl/admin/page/**", "/usl/admin/api/**"})
@@ -34,17 +40,20 @@ public class SecurityFilter implements WebFilter {
 
     @Override
     public boolean doFilter(HttpRequest request, HttpResponse response) {
-        String tokenValue = Stream.of(request.getCookies())
+        String accessToken = Stream.of(request.getCookies())
                 .filter(cookie -> TOKEN_NAME.equals(cookie.getName()))
                 .findFirst()
+                // 先从Cookie取
                 .map(Cookie::getValue)
+                // 再从请求头取
                 .orElse(Optional.ofNullable(request.getHeader(TOKEN_NAME))
+                        // 再从参数中取
                         .orElse(request.getParameter(TOKEN_NAME)));
 
         final String runnerName;
 
         try {
-            runnerName = AES.decryptStr(tokenValue);
+            runnerName = AES.decryptStr(accessToken);
         } catch (Exception e) {
             logger.warn("Access-Token解密失败 - {}", e.getMessage());
             this.redirect(LOGIN_PAGE);

@@ -237,15 +237,6 @@ public class USLRunner {
     }
 
     /**
-     * 返回所有 USL Runner 的数量
-     *
-     * @return USL Runner 实例数量
-     */
-    public static int findRunnerCount() {
-        return ENGINE_CONTEXT.size();
-    }
-
-    /**
      * 开启交互
      *
      * @param mode 交互模式

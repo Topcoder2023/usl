@@ -1,13 +1,13 @@
 package com.gitee.usl.resource.handler;
 
-import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.BetweenFormatter;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.plugin.Plugin;
+import com.gitee.usl.api.FunctionEnhancer;
+import com.gitee.usl.api.Initializer;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.utils.ServiceSearcher;
-import com.gitee.usl.kernel.engine.ScriptEngineManager;
 import com.gitee.usl.resource.Returns;
 import com.gitee.usl.resource.api.WebHandler;
 import com.google.auto.service.AutoService;
@@ -26,7 +26,7 @@ public class WelcomeHandler implements WebHandler {
     private static final String PATH = "/usl/admin/api/welcome";
     private static final String HELP_DOC_URL = "https://gitee.com/yixi-dlmu/usl/blob/master/README.md";
     private static final String SOURCE_URL_GITEE = "https://gitee.com/yixi-dlmu/usl";
-    private static final String SOURCE_URL_GITHUB = "https://github.com/Topcoder2023/usl";
+    private Info infoCache;
 
     @Override
     public String getRoute() {
@@ -37,16 +37,9 @@ public class WelcomeHandler implements WebHandler {
     public void doHandle(HttpRequest request, HttpResponse response) {
         USLRunner runner = RUNNER_THREAD_LOCAL.get();
 
-        Info info = new Info();
-        info.name = runner.name();
-        info.helpDocUrl = HELP_DOC_URL;
-        info.version = StringConstant.VERSION;
-        info.minutes = DateUtil.between(runner.startTime(), new Date(), DateUnit.MINUTE);
-        info.sourceCodeUrlOfGitee = SOURCE_URL_GITEE;
-        info.sourceCodeUrlOfGithub = SOURCE_URL_GITHUB;
-        info.functionSize = runner.functions().size();
-        info.pluginSize = ScriptEngineManager.getPluginSet().size();
-        info.runnerSize = USLRunner.findRunnerCount();
+        Info info = this.getInfoCache(runner);
+
+        info.runTime = DateUtil.formatBetween(runner.startTime(), new Date(), BetweenFormatter.Level.SECOND);
         info.scriptSize = Arrays.stream(FileUtil.ls(runner.configuration().configEngine().getScriptPath()))
                 .filter(file -> Objects.equals(FileUtil.getSuffix(file), StringConstant.SCRIPT_SUFFIX))
                 .count();
@@ -54,15 +47,29 @@ public class WelcomeHandler implements WebHandler {
         this.writeToJson(Returns.success(info));
     }
 
+    private Info getInfoCache(USLRunner runner) {
+        if (infoCache != null) {
+            return infoCache;
+        }
+        this.infoCache = new Info();
+        infoCache.name = runner.name();
+        infoCache.helpDocUrl = HELP_DOC_URL;
+        infoCache.version = StringConstant.VERSION;
+        infoCache.sourceCodeUrl = SOURCE_URL_GITEE;
+        infoCache.functionSize = runner.functions().size();
+        infoCache.serviceSize = ServiceSearcher.searchAll(Initializer.class).size();
+        infoCache.enhancerSize = ServiceSearcher.searchAll(FunctionEnhancer.class).size();
+        return infoCache;
+    }
+
     static final class Info {
         private String name;
-        private Long minutes;
+        private String runTime;
         private String version;
-        private String sourceCodeUrlOfGitee;
-        private String sourceCodeUrlOfGithub;
+        private String sourceCodeUrl;
         private String helpDocUrl;
-        private Integer runnerSize;
-        private Integer pluginSize;
+        private Integer serviceSize;
+        private Integer enhancerSize;
         private Integer functionSize;
         private Long scriptSize;
 
@@ -75,12 +82,12 @@ public class WelcomeHandler implements WebHandler {
             return this;
         }
 
-        public Long getMinutes() {
-            return minutes;
+        public String getRunTime() {
+            return runTime;
         }
 
-        public Info setMinutes(Long minutes) {
-            this.minutes = minutes;
+        public Info setRunTime(String runTime) {
+            this.runTime = runTime;
             return this;
         }
 
@@ -93,21 +100,12 @@ public class WelcomeHandler implements WebHandler {
             return this;
         }
 
-        public String getSourceCodeUrlOfGitee() {
-            return sourceCodeUrlOfGitee;
+        public String getSourceCodeUrl() {
+            return sourceCodeUrl;
         }
 
-        public Info setSourceCodeUrlOfGitee(String sourceCodeUrlOfGitee) {
-            this.sourceCodeUrlOfGitee = sourceCodeUrlOfGitee;
-            return this;
-        }
-
-        public String getSourceCodeUrlOfGithub() {
-            return sourceCodeUrlOfGithub;
-        }
-
-        public Info setSourceCodeUrlOfGithub(String sourceCodeUrlOfGithub) {
-            this.sourceCodeUrlOfGithub = sourceCodeUrlOfGithub;
+        public Info setSourceCodeUrl(String sourceCodeUrl) {
+            this.sourceCodeUrl = sourceCodeUrl;
             return this;
         }
 
@@ -120,12 +118,12 @@ public class WelcomeHandler implements WebHandler {
             return this;
         }
 
-        public Integer getPluginSize() {
-            return pluginSize;
+        public Integer getEnhancerSize() {
+            return enhancerSize;
         }
 
-        public Info setPluginSize(Integer pluginSize) {
-            this.pluginSize = pluginSize;
+        public Info setEnhancerSize(Integer enhancerSize) {
+            this.enhancerSize = enhancerSize;
             return this;
         }
 
@@ -147,12 +145,12 @@ public class WelcomeHandler implements WebHandler {
             return this;
         }
 
-        public Integer getRunnerSize() {
-            return runnerSize;
+        public Integer getServiceSize() {
+            return serviceSize;
         }
 
-        public Info setRunnerSize(Integer runnerSize) {
-            this.runnerSize = runnerSize;
+        public Info setServiceSize(Integer serviceSize) {
+            this.serviceSize = serviceSize;
             return this;
         }
     }
