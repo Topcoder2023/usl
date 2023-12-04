@@ -7,6 +7,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.TypeReference;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
+import com.gitee.usl.infra.exception.UslException;
 import com.gitee.usl.infra.exception.UslExecuteException;
 import org.smartboot.http.common.enums.HeaderNameEnum;
 import org.smartboot.http.common.enums.HeaderValueEnum;
@@ -101,26 +102,18 @@ public interface WebHelper {
     }
 
     /**
-     * 请求解析为 Map<K, V>
+     * 请求解析为简单对象
      *
+     * @param type 简单类型
+     * @param <T>  泛型
      * @return 转换结果
-     * @throws IOException 转换异常
      */
-    default <K, V> Map<K, V> parseToMap() throws IOException {
-        return this.parseToObj(new TypeReference<Map<K, V>>() {
-        });
-    }
-
-    /**
-     * 请求解析为 List<T>
-     *
-     * @param <T> 泛型
-     * @return 转换结果
-     * @throws IOException 转换异常
-     */
-    default <T> List<T> parseToObj() throws IOException {
-        return this.parseToObj(new TypeReference<List<T>>() {
-        });
+    default <T> List<T> parseToArray(Class<T> type) {
+        try {
+            return JSON.parseArray(IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8)).toJavaList(type);
+        } catch (IOException e) {
+            throw new UslException(e);
+        }
     }
 
     /**
@@ -129,11 +122,13 @@ public interface WebHelper {
      * @param typeReference 复杂类型
      * @param <T>           泛型
      * @return 转换结果
-     * @throws IOException 转换异常
      */
-    default <T> T parseToObj(TypeReference<T> typeReference) throws IOException {
-        JSONObject parsed = JSON.parseObject(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8);
-        return parsed.to(typeReference);
+    default <T> T parseToObj(TypeReference<T> typeReference) {
+        try {
+            return JSON.parseObject(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8).to(typeReference);
+        } catch (IOException e) {
+            throw new UslException(e);
+        }
     }
 
     /**
@@ -142,10 +137,12 @@ public interface WebHelper {
      * @param type 简单类型
      * @param <T>  泛型
      * @return 转换结果
-     * @throws IOException 转换异常
      */
-    default <T> T parseToObj(Class<T> type) throws IOException {
-        JSONObject parsed = JSON.parseObject(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8);
-        return parsed.to(type);
+    default <T> T parseToObj(Class<T> type) {
+        try {
+            return JSON.parseObject(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8).to(type);
+        } catch (IOException e) {
+            throw new UslException(e);
+        }
     }
 }

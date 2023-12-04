@@ -3,7 +3,7 @@ package com.gitee.usl.resource.handler;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
-import com.gitee.usl.resource.Returns;
+import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.api.WebHandler;
 import com.gitee.usl.resource.filter.SecurityFilter;
 import com.google.auto.service.AutoService;

@@ -2,21 +2,19 @@ package com.gitee.usl.resource.handler;
 
 import cn.hutool.core.date.BetweenFormatter;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.io.FileUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.utils.ServiceSearcher;
-import com.gitee.usl.resource.Returns;
+import com.gitee.usl.resource.ScriptSearcher;
+import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.api.WebHandler;
 import com.google.auto.service.AutoService;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * @author hongda.li
@@ -40,9 +38,7 @@ public class WelcomeHandler implements WebHandler {
         Info info = this.getInfoCache(runner);
 
         info.runTime = DateUtil.formatBetween(runner.startTime(), new Date(), BetweenFormatter.Level.SECOND);
-        info.scriptSize = Arrays.stream(FileUtil.ls(runner.configuration().configEngine().getScriptPath()))
-                .filter(file -> Objects.equals(FileUtil.getSuffix(file), StringConstant.SCRIPT_SUFFIX))
-                .count();
+        info.scriptSize = ScriptSearcher.findCount();
 
         this.writeToJson(Returns.success(info));
     }
@@ -71,7 +67,7 @@ public class WelcomeHandler implements WebHandler {
         private Integer serviceSize;
         private Integer enhancerSize;
         private Integer functionSize;
-        private Long scriptSize;
+        private Integer scriptSize;
 
         public String getName() {
             return name;
@@ -136,11 +132,11 @@ public class WelcomeHandler implements WebHandler {
             return this;
         }
 
-        public Long getScriptSize() {
+        public Integer getScriptSize() {
             return scriptSize;
         }
 
-        public Info setScriptSize(Long scriptSize) {
+        public Info setScriptSize(Integer scriptSize) {
             this.scriptSize = scriptSize;
             return this;
         }

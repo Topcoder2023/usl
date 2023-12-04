@@ -2,6 +2,7 @@ package com.gitee.usl.resource.handler;
 
 import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.exception.UslNotFoundException;
@@ -41,7 +42,8 @@ public class ScriptRequestHandler implements WebHandler {
     @Override
     public void doHandle(HttpRequest request, HttpResponse response) {
         try {
-            Map<String, Object> context = this.parseToMap();
+            Map<String, Object> context = this.parseToObj(new TypeReference<Map<String, Object>>() {
+            });
 
             if (logger.isDebugEnabled()) {
                 logger.debug("收到脚本请求 : {}", JSON.toJSONString(context));

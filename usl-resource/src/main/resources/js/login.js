@@ -38,7 +38,7 @@ layui.use(['form'], function () {
                     window.location.href = '../admin/page/index';
                 })
             } else if (result.code === 'failure') {
-                layer.msg('账户或密码错误', {
+                layer.msg(result.message, {
                     icon: 2,
                     time: 1500,
                     anim: 5
@@ -49,7 +49,7 @@ layui.use(['form'], function () {
             } else {
                 layer.msg('服务器出现错误', {
                     icon: 2,
-                    time: 1500,
+                    time: 2000,
                     anim: 5
                 }, function () {
                     $('#runner').val('')

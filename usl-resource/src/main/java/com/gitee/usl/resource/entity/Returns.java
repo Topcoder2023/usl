@@ -1,4 +1,4 @@
-package com.gitee.usl.resource;
+package com.gitee.usl.resource.entity;
 
 import com.gitee.usl.infra.constant.StringConstant;
 
