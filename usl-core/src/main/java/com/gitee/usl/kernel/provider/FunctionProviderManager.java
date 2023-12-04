@@ -2,7 +2,9 @@ package com.gitee.usl.kernel.provider;
 
 import com.gitee.usl.api.Definable;
 import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.annotation.Notes;
 import com.gitee.usl.api.annotation.Order;
+import com.gitee.usl.infra.constant.ModuleConstant;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.Configuration;
@@ -21,6 +23,9 @@ import java.util.Set;
  *
  * @author hongda.li
  */
+@Notes(value = "函数工厂初始化器",
+        belongs = ModuleConstant.USL_CORE,
+        viewUrl = "https://gitee.com/yixi-dlmu/usl/raw/master/usl-core/src/main/java/com/gitee/usl/kernel/provider/FunctionProviderManager.java")
 @Order(FunctionProviderManager.USL_FUNC_PROVIDER_ORDER)
 @AutoService(Initializer.class)
 public class FunctionProviderManager implements Initializer {

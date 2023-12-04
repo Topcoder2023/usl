@@ -1,5 +1,6 @@
 package com.gitee.usl.resource.handler;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.resource.Returns;
@@ -36,7 +37,8 @@ public class LoginHandler implements WebHandler {
         String actual = this.getParam(StringConstant.PASSWORD, String.class);
         String accept = runner.configuration().configWebServer().getPassword();
 
-        if (accept == null || Objects.equals(actual, accept)) {
+        boolean bothIsEmpty = CharSequenceUtil.isEmpty(accept) && CharSequenceUtil.isEmpty(actual);
+        if (Objects.equals(actual, accept) || bothIsEmpty) {
             this.writeToJson(Returns.success(SecurityFilter.getTokenValue(runner.name())));
         } else {
             this.writeToJson(Returns.failure("USL实例密码错误"));

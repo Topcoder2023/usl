@@ -21,10 +21,10 @@ import java.io.InputStream;
  */
 @AutoService(WebHandler.class)
 public class StaticRequestHandler implements WebHandler {
+    public static final String NOT_FOUND_PAGE = "/usl/public/404";
     private static final String PATH_PREFIX = "/usl";
     private static final String PATH = PATH_PREFIX + "/**";
     private static final String DEFAULT_FILE_TYPE = ".html";
-    private static final String NOT_FOUND_PAGE = "/usl/public/404";
 
     @Override
     public String getRoute() {

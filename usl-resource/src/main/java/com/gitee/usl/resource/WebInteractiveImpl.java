@@ -61,8 +61,6 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
 
     @Override
     public void open(USLRunner runner) {
-        Singleton.put(StringConstant.RUNNER_NAME, runner);
-
         WebServerConfiguration config = runner.configuration().configWebServer();
 
         bootstrap.configuration()

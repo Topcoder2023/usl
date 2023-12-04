@@ -1,8 +1,6 @@
 package com.gitee.usl.resource.filter;
 
-import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.symmetric.AES;
-import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.resource.api.FilterRoute;
 import com.gitee.usl.resource.api.WebFilter;
@@ -31,12 +29,8 @@ import java.util.stream.Stream;
 public class SecurityFilter implements WebFilter {
     public static final String LOGIN_PAGE = "/usl/public/login";
     private static final String TOKEN_NAME = "access_token";
-    private static final AES AES;
+    private static AES aes;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    static {
-        AES = new AES(SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue()));
-    }
 
     @Override
     public boolean doFilter(HttpRequest request, HttpResponse response) {
@@ -53,7 +47,7 @@ public class SecurityFilter implements WebFilter {
         final String runnerName;
 
         try {
-            runnerName = AES.decryptStr(accessToken);
+            runnerName = aes.decryptStr(accessToken);
         } catch (Exception e) {
             logger.warn("Access-Token解密失败 - {}", e.getMessage());
             this.redirect(LOGIN_PAGE);
@@ -72,7 +66,11 @@ public class SecurityFilter implements WebFilter {
         return true;
     }
 
+    public static void setAes(AES aes) {
+        SecurityFilter.aes = aes;
+    }
+
     public static String getTokenValue(String runnerName) {
-        return AES.encryptBase64(runnerName);
+        return aes.encryptBase64(runnerName);
     }
 }

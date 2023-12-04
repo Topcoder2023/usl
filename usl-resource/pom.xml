@@ -30,6 +30,12 @@
         </dependency>
 
         <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-http</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.gitee</groupId>
             <artifactId>usl-logger</artifactId>
             <optional>true</optional>

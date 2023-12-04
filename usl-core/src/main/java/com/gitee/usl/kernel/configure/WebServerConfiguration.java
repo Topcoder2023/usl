@@ -11,6 +11,7 @@ public class WebServerConfiguration {
     private int port;
     private boolean debug;
     private String password;
+    private String aesKey;
 
     public WebServerConfiguration(Configuration configuration) {
         this.configuration = configuration;
@@ -57,6 +58,15 @@ public class WebServerConfiguration {
 
     public WebServerConfiguration setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public String getAesKey() {
+        return aesKey;
+    }
+
+    public WebServerConfiguration setAesKey(String aesKey) {
+        this.aesKey = aesKey;
         return this;
     }
 

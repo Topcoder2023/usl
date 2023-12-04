@@ -2,6 +2,8 @@ package com.gitee.usl.kernel.engine;
 
 import cn.hutool.core.thread.ThreadUtil;
 import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.annotation.Notes;
+import com.gitee.usl.infra.constant.ModuleConstant;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.UslExecuteException;
@@ -33,6 +35,9 @@ import java.util.concurrent.TimeUnit;
  *
  * @author hongda.li
  */
+@Notes(value = "脚本引擎初始化器",
+        belongs = ModuleConstant.USL_CORE,
+        viewUrl = "https://gitee.com/yixi-dlmu/usl/raw/master/usl-core/src/main/java/com/gitee/usl/kernel/engine/ScriptEngineManager.java")
 @SuppressWarnings("UnstableApiUsage")
 @AutoService(Initializer.class)
 public final class ScriptEngineManager implements Initializer {
