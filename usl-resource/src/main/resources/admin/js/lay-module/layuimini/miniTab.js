@@ -21,7 +21,7 @@ layui.define(["element", "layer", "jquery"], function (exports) {
             options.multiModule = options.multiModule || false;
             options.urlHashLocation = options.urlHashLocation || false;
             options.maxTabNum = options.maxTabNum || 20;
-            options.menuList = options.menuList || [];  // todo 后期菜单想改为不操作dom, 而是直接操作初始化传过来的数据
+            options.menuList = options.menuList || [];
             options.homeInfo = options.homeInfo || {};
             options.listenSwichCallback = options.listenSwichCallback || function () {
             };
