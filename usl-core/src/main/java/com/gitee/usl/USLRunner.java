@@ -259,4 +259,11 @@ public class USLRunner {
 
         Optional.ofNullable(interactive).ifPresent(item -> item.open(this));
     }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", USLRunner.class.getSimpleName() + "[", "]")
+                .add(name)
+                .toString();
+    }
 }
