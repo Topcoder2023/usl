@@ -1,6 +1,7 @@
 package com.gitee.usl.plugin.impl;
 
 import cn.hutool.core.convert.Convert;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.utils.NumberWrapper;
@@ -8,6 +9,8 @@ import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.api.plugin.BeginPlugin;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -24,6 +27,7 @@ import java.util.stream.IntStream;
  * @author hongda.li
  */
 public class ParameterBinderPlugin implements BeginPlugin {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @SuppressWarnings("ReassignedVariable")
     @Override
@@ -65,12 +69,21 @@ public class ParameterBinderPlugin implements BeginPlugin {
 
                     // 如果是 Env 类型的参数，则返回上下文环境
                     if (Env.class.equals(type)) {
+                        logger.debug("[参数绑定] - 自动绑定上下文环境");
                         wrapper.increment();
                         return env;
                     }
 
+                    // 如果是 USLRunner 类型的参数，则返回当前使用的USL实例
+                    if (USLRunner.class.equals(type)) {
+                        logger.debug("[参数绑定] - 自动绑定USL实例");
+                        wrapper.increment();
+                        return session.definition().runner();
+                    }
+
                     // 如果是 FunctionSession 类型的参数，则返回会话信息
                     if (FunctionSession.class.equals(type)) {
+                        logger.debug("[参数绑定] - 自动绑定会话信息");
                         wrapper.increment();
                         return session;
                     }

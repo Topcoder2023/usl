@@ -22,6 +22,7 @@ public class StringFunctionProvider implements FunctionProvider {
     @Override
     public List<AviatorFunction> provide(EngineConfiguration configuration) {
         return Function.newBuilder()
+                .runner(configuration.finish().getRunner())
                 .clazz(CharSequenceUtil.class)
                 .mapping(methodName -> STRING_FUNCTION_PREFIX + methodName)
                 .method("isEmpty")

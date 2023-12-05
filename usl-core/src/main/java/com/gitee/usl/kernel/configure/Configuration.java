@@ -1,5 +1,7 @@
 package com.gitee.usl.kernel.configure;
 
+import com.gitee.usl.USLRunner;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +19,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author hongda.li
  */
 public final class Configuration {
+    /**
+     * 当前配置对应的 USL 实例
+     */
+    private USLRunner runner;
     /**
      * 缓存配置类
      */
@@ -46,6 +52,14 @@ public final class Configuration {
      * 网络服务端配置类
      */
     private final WebServerConfiguration webServerConfiguration = new WebServerConfiguration(this);
+
+    public USLRunner getRunner() {
+        return runner;
+    }
+
+    public void setRunner(USLRunner runner) {
+        this.runner = runner;
+    }
 
     public CacheConfiguration configCache() {
         return cacheConfiguration;

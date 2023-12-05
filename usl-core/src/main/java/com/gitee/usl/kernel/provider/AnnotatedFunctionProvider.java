@@ -5,6 +5,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
@@ -36,7 +37,7 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    protected List<FunctionDefinition> class2Definition(Class<?> clz) {
+    protected List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner) {
         Object ifPossible = ReflectUtil.newInstanceIfPossible(clz);
 
         if (ifPossible == null) {
@@ -58,11 +59,11 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
                     if (ArrayUtil.isEmpty(accept)) {
                         // 未指定函数名称，则取方法名
                         String defaultName = CharSequenceUtil.addPrefixIfNot(method.getName(), prefix);
-                        return this.buildDefinition(defaultName, ifPossible, method);
+                        return new FunctionDefinition(defaultName, runner).setMethodMeta(new MethodMeta<>(ifPossible, clz, method));
                     } else {
                         // 指定了函数名称，则取指定的函数名称
                         String firstName = CharSequenceUtil.addPrefixIfNot(accept[NumberConstant.ZERO], prefix);
-                        FunctionDefinition definition = this.buildDefinition(firstName, ifPossible, method);
+                        FunctionDefinition definition = new FunctionDefinition(firstName, runner).setMethodMeta(new MethodMeta<>(ifPossible, clz, method));
                         if (accept.length > NumberConstant.ONE) {
                             definition.addAlias(prefix, ArrayUtil.sub(accept, NumberConstant.ONE, accept.length));
                         }
@@ -87,18 +88,5 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
     @Override
     protected boolean filter(Class<?> clz) {
         return AnnotationUtil.hasAnnotation(clz, Func.class) && ClassUtil.isNormalClass(clz);
-    }
-
-    /**
-     * 封装函数定义信息
-     *
-     * @param name     函数名称
-     * @param instance 函数所在的实例
-     * @param method   函数对应的方法
-     * @return 函数定义信息
-     */
-    protected FunctionDefinition buildDefinition(String name, Object instance, Method method) {
-        FunctionDefinition definition = new FunctionDefinition(name);
-        return definition.setMethodMeta(new MethodMeta<>(instance, instance.getClass(), method));
     }
 }

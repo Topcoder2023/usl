@@ -1,10 +1,11 @@
 package com.gitee.usl.kernel.engine;
 
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.plugin.Plugin;
 import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.AttributeMeta;
 import com.gitee.usl.infra.structure.Plugins;
@@ -35,6 +36,7 @@ public class Function extends AnnotatedFunction {
     }
 
     public static final class FunctionBuilder {
+        private USLRunner runner;
         private Class<?> clz;
         private Method method;
         private Object instance;
@@ -45,6 +47,11 @@ public class Function extends AnnotatedFunction {
         private AttributeMeta attributeMeta;
         private UnaryOperator<String> mapping;
         private final List<Function> functionList = new ArrayList<>(NumberConstant.EIGHT);
+
+        public FunctionBuilder runner(USLRunner runner) {
+            this.runner = runner;
+            return this;
+        }
 
         public FunctionBuilder clazz(Class<?> clz) {
             this.clz = clz;
@@ -118,7 +125,11 @@ public class Function extends AnnotatedFunction {
             }
 
             // 将首个可用的函数名称转为函数定义信息
-            FunctionDefinition definition = new FunctionDefinition(nameList.get(NumberConstant.ZERO));
+            if (runner == null) {
+                runner = USLRunner.findRunnerByName(StringConstant.FIRST_USL_RUNNER_NAME);
+            }
+            Assert.notNull(runner, "Please specify USL-Runner name");
+            FunctionDefinition definition = new FunctionDefinition(nameList.get(NumberConstant.ZERO), runner);
 
             // 如果存在函数别名，将函数别名添加到函数定义信息中
             if (nameList.size() > NumberConstant.ONE) {

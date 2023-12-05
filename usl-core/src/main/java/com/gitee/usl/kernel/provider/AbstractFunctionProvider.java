@@ -1,6 +1,7 @@
 package com.gitee.usl.kernel.provider;
 
 import cn.hutool.core.util.ClassUtil;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.api.FunctionProvider;
@@ -16,11 +17,13 @@ public abstract class AbstractFunctionProvider implements FunctionProvider {
 
     @Override
     public List<AviatorFunction> provide(EngineConfiguration configuration) {
+        USLRunner runner = configuration.finish().getRunner();
+
         return configuration.getPackageNameList()
                 .stream()
                 .flatMap(packageName -> ClassUtil.scanPackage(packageName, this::filter)
                         .stream()
-                        .flatMap(clz -> this.class2Definition(clz).stream())
+                        .flatMap(clz -> this.class2Definition(clz, runner).stream())
                         .collect(Collectors.toList())
                         .stream())
                 .collect(Collectors.toList())
@@ -32,10 +35,11 @@ public abstract class AbstractFunctionProvider implements FunctionProvider {
     /**
      * 将指定类转为 USL 函数定义信息集合
      *
-     * @param clz 符合条件的类
+     * @param clz    符合条件的类
+     * @param runner 当前使用的 USL 实例
      * @return USL 函数定义信息集合
      */
-    protected abstract List<FunctionDefinition> class2Definition(Class<?> clz);
+    protected abstract List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner);
 
     /**
      * 将函数定义信息转为函数实例

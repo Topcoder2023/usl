@@ -109,6 +109,7 @@ public class USLRunner {
         this.name = name;
         this.startTime = new Date();
         this.configuration = configuration;
+        this.configuration.setRunner(this);
     }
 
     /**

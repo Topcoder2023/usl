@@ -2,6 +2,7 @@ package com.gitee.usl.kernel.provider;
 
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
@@ -23,7 +24,7 @@ public class NativeFunctionProvider extends AbstractFunctionProvider {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    protected List<FunctionDefinition> class2Definition(Class<?> clz) {
+    protected List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner) {
         AviatorFunction ifPossible = (AviatorFunction) ReflectUtil.newInstanceIfPossible(clz);
 
         if (ifPossible == null) {
@@ -39,7 +40,7 @@ public class NativeFunctionProvider extends AbstractFunctionProvider {
             return Collections.emptyList();
         }
 
-        FunctionDefinition definition = new FunctionDefinition(name);
+        FunctionDefinition definition = new FunctionDefinition(name, runner);
         definition.setMethodMeta(new MethodMeta<>(ifPossible, clz, null));
 
         return Collections.singletonList(definition);

@@ -1,6 +1,7 @@
 package com.gitee.usl.kernel.engine;
 
 import cn.hutool.core.text.CharSequenceUtil;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.AttributeMeta;
@@ -16,12 +17,14 @@ import java.util.stream.Stream;
  */
 public class FunctionDefinition {
     private final String name;
+    private final USLRunner runner;
     private MethodMeta<?> methodMeta;
     private final AttributeMeta attribute = new AttributeMeta();
     private final Set<String> alias = new HashSet<>(NumberConstant.EIGHT);
 
-    public FunctionDefinition(String name) {
+    public FunctionDefinition(String name, USLRunner runner) {
         this.name = name;
+        this.runner = runner;
     }
 
     public MethodMeta<?> methodMeta() {
@@ -43,6 +46,10 @@ public class FunctionDefinition {
 
     public Set<String> alias() {
         return alias;
+    }
+
+    public USLRunner runner() {
+        return runner;
     }
 
     public void addAlias(String... names) {
