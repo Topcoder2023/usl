@@ -1,7 +1,6 @@
 package com.gitee.usl.resource.handler;
 
 import cn.hutool.core.io.FileUtil;
-import com.alibaba.fastjson2.TypeReference;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.resource.ScriptSearcher;
 import com.gitee.usl.resource.api.WebHandler;

@@ -82,6 +82,7 @@
         <groovy-jsr223.version>3.0.19</groovy-jsr223.version>
         <jython-standalone.version>2.7.3</jython-standalone.version>
         <jave.version>3.3.1</jave.version>
+        <xjsonkit.version>1.4.3</xjsonkit.version>
 
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -166,6 +167,19 @@
                 <groupId>com.googlecode.aviator</groupId>
                 <artifactId>aviator</artifactId>
                 <version>${aviator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.zhxu</groupId>
+                <artifactId>xjsonkit-api</artifactId>
+                <version>${xjsonkit.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.zhxu</groupId>
+                <artifactId>xjsonkit-fastjson2</artifactId>
+                <version>${xjsonkit.version}</version>
+                <optional>true</optional>
             </dependency>
 
             <dependency>

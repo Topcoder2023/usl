@@ -2,9 +2,8 @@ package com.gitee.usl.resource.api;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.TypeReference;
+import cn.zhxu.data.TypeRef;
+import cn.zhxu.xjson.JsonKit;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.exception.UslException;
@@ -19,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author hongda.li
@@ -58,7 +56,7 @@ public interface WebHelper {
         HttpResponse response = RESPONSE_THREAD_LOCAL.get();
         try {
             response.setContentType(HeaderValueEnum.APPLICATION_JSON.getName() + StringConstant.CONTENT_TYPE_SUFFIX);
-            response.write(JSON.toJSONString(result).getBytes(StandardCharsets.UTF_8));
+            response.write(JsonKit.toJson(result).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new UslExecuteException(e);
         }
@@ -110,7 +108,7 @@ public interface WebHelper {
      */
     default <T> List<T> parseToArray(Class<T> type) {
         try {
-            return JSON.parseArray(IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8)).toJavaList(type);
+            return JsonKit.toArray(IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8)).toList(type);
         } catch (IOException e) {
             throw new UslException(e);
         }
@@ -123,9 +121,9 @@ public interface WebHelper {
      * @param <T>           泛型
      * @return 转换结果
      */
-    default <T> T parseToObj(TypeReference<T> typeReference) {
+    default <T> T parseToObj(TypeRef<T> typeReference) {
         try {
-            return JSON.parseObject(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8).to(typeReference);
+            return JsonKit.toBean(typeReference, IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new UslException(e);
         }
@@ -140,7 +138,7 @@ public interface WebHelper {
      */
     default <T> T parseToObj(Class<T> type) {
         try {
-            return JSON.parseObject(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8).to(type);
+            return JsonKit.toBean(type, IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new UslException(e);
         }

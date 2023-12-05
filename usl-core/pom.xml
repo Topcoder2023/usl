@@ -60,8 +60,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
+            <groupId>cn.zhxu</groupId>
+            <artifactId>xjsonkit-api</artifactId>
         </dependency>
 
         <dependency>

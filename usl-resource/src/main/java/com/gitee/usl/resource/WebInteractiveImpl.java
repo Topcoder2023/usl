@@ -1,10 +1,9 @@
 package com.gitee.usl.resource;
 
 import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.ArrayUtil;
-import com.alibaba.fastjson2.JSON;
+import cn.zhxu.xjson.JsonKit;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.api.WebInteractive;
@@ -120,7 +119,7 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
                     handler.doHandle(request, response);
                 } catch (Exception e) {
                     response.setContentType(HeaderValueEnum.APPLICATION_JSON.getName() + StringConstant.CONTENT_TYPE_SUFFIX);
-                    response.write(JSON.toJSONString(Returns.failure(e.getMessage())).getBytes(StandardCharsets.UTF_8));
+                    response.write(JsonKit.toJson(Returns.failure(e.getMessage())).getBytes(StandardCharsets.UTF_8));
                 } finally {
                     WebHelper.remove();
                 }

@@ -1,11 +1,6 @@
 package com.gitee.usl.resource.handler;
 
-import cn.hutool.core.lang.Assert;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.TypeReference;
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.infra.constant.StringConstant;
-import com.gitee.usl.infra.exception.UslNotFoundException;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
 import com.gitee.usl.resource.ScriptSearcher;
@@ -16,12 +11,8 @@ import com.gitee.usl.resource.entity.ScriptInfo;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
-
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * 脚本请求处理器
