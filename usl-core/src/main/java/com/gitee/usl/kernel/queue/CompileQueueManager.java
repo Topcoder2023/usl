@@ -2,7 +2,9 @@ package com.gitee.usl.kernel.queue;
 
 import com.gitee.usl.api.CompileConsumer;
 import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.annotation.Notes;
 import com.gitee.usl.api.annotation.Order;
+import com.gitee.usl.infra.constant.ModuleConstant;
 import com.gitee.usl.infra.thread.NamedThreadFactory;
 import com.gitee.usl.infra.utils.AnnotatedComparator;
 import com.gitee.usl.infra.utils.ServiceSearcher;
@@ -39,6 +41,9 @@ import static com.gitee.usl.infra.utils.EnabledLogger.info;
  *
  * @author hongda.li
  */
+@Notes(value = "编译队列初始化器",
+        belongs = ModuleConstant.USL_CORE,
+        viewUrl = "https://gitee.com/yixi-dlmu/usl/raw/master/usl-core/src/main/java/com/gitee/usl/kernel/queue/CompileQueueManager.java")
 @Order
 @AutoService(Initializer.class)
 public class CompileQueueManager implements Initializer {

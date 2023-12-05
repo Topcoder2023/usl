@@ -3,11 +3,9 @@ package com.gitee.usl;
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.Shutdown;
-import com.gitee.usl.app.Interactive;
-import com.gitee.usl.app.cli.CliInteractive;
-import com.gitee.usl.app.cli.CliInteractiveImpl;
-import com.gitee.usl.app.web.WebInteractive;
-import com.gitee.usl.app.web.WebInteractiveImpl;
+import com.gitee.usl.api.Interactive;
+import com.gitee.usl.api.CliInteractive;
+import com.gitee.usl.api.WebInteractive;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
@@ -57,6 +55,11 @@ public class USLRunner {
     private final String name;
 
     /**
+     * 实例启动时间
+     */
+    private final Date startTime;
+
+    /**
      * 在 JVM 关闭前的回调函数
      */
     private static List<Shutdown> shutdowns;
@@ -94,8 +97,18 @@ public class USLRunner {
      * @param configuration 指定配置类
      */
     public USLRunner(Configuration configuration) {
+        this(StringConstant.USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement(), configuration);
+    }
+
+    /**
+     * 根据指定配置类构造 USL 执行器
+     *
+     * @param configuration 指定配置类
+     */
+    public USLRunner(String name, Configuration configuration) {
+        this.name = name;
+        this.startTime = new Date();
         this.configuration = configuration;
-        this.name = StringConstant.USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement();
     }
 
     /**
@@ -165,16 +178,14 @@ public class USLRunner {
     public static Configuration defaultConfiguration() {
         return new Configuration()
                 .configEngine()
-                .scan(USLRunner.class)
-                .finish()
+                .scan(USLRunner.class).finish()
                 .configExecutor()
                 .setCorePoolSize(8)
                 .setMaxPoolSize(16)
                 .setQueueSize(1024)
                 .setAliveTime(60)
                 .setAllowedTimeout(false)
-                .setTimeUnit(TimeUnit.SECONDS)
-                .finish()
+                .setTimeUnit(TimeUnit.SECONDS).finish()
                 .configWebServer()
                 .setPort(10086)
                 .setDebug(false)
@@ -204,6 +215,15 @@ public class USLRunner {
     }
 
     /**
+     * 获取当前 USL 执行器的启动时间
+     *
+     * @return 启动时间
+     */
+    public Date startTime() {
+        return startTime;
+    }
+
+    /**
      * 根据 USL Runner 名称获取实例
      *
      * @param name 名称
@@ -225,12 +245,10 @@ public class USLRunner {
         final Interactive interactive;
         switch (mode) {
             case CLI:
-                interactive = Optional.ofNullable(ServiceSearcher.searchFirst(CliInteractive.class))
-                        .orElse(new CliInteractiveImpl());
+                interactive = ServiceSearcher.searchFirst(CliInteractive.class);
                 break;
             case WEB:
-                interactive = Optional.ofNullable(ServiceSearcher.searchFirst(WebInteractive.class))
-                        .orElse(new WebInteractiveImpl());
+                interactive = ServiceSearcher.searchFirst(WebInteractive.class);
                 break;
             case NONE:
             default:
@@ -239,6 +257,6 @@ public class USLRunner {
                 break;
         }
 
-        interactive.open(this);
+        Optional.ofNullable(interactive).ifPresent(item -> item.open(this));
     }
 }

@@ -32,6 +32,6 @@ public class CompileCacheConsumer implements CompileConsumer {
         // 缓存脚本编译结果
         cache.insert(generated, event.getExpression());
 
-        logger.debug("Cache expression:\nKey : [{}]\nContent : [{}]", generated, event.getContent());
+        logger.debug("Cache expression:\nKey : [{}]\nContent : \n{}", generated, event.getContent());
     }
 }

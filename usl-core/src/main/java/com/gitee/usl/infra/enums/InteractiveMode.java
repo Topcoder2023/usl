@@ -21,4 +21,13 @@ public enum InteractiveMode {
      * 即采用 HTTP 协议访问函数
      */
     WEB;
+
+    public static InteractiveMode of(String modeName) {
+        for (InteractiveMode mode : values()) {
+            if (mode.name().equalsIgnoreCase(modeName)) {
+                return mode;
+            }
+        }
+        return NONE;
+    }
 }

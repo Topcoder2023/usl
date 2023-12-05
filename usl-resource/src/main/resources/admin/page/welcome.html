@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <link rel="stylesheet" href="../../css/welcome.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md8">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header"><i class="fa fa-tasks icon"></i>数据统计</div>
+                            <div class="layui-card-body">
+                                <div class="welcome-module">
+                                    <div class="layui-row layui-col-space10">
+                                        <div class="layui-col-xs6">
+                                            <div class="panel layui-bg-number">
+                                                <div class="panel-body">
+                                                    <div class="panel-title">
+                                                        <span class="label pull-right layui-bg-blue">Initializer</span>
+                                                        <h3 class="h3-title">初始化器总数量</h3>
+                                                    </div>
+                                                    <div class="panel-content">
+                                                        <h1 class="no-margins" id="data-initializer"></h1>
+                                                        <small>所有实例共享</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs6">
+                                            <div class="panel layui-bg-number">
+                                                <div class="panel-body">
+                                                    <div class="panel-title">
+                                                        <span class="label pull-right layui-bg-orange">Enhancer</span>
+                                                        <h3 class="h3-title">增强器总数量</h3>
+                                                    </div>
+                                                    <div class="panel-content">
+                                                        <h1 class="no-margins" id="data-enhancer"></h1>
+                                                        <small>所有实例共享</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs6">
+                                            <div class="panel layui-bg-number">
+                                                <div class="panel-body">
+                                                    <div class="panel-title">
+                                                        <span class="label pull-right layui-bg-cyan">Function</span>
+                                                        <h3 class="h3-title">函数总数量</h3>
+                                                    </div>
+                                                    <div class="panel-content">
+                                                        <h1 class="no-margins" id="data-function"></h1>
+                                                        <small>当前实例独享</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs6">
+                                            <div class="panel layui-bg-number">
+                                                <div class="panel-body">
+                                                    <div class="panel-title">
+                                                        <span class="label pull-right layui-bg-green">Script</span>
+                                                        <h3 class="h3-title">脚本总数量</h3>
+                                                    </div>
+                                                    <div class="panel-content">
+                                                        <h1 class="no-margins" id="data-script"></h1>
+                                                        <small>当前实例独享</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header"><i class="fa fa-credit-card icon icon-blue"></i>快捷入口
+                            </div>
+                            <div class="layui-card-body">
+                                <div class="welcome-module">
+                                    <div class="layui-row layui-col-space10 layuimini-qiuck">
+                                        <div class="layui-col-xs3 layuimini-qiuck-module">
+                                            <a href="javascript:" layuimini-content-href="initializer"
+                                               data-title="初始化器列表" data-icon="fa fa-window-maximize">
+                                                <i class="fa fa-window-maximize"></i>
+                                                <cite>初始化器列表</cite>
+                                            </a>
+                                        </div>
+                                        <div class="layui-col-xs3 layuimini-qiuck-module">
+                                            <a href="javascript:" layuimini-content-href="page/setting.html"
+                                               data-title="增强器列表" data-icon="fa fa-gears">
+                                                <i class="fa fa-gears"></i>
+                                                <cite>增强器列表</cite>
+                                            </a>
+                                        </div>
+                                        <div class="layui-col-xs3 layuimini-qiuck-module">
+                                            <a href="javascript:" layuimini-content-href="page/table.html"
+                                               data-title="函数列表" data-icon="fa fa-file-text">
+                                                <i class="fa fa-file-text"></i>
+                                                <cite>函数列表</cite>
+                                            </a>
+                                        </div>
+                                        <div class="layui-col-xs3 layuimini-qiuck-module">
+                                            <a href="javascript:" layuimini-content-href="page/icon.html"
+                                               data-title="脚本管理" data-icon="fa fa-dot-circle-o">
+                                                <i class="fa fa-dot-circle-o"></i>
+                                                <cite>脚本管理</cite>
+                                            </a>
+                                        </div>
+                                        <div class="layui-col-xs3 layuimini-qiuck-module">
+                                            <a href="javascript:" layuimini-content-href="page/form.html"
+                                               data-title="配置信息" data-icon="fa fa-calendar">
+                                                <i class="fa fa-calendar"></i>
+                                                <cite>配置信息</cite>
+                                            </a>
+                                        </div>
+                                        <div class="layui-col-xs3 layuimini-qiuck-module">
+                                            <a href="javascript:" layuimini-content-href="page/404.html"
+                                               data-title="404页面" data-icon="fa fa-hourglass-end">
+                                                <i class="fa fa-hourglass-end"></i>
+                                                <cite>系统信息</cite>
+                                            </a>
+                                        </div>
+                                        <div class="layui-col-xs3 layuimini-qiuck-module">
+                                            <a href="javascript:" layuimini-content-href="page/button.html"
+                                               data-title="按钮示例" data-icon="fa fa-snowflake-o">
+                                                <i class="fa fa-snowflake-o"></i>
+                                                <cite>帮助文档</cite>
+                                            </a>
+                                        </div>
+                                        <div class="layui-col-xs3 layuimini-qiuck-module">
+                                            <a href="javascript:" layuimini-content-href="https://www.baidu.com"
+                                               data-title="系统信息" data-icon="fa fa-search">
+                                                <i class="fa fa-search"></i>
+                                                <cite>源码下载</cite>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header"><i class="fa fa-line-chart icon"></i>报表统计</div>
+                            <div class="layui-card-body">
+                                <div id="echarts-records" style="width: 100%;min-height:500px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md4">
+
+                <div class="layui-card">
+                    <div class="layui-card-header"><i class="fa fa-bullhorn icon icon-tip"></i>更新日志</div>
+                    <div class="layui-card-body layui-text">
+                        <div class="layuimini-notice">
+                            <div class="layuimini-notice-title">修改选项卡样式</div>
+                            <div class="layuimini-notice-extra">2019-07-11 23:06</div>
+                            <div class="layuimini-notice-content layui-hide">
+                                界面足够简洁清爽。<br>
+                                一个接口几行代码而已直接初始化整个框架，无需复杂操作。<br>
+                                支持多tab，可以打开多窗口。<br>
+                                支持无限级菜单和对font-awesome图标库的完美支持。<br>
+                                失效以及报错菜单无法直接打开，并给出弹出层提示完美的线上用户体验。<br>
+                                url地址hash定位，可以清楚看到当前tab的地址信息。<br>
+                                刷新页面会保留当前的窗口，并且会定位当前窗口对应左侧菜单栏。<br>
+                                移动端的友好支持。<br>
+                            </div>
+                        </div>
+                        <div class="layuimini-notice">
+                            <div class="layuimini-notice-title">新增系统404模板</div>
+                            <div class="layuimini-notice-extra">2019-07-11 12:57</div>
+                            <div class="layuimini-notice-content layui-hide">
+                                界面足够简洁清爽。<br>
+                                一个接口几行代码而已直接初始化整个框架，无需复杂操作。<br>
+                                支持多tab，可以打开多窗口。<br>
+                                支持无限级菜单和对font-awesome图标库的完美支持。<br>
+                                失效以及报错菜单无法直接打开，并给出弹出层提示完美的线上用户体验。<br>
+                                url地址hash定位，可以清楚看到当前tab的地址信息。<br>
+                                刷新页面会保留当前的窗口，并且会定位当前窗口对应左侧菜单栏。<br>
+                                移动端的友好支持。<br>
+                            </div>
+                        </div>
+                        <div class="layuimini-notice">
+                            <div class="layuimini-notice-title">新增treetable插件和菜单管理样式</div>
+                            <div class="layuimini-notice-extra">2019-07-05 14:28</div>
+                            <div class="layuimini-notice-content layui-hide">
+                                界面足够简洁清爽。<br>
+                                一个接口几行代码而已直接初始化整个框架，无需复杂操作。<br>
+                                支持多tab，可以打开多窗口。<br>
+                                支持无限级菜单和对font-awesome图标库的完美支持。<br>
+                                失效以及报错菜单无法直接打开，并给出弹出层提示完美的线上用户体验。<br>
+                                url地址hash定位，可以清楚看到当前tab的地址信息。<br>
+                                刷新页面会保留当前的窗口，并且会定位当前窗口对应左侧菜单栏。<br>
+                                移动端的友好支持。<br>
+                            </div>
+                        </div>
+                        <div class="layuimini-notice">
+                            <div class="layuimini-notice-title">修改logo缩放问题</div>
+                            <div class="layuimini-notice-extra">2019-07-04 11:02</div>
+                            <div class="layuimini-notice-content layui-hide">
+                                界面足够简洁清爽。<br>
+                                一个接口几行代码而已直接初始化整个框架，无需复杂操作。<br>
+                                支持多tab，可以打开多窗口。<br>
+                                支持无限级菜单和对font-awesome图标库的完美支持。<br>
+                                失效以及报错菜单无法直接打开，并给出弹出层提示完美的线上用户体验。<br>
+                                url地址hash定位，可以清楚看到当前tab的地址信息。<br>
+                                刷新页面会保留当前的窗口，并且会定位当前窗口对应左侧菜单栏。<br>
+                                移动端的友好支持。<br>
+                            </div>
+                        </div>
+                        <div class="layuimini-notice">
+                            <div class="layuimini-notice-title">修复左侧菜单缩放tab无法移动</div>
+                            <div class="layuimini-notice-extra">2019-06-17 11:55</div>
+                            <div class="layuimini-notice-content layui-hide">
+                                界面足够简洁清爽。<br>
+                                一个接口几行代码而已直接初始化整个框架，无需复杂操作。<br>
+                                支持多tab，可以打开多窗口。<br>
+                                支持无限级菜单和对font-awesome图标库的完美支持。<br>
+                                失效以及报错菜单无法直接打开，并给出弹出层提示完美的线上用户体验。<br>
+                                url地址hash定位，可以清楚看到当前tab的地址信息。<br>
+                                刷新页面会保留当前的窗口，并且会定位当前窗口对应左侧菜单栏。<br>
+                                移动端的友好支持。<br>
+                            </div>
+                        </div>
+                        <div class="layuimini-notice">
+                            <div class="layuimini-notice-title">修复多模块菜单栏展开有问题</div>
+                            <div class="layuimini-notice-extra">2019-06-13 14:53</div>
+                            <div class="layuimini-notice-content layui-hide">
+                                界面足够简洁清爽。<br>
+                                一个接口几行代码而已直接初始化整个框架，无需复杂操作。<br>
+                                支持多tab，可以打开多窗口。<br>
+                                支持无限级菜单和对font-awesome图标库的完美支持。<br>
+                                失效以及报错菜单无法直接打开，并给出弹出层提示完美的线上用户体验。<br>
+                                url地址hash定位，可以清楚看到当前tab的地址信息。<br>
+                                刷新页面会保留当前的窗口，并且会定位当前窗口对应左侧菜单栏。<br>
+                                移动端的友好支持。<br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-card">
+                    <div class="layui-card-header"><i class="fa fa-fire icon"></i>实例信息</div>
+                    <div class="layui-card-body layui-text">
+                        <table class="layui-table">
+                            <colgroup>
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <td>实例名称</td>
+                                <td id="instance-name"></td>
+                            </tr>
+                            <tr>
+                                <td>运行时长</td>
+                                <td id="instance-time"></td>
+                            </tr>
+                            <tr>
+                                <td>运行版本</td>
+                                <td id="instance-version"></td>
+                            </tr>
+                            <tr>
+                                <td>源码地址</td>
+                                <td id="instance-source"></td>
+                            </tr>
+                            <tr>
+                                <td>帮助文档</td>
+                                <td id="instance-help"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="layui-card">
+                    <div class="layui-card-header"><i class="fa fa-paper-plane-o icon"></i>关于USL</div>
+                    <div class="layui-card-body layui-text layadmin-text">
+                        <p>USL——Universal Script Language（通用脚本语言开发框架）</p>
+                        <p>框架核心——Aviator</p>
+                        <p>前端页面——Layui-Admin</p>
+                        <p>后端服务——Smart-http</p>
+                        <p>缓存组件——Caffeine</p>
+                        <p>消费队列——Disruptor</p>
+                        <p>工具类库——Hutool</p>
+                        <p>制品仓库——Jitpack</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="../js/welcome.js" charset="utf-8"></script>
+</body>
+</html>

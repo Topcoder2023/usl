@@ -109,9 +109,9 @@ public class Function extends AnnotatedFunction {
 
             // 如果没有指定了任何函数名
             if (nameList == null) {
-                // 默认使用方法名转下划线的策略
+                // 默认使用方法名称
                 if (mapping == null) {
-                    mapping = CharSequenceUtil::toUnderlineCase;
+                    mapping = str -> str;
                 }
                 // 根据映射策略默认生成一个可用的函数名称
                 nameList = Collections.singletonList(mapping.apply(methodName));

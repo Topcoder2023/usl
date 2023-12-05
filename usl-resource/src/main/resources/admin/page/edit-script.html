@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="utf-8">
+    <title>添加脚本</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <link rel="stylesheet" href="../css/add-script.css" media="all">
+    <link rel="stylesheet" href="../../lib/code-mirror/css/codemirror.css" media="all">
+    <link rel="stylesheet" href="../../lib/code-mirror/css/darcula.css" media="all">
+    <link rel="stylesheet" href="../../lib/code-mirror/css/foldgutter.css" media="all">
+    <link rel="stylesheet" href="../../lib/code-mirror/css/monokai.css" media="all">
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label required" for="scriptName">脚本名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="scriptName" lay-verify="required" lay-reqtext="脚本名称不能为空"
+                   disabled="disabled"
+                   autocomplete="off" placeholder="请输入脚本名" value="" class="layui-input" id="scriptName">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="belongs">功能分组</label>
+        <div class="layui-input-block">
+            <input type="text" name="belongs" disabled="disabled"
+                   autocomplete="off" placeholder="请输入功能分组" value="" class="layui-input" id="belongs">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label" for="content">脚本内容</label>
+        <div class="layui-input-block">
+            <textarea name="content" class="layui-textarea" placeholder="请输入脚本内容" autocomplete="off"
+                      id="content"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+<script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../../lib/code-mirror/js/brace-fold.js"></script>
+<script src="../../lib/code-mirror/js/codemirror.min.js"></script>
+<script src="../../lib/code-mirror/js/comment-fold.js"></script>
+<script src="../../lib/code-mirror/js/foldcode.js"></script>
+<script src="../../lib/code-mirror/js/javascript.js"></script>
+<script src="../../lib/code-mirror/js/markdown-fold.js"></script>
+<script src="../../lib/code-mirror/js/matchbrackets.js"></script>
+<script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../js/edit-script.js"></script>
+</body>
+</html>

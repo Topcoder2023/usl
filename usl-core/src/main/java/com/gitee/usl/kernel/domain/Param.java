@@ -32,6 +32,12 @@ public class Param {
         this.context = new HashMap<>(NumberConstant.COMMON_SIZE);
     }
 
+    public Param(String script) {
+        this.script = script;
+        this.cached = true;
+        this.context = new HashMap<>(NumberConstant.COMMON_SIZE);
+    }
+
     public Param addContext(String name, Object value) {
         this.context.put(name, value);
         return this;

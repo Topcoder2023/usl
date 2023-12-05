@@ -3,7 +3,9 @@ package com.gitee.usl.infra.thread;
 import cn.hutool.core.thread.ExecutorBuilder;
 import cn.hutool.core.thread.RejectPolicy;
 import com.gitee.usl.api.Initializer;
+import com.gitee.usl.api.annotation.Notes;
 import com.gitee.usl.api.annotation.Order;
+import com.gitee.usl.infra.constant.ModuleConstant;
 import com.gitee.usl.kernel.configure.ExecutorConfiguration;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.google.auto.service.AutoService;
@@ -15,6 +17,9 @@ import java.util.concurrent.ThreadPoolExecutor;
  *
  * @author hongda.li
  */
+@Notes(value = "线程池初始化器",
+        belongs = ModuleConstant.USL_CORE,
+        viewUrl = "https://gitee.com/yixi-dlmu/usl/raw/master/usl-core/src/main/java/com/gitee/usl/infra/thread/ExecutorPoolManager.java")
 @Order(Integer.MIN_VALUE)
 @AutoService(Initializer.class)
 public class ExecutorPoolManager implements Initializer {
