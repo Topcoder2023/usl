@@ -27,7 +27,6 @@ layui.use(['form', 'table'], function () {
                     "data": result.data
                 }
             } else {
-                console.log(result);
                 layer.msg('数据获取失败', {
                     icon: 2,
                     time: 2000,
@@ -92,6 +91,17 @@ layui.use(['form', 'table'], function () {
                             table.reload('currentTableId');
                         })
                     }
+                    if (result.code === 'failure') {
+                        layer.msg(result.message, {
+                            icon: 2,
+                            time: 2000,
+                            anim: 5
+                        }, function () {
+                            if (result.data != null) {
+                                window.location.href = result.data;
+                            }
+                        })
+                    }
                 }
             })
         }
@@ -124,23 +134,28 @@ layui.use(['form', 'table'], function () {
             });
             return false;
         }
-        if (obj.event === 'delete') {
-            let deleteData = [data];
-
+        if (obj.event === 'test') {
             $.ajax({
                 type: 'post',
-                url: '/usl/admin/api/delete-script',
+                url: '/usl/admin/api/script/run',
                 contentType: 'application/json',
-                data: JSON.stringify(deleteData),
+                data: JSON.stringify(data),
                 dataType: 'json',
                 success: function (result) {
-                    if (result.code === 'success') {
-                        layer.msg('删除成功', {
-                            icon: 1,
-                            time: 1000,
+                    if (result.code === 100) {
+                        layer.alert(result.data, {
+                            title: '脚本运行成功',
                             anim: 5
-                        }, function () {
-                            table.reload('currentTableId');
+                        })
+                    } else if (result.code === 'failure') {
+                        layer.msg(result.message, {
+                            time: 2000,
+                            anim: 5
+                        })
+                    } else {
+                        layer.alert(result.data, {
+                            title: '脚本运行失败',
+                            anim: 5
                         })
                     }
                 }

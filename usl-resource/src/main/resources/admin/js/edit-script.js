@@ -40,9 +40,20 @@ layui.use(['form'], function () {
             $('#belongs').val(result.data.belongs);
             editor.setValue(result.data.content);
         }
-    })
+        if (result.code === 'failure') {
+            layer.msg(result.message, {
+                icon: 2,
+                time: 2000,
+                anim: 5
+            }, function () {
+                if (result.data != null) {
+                    window.location.href = result.data;
+                }
+            })
+        }
+    });
 
-    //监听提交
+    // 监听提交
     form.on('submit(saveBtn)', function (data) {
         data.field.content = editor.getValue();
 
@@ -63,6 +74,16 @@ layui.use(['form'], function () {
                         const index = parent.layer.getFrameIndex(window.name);
                         // 再执行关闭
                         parent.layer.close(index);
+                    })
+                } else if (result.code === 'failure') {
+                    layer.msg(result.message, {
+                        icon: 2,
+                        time: 2000,
+                        anim: 5
+                    }, function () {
+                        if (result.data != null) {
+                            window.location.href = result.data;
+                        }
                     })
                 } else {
                     layer.msg(result.message, {

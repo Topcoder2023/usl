@@ -65,6 +65,16 @@ fn example(a, b) {
                         // 再执行关闭
                         parent.layer.close(index);
                     })
+                } else if (result.code === 'failure') {
+                    layer.msg(result.message, {
+                        icon: 2,
+                        time: 2000,
+                        anim: 5
+                    }, function () {
+                        if (result.data != null) {
+                            window.location.href = result.data;
+                        }
+                    })
                 } else {
                     layer.msg(result.message, {
                         icon: 2,

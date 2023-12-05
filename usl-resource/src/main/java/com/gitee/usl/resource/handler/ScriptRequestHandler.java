@@ -8,7 +8,11 @@ import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.exception.UslNotFoundException;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
+import com.gitee.usl.resource.ScriptSearcher;
 import com.gitee.usl.resource.api.WebHandler;
+import com.gitee.usl.resource.api.WebHelper;
+import com.gitee.usl.resource.entity.Returns;
+import com.gitee.usl.resource.entity.ScriptInfo;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +35,7 @@ import java.util.Optional;
  */
 @AutoService(WebHandler.class)
 public class ScriptRequestHandler implements WebHandler {
-    private static final String PATH = "/remote/call";
+    private static final String PATH = "/usl/admin/api/script/run";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -42,23 +46,18 @@ public class ScriptRequestHandler implements WebHandler {
     @Override
     public void doHandle(HttpRequest request, HttpResponse response) {
         try {
-            Map<String, Object> context = this.parseToObj(new TypeReference<Map<String, Object>>() {
-            });
+            ScriptInfo scriptInfo = this.parseToObj(ScriptInfo.class);
+            ScriptInfo find = ScriptSearcher.findOne(scriptInfo.getScriptName(), scriptInfo.getBelongs());
 
             if (logger.isDebugEnabled()) {
-                logger.debug("收到脚本请求 : {}", JSON.toJSONString(context));
+                logger.debug("收到脚本请求 : {}", scriptInfo.getScriptName());
             }
 
-            USLRunner runner = USLRunner.findRunnerByName(Optional
-                    .ofNullable(context.get(StringConstant.RUNNER_NAME))
-                    .map(String::valueOf)
-                    .orElse(StringConstant.FIRST_USL_RUNNER_NAME));
-            Assert.notNull(runner, () -> new UslNotFoundException("USL Runner has not been initialized."));
+            USLRunner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
 
             Result<?> result = runner.run(new Param()
                     .setCached(false)
-                    .setContext(context)
-                    .setScript(String.valueOf(context.remove(StringConstant.SCRIPT_NAME))));
+                    .setScript(find.getContent()));
 
             logger.debug("脚本计算完成 : {}", result);
 
@@ -66,8 +65,7 @@ public class ScriptRequestHandler implements WebHandler {
 
         } catch (Exception e) {
             logger.error("脚本计算异常 : {}", e.getMessage());
-            response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-            this.writeToText(e.getMessage());
+            this.writeToJson(Returns.failure(e.getMessage()));
         }
     }
 }

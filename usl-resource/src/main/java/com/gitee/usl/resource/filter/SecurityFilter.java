@@ -5,6 +5,7 @@ import com.gitee.usl.USLRunner;
 import com.gitee.usl.resource.api.FilterRoute;
 import com.gitee.usl.resource.api.WebFilter;
 import com.gitee.usl.resource.api.WebHelper;
+import com.gitee.usl.resource.entity.Returns;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,8 @@ public class SecurityFilter implements WebFilter {
 
     @Override
     public boolean doFilter(HttpRequest request, HttpResponse response) {
+        boolean isPage = request.getRequestURI().startsWith("/usl/admin/page");
+
         String accessToken = Stream.of(request.getCookies())
                 .filter(cookie -> TOKEN_NAME.equals(cookie.getName()))
                 .findFirst()
@@ -50,20 +53,28 @@ public class SecurityFilter implements WebFilter {
             runnerName = aes.decryptStr(accessToken);
         } catch (Exception e) {
             logger.warn("Access-Token解密失败 - {}", e.getMessage());
-            this.redirect(LOGIN_PAGE);
+            this.handleException(isPage);
             return false;
         }
 
         USLRunner runner = USLRunner.findRunnerByName(runnerName);
         if (runner == null) {
             logger.warn("无效的USL实例名称 - {}", runnerName);
-            this.redirect(LOGIN_PAGE);
+            this.handleException(isPage);
             return false;
         }
 
         WebHelper.RUNNER_THREAD_LOCAL.set(runner);
         logger.debug("USL实例认证通过 - {}", runnerName);
         return true;
+    }
+
+    private void handleException(boolean isPage) {
+        if (isPage) {
+            this.redirect(LOGIN_PAGE);
+        } else {
+            this.writeToJson(Returns.failure().setMessage("登录信息已过期，请重新登录").setData(LOGIN_PAGE));
+        }
     }
 
     public static void setAes(AES aes) {
