@@ -4,6 +4,7 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.ArrayUtil;
+import com.alibaba.fastjson2.JSON;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.api.WebInteractive;
@@ -14,10 +15,12 @@ import com.gitee.usl.resource.api.FilterRoute;
 import com.gitee.usl.resource.api.WebFilter;
 import com.gitee.usl.resource.api.WebHandler;
 import com.gitee.usl.resource.api.WebHelper;
+import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.filter.SecurityFilter;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartboot.http.common.enums.HeaderValueEnum;
 import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.common.utils.AntPathMatcher;
 import org.smartboot.http.server.HttpBootstrap;
@@ -25,6 +28,7 @@ import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
 import org.smartboot.http.server.HttpServerHandler;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -114,6 +118,9 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
                     }
 
                     handler.doHandle(request, response);
+                } catch (Exception e) {
+                    response.setContentType(HeaderValueEnum.APPLICATION_JSON.getName() + StringConstant.CONTENT_TYPE_SUFFIX);
+                    response.write(JSON.toJSONString(Returns.failure(e.getMessage())).getBytes(StandardCharsets.UTF_8));
                 } finally {
                     WebHelper.remove();
                 }

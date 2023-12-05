@@ -1,7 +1,7 @@
 package com.gitee.usl.kernel.configure;
 
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.kernel.queue.CompileQueueManager;
+import com.gitee.usl.kernel.queue.CompileQueueInitializer;
 
 /**
  * USL 消费队列配置类
@@ -11,7 +11,7 @@ import com.gitee.usl.kernel.queue.CompileQueueManager;
 public class QueueConfiguration {
     private final Configuration configuration;
     private int bufferSize;
-    private CompileQueueManager compileQueueManager;
+    private CompileQueueInitializer compileQueueInitializer;
 
     public QueueConfiguration(Configuration configuration) {
         this.bufferSize = NumberConstant.EIGHT;
@@ -31,11 +31,11 @@ public class QueueConfiguration {
         return this;
     }
 
-    public CompileQueueManager compileQueueManager() {
-        return compileQueueManager;
+    public CompileQueueInitializer compileQueueInitializer() {
+        return compileQueueInitializer;
     }
 
-    public void compileQueueManager(CompileQueueManager compileQueueManager) {
-        this.compileQueueManager = compileQueueManager;
+    public void compileQueueInitializer(CompileQueueInitializer compileQueueInitializer) {
+        this.compileQueueInitializer = compileQueueInitializer;
     }
 }

@@ -55,9 +55,6 @@ public class CaffeineCache implements Cache {
     @Override
     public void snapshot() {
         CacheStats stats = this.cache.stats();
-        if (stats == null) {
-            return;
-        }
 
         logger.info("[USL Cache Snapshot] => [HC : {}, MC : {}, EC : {}]",
                 stats.hitCount(),

@@ -46,27 +46,27 @@ import static com.gitee.usl.infra.utils.EnabledLogger.info;
         viewUrl = "https://gitee.com/yixi-dlmu/usl/raw/master/usl-core/src/main/java/com/gitee/usl/kernel/queue/CompileQueueManager.java")
 @Order
 @AutoService(Initializer.class)
-public class CompileQueueManager implements Initializer {
+public class CompileQueueInitializer implements Initializer {
     private static final String THREAD_PREFIX = "Usl_Queue_Disruptor";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private CompileEventProducer producer;
     private Disruptor<CompileEvent> disruptor;
 
     @Override
-    public void doInit(Configuration uslConfiguration) {
-        QueueConfiguration configuration = uslConfiguration.configQueue();
-        configuration.compileQueueManager(this);
+    public void doInit(Configuration configuration) {
+        QueueConfiguration config = configuration.configQueue();
+        config.compileQueueInitializer(this);
 
         // 构造编译任务队列
-        this.disruptor = new Disruptor<>(new CompileEventFactory(),
-                configuration.getBufferSize(),
+        this.disruptor = new Disruptor<>(CompileEvent::new,
+                config.getBufferSize(),
                 new NamedThreadFactory(THREAD_PREFIX),
                 ProducerType.SINGLE,
                 new BlockingWaitStrategy());
 
         // 设置单一生产者
         this.producer = new CompileEventProducer(this.disruptor.getRingBuffer());
-        logger.info("Set compile queue producer - [{}]", producer.getClass().getName());
+        logger.info("设置脚本编译生产者 - [{}]", producer.getClass().getName());
 
         // 设置独立消费者
         // 每个消费者互相独立消费
@@ -83,14 +83,14 @@ public class CompileQueueManager implements Initializer {
         // 如果存在多个同序消费者，则同时消费
         EventHandlerGroup<CompileEvent> eventsWith = disruptor.handleEventsWith(first.getValue().toArray(new CompileConsumer[]{}));
         Supplier<Object[]> supplier = () -> new Object[]{this.getConsumerNames(first.getValue())};
-        info(logger, "Set compile queue consumer - {}", supplier);
+        info(logger, "设置脚本编译消费者 - {}", supplier);
 
         // 依次按序添加其余消费者组
         while (iterator.hasNext()) {
             Map.Entry<Integer, List<CompileConsumer>> next = iterator.next();
             eventsWith.then(next.getValue().toArray(new CompileConsumer[]{}));
             Supplier<Object[]> supplierNext = () -> new Object[]{this.getConsumerNames(next.getValue())};
-            info(logger, "Set compile queue consumer - {}", supplierNext);
+            info(logger, "设置脚本编译消费者 - {}", supplierNext);
         }
 
         // 启动编译任务队列

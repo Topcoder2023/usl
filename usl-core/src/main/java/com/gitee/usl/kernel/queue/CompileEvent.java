@@ -4,6 +4,8 @@ import cn.hutool.core.util.IdUtil;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.googlecode.aviator.Expression;
 
+import java.util.StringJoiner;
+
 /**
  * 编译事件
  *
@@ -49,5 +51,15 @@ public class CompileEvent {
     public CompileEvent setConfiguration(Configuration configuration) {
         this.configuration = configuration;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", CompileEvent.class.getSimpleName() + "[", "]")
+                .add("eventId='" + eventId + "'")
+                .add("content='" + content + "'")
+                .add("expression=" + expression)
+                .add("configuration=" + configuration)
+                .toString();
     }
 }

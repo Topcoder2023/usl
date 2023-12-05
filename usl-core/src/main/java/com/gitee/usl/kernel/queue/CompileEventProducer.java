@@ -23,7 +23,7 @@ public class CompileEventProducer {
             unpublished.setContent(expression);
             unpublished.setConfiguration(configuration);
 
-            logger.debug("Publish compile event - [ID: {}, Sequence : {}]", unpublished.getEventId(), sequence);
+            logger.debug("发布 [脚本编译事件] - [事件ID: {}, 事件序列 : {}]", unpublished.getEventId(), sequence);
         });
     }
 }

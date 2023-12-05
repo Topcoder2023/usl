@@ -12,7 +12,7 @@ public class CompileShutdown implements Shutdown {
     @Override
     public void close(Configuration configuration) {
         configuration.configQueue()
-                .compileQueueManager()
+                .compileQueueInitializer()
                 .disruptor()
                 .shutdown();
     }

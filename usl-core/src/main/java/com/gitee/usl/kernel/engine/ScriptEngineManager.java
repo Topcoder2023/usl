@@ -7,6 +7,7 @@ import com.gitee.usl.infra.constant.ModuleConstant;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.UslExecuteException;
+import com.gitee.usl.infra.utils.ScriptCompileHelper;
 import com.gitee.usl.kernel.cache.Cache;
 import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
@@ -14,12 +15,9 @@ import com.gitee.usl.kernel.configure.QueueConfiguration;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
-import com.gitee.usl.kernel.queue.CompileGeneratorConsumer;
 import com.google.auto.service.AutoService;
-import com.google.common.hash.Hashing;
 import com.googlecode.aviator.*;
 
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,7 +36,6 @@ import java.util.concurrent.TimeUnit;
 @Notes(value = "脚本引擎初始化器",
         belongs = ModuleConstant.USL_CORE,
         viewUrl = "https://gitee.com/yixi-dlmu/usl/raw/master/usl-core/src/main/java/com/gitee/usl/kernel/engine/ScriptEngineManager.java")
-@SuppressWarnings("UnstableApiUsage")
 @AutoService(Initializer.class)
 public final class ScriptEngineManager implements Initializer {
     private AviatorEvaluatorInstance instance;
@@ -52,13 +49,13 @@ public final class ScriptEngineManager implements Initializer {
         this.cacheConfiguration = uslConfiguration.configCache();
         this.queueConfiguration = uslConfiguration.configQueue();
 
-        EngineConfiguration configuration = uslConfiguration.configEngine();
+        EngineConfiguration configEngine = uslConfiguration.configEngine();
 
         this.instance = AviatorEvaluator.newInstance();
         this.instance.removeFunctionLoader(ClassPathConfigFunctionLoader.getInstance());
-        this.instance.addFunctionLoader(name -> configuration.functionHolder().search(name));
+        this.instance.addFunctionLoader(name -> configEngine.functionHolder().search(name));
 
-        configuration.setScriptEngineManager(this);
+        configEngine.setScriptEngineManager(this);
     }
 
     /**
@@ -71,7 +68,7 @@ public final class ScriptEngineManager implements Initializer {
     @SuppressWarnings({"unchecked", "ReassignedVariable"})
     public <T> Result<T> run(Param param) {
         // 使用SHA512摘要算法生成唯一Key
-        String key = ScriptEngineManager.generateKey(param.getScript());
+        String key = ScriptCompileHelper.generateKey(param.getScript());
         Cache cache = this.cacheConfiguration.cacheManager().cache();
 
         Expression expression;
@@ -104,7 +101,7 @@ public final class ScriptEngineManager implements Initializer {
         }
 
         // 校验编译结果是否为有效结果
-        if (CompileGeneratorConsumer.isInvalid(expression)) {
+        if (ScriptCompileHelper.isEmpty(expression)) {
             return Result.failure(ResultCode.COMPILE_FAILURE);
         }
 
@@ -121,7 +118,7 @@ public final class ScriptEngineManager implements Initializer {
      * @param content 脚本的内容
      */
     private void compile(String content) {
-        queueConfiguration.compileQueueManager()
+        queueConfiguration.compileQueueInitializer()
                 .producer()
                 .produce(content, this.configuration);
     }
@@ -159,20 +156,5 @@ public final class ScriptEngineManager implements Initializer {
      */
     public AviatorEvaluatorInstance getInstance() {
         return instance;
-    }
-
-    /**
-     * 生成脚本内容对应的唯一缓存键
-     * 采用 SHA512 摘要算法
-     *
-     * @param content 脚本内容
-     * @return 唯一缓存键
-     */
-    public static String generateKey(String content) {
-        return Hashing.sha512()
-                .newHasher()
-                .putString(content, StandardCharsets.UTF_8)
-                .hash()
-                .toString();
     }
 }
