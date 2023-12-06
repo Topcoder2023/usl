@@ -2,6 +2,7 @@ package com.gitee.usl.function.base;
 
 import cn.hutool.core.exceptions.UtilException;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Func;
@@ -84,12 +85,25 @@ public class VisitorFunction {
 
     @Func("invoke")
     public Object invoke(Object obj, String methodName) {
+        return this.invokeWith(obj, methodName);
+    }
+
+    @Func("invoke.with")
+    public Object invoke(Object obj, String methodName, Object... params) {
+        return this.invokeWith(obj, methodName, params);
+    }
+
+    private Object invokeWith(Object obj, String methodName, Object... params) {
         if (obj == null || CharSequenceUtil.isBlank(methodName)) {
             return null;
         }
 
         try {
-            return ReflectUtil.invoke(obj, methodName);
+            if (ArrayUtil.isEmpty(params)) {
+                return ReflectUtil.invoke(obj, methodName);
+            } else {
+                return ReflectUtil.invoke(obj, methodName, params);
+            }
         } catch (UtilException e) {
             logger.warn("对象方法调用失败", new UslException(e));
             return null;
