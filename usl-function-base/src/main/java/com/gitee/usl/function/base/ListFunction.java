@@ -3,6 +3,7 @@ package com.gitee.usl.function.base;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.comparator.CompareUtil;
 import cn.hutool.core.text.StrPool;
+import cn.zhxu.xjson.JsonKit;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Func
 public class ListFunction {
     @Func("list")
-    public final List<Object> list() {
+    public final List<?> list() {
         return new ArrayList<>();
     }
 
@@ -262,8 +263,8 @@ public class ListFunction {
         return from;
     }
 
-    @Func("list.mapping")
-    public <T> List<?> mapping(Env env, List<T> from, AviatorFunction function) {
+    @Func("list.convert")
+    public <T> List<?> convert(Env env, List<T> from, AviatorFunction function) {
         List<?> result;
         if (from != null && function != null) {
             result = from.stream()
@@ -275,11 +276,32 @@ public class ListFunction {
         return result;
     }
 
-    @Func("list.toString")
+    @Func("list.group")
+    public <E> Map<?, List<E>> group(Env env, List<E> from, AviatorFunction function) {
+        if (from == null || function == null) {
+            return new LinkedHashMap<>(NumberConstant.EIGHT);
+        }
+        return from.stream().collect(Collectors.groupingBy(element -> function.call(env, FunctionUtils.wrapReturn(element)).getValue(env)));
+    }
+
+    @Func("list.toMap")
+    public Map<?, ?> group(Env env, List<?> from, AviatorFunction keyMapping, AviatorFunction valueMapping) {
+        if (from == null || keyMapping == null || valueMapping == null) {
+            return new LinkedHashMap<>(NumberConstant.EIGHT);
+        }
+        return from.stream()
+                .collect(Collectors.toMap(element -> keyMapping.call(env, FunctionUtils.wrapReturn(element)).getValue(env),
+                        element -> valueMapping.call(env, FunctionUtils.wrapReturn(element)).getValue(env),
+                        (k1, k2) -> k2,
+                        LinkedHashMap::new));
+    }
+
+    @Func("list.toJson")
     public String toStr(List<?> from) {
-        return CollUtil.join(from,
-                StrPool.COMMA + StrPool.C_SPACE,
-                StrPool.BRACKET_START,
-                StrPool.BRACKET_END);
+        if (from == null) {
+            return StrPool.BRACKET_START + StrPool.BRACKET_END;
+        } else {
+            return JsonKit.toJson(from);
+        }
     }
 }

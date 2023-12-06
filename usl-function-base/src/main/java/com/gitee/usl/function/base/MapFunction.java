@@ -1,12 +1,21 @@
 package com.gitee.usl.function.base;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.text.StrPool;
+import cn.zhxu.xjson.JsonKit;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.function.base.entity.EntryItem;
 import com.gitee.usl.infra.constant.NumberConstant;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.googlecode.aviator.utils.Env;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.googlecode.aviator.runtime.function.FunctionUtils.getBooleanValue;
+import static com.googlecode.aviator.runtime.function.FunctionUtils.wrapReturn;
 
 /**
  * @author hongda.li
@@ -70,6 +79,24 @@ public class MapFunction {
         return value;
     }
 
+    @Func("map.putIfAbsent")
+    public <K, V> V putIfAbsent(Map<K, V> from, K key, V value) {
+        if (from == null || key == null) {
+            return null;
+        }
+        from.putIfAbsent(key, value);
+        return value;
+    }
+
+    @Func("map.putIfPresent")
+    public <K, V> V putIfPresent(Map<K, V> from, K key, V value) {
+        if (from == null || key == null) {
+            return null;
+        }
+        from.computeIfPresent(key, (k, v) -> value);
+        return value;
+    }
+
     @Func("map.putAll")
     public <K, V> Map<K, V> putAll(Map<K, V> from, Map<K, V> target) {
         if (from == null || CollUtil.isEmpty(target)) {
@@ -77,6 +104,15 @@ public class MapFunction {
         }
         from.putAll(target);
         return from;
+    }
+
+    @Func("map.replace")
+    public <K, V> V replace(Map<K, V> from, K key, V oldValue, V newValue) {
+        if (from == null || key == null) {
+            return null;
+        }
+        from.replace(key, oldValue, newValue);
+        return newValue;
     }
 
     @Func("map.remove")
@@ -120,5 +156,71 @@ public class MapFunction {
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
+    }
+
+    @Func("map.foreach")
+    public <K, V> Map<K, V> foreach(Env env, Map<K, V> from, AviatorFunction function) {
+        if (from != null) {
+            from.forEach((k, v) -> function.call(env, wrapReturn(k), wrapReturn(v)));
+        }
+        return from;
+    }
+
+    @Func("map.filter")
+    public <K, V> Map<K, V> filter(Env env, Map<K, V> from, AviatorFunction function) {
+        if (from == null || function == null) {
+            return from;
+        }
+        return this.filterMap(env, from, entry -> function.call(env,
+                wrapReturn(entry.getKey()),
+                wrapReturn(entry.getValue())));
+    }
+
+    @Func("map.filter.key")
+    public <K, V> Map<K, V> filterKey(Env env, Map<K, V> from, AviatorFunction function) {
+        if (from == null || function == null) {
+            return from;
+        }
+        return this.filterMap(env, from, entry -> function.call(env, wrapReturn(entry.getKey())));
+    }
+
+    @Func("map.filter.value")
+    public <K, V> Map<K, V> filterValue(Env env, Map<K, V> from, AviatorFunction function) {
+        if (from == null || function == null) {
+            return from;
+        }
+        return this.filterMap(env, from, entry -> function.call(env, wrapReturn(entry.getValue())));
+    }
+
+    @Func("map.toList")
+    public <K, V> List<?> toList(Env env, Map<K, V> from, AviatorFunction function) {
+        if (from == null || function == null) {
+            return new ArrayList<>();
+        }
+        return from.entrySet()
+                .stream()
+                .map(entry -> function.call(env, wrapReturn(entry.getKey()), wrapReturn(entry.getValue())).getValue(env))
+                .collect(Collectors.toList());
+    }
+
+    @Func("map.toJson")
+    public <K, V> String toStr(Map<K, V> from) {
+        if (from == null) {
+            return StrPool.EMPTY_JSON;
+        } else {
+            return JsonKit.toJson(from);
+        }
+    }
+
+    private <K, V> Map<K, V> filterMap(Env env, Map<K, V> from, Function<EntryItem<K, V>, AviatorObject> mapping) {
+        final Map<K, V> filter = new LinkedHashMap<>(from.size());
+        from.forEach((key, value) -> {
+            AviatorObject call = mapping.apply(new EntryItem<>(key, value));
+            boolean doFilter = getBooleanValue(call, env);
+            if (doFilter) {
+                filter.put(key, value);
+            }
+        });
+        return filter;
     }
 }
