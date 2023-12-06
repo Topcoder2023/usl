@@ -59,6 +59,14 @@ public class Script {
         return result;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", Script.class.getSimpleName() + "[", "]")

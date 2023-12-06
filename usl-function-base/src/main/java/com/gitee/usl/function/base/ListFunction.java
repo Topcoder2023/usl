@@ -2,7 +2,9 @@ package com.gitee.usl.function.base;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.comparator.CompareUtil;
+import cn.hutool.core.text.StrPool;
 import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.infra.constant.NumberConstant;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
@@ -19,25 +21,34 @@ import java.util.stream.Collectors;
  */
 @Func
 public class ListFunction {
-    @SafeVarargs
     @Func("list")
-    public final <T> List<T> list(T... elements) {
+    public final List<Object> list() {
+        return new ArrayList<>();
+    }
+
+    @SafeVarargs
+    @Func("list.of")
+    public final <T> List<T> of(T... elements) {
         return Arrays.asList(elements);
     }
 
     @Func("list.from")
     public <T> List<T> from(List<T> source) {
-        return new ArrayList<>(source);
+        if (source == null) {
+            return new ArrayList<>();
+        } else {
+            return new ArrayList<>(source);
+        }
     }
 
     @Func("list.get")
     public Object get(List<?> from, int index) {
-        return index < 0 || index >= from.size() ? null : from.get(index);
+        return from == null || index < 0 || index >= from.size() ? null : from.get(index);
     }
 
     @Func("list.set")
     public <T> T set(List<T> from, int index, T element) {
-        if (index < 0 || index >= from.size()) {
+        if (from == null || index < 0 || index >= from.size()) {
             return null;
         }
         from.set(index, element);
@@ -46,13 +57,15 @@ public class ListFunction {
 
     @Func("list.add")
     public <T> T add(List<T> from, T element) {
-        from.add(element);
+        if (from != null) {
+            from.add(element);
+        }
         return element;
     }
 
     @Func("list.size")
     public <T> int size(List<T> from) {
-        return from.size();
+        return from == null ? 0 : from.size();
     }
 
     @Func("list.addAll")
@@ -65,7 +78,7 @@ public class ListFunction {
 
     @Func("list.addTo")
     public <T> T addTo(List<T> from, int index, T element) {
-        if (index < 0 || index >= from.size()) {
+        if (from == null || index < 0 || index >= from.size()) {
             return null;
         }
         from.add(index, element);
@@ -74,11 +87,14 @@ public class ListFunction {
 
     @Func("list.remove")
     public <T> T remove(List<T> from, int index) {
-        return index < 0 || index > from.size() - 1 ? null : from.remove(index);
+        return from == null || index < 0 || index > from.size() - 1 ? null : from.remove(index);
     }
 
     @Func("list.removeIf")
     public <T> List<T> removeIf(Env env, List<T> from, AviatorFunction function) {
+        if (from == null || function == null) {
+            return from;
+        }
         return CollUtil.removeWithAddIf(from, element -> {
             AviatorObject result = function.call(env, FunctionUtils.wrapReturn(element));
             return FunctionUtils.getBooleanValue(result, env);
@@ -87,47 +103,57 @@ public class ListFunction {
 
     @Func("list.clear")
     public <T> List<T> clear(List<T> from) {
-        from.clear();
+        if (from != null) {
+            from.clear();
+        }
         return from;
     }
 
     @Func("list.indexOf")
     public <T> int indexOf(List<T> from, T element) {
-        return from.indexOf(element);
+        return from == null || element == null ? -1 : from.indexOf(element);
     }
 
     @Func("list.lastIndexOf")
     public <T> int lastIndexOf(List<T> from, T element) {
-        return from.lastIndexOf(element);
+        return from == null || element == null ? -1 : from.lastIndexOf(element);
     }
 
     @Func("list.sort")
     public <T extends Comparable<? super T>> List<T> sort(List<T> from) {
-        from.sort(CompareUtil::compare);
+        if (from != null) {
+            from.sort(CompareUtil::compare);
+        }
         return from;
     }
 
     @Func("list.sortBy")
     public <T> List<T> sortBy(Env env, List<T> from, AviatorFunction function) {
-        from.sort((o1, o2) -> {
-            AviatorObject result = function.call(env, FunctionUtils.wrapReturn(o1), FunctionUtils.wrapReturn(o2));
-            return FunctionUtils.getNumberValue(result, env).intValue();
-        });
+        if (from != null) {
+            from.sort((o1, o2) -> {
+                AviatorObject result = function.call(env, FunctionUtils.wrapReturn(o1), FunctionUtils.wrapReturn(o2));
+                return FunctionUtils.getNumberValue(result, env).intValue();
+            });
+        }
         return from;
     }
 
     @Func("list.resort")
     public <T extends Comparable<? super T>> List<T> resort(List<T> from) {
-        from.sort((o1, o2) -> CompareUtil.compare(o2, o1));
+        if (from != null) {
+            from.sort((o1, o2) -> CompareUtil.compare(o2, o1));
+        }
         return from;
     }
 
     @Func("list.resortBy")
     public <T> List<T> resortBy(Env env, List<T> from, AviatorFunction function) {
-        from.sort((o1, o2) -> {
-            AviatorObject result = function.call(env, FunctionUtils.wrapReturn(o2), FunctionUtils.wrapReturn(o1));
-            return FunctionUtils.getNumberValue(result, env).intValue();
-        });
+        if (from != null) {
+            from.sort((o1, o2) -> {
+                AviatorObject result = function.call(env, FunctionUtils.wrapReturn(o2), FunctionUtils.wrapReturn(o1));
+                return FunctionUtils.getNumberValue(result, env).intValue();
+            });
+        }
         return from;
     }
 
@@ -138,6 +164,9 @@ public class ListFunction {
 
     @Func("list.filter")
     public <T> List<T> filter(Env env, List<T> from, AviatorFunction function) {
+        if (from == null || function == null) {
+            return from;
+        }
         return from.stream()
                 .filter(element -> {
                     AviatorObject result = function.call(env, FunctionUtils.wrapReturn(element));
@@ -203,22 +232,19 @@ public class ListFunction {
 
     @Func("list.allMatch")
     public <T> boolean allMatch(Env env, List<T> from, AviatorFunction function) {
-        return CollUtil.allMatch(from, element -> {
-            AviatorObject result = function.call(env, FunctionUtils.wrapReturn(element));
-            return FunctionUtils.getBooleanValue(result, env);
-        });
+        return CollUtil.allMatch(from, element -> FunctionUtils.getBooleanValue(function.call(env, FunctionUtils.wrapReturn(element)), env));
     }
 
     @Func("list.anyMatch")
     public <T> boolean anyMatch(Env env, List<T> from, AviatorFunction function) {
-        return CollUtil.anyMatch(from, element -> {
-            AviatorObject result = function.call(env, FunctionUtils.wrapReturn(element));
-            return FunctionUtils.getBooleanValue(result, env);
-        });
+        return CollUtil.anyMatch(from, element -> FunctionUtils.getBooleanValue(function.call(env, FunctionUtils.wrapReturn(element)), env));
     }
 
     @Func("list.toMap")
     public <T> Map<?, ?> toMap(Env env, List<T> from, AviatorFunction keyMapping, AviatorFunction valueMapping) {
+        if (from == null || keyMapping == null || valueMapping == null) {
+            return new LinkedHashMap<>(NumberConstant.EIGHT);
+        }
         Map<Object, Object> result = new LinkedHashMap<>(from.size());
         for (T element : from) {
             AviatorObject key = keyMapping.call(env, FunctionUtils.wrapReturn(element));
@@ -226,5 +252,34 @@ public class ListFunction {
             result.put(key.getValue(env), value.getValue(env));
         }
         return result;
+    }
+
+    @Func("list.foreach")
+    public <T> List<T> foreach(Env env, List<T> from, AviatorFunction function) {
+        if (from != null) {
+            from.forEach(element -> function.call(env, FunctionUtils.wrapReturn(element)));
+        }
+        return from;
+    }
+
+    @Func("list.mapping")
+    public <T> List<?> mapping(Env env, List<T> from, AviatorFunction function) {
+        List<?> result;
+        if (from != null && function != null) {
+            result = from.stream()
+                    .map(element -> function.call(env, FunctionUtils.wrapReturn(element)).getValue(env))
+                    .collect(Collectors.toList());
+        } else {
+            result = Collections.emptyList();
+        }
+        return result;
+    }
+
+    @Func("list.toString")
+    public String toStr(List<?> from) {
+        return CollUtil.join(from,
+                StrPool.COMMA + StrPool.C_SPACE,
+                StrPool.BRACKET_START,
+                StrPool.BRACKET_END);
     }
 }

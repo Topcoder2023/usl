@@ -15,6 +15,16 @@ public class ScriptFunction {
         return new Script(runner, path);
     }
 
+    @Func("script.path")
+    public String path(Script script) {
+        return script.getPath();
+    }
+
+    @Func("script.content")
+    public String content(Script script) {
+        return script.getContent();
+    }
+
     @Func("script.run")
     public Object run(Env env, Script script) {
         return script.run(env);
