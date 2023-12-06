@@ -284,18 +284,6 @@ public class ListFunction {
         return from.stream().collect(Collectors.groupingBy(element -> function.call(env, FunctionUtils.wrapReturn(element)).getValue(env)));
     }
 
-    @Func("list.toMap")
-    public Map<?, ?> group(Env env, List<?> from, AviatorFunction keyMapping, AviatorFunction valueMapping) {
-        if (from == null || keyMapping == null || valueMapping == null) {
-            return new LinkedHashMap<>(NumberConstant.EIGHT);
-        }
-        return from.stream()
-                .collect(Collectors.toMap(element -> keyMapping.call(env, FunctionUtils.wrapReturn(element)).getValue(env),
-                        element -> valueMapping.call(env, FunctionUtils.wrapReturn(element)).getValue(env),
-                        (k1, k2) -> k2,
-                        LinkedHashMap::new));
-    }
-
     @Func("list.toJson")
     public String toStr(List<?> from) {
         if (from == null) {

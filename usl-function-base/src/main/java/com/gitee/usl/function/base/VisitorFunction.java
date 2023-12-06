@@ -48,7 +48,7 @@ public class VisitorFunction {
     }
 
     @Func("set")
-    public Object set(USLRunner runner, Object obj, String fieldName, Object value) {
+    public Object set(Object obj, String fieldName, Object value) {
         if (obj == null || CharSequenceUtil.isBlank(fieldName)) {
             return null;
         }
@@ -78,6 +78,20 @@ public class VisitorFunction {
             return value;
         } catch (UtilException e) {
             logger.warn("对象属性设置失败", new UslException(e));
+            return null;
+        }
+    }
+
+    @Func("invoke")
+    public Object invoke(Object obj, String methodName) {
+        if (obj == null || CharSequenceUtil.isBlank(methodName)) {
+            return null;
+        }
+
+        try {
+            return ReflectUtil.invoke(obj, methodName);
+        } catch (UtilException e) {
+            logger.warn("对象方法调用失败", new UslException(e));
             return null;
         }
     }

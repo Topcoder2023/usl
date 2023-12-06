@@ -31,7 +31,7 @@ public class Script {
             this.path = file.getAbsolutePath();
             this.content = new FileReader(file).readString();
         } else {
-            this.path = null;
+            this.path = path;
             this.content = null;
         }
     }

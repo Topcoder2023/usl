@@ -2,6 +2,7 @@ package com.gitee.usl.function.base;
 
 import cn.hutool.core.map.MapUtil;
 import com.gitee.usl.USLRunner;
+import com.gitee.usl.function.base.entity.Script;
 import com.gitee.usl.kernel.domain.Param;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -64,5 +65,12 @@ class VisitorFunctionTest {
                         .setScript("get(obj, 'name')")
                         .addContext("obj", obj))
                 .getData());
+    }
+
+    @Test
+    void invoke() {
+        assertEquals("test", runner.run(new Param()
+                .setScript("invoke(var, 'getPath')")
+                .addContext("var", new Script(runner, "test"))).getData());
     }
 }
