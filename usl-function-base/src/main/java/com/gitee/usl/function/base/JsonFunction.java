@@ -12,18 +12,18 @@ import java.util.Map;
 @Func
 public class JsonFunction {
 
-    @Func("json.toJson")
+    @Func("json_toJson")
     public String toJson(Object obj) {
         return JsonKit.toJson(obj);
     }
 
-    @Func("json.toList")
+    @Func("json_toList")
     @SuppressWarnings("rawtypes")
     public List<Map> toList(String json) {
         return JsonKit.toList(Map.class, json);
     }
 
-    @Func("json.toMap")
+    @Func("json_toMap")
     @SuppressWarnings("rawtypes")
     public Map toMap(String json) {
         return JsonKit.toBean(Map.class, json);

@@ -11,22 +11,22 @@ import org.slf4j.LoggerFactory;
 public class LoggerFunction {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggerFunction.class);
 
-    @Func("logger.debug")
+    @Func({"logger_debug", "console_log"})
     public void debug(String message, Object... arguments) {
         LOGGER.debug(message, arguments);
     }
 
-    @Func("logger.warn")
+    @Func({"logger_warn", "console_warn"})
     public void warn(String message, Object... arguments) {
         LOGGER.warn(message, arguments);
     }
 
-    @Func("logger.info")
+    @Func({"logger_info", "console_info"})
     public void info(String message, Object... arguments) {
         LOGGER.info(message, arguments);
     }
 
-    @Func("logger.error")
+    @Func({"logger_error", "console_error"})
     public void error(String message, Object... arguments) {
         LOGGER.error(message, arguments);
     }

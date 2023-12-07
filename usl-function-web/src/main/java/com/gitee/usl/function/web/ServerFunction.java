@@ -30,19 +30,19 @@ public class ServerFunction {
         return new HttpServer(runner, port);
     }
 
-    @Func("server.start")
+    @Func("server_start")
     public HttpServer start(HttpServer server) {
         server.getServer().start();
         return server;
     }
 
-    @Func("server.stop")
+    @Func("server_stop")
     public HttpServer stop(HttpServer server) {
         server.getServer().getRawServer().stop(Integer.MAX_VALUE);
         return server;
     }
 
-    @Func("server.filter")
+    @Func("server_filter")
     public HttpServer filter(Env env, HttpServer server, AviatorFunction function) {
         server.getServer().addFilter(new Filter() {
             @Override
@@ -63,19 +63,19 @@ public class ServerFunction {
         return server;
     }
 
-    @Func("server.resource")
+    @Func("server_resource")
     public HttpServer route(Env env, HttpServer server, String path) {
         server.getServer().setRoot(path);
         return server;
     }
 
-    @Func("server.route")
+    @Func("server_route")
     public HttpServer route(Env env, HttpServer server, String path, AviatorFunction function) {
         server.getServer().addAction(path, (request, response) -> function.call(env, wrapReturn(request), wrapReturn(response)));
         return server;
     }
 
-    @Func("server.route.script")
+    @Func("server_route.script")
     public HttpServer route(Env env, HttpServer server, String path, Script script) {
         server.getServer().addAction(path, (request, response) -> {
             env.put(StringConstant.REQUEST_NAME, request);

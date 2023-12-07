@@ -27,34 +27,34 @@ public class MapFunction {
         return new LinkedHashMap<>(NumberConstant.EIGHT);
     }
 
-    @Func("map.of")
+    @Func("map_of")
     public <K, V> Map<K, V> of(K key, V value) {
-        Map<K, V> map = new LinkedHashMap<>(NumberConstant.EIGHT);
-        map.put(key, value);
-        return map;
+        Map<K, V> from = new LinkedHashMap<>(NumberConstant.EIGHT);
+        from.put(key, value);
+        return from;
     }
 
-    @Func("map.size")
+    @Func("map_size")
     public <K, V> int size(Map<K, V> from) {
         return from == null ? 0 : from.size();
     }
 
-    @Func("map.isEmpty")
+    @Func("map_isEmpty")
     public <K, V> boolean isEmpty(Map<K, V> from) {
         return CollUtil.isEmpty(from);
     }
 
-    @Func("map.containsKey")
+    @Func("map_containsKey")
     public <K, V> boolean containsKey(Map<K, V> from, K key) {
         return !CollUtil.isEmpty(from) && key != null && from.containsKey(key);
     }
 
-    @Func("map.containsValue")
+    @Func("map_containsValue")
     public <K, V> boolean containsValue(Map<K, V> from, V value) {
         return !CollUtil.isEmpty(from) && value != null && from.containsValue(value);
     }
 
-    @Func("map.get")
+    @Func("map_get")
     public <K, V> V get(Map<K, V> from, K key) {
         if (CollUtil.isEmpty(from) || key == null) {
             return null;
@@ -62,7 +62,7 @@ public class MapFunction {
         return from.get(key);
     }
 
-    @Func("map.getOrDefault")
+    @Func("map_getOrDefault")
     public <K, V> V getOrDefault(Map<K, V> from, K key, V defaultValue) {
         if (CollUtil.isEmpty(from) || key == null) {
             return defaultValue;
@@ -70,7 +70,7 @@ public class MapFunction {
         return Optional.ofNullable(from.get(key)).orElse(defaultValue);
     }
 
-    @Func("map.put")
+    @Func("map_put")
     public <K, V> V put(Map<K, V> from, K key, V value) {
         if (from == null || key == null) {
             return null;
@@ -79,7 +79,7 @@ public class MapFunction {
         return value;
     }
 
-    @Func("map.putIfAbsent")
+    @Func("map_putIfAbsent")
     public <K, V> V putIfAbsent(Map<K, V> from, K key, V value) {
         if (from == null || key == null) {
             return null;
@@ -88,7 +88,7 @@ public class MapFunction {
         return value;
     }
 
-    @Func("map.putIfPresent")
+    @Func("map_putIfPresent")
     public <K, V> V putIfPresent(Map<K, V> from, K key, V value) {
         if (from == null || key == null) {
             return null;
@@ -97,7 +97,7 @@ public class MapFunction {
         return value;
     }
 
-    @Func("map.putAll")
+    @Func("map_putAll")
     public <K, V> Map<K, V> putAll(Map<K, V> from, Map<K, V> target) {
         if (from == null || CollUtil.isEmpty(target)) {
             return from;
@@ -106,7 +106,7 @@ public class MapFunction {
         return from;
     }
 
-    @Func("map.replace")
+    @Func("map_replace")
     public <K, V> V replace(Map<K, V> from, K key, V oldValue, V newValue) {
         if (from == null || key == null) {
             return null;
@@ -115,7 +115,7 @@ public class MapFunction {
         return newValue;
     }
 
-    @Func("map.remove")
+    @Func("map_remove")
     public <K, V> V remove(Map<K, V> from, K key) {
         if (CollUtil.isEmpty(from) || key == null) {
             return null;
@@ -123,7 +123,7 @@ public class MapFunction {
         return from.remove(key);
     }
 
-    @Func("map.removeIf")
+    @Func("map_removeIf")
     public <K, V> EntryItem<K, V> removeIf(Env env, Map<K, V> from, AviatorFunction function) {
         if (CollUtil.isEmpty(from) || function == null) {
             return null;
@@ -142,7 +142,7 @@ public class MapFunction {
         return item;
     }
 
-    @Func("map.clear")
+    @Func("map_clear")
     public <K, V> Map<K, V> clear(Map<K, V> from) {
         if (from != null) {
             from.clear();
@@ -150,7 +150,7 @@ public class MapFunction {
         return from;
     }
 
-    @Func("map.keySet")
+    @Func("map_keySet")
     public <K, V> List<K> keySet(Map<K, V> from) {
         if (from != null) {
             return new ArrayList<>(from.keySet());
@@ -158,7 +158,7 @@ public class MapFunction {
         return Collections.emptyList();
     }
 
-    @Func("map.values")
+    @Func("map_values")
     public <K, V> List<V> values(Map<K, V> from) {
         if (from != null) {
             return new ArrayList<>(from.values());
@@ -166,7 +166,7 @@ public class MapFunction {
         return Collections.emptyList();
     }
 
-    @Func("map.entrySet")
+    @Func("map_entrySet")
     public <K, V> List<EntryItem<K, V>> entrySet(Map<K, V> from) {
         if (from != null) {
             return from.entrySet()
@@ -177,7 +177,7 @@ public class MapFunction {
         return Collections.emptyList();
     }
 
-    @Func("map.foreach")
+    @Func("map_foreach")
     public <K, V> Map<K, V> foreach(Env env, Map<K, V> from, AviatorFunction function) {
         if (from != null) {
             from.forEach((k, v) -> function.call(env, wrapReturn(k), wrapReturn(v)));
@@ -185,7 +185,7 @@ public class MapFunction {
         return from;
     }
 
-    @Func("map.filter")
+    @Func("map_filter")
     public <K, V> Map<K, V> filter(Env env, Map<K, V> from, AviatorFunction function) {
         if (from == null || function == null) {
             return from;
@@ -195,7 +195,7 @@ public class MapFunction {
                 wrapReturn(entry.getValue())));
     }
 
-    @Func("map.filter.key")
+    @Func("map_filter.key")
     public <K, V> Map<K, V> filterKey(Env env, Map<K, V> from, AviatorFunction function) {
         if (from == null || function == null) {
             return from;
@@ -203,7 +203,7 @@ public class MapFunction {
         return this.filterMap(env, from, entry -> function.call(env, wrapReturn(entry.getKey())));
     }
 
-    @Func("map.filter.value")
+    @Func("map_filter.value")
     public <K, V> Map<K, V> filterValue(Env env, Map<K, V> from, AviatorFunction function) {
         if (from == null || function == null) {
             return from;
@@ -211,7 +211,7 @@ public class MapFunction {
         return this.filterMap(env, from, entry -> function.call(env, wrapReturn(entry.getValue())));
     }
 
-    @Func("map.toList")
+    @Func("map_toList")
     public <K, V> List<?> toList(Env env, Map<K, V> from, AviatorFunction function) {
         if (from == null || function == null) {
             return new ArrayList<>();
@@ -222,7 +222,7 @@ public class MapFunction {
                 .collect(Collectors.toList());
     }
 
-    @Func("map.toJson")
+    @Func("map_toJson")
     public <K, V> String toStr(Map<K, V> from) {
         if (from == null) {
             return StrPool.EMPTY_JSON;

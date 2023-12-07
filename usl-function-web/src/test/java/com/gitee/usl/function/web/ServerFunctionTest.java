@@ -2,6 +2,7 @@ package com.gitee.usl.function.web;
 
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.kernel.domain.Param;
+import com.gitee.usl.kernel.domain.ResourceParam;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -14,17 +15,11 @@ class ServerFunctionTest {
     static USLRunner runner;
 
     public static void main(String[] args) {
+        ResourceParam param = new ResourceParam("test.js");
         runner = new USLRunner();
         runner.start();
 
-        String str = "fn handler(req, resp){\n" +
-                "response.write.string(resp, 'hello world');" +
-                "}\n" +
-                "httpServer = server(10010);\n" +
-                "server.route(httpServer, '/hello', handler);\n" +
-                "server.start(httpServer);";
-
-        runner.run(new Param().setScript(str));
+        System.out.println(runner.run(param));
     }
 
     @Test

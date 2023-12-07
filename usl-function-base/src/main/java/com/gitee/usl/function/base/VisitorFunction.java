@@ -7,6 +7,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.infra.exception.UslException;
+import com.googlecode.aviator.utils.Env;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,17 @@ import java.util.Map;
 @Func
 public class VisitorFunction {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Func("get_env")
+    public Object getEnv(Env env, String name) {
+        return env.get(name);
+    }
+
+    @Func("set_env")
+    public Object setEnv(Env env, String name, Object value) {
+        env.put(name, value);
+        return value;
+    }
 
     @Func("get")
     public Object get(Object obj, String fieldName) {

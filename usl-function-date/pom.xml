@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>usl-function-date</artifactId>
+    <version>${parent.version}</version>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

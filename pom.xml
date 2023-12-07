@@ -18,9 +18,9 @@
         <module>usl-function-db</module>
         <module>usl-logger</module>
         <module>usl-all</module>
-        <module>usl-function-media</module>
         <module>usl-resource</module>
     </modules>
+
     <groupId>com.gitee</groupId>
     <artifactId>usl</artifactId>
     <version>v1.0.0.SNAPSHOT</version>
@@ -36,28 +36,6 @@
                 <role>Contributor</role>
             </roles>
             <email>hongda_li_dlmu@163.com</email>
-        </developer>
-
-        <developer>
-            <id>XSS</id>
-            <name>shuaishuai.xu</name>
-            <roles>
-                <role>Developer</role>
-                <role>Maintainer</role>
-                <role>Contributor</role>
-            </roles>
-            <email>2364704998@qq.com</email>
-        </developer>
-
-        <developer>
-            <id>ZJS</id>
-            <name>jingshu.zeng</name>
-            <roles>
-                <role>Developer</role>
-                <role>Maintainer</role>
-                <role>Contributor</role>
-            </roles>
-            <email>xxx@xx.com</email>
         </developer>
     </developers>
 
@@ -81,7 +59,6 @@
         <druid.version>1.2.20</druid.version>
         <groovy-jsr223.version>3.0.19</groovy-jsr223.version>
         <jython-standalone.version>2.7.3</jython-standalone.version>
-        <jave.version>3.3.1</jave.version>
         <xjsonkit.version>1.4.3</xjsonkit.version>
 
         <maven.compiler.source>8</maven.compiler.source>
@@ -272,13 +249,6 @@
                 <groupId>org.python</groupId>
                 <artifactId>jython-standalone</artifactId>
                 <version>${jython-standalone.version}</version>
-                <optional>true</optional>
-            </dependency>
-
-            <dependency>
-                <groupId>ws.schild</groupId>
-                <artifactId>jave-all-deps</artifactId>
-                <version>${jave.version}</version>
                 <optional>true</optional>
             </dependency>
 

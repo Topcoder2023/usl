@@ -16,14 +16,14 @@ import java.util.Objects;
  */
 @Func
 public class TypeFunction {
-    @Func("is.null")
+    @Func("is_null")
     public Boolean isNull(Object obj) {
         return Objects.isNull(obj);
     }
 
-    @Func("is.empty")
+    @Func("is_empty")
     public Boolean isEmpty(Object obj) {
-        if (Boolean.TRUE.equals(this.isNull(obj))) {
+        if (Boolean.TRUE.equals(isNull(obj))) {
             return Boolean.TRUE;
         }
 
@@ -42,97 +42,97 @@ public class TypeFunction {
         throw new UslExecuteException(ResultCode.FAILURE, "不支持的类型 - " + obj.getClass().getName());
     }
 
-    @Func("is.email")
+    @Func("is_email")
     public Boolean isEmail(String str) {
         return Validator.isEmail(str);
     }
 
-    @Func("is.true")
+    @Func("is_true")
     public Boolean isTrue(Object obj) {
         return Convert.toBool(obj, Boolean.FALSE);
     }
 
-    @Func("is.false")
+    @Func("is_false")
     public Boolean isFalse(Object obj) {
-        return !Boolean.TRUE.equals(this.isTrue(obj));
+        return !Boolean.TRUE.equals(isTrue(obj));
     }
 
-    @Func("is.mobile")
+    @Func("is_mobile")
     public Boolean isMobile(String str) {
         return Validator.isMobile(str);
     }
 
-    @Func("is.citizenId")
+    @Func("is_citizenId")
     public Boolean isCitizenId(String str) {
         return Validator.isCitizenId(str);
     }
 
-    @Func("is.birthday")
+    @Func("is_birthday")
     public Boolean isBirthday(String str) {
         return Validator.isBirthday(str);
     }
 
-    @Func("is.ipv4")
+    @Func("is_ipv4")
     public Boolean isIpv4(String str) {
         return Validator.isIpv4(str);
     }
 
-    @Func("is.ipv6")
+    @Func("is_ipv6")
     public Boolean isIpv6(String str) {
         return Validator.isIpv6(str);
     }
 
-    @Func("is.mac")
+    @Func("is_mac")
     public Boolean isMac(String str) {
         return Validator.isMac(str);
     }
 
-    @Func("is.plateNumber")
+    @Func("is_plateNumber")
     public Boolean isPlateNumber(String str) {
         return Validator.isPlateNumber(str);
     }
 
-    @Func("is.url")
+    @Func("is_url")
     public Boolean isUrl(String str) {
         return Validator.isUrl(str);
     }
 
-    @Func("is.chinese")
+    @Func("is_chinese")
     public Boolean isChinese(String str) {
         return Validator.isChinese(str);
     }
 
-    @Func("is.generalWithChinese")
+    @Func("is_generalWithChinese")
     public Boolean isGeneralWithChinese(String str) {
         return Validator.isGeneralWithChinese(str);
     }
 
-    @Func("is.uuid")
+    @Func("is_uuid")
     public Boolean isUuid(String str) {
         return Validator.isUUID(str);
     }
 
-    @Func("is.hex")
+    @Func("is_hex")
     public Boolean isHex(String str) {
         return Validator.isHex(str);
     }
 
-    @Func("is.creditCode")
+    @Func("is_creditCode")
     public Boolean isCreditCode(String str) {
         return Validator.isCreditCode(str);
     }
 
-    @Func("is.carVin")
+    @Func("is_carVin")
     public Boolean isCarVin(String str) {
         return Validator.isCarVin(str);
     }
 
-    @Func("is.carDrivingLicence")
+    @Func("is_carDrivingLicence")
     public Boolean isCarDrivingLicence(String str) {
         return Validator.isCarDrivingLicence(str);
     }
 
-    @Func("is.chineseName")
+    @Func("is_chineseName")
     public Boolean isChineseName(String str) {
         return Validator.isChineseName(str);
     }

@@ -6,6 +6,7 @@ import com.gitee.usl.api.Shutdown;
 import com.gitee.usl.api.Interactive;
 import com.gitee.usl.api.CliInteractive;
 import com.gitee.usl.api.WebInteractive;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
@@ -26,120 +27,76 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * USL Runner 是 通用脚本语言执行器
- * 其实例可以存在多个，每个实例使用不同的配置
- *
  * @author hongda.li
  */
+@Description("USL-Runner通用脚本语言执行器")
 @SuppressWarnings("AlibabaClassNamingShouldBeCamel")
 public class USLRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(USLRunner.class);
-
-    /**
-     * USL Runner 实例的数量
-     * 每实例化一个 USL Runner 时，都会对 NUMBER 自增
-     * USL Runner 作为重量级对象，不建议实例化多个
-     * 建议全局唯一或根据使用场景定制化
-     */
+    @Description("USL-Runner默认实例的数量，每默认实例化一个 USL-Runner 时，都会对此变量自增")
     private static final AtomicInteger NUMBER = new AtomicInteger(NumberConstant.ONE);
 
-    /**
-     * USL Runner 实例全局缓存
-     */
+    @Description("USL-Runner实例全局缓存")
     private static final Map<String, USLRunner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.EIGHT);
 
-    /**
-     * USL Runner的名称
-     * 每一个执行器的名称应该唯一
-     */
+    @Description("USL-Runner的名称，每一个执行器的名称应该唯一")
     private final String name;
 
-    /**
-     * 实例启动时间
-     */
+    @Description("USL-Runner实例启动时间")
     private final Date startTime;
 
-    /**
-     * 在 JVM 关闭前的回调函数
-     */
+    @Description("在JVM关闭前的回调函数")
     private static List<Shutdown> shutdowns;
 
-    /**
-     * USL Runner的配置选项
-     * 支持为每一个执行器设置单独的配置
-     */
+    @Description("USL-Runner的配置选项，支持为每一个执行器设置单独的配置")
     private final Configuration configuration;
 
     static {
-        // 绑定 JVM 生命周期钩子，在关闭 JVM 之前执行 USL 关闭回调函数
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            // 仅在关闭前再初始化回调函数
-            shutdowns = ServiceSearcher.searchAll(Shutdown.class);
-            // 若存在多个 USL 执行器实例则依次关闭
-            ENGINE_CONTEXT.values().forEach(runner -> {
-                LOGGER.info("{} - Shutdown initiated.", runner.name);
-                shutdowns.forEach(shutdown -> shutdown.close(runner.configuration));
-                LOGGER.info("{} - Shutdown completed.", runner.name);
-            });
-        }));
+        bindShutdownHook();
     }
 
-    /**
-     * 根据默认配置类构造 USL 执行器
-     */
+    @Description("根据默认配置构造USL-Runner执行器")
     public USLRunner() {
         this(defaultConfiguration());
     }
 
-    /**
-     * 根据指定配置类构造 USL 执行器
-     *
-     * @param configuration 指定配置类
-     */
-    public USLRunner(Configuration configuration) {
+    @Description("根据指定名称构造USL-Runner执行器")
+    public USLRunner(@Description("执行器名称") String name) {
+        this(name, defaultConfiguration());
+    }
+
+    @Description("根据指定配置构造USL-Runner执行器")
+    public USLRunner(@Description("执行器配置") Configuration configuration) {
         this(StringConstant.USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement(), configuration);
     }
 
-    /**
-     * 根据指定配置类构造 USL 执行器
-     *
-     * @param configuration 指定配置类
-     */
-    public USLRunner(String name, Configuration configuration) {
+    @Description("根据指定名称和指定配置构造USL-Runner执行器")
+    public USLRunner(@Description("执行器名称") String name,
+                     @Description("执行器配置") Configuration configuration) {
         this.name = name;
         this.startTime = new Date();
         this.configuration = configuration;
         this.configuration.setRunner(this);
     }
 
-    /**
-     * 启动 USL 执行器
-     * USL 执行器仅在启动后才能执行脚本
-     * 默认不采用任何交互模式
-     */
+    @Description("启动USL-Runner执行器，执行器仅在启动后才能执行脚本，默认不采用任何交互模式")
     public void start() {
         this.start(InteractiveMode.NONE);
     }
 
-    /**
-     * 启动 USL 执行器
-     * 当交互模式为 WEB 时，会在启动后加载 WEB 服务
-     * 当交互模式为 CLI 时，会在启动后开启命令行界面
-     *
-     * @param mode 指定的交互模式
-     */
+    @Description("以指定的模式启动USL-Runner执行器")
     public void start(InteractiveMode mode) {
         Assert.isFalse(ENGINE_CONTEXT.containsKey(name), () -> new UslException("USL Runner has been started."));
+        long start = System.currentTimeMillis();
 
         try {
-            LOGGER.info("{} - Starting...", name);
+            LOGGER.info("{} - 启动中...", name);
             ENGINE_CONTEXT.put(name, this);
             List<Initializer> initializers = ServiceSearcher.searchAll(Initializer.class);
             initializers.forEach(initializer -> initializer.doInit(configuration));
-            LOGGER.info("{} - Start completed.", name);
+            LOGGER.info("{} - 启动成功，共耗时[{}]毫秒", name, (System.currentTimeMillis() - start));
         } catch (Exception e) {
             ENGINE_CONTEXT.values().removeIf(runner -> runner.equals(this));
-            LOGGER.error("{} - Start failed.", name);
             throw e;
         }
 
@@ -147,14 +104,8 @@ public class USLRunner {
         this.interactive(mode);
     }
 
-    /**
-     * 执行 USL 脚本
-     *
-     * @param param USL 参数
-     * @param <T>   USL 返回值泛型
-     * @return USL 返回值
-     */
-    public <T> Result<T> run(Param param) {
+    @Description("执行脚本")
+    public <T> Result<T> run(@Description("脚本参数") Param param) {
         return Optional.ofNullable(this.configuration)
                 .map(Configuration::configEngine)
                 .map(EngineConfiguration::scriptEngineManager)
@@ -162,20 +113,12 @@ public class USLRunner {
                 .orElseThrow(() -> new UslException("USL Runner has not been started."));
     }
 
-    /**
-     * 获取当前 USL 执行器的配置类
-     *
-     * @return USL 配置类
-     */
+    @Description("获取当前USL-Runner执行器的配置类")
     public Configuration configuration() {
         return configuration;
     }
 
-    /**
-     * 获取默认的 USL 配置类
-     *
-     * @return USL 配置类
-     */
+    @Description("获取新的默认配置")
     public static Configuration defaultConfiguration() {
         return new Configuration()
                 .configEngine()
@@ -193,11 +136,7 @@ public class USLRunner {
                 .finish();
     }
 
-    /**
-     * 返回所有可用的函数实例
-     *
-     * @return 函数实例集合
-     */
+    @Description("返回所有可用的函数实例")
     public List<AviatorFunction> functions() {
         return Optional.ofNullable(this.configuration)
                 .map(Configuration::configEngine)
@@ -206,30 +145,17 @@ public class USLRunner {
                 .orElse(Collections.emptyList());
     }
 
-    /**
-     * 获取当前 USL 执行器的名称
-     *
-     * @return USL 执行器名称
-     */
+    @Description("获取当前USL-Runner执行器的名称")
     public String name() {
         return name;
     }
 
-    /**
-     * 获取当前 USL 执行器的启动时间
-     *
-     * @return 启动时间
-     */
+    @Description("获取当前USL-Runner执行器的启动时间")
     public Date startTime() {
         return startTime;
     }
 
-    /**
-     * 根据 USL Runner 名称获取实例
-     *
-     * @param name 名称
-     * @return 实例
-     */
+    @Description("根据USL-Runner执行器名称获取实例")
     public static USLRunner findRunnerByName(String name) {
         if (name == null) {
             return null;
@@ -237,12 +163,8 @@ public class USLRunner {
         return ENGINE_CONTEXT.get(name);
     }
 
-    /**
-     * 开启交互
-     *
-     * @param mode 交互模式
-     */
-    private void interactive(InteractiveMode mode) {
+    @Description("开启交互")
+    private void interactive(@Description("交互模式") InteractiveMode mode) {
         final Interactive interactive;
         switch (mode) {
             case CLI:
@@ -259,6 +181,20 @@ public class USLRunner {
         }
 
         Optional.ofNullable(interactive).ifPresent(item -> item.open(this));
+    }
+
+    @Description("绑定JVM生命周期钩子，在关闭JVM之前执行关闭回调函数")
+    private static void bindShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            // 仅在关闭前再初始化回调函数
+            shutdowns = ServiceSearcher.searchAll(Shutdown.class);
+            // 若存在多个 USL 执行器实例则依次关闭
+            ENGINE_CONTEXT.values().forEach(runner -> {
+                LOGGER.info("{} - Shutdown initiated.", runner.name);
+                shutdowns.forEach(shutdown -> shutdown.close(runner.configuration));
+                LOGGER.info("{} - Shutdown completed.", runner.name);
+            });
+        }));
     }
 
     @Override
