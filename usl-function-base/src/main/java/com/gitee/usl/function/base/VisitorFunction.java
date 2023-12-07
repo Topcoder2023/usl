@@ -84,26 +84,7 @@ public class VisitorFunction {
     }
 
     @Func("invoke")
-    public Object invoke(Object obj, String methodName) {
-        return this.invokeWith(obj, methodName);
-    }
-
-    @Func("invoke.with")
     public Object invoke(Object obj, String methodName, Object... params) {
-        return this.invokeWith(obj, methodName, params);
-    }
-
-    @Func("find")
-    public Object find(Object obj, String expression) {
-        try {
-            return new BeanPath(expression).get(obj);
-        } catch (Exception e) {
-            logger.warn("对象属性查找失败", new UslException(e));
-            return null;
-        }
-    }
-
-    private Object invokeWith(Object obj, String methodName, Object... params) {
         if (obj == null || CharSequenceUtil.isBlank(methodName)) {
             return null;
         }
@@ -116,6 +97,16 @@ public class VisitorFunction {
             }
         } catch (UtilException e) {
             logger.warn("对象方法调用失败", new UslException(e));
+            return null;
+        }
+    }
+
+    @Func("find")
+    public Object find(Object obj, String expression) {
+        try {
+            return new BeanPath(expression).get(obj);
+        } catch (Exception e) {
+            logger.warn("对象属性查找失败", new UslException(e));
             return null;
         }
     }

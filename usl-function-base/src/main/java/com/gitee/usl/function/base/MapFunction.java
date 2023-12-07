@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.StrPool;
 import cn.zhxu.xjson.JsonKit;
 import com.gitee.usl.api.annotation.Func;
-import com.gitee.usl.function.base.entity.EntryItem;
+import com.gitee.usl.infra.structure.EntryItem;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;

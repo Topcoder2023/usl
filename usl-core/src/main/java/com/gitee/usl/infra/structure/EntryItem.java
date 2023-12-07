@@ -1,4 +1,4 @@
-package com.gitee.usl.function.base.entity;
+package com.gitee.usl.infra.structure;
 
 import java.util.Map;
 

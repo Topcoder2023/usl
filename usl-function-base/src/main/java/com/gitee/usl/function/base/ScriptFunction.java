@@ -2,7 +2,7 @@ package com.gitee.usl.function.base;
 
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Func;
-import com.gitee.usl.function.base.entity.Script;
+import com.gitee.usl.infra.structure.Script;
 import com.googlecode.aviator.utils.Env;
 
 /**
