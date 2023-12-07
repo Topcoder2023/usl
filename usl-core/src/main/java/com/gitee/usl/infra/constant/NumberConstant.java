@@ -38,4 +38,9 @@ public final class NumberConstant {
      * 默认的容器初始化大小
      */
     public static final int COMMON_SIZE = 2 << 3;
+
+    /**
+     * 小写字母 a 的索引
+     */
+    public static final int INDEX_OF_LOWER_A = 97;
 }
