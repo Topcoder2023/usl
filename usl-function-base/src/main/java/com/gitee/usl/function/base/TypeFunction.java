@@ -4,7 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.text.CharSequenceUtil;
-import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.api.annotation.Function;
+import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.UslExecuteException;
 
@@ -14,14 +15,14 @@ import java.util.Objects;
 /**
  * @author hongda.li
  */
-@Func
+@FunctionGroup
 public class TypeFunction {
-    @Func("is_null")
+    @Function("is_null")
     public Boolean isNull(Object obj) {
         return Objects.isNull(obj);
     }
 
-    @Func("is_empty")
+    @Function("is_empty")
     public Boolean isEmpty(Object obj) {
         if (Boolean.TRUE.equals(isNull(obj))) {
             return Boolean.TRUE;
@@ -42,97 +43,97 @@ public class TypeFunction {
         throw new UslExecuteException(ResultCode.FAILURE, "不支持的类型 - " + obj.getClass().getName());
     }
 
-    @Func("is_email")
+    @Function("is_email")
     public Boolean isEmail(String str) {
         return Validator.isEmail(str);
     }
 
-    @Func("is_true")
+    @Function("is_true")
     public Boolean isTrue(Object obj) {
         return Convert.toBool(obj, Boolean.FALSE);
     }
 
-    @Func("is_false")
+    @Function("is_false")
     public Boolean isFalse(Object obj) {
         return !Boolean.TRUE.equals(isTrue(obj));
     }
 
-    @Func("is_mobile")
+    @Function("is_mobile")
     public Boolean isMobile(String str) {
         return Validator.isMobile(str);
     }
 
-    @Func("is_citizenId")
+    @Function("is_citizenId")
     public Boolean isCitizenId(String str) {
         return Validator.isCitizenId(str);
     }
 
-    @Func("is_birthday")
+    @Function("is_birthday")
     public Boolean isBirthday(String str) {
         return Validator.isBirthday(str);
     }
 
-    @Func("is_ipv4")
+    @Function("is_ipv4")
     public Boolean isIpv4(String str) {
         return Validator.isIpv4(str);
     }
 
-    @Func("is_ipv6")
+    @Function("is_ipv6")
     public Boolean isIpv6(String str) {
         return Validator.isIpv6(str);
     }
 
-    @Func("is_mac")
+    @Function("is_mac")
     public Boolean isMac(String str) {
         return Validator.isMac(str);
     }
 
-    @Func("is_plateNumber")
+    @Function("is_plateNumber")
     public Boolean isPlateNumber(String str) {
         return Validator.isPlateNumber(str);
     }
 
-    @Func("is_url")
+    @Function("is_url")
     public Boolean isUrl(String str) {
         return Validator.isUrl(str);
     }
 
-    @Func("is_chinese")
+    @Function("is_chinese")
     public Boolean isChinese(String str) {
         return Validator.isChinese(str);
     }
 
-    @Func("is_generalWithChinese")
+    @Function("is_generalWithChinese")
     public Boolean isGeneralWithChinese(String str) {
         return Validator.isGeneralWithChinese(str);
     }
 
-    @Func("is_uuid")
+    @Function("is_uuid")
     public Boolean isUuid(String str) {
         return Validator.isUUID(str);
     }
 
-    @Func("is_hex")
+    @Function("is_hex")
     public Boolean isHex(String str) {
         return Validator.isHex(str);
     }
 
-    @Func("is_creditCode")
+    @Function("is_creditCode")
     public Boolean isCreditCode(String str) {
         return Validator.isCreditCode(str);
     }
 
-    @Func("is_carVin")
+    @Function("is_carVin")
     public Boolean isCarVin(String str) {
         return Validator.isCarVin(str);
     }
 
-    @Func("is_carDrivingLicence")
+    @Function("is_carDrivingLicence")
     public Boolean isCarDrivingLicence(String str) {
         return Validator.isCarDrivingLicence(str);
     }
 
-    @Func("is_chineseName")
+    @Function("is_chineseName")
     public Boolean isChineseName(String str) {
         return Validator.isChineseName(str);
     }

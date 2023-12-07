@@ -1,7 +1,8 @@
 package com.gitee.usl.plugin.impl;
 
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.api.annotation.Function;
+import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.googlecode.aviator.runtime.type.AviatorObject;
@@ -33,30 +34,30 @@ class ParameterBinderPluginTest {
         runner.run(param.setScript("test5('hello')"));
     }
 
-    @Func
+    @FunctionGroup
     static class InnerFunc {
 
-        @Func
+        @Function
         void test1() {
             System.out.println("test1");
         }
 
-        @Func
+        @Function
         void test2(int a, double b) {
             System.out.println(a + b);
         }
 
-        @Func
+        @Function
         void test3(String a, Date b) {
             System.out.println(a + b);
         }
 
-        @Func
+        @Function
         void test4(int a, double[] b) {
             System.out.println(a + b[0]);
         }
 
-        @Func
+        @Function
         void test5(Env env, FunctionSession session, AviatorObject object) {
             System.out.println(session.definition().name() + object.getValue(env));
         }

@@ -1,7 +1,8 @@
 package com.gitee.usl.plugin.impl;
 
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.api.annotation.Function;
+import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.plugin.annotation.Sensitized;
 import com.gitee.usl.plugin.impl.sensitive.SensitiveType;
@@ -27,11 +28,11 @@ class SensitivePluginTest {
         runner.run(new Param().setScript("sensitive_native()"));
     }
 
-    @Func
+    @FunctionGroup
     static class SensitiveClass {
 
         @Sensitized(SensitiveType.CHINESE_NAME)
-        @Func("sensitive")
+        @Function("sensitive")
         public String sensitiveFunc() {
             return "测试";
         }

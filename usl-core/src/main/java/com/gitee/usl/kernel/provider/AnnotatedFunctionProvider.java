@@ -6,7 +6,8 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.api.annotation.Function;
+import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
@@ -17,7 +18,6 @@ import com.googlecode.aviator.runtime.type.AviatorFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,26 +47,18 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
             return Collections.emptyList();
         }
 
-        Func func = AnnotationUtil.getAnnotation(clz, Func.class);
-        String prefix = ArrayUtil.isNotEmpty(func.value()) && func.value().length == NumberConstant.ONE
-                ? func.value()[NumberConstant.ZERO]
-                : null;
-
-        return Stream.of(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, Func.class)))
+        return Stream.of(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, Function.class)))
                 .map(method -> {
-                    String[] accept = AnnotationUtil.getAnnotationValue(method, Func.class);
+                    String[] accept = AnnotationUtil.getAnnotationValue(method, Function.class);
 
                     if (ArrayUtil.isEmpty(accept)) {
                         // 未指定函数名称，则取方法名
-                        String defaultName = CharSequenceUtil.addPrefixIfNot(method.getName(), prefix);
-                        return new FunctionDefinition(defaultName, runner).setMethodMeta(new MethodMeta<>(ifPossible, clz, method));
+                        return new FunctionDefinition(method.getName(), runner).setMethodMeta(new MethodMeta<>(ifPossible, clz, method));
                     } else {
                         // 指定了函数名称，则取指定的函数名称
-                        String firstName = CharSequenceUtil.addPrefixIfNot(accept[NumberConstant.ZERO], prefix);
+                        String firstName = accept[NumberConstant.ZERO];
                         FunctionDefinition definition = new FunctionDefinition(firstName, runner).setMethodMeta(new MethodMeta<>(ifPossible, clz, method));
-                        if (accept.length > NumberConstant.ONE) {
-                            definition.addAlias(prefix, ArrayUtil.sub(accept, NumberConstant.ONE, accept.length));
-                        }
+                        definition.addAlias(ArrayUtil.sub(accept, NumberConstant.ONE, accept.length));
                         return definition;
                     }
                 })
@@ -87,6 +79,6 @@ public class AnnotatedFunctionProvider extends AbstractFunctionProvider {
      */
     @Override
     protected boolean filter(Class<?> clz) {
-        return AnnotationUtil.hasAnnotation(clz, Func.class) && ClassUtil.isNormalClass(clz);
+        return AnnotationUtil.hasAnnotation(clz, FunctionGroup.class) && ClassUtil.isNormalClass(clz);
     }
 }

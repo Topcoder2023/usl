@@ -5,7 +5,8 @@ import cn.hutool.core.exceptions.UtilException;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
-import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.api.annotation.Function;
+import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.exception.UslException;
 import com.googlecode.aviator.utils.Env;
 import org.slf4j.Logger;
@@ -19,22 +20,22 @@ import java.util.Map;
 /**
  * @author hongda.li
  */
-@Func
+@FunctionGroup
 public class VisitorFunction {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Func("get_env")
+    @Function("get_env")
     public Object getEnv(Env env, String name) {
         return env.get(name);
     }
 
-    @Func("set_env")
+    @Function("set_env")
     public Object setEnv(Env env, String name, Object value) {
         env.put(name, value);
         return value;
     }
 
-    @Func("get")
+    @Function("get")
     public Object get(Object obj, String fieldName) {
         if (obj == null || CharSequenceUtil.isBlank(fieldName)) {
             return null;
@@ -60,7 +61,7 @@ public class VisitorFunction {
         }
     }
 
-    @Func("set")
+    @Function("set")
     public Object set(Object obj, String fieldName, Object value) {
         if (obj == null || CharSequenceUtil.isBlank(fieldName)) {
             return null;
@@ -95,7 +96,7 @@ public class VisitorFunction {
         }
     }
 
-    @Func("invoke")
+    @Function("invoke")
     public Object invoke(Object obj, String methodName, Object... params) {
         if (obj == null || CharSequenceUtil.isBlank(methodName)) {
             return null;
@@ -113,7 +114,7 @@ public class VisitorFunction {
         }
     }
 
-    @Func("find")
+    @Function("find")
     public Object find(Object obj, String expression) {
         try {
             return new BeanPath(expression).get(obj);

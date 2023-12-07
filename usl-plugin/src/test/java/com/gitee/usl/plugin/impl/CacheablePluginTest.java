@@ -1,7 +1,8 @@
 package com.gitee.usl.plugin.impl;
 
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.api.annotation.Function;
+import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.plugin.annotation.Cacheable;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
@@ -29,11 +30,11 @@ class CacheablePluginTest {
     }
 
 
-    @Func
+    @FunctionGroup
     static class CacheClass {
 
         @Cacheable
-        @Func("cache")
+        @Function("cache")
         public String waitFunc(int id) {
             return "success : " + id;
         }

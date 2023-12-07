@@ -1,7 +1,8 @@
 package com.gitee.usl.web;
 
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.api.annotation.Function;
+import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.enums.InteractiveMode;
 
 /**
@@ -13,10 +14,10 @@ class WebInteractiveTest {
         new USLRunner().start(InteractiveMode.WEB);
     }
 
-    @Func
+    @FunctionGroup
     static class TempFunc {
 
-        @Func("sum")
+        @Function("sum")
         int sum(int a, int b) {
             return (int) (a + b);
         }

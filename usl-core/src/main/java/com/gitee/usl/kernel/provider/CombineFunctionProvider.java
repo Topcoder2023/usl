@@ -7,10 +7,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.FunctionProvider;
-import com.gitee.usl.api.annotation.Combine;
-import com.gitee.usl.api.annotation.Engine;
-import com.gitee.usl.api.annotation.Func;
-import com.gitee.usl.api.annotation.Param;
+import com.gitee.usl.api.annotation.*;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.EngineName;
@@ -39,27 +36,19 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
 
     @Override
     protected List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner) {
-        Func func = AnnotationUtil.getAnnotation(clz, Func.class);
-        String prefix = ArrayUtil.isNotEmpty(func.value()) && func.value().length == NumberConstant.ONE
-                ? func.value()[NumberConstant.ZERO]
-                : null;
-
-        return Stream.of(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, Func.class)
+        return Stream.of(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, Function.class)
                         && AnnotationUtil.hasAnnotation(method, Combine.class)))
                 .map(method -> {
-                    String[] accept = AnnotationUtil.getAnnotationValue(method, Func.class);
+                    String[] accept = AnnotationUtil.getAnnotationValue(method, Function.class);
 
                     if (accept == null) {
                         // 未指定函数名称，则取方法名
-                        String defaultName = CharSequenceUtil.addPrefixIfNot(method.getName(), prefix);
-                        return this.toDef(defaultName, clz, method, runner);
+                        return this.toDef(method.getName(), clz, method, runner);
                     } else {
                         // 指定了函数名称，则取指定的函数名称
-                        String firstName = CharSequenceUtil.addPrefixIfNot(accept[NumberConstant.ZERO], prefix);
+                        String firstName = accept[NumberConstant.ZERO];
                         FunctionDefinition definition = this.toDef(firstName, clz, method, runner);
-                        if (accept.length > NumberConstant.ONE) {
-                            definition.addAlias(prefix, ArrayUtil.sub(accept, NumberConstant.ONE, accept.length));
-                        }
+                        definition.addAlias(ArrayUtil.sub(accept, NumberConstant.ONE, accept.length));
                         return definition;
                     }
                 })
@@ -73,7 +62,7 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
 
     @Override
     protected boolean filter(Class<?> clz) {
-        return clz.isInterface() && AnnotationUtil.hasAnnotation(clz, Func.class);
+        return clz.isInterface() && AnnotationUtil.hasAnnotation(clz, FunctionGroup.class);
     }
 
     /**

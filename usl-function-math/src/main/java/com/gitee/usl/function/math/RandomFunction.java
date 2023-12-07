@@ -1,7 +1,8 @@
 package com.gitee.usl.function.math;
 
 import cn.hutool.core.util.RandomUtil;
-import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.api.annotation.Function;
+import com.gitee.usl.api.annotation.FunctionGroup;
 
 import java.math.RoundingMode;
 
@@ -10,36 +11,36 @@ import java.math.RoundingMode;
  *
  * @author hongda.li
  */
-@Func
+@FunctionGroup
 public class RandomFunction {
 
-    @Func("random.int")
+    @Function("random_int")
     public int randomInt(int start, int end) {
         return RandomUtil.randomInt(start, end, true, false);
     }
 
-    @Func("random.long")
+    @Function("random_long")
     public long randomLong(long start, long end) {
         return RandomUtil.randomLong(start, end, true, false);
     }
 
-    @Func("random.double")
+    @Function("random_double")
     public double randomDouble(double start, double end, int scale, int mode) {
         RoundingMode roundingMode = RoundingMode.valueOf(mode);
         return RandomUtil.randomDouble(start, end, scale, roundingMode);
     }
 
-    @Func("random.float")
+    @Function("random_float")
     public float randomFloat(float start, float end) {
         return RandomUtil.randomFloat(start, end);
     }
 
-    @Func("random.string")
+    @Function("random_string")
     public String randomFloat(String base, int length) {
         return RandomUtil.randomString(base, length);
     }
 
-    @Func("random.chinese")
+    @Function("random_chinese")
     public String randomChinese() {
         return String.valueOf(RandomUtil.randomChinese());
     }

@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 /**
  * @author hongda.li
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Func {
+public @interface Function {
     /**
      * 函数名称
      * 默认取方法或类的名称并将首字母小写

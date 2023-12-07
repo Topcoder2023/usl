@@ -2,7 +2,8 @@ package com.gitee.usl.plugin.impl;
 
 import cn.hutool.core.thread.ThreadUtil;
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.api.annotation.Function;
+import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.plugin.annotation.Asynchronous;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
@@ -28,11 +29,11 @@ class AsyncPluginTest {
     }
 
 
-    @Func
+    @FunctionGroup
     static class AsyncClass {
 
         @Asynchronous
-        @Func("wait")
+        @Function("wait")
         public void waitFunc() {
             // 睡眠六十秒
             ThreadUtil.sleep(1000 * 60);

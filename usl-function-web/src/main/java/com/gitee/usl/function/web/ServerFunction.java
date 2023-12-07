@@ -4,7 +4,8 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.annotation.Func;
+import com.gitee.usl.api.annotation.Function;
+import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.function.web.domain.HttpServer;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.structure.Script;
@@ -22,27 +23,27 @@ import static com.googlecode.aviator.runtime.function.FunctionUtils.wrapReturn;
 /**
  * @author hongda.li
  */
-@Func
+@FunctionGroup
 public class ServerFunction {
 
-    @Func("server")
+    @Function("server")
     public HttpServer server(USLRunner runner, int port) {
         return new HttpServer(runner, port);
     }
 
-    @Func("server_start")
+    @Function("server_start")
     public HttpServer start(HttpServer server) {
         server.getServer().start();
         return server;
     }
 
-    @Func("server_stop")
+    @Function("server_stop")
     public HttpServer stop(HttpServer server) {
         server.getServer().getRawServer().stop(Integer.MAX_VALUE);
         return server;
     }
 
-    @Func("server_filter")
+    @Function("server_filter")
     public HttpServer filter(Env env, HttpServer server, AviatorFunction function) {
         server.getServer().addFilter(new Filter() {
             @Override
@@ -63,19 +64,19 @@ public class ServerFunction {
         return server;
     }
 
-    @Func("server_resource")
+    @Function("server_resource")
     public HttpServer route(Env env, HttpServer server, String path) {
         server.getServer().setRoot(path);
         return server;
     }
 
-    @Func("server_route")
+    @Function("server_route")
     public HttpServer route(Env env, HttpServer server, String path, AviatorFunction function) {
         server.getServer().addAction(path, (request, response) -> function.call(env, wrapReturn(request), wrapReturn(response)));
         return server;
     }
 
-    @Func("server_route.script")
+    @Function("server_route_script")
     public HttpServer route(Env env, HttpServer server, String path, Script script) {
         server.getServer().addAction(path, (request, response) -> {
             env.put(StringConstant.REQUEST_NAME, request);
