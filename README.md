@@ -10,6 +10,9 @@
 
 <br/>
 
+![IntelliJ IDEA logo](https://resources.jetbrains.com/storage/products/company/brand/logos/IntelliJ_IDEA_icon.svg)
+> 特别感谢：`JetBrains`提供的开源项目免费许可证支持
+
 ## 一、简介
 
 > `USL`是一个通用脚本语言开发框架，核心实现基于`Aviator`脚本引擎，并在其基础上做了大量的封装与扩展，
