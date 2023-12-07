@@ -123,6 +123,25 @@ public class MapFunction {
         return from.remove(key);
     }
 
+    @Func("map.removeIf")
+    public <K, V> EntryItem<K, V> removeIf(Env env, Map<K, V> from, AviatorFunction function) {
+        if (CollUtil.isEmpty(from) || function == null) {
+            return null;
+        }
+        EntryItem<K, V> item = from.entrySet()
+                .stream()
+                .filter(entry -> getBooleanValue(function.call(env, wrapReturn(entry.getKey()), wrapReturn(entry.getValue())), env))
+                .findFirst()
+                .map(entry -> new EntryItem<>(entry.getKey(), entry.getValue()))
+                .orElse(null);
+        if (item == null) {
+            return null;
+        }
+
+        from.remove(item.getKey());
+        return item;
+    }
+
     @Func("map.clear")
     public <K, V> Map<K, V> clear(Map<K, V> from) {
         if (from != null) {

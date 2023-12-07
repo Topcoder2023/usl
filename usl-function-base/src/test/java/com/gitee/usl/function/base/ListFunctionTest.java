@@ -34,7 +34,13 @@ class ListFunctionTest {
     }
 
     @Test
-    void copyList() {
+    void fromList() {
+        String str = "let a = 10;\n" +
+                "let b = list();\n" +
+                "list.add(b, a);\n" +
+                "let c = list.from(b);\n" +
+                "return list.toJson(c);";
+        assertEquals("[10]", runner.run(new Param().setScript(str)).getData());
     }
 
     @Test

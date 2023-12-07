@@ -1,10 +1,10 @@
 package com.gitee.usl.function.base;
 
+import cn.hutool.core.bean.BeanPath;
 import cn.hutool.core.exceptions.UtilException;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
-import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Func;
 import com.gitee.usl.infra.exception.UslException;
 import org.slf4j.Logger;
@@ -91,6 +91,16 @@ public class VisitorFunction {
     @Func("invoke.with")
     public Object invoke(Object obj, String methodName, Object... params) {
         return this.invokeWith(obj, methodName, params);
+    }
+
+    @Func("find")
+    public Object find(Object obj, String expression) {
+        try {
+            return new BeanPath(expression).get(obj);
+        } catch (Exception e) {
+            logger.warn("对象属性查找失败", new UslException(e));
+            return null;
+        }
     }
 
     private Object invokeWith(Object obj, String methodName, Object... params) {
