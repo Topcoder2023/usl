@@ -26,11 +26,17 @@ public class VisitorFunction {
 
     @Function("get_env")
     public Object getEnv(Env env, String name) {
+        if (CharSequenceUtil.isBlank(name)) {
+            return null;
+        }
         return env.get(name);
     }
 
     @Function("set_env")
     public Object setEnv(Env env, String name, Object value) {
+        if (CharSequenceUtil.isBlank(name)) {
+            return null;
+        }
         env.put(name, value);
         return value;
     }
