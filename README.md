@@ -417,7 +417,7 @@ class SpringServiceFinder implements ServiceFinder, ApplicationContextAware {
   ![WEB模式预览图2](img/web-script.jpg)
   ![WEB模式预览图2](img/web-login.jpg)
 
-### 8.功能模块
+### 8.`USL`功能模块
 
 由于`USL`提供了大量函数定义，但往往业务逻辑并不需要用到全部的功能，冗余的函数定义可能会对性能造成一定影响，因此`USL`
 项目被划分为若干个子模块。
@@ -426,7 +426,71 @@ class SpringServiceFinder implements ServiceFinder, ApplicationContextAware {
 2. `USL-Logger`模块：对接`Slf4j`日志功能实现，如您的项目已经引入其它日志实现，如`Logback`，则无需引入此模块，对功能无任何影响。
 3. `USL-Plugin`模块：核心插件实现，建议所有子模块引入，实现了常用插件，如参数绑定插件、参数校验插件、异步插件、重试插件、日志插件等。
 4. `USL-Resource`模块：`WEB`交互模式实现，包含了前端页面与后端接口，如无需开启`WEB`交互，则不用引入此模块。
-5. `USL-Function-Base`模块：基础函数类库，建议所有子模块引入，实现了一些基础函数功能，如`get()`函数、`set()`
-   函数、`logger.info()`函数等。
+5. `USL-Function-Base`模块：基础函数类库，建议引入，实现了一些基础函数功能，如`get()`函数、`set()`函数、`logger.info()`函数等。
 6. `USL-Function-XXX`模块：具体函数类库，建议按需引入，每个子模块集中实现了某个功能相关的函数，如`USL-Function-Date`
    实现日期时间相关函数。
+
+### 9.语法高亮与自定义函数提示
+一个好的代码编辑器对日常开发和学习理解十分重要，遗憾的是`Aviator`作为一门较为小众的脚本语言，并没有获得主流代码编辑器的适配，如`IDEA`，
+其配套的`IDEA-Plugin`也很久没有维护，导致无法在高版本的`IDEA`上使用。然而专门开发一门代码编辑器其本身的投入远比维护`USL`所需时间精力
+大得多，因此，本人选择了一个折衷方案 —— 将`USL`即`Aviator`的基础语法结构对`JavaScript`保持兼容，即：
+
+1. 支持使用`let`和`var`关键字来定义变量，且两者语义完全等效；
+2. 支持使用`function`和`fn`关键字来定义函数，且两者语义完全等效；
+3. 支持使用`===`和`==`运算符标识相等运算
+4. 支持`for`循环语句定义`()`左右括号结构，原生的结构如下：`for xxx in array`，支持`()`内变量前加`let`或者`var`关键字；
+```javascript
+for (var xxx in array) {
+    do_something();
+}
+```
+5. 由于`JavaScript`脚本最后一句不建议为`return`，因此提供`await`关键字，两者语义完全等效；
+6. 对于所有的自定义函数，提供`JavaScript`函数库示例文件生成器，该生成器会生成一组配置文件，在配置文件中的函数支持语法高亮和动态跳转
+```java
+static class Test {
+    void test() {
+        LibraryGenerator.newBuilder()
+                // 是否为`USL`内置自定义函数生成示例文件
+                .all()
+                // 示例文件的输出目录，默认为当前项目根目录下
+                .output("path")
+                // 需要生成示例文件的函数包名，允许配置多个
+                .packageName("packageName")
+                // 构建生成器
+                .build()
+                // 开始构建示例文件
+                .generate();
+    }
+}
+```
+
+示例文件的生成结果参考：
+```ts
+declare function server_start(a: any): any;
+
+declare function server_stop(a: any): any;
+
+declare function server_filter(a: any, b: any, c: any): any;
+
+declare function server(a: any, b: number): any;
+
+declare function server_resource(a: any, b: any, c: string): any;
+
+declare function server_route(a: any, b: any, c: string, d: any): any;
+
+declare function server_route_script(a: any, b: any, c: string, d: any): any;
+
+declare function logger_error(a: string, b: any): any;
+
+declare function console_error(a: string, b: any): any;
+
+declare function logger_debug(a: string, b: any): any;
+```
+
+> 使用示例文件生成器成功生成以后，还需要将生成的目录配置为动态链接库，不同代码编辑器的配置方法不同，此处以`IDEA`为例：
+
+![动态链接库配置方式](img/usl@types.jpg)
+
+> 配置完以后，新建的`js`文件就支持`Aviator`以及`USL`所有的语法规则，并且支持`USL`自定义函数语法高亮和动态跳转
+
+![语法高亮示例](img/usl@example.jpg)

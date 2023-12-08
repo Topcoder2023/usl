@@ -1,9 +1,3 @@
-declare var Usl_Request: any;
-
-declare var Usl_Response: any;
-
-declare var Null: any;
-
 declare function server_start(a: any): any;
 
 declare function server_stop(a: any): any;

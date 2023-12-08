@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gitee.usl.infra.structure.AwaitVariable;
 import com.gitee.usl.infra.structure.FunctionVariable;
 import com.gitee.usl.infra.structure.VarVariable;
 import com.googlecode.aviator.lexer.token.Token;
@@ -29,7 +30,7 @@ public class SymbolTable implements Serializable {
         reserveKeyword(Variable.LAMBDA);
         reserveKeyword(Variable.FN);
 
-        // 兼容 function 关键字
+        // 兼容 function 关键字 <==> fn
         reserveKeyword(FunctionVariable.getInstance());
 
         reserveKeyword(Variable.END);
@@ -38,11 +39,15 @@ public class SymbolTable implements Serializable {
         reserveKeyword(Variable.FOR);
         reserveKeyword(Variable.IN);
         reserveKeyword(Variable.RETURN);
+
+        // 兼容 await 关键字 <==> return
+        reserveKeyword(AwaitVariable.getInstance());
+
         reserveKeyword(Variable.BREAK);
         reserveKeyword(Variable.CONTINUE);
         reserveKeyword(Variable.LET);
 
-        // 兼容 var 关键字
+        // 兼容 var 关键字 <==> let
         reserveKeyword(VarVariable.getInstance());
 
         reserveKeyword(Variable.WHILE);
@@ -95,10 +100,9 @@ public class SymbolTable implements Serializable {
                 return v;
             }
             variable.setLexeme(v.getLexeme());
-            return variable;
         } else {
             this.table.put(lexeme, variable);
-            return variable;
         }
+        return variable;
     }
 }

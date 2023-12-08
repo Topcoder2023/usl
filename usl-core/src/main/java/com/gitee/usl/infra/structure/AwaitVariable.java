@@ -7,15 +7,15 @@ import java.util.Map;
 /**
  * @author hongda.li
  */
-public class NullVariable extends Variable {
-    private static final String NAME = "null";
-    private static final NullVariable VARIABLE = new NullVariable();
+public class AwaitVariable extends Variable {
+    private static final String NAME = "await";
+    private static final AwaitVariable VARIABLE = new AwaitVariable();
 
-    private NullVariable() {
+    private AwaitVariable() {
         super(NAME, 0, -1);
     }
 
-    public static NullVariable getInstance() {
+    public static AwaitVariable getInstance() {
         return VARIABLE;
     }
 

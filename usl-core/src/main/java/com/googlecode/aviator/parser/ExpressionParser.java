@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.gitee.usl.infra.structure.AwaitVariable;
 import com.gitee.usl.infra.structure.FunctionVariable;
 import com.gitee.usl.infra.structure.VarVariable;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
@@ -321,6 +322,12 @@ public class ExpressionParser implements Parser {
                 move(true);
                 if (expectChar('=')) {
                     move(true);
+
+                    // 如果'=='后面还有一个'='，则也兼容JavaScript的语法
+                    if (expectChar('=')) {
+                        move(true);
+                    }
+
                     rel();
                     getCodeGeneratorWithTimes().onEq(opToken);
                 } else if (expectChar('~')) {
@@ -1595,7 +1602,7 @@ public class ExpressionParser implements Parser {
             ensureFeatureEnabled(Feature.ForLoop);
             forStatement();
             return StatementType.Other;
-        } else if (this.lookhead == Variable.RETURN) {
+        } else if (this.lookhead == Variable.RETURN || this.lookhead == AwaitVariable.getInstance()) {
             ensureFeatureEnabled(Feature.Return);
             returnStatement();
             return StatementType.Return;
@@ -1705,6 +1712,10 @@ public class ExpressionParser implements Parser {
         boolean needCompatible = TokenType.Char.equals(this.lookhead.getType()) && "(".equals(this.lookhead.getLexeme());
         if (needCompatible) {
             move(true);
+            // 兼容 JavaScript 语法，允许在for循环里定义 let 或者 var 关键字
+            if (VarVariable.getInstance().equals(this.lookhead) || VarVariable.LET.equals(this.lookhead)) {
+                move(true);
+            }
         }
 
         List<Token<?>> reducerArgs = new ArrayList<>(2);
