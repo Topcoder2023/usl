@@ -102,20 +102,20 @@ class Test {
 
 ```java
 
-@Func
+@FunctionGroup
 class StringFunction {
 
-    @Func("str.isEmpty")
+    @Function("str.isEmpty")
     public boolean strIsEmpty(String str) {
         return isEmpty(str);
     }
 
-    @Func("str.isBlank")
+    @Function("str.isBlank")
     public boolean strIsBlank(String str) {
         return isBlank(str);
     }
 
-    @Func("str.emptyToDefault")
+    @Function("str.emptyToDefault")
     public String strEmptyToDefault(String str, String defaultStr) {
         return emptyToDefault(str, defaultStr);
     }
@@ -183,18 +183,6 @@ public class StringFunctionProvider implements FunctionProvider {
                 .method("isBlank")
                 .next()
                 .method("hasBlank")
-                .next()
-                .method("isAllBlank")
-                .next()
-                .method("hasEmpty")
-                .next()
-                .method("isAllEmpty")
-                .next()
-                .method("isAllNotEmpty")
-                .next()
-                .method("isAllNotBlank")
-                .next()
-                .method("emptyIfNull")
                 .next()
                 .method("nullToEmpty")
                 .next()
@@ -437,7 +425,7 @@ class SpringServiceFinder implements ServiceFinder, ApplicationContextAware {
 
 1. 支持使用`let`和`var`关键字来定义变量，且两者语义完全等效；
 2. 支持使用`function`和`fn`关键字来定义函数，且两者语义完全等效；
-3. 支持使用`===`和`==`运算符标识相等运算
+3. 支持使用`===`和`==`运算符表示相等运算
 4. 支持`for`循环语句定义`()`左右括号结构，原生的结构如下：`for xxx in array`，支持`()`内变量前加`let`或者`var`关键字；
 ```javascript
 for (var xxx in array) {
@@ -464,7 +452,7 @@ static class Test {
 }
 ```
 
-示例文件的生成结果参考：
+如果自定义函数存在描述性注解，则生成的文件中也会存在对应的描述注解，示例文件的生成结果参考：
 ```ts
 declare function server_start(a: any): any;
 
