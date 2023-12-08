@@ -35,8 +35,4 @@ public final class StringConstant {
     public static final String PASSWORD = "password";
 
     public static final String SCRIPT_SUFFIX = "usl";
-
-    public static final String REQUEST_NAME = "Usl_Request";
-
-    public static final String RESPONSE_NAME = "Usl_Response";
 }

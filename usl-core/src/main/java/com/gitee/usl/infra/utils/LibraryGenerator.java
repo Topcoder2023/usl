@@ -6,15 +6,20 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.kernel.engine.FunctionSession;
+import com.googlecode.aviator.utils.Env;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,7 +53,23 @@ public class LibraryGenerator {
             for (Method method : ReflectUtil.getMethods(clazz, method -> hasAnnotation(method, Function.class))) {
                 this.generateForAnnotation(method, writer);
             }
+
+            for (Field field : ReflectUtil.getFields(clazz, field -> hasAnnotation(field, Description.class))) {
+                this.generateForAnnotation(field, writer);
+            }
         });
+    }
+
+    private void generateForAnnotation(Field field, FileWriter writer) {
+        Object value = ReflectUtil.getStaticFieldValue(field);
+        if (value == null) {
+            return;
+        }
+        String valueOf = String.valueOf(value);
+        writer.append("declare var ");
+        writer.append(valueOf);
+        writer.append(": any;\n\n");
+        logger.info("[{}]变量示例文件构建成功", valueOf);
     }
 
     private void generateForAnnotation(Method method, FileWriter writer) {
@@ -66,8 +87,16 @@ public class LibraryGenerator {
         wrapper.set(NumberConstant.INDEX_OF_LOWER_A);
 
         for (Parameter parameter : parameters) {
-            char ch = (char) wrapper.getAndIncrement();
             Class<?> paramType = parameter.getType();
+
+            if (Arrays.asList(USLRunner.class,
+                    Env.class,
+                    FunctionSession.class).contains(paramType)) {
+                continue;
+            }
+
+            char ch = (char) wrapper.getAndIncrement();
+
             builder.append(ch);
             if (String.class.isAssignableFrom(paramType)) {
                 builder.append(": string, ");
@@ -81,6 +110,9 @@ public class LibraryGenerator {
                 builder.append(": number, ");
             } else if (Boolean.class.isAssignableFrom(paramType) || boolean.class.isAssignableFrom(paramType)) {
                 builder.append(": boolean, ");
+            } else if (paramType.isArray()) {
+                builder.deleteCharAt(builder.length() - 1);
+                builder.append("...").append(ch).append(": any[], ");
             } else {
                 builder.append(": any, ");
             }
@@ -96,6 +128,8 @@ public class LibraryGenerator {
         builder.append("): any;\n");
         writer.append(builder.toString());
         writer.append("\n");
+
+        logger.info("[{}]函数示例文件构建成功", functionName);
     }
 
     public static final class LibraryGeneratorBuilder {

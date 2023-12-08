@@ -13,6 +13,8 @@ for (let i in list1) {
     f();
 }
 
+let uslRequest = Usl_Request;
+
 await list1;
 
 

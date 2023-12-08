@@ -4,10 +4,10 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
 import com.gitee.usl.USLRunner;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.function.web.domain.HttpServer;
-import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.structure.Script;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
@@ -25,6 +25,10 @@ import static com.googlecode.aviator.runtime.function.FunctionUtils.wrapReturn;
  */
 @FunctionGroup
 public class ServerFunction {
+    @Description({"USL-Http请求体变量", "存放当前请求的所有信息"})
+    public static final String REQUEST_NAME = "Usl_Request";
+    @Description({"USL-Http响应体变量", "存放当前响应的所有信息"})
+    public static final String RESPONSE_NAME = "Usl_Response";
 
     @Function("server")
     public HttpServer server(USLRunner runner, int port) {
@@ -79,8 +83,8 @@ public class ServerFunction {
     @Function("server_route_script")
     public HttpServer route(Env env, HttpServer server, String path, Script script) {
         server.getServer().addAction(path, (request, response) -> {
-            env.put(StringConstant.REQUEST_NAME, request);
-            env.put(StringConstant.RESPONSE_NAME, response);
+            env.put(REQUEST_NAME, request);
+            env.put(RESPONSE_NAME, response);
             script.run(env);
         });
         return server;
