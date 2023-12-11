@@ -32,7 +32,7 @@ public class ScriptCompileHelper {
     }
 
     public static boolean isEmpty(Expression expression) {
-        return EMPTY_PLACE_HOLDER.equals(expression);
+        return EMPTY_PLACE_HOLDER.equals(expression) || expression == null;
     }
 
     /**

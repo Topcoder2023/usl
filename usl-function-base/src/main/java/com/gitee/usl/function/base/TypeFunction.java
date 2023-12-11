@@ -15,6 +15,7 @@ import java.util.Objects;
 /**
  * @author hongda.li
  */
+@SuppressWarnings("unused")
 @FunctionGroup
 public class TypeFunction {
     @Function("is_null")

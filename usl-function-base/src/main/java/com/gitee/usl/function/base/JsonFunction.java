@@ -10,6 +10,7 @@ import java.util.Map;
 /**
  * @author hongda.li
  */
+@SuppressWarnings("unused")
 @FunctionGroup
 public class JsonFunction {
 

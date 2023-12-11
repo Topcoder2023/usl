@@ -40,9 +40,14 @@ public final class NumberConstant {
     public static final int COMMON_SIZE = 2 << 3;
 
     /**
-     * 常见的初始值大小
+     * 常见的初始值大小 64
      */
     public static final int NORMAL_SIZE = 2 << 5;
+
+    /**
+     * 常见的初始值大小 1024
+     */
+    public static final int NORMAL_MAX_SIZE = 2 << 9;
 
     /**
      * 小写字母 a 的索引

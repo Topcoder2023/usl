@@ -5,12 +5,33 @@ import com.gitee.usl.infra.constant.NumberConstant;
 /**
  * @author hongda.li
  */
-public class NumberWrapper {
-    private NumberWrapper() {
+public class ObjectWrapper {
+    private ObjectWrapper() {
     }
 
     public static IntWrapper ofIntWrapper() {
         return new IntWrapper(NumberConstant.ZERO);
+    }
+
+    public static BoolWrapper ofBoolWrapper() {
+        return new BoolWrapper(false);
+    }
+
+    public static final class BoolWrapper {
+        private boolean value;
+
+        public BoolWrapper(boolean value) {
+            this.value = value;
+        }
+
+        public boolean get() {
+            return this.value;
+        }
+
+        public boolean set(boolean value) {
+            this.value = value;
+            return this.value;
+        }
     }
 
     public static final class IntWrapper {

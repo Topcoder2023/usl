@@ -4,7 +4,7 @@ import cn.hutool.core.convert.Convert;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
-import com.gitee.usl.infra.utils.NumberWrapper;
+import com.gitee.usl.infra.utils.ObjectWrapper;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.api.plugin.BeginPlugin;
 import com.googlecode.aviator.runtime.type.AviatorObject;
@@ -52,17 +52,11 @@ public class ParameterBinderPlugin implements BeginPlugin {
         // 当前的上下文环境
         final Env env = session.env();
 
-        NumberWrapper.IntWrapper wrapper = NumberWrapper.ofIntWrapper();
+        ObjectWrapper.IntWrapper wrapper = ObjectWrapper.ofIntWrapper();
 
         Object[] args = IntStream.range(NumberConstant.ZERO, length)
                 .filter(index -> index < length)
                 .mapToObj(index -> {
-                    // 避免数组越界，直接用 null 填充
-                    // 此处可能产生的原因是方法定义了 N 个参数，但实际传入的参数小于 N
-                    if (index - wrapper.get() > maxLength - 1) {
-                        return null;
-                    }
-
                     // 当前参数的类型
                     Parameter parameter = parameters[index];
                     Class<?> type = parameter.getType();
@@ -86,6 +80,12 @@ public class ParameterBinderPlugin implements BeginPlugin {
                         logger.debug("[参数绑定] - 自动绑定会话信息");
                         wrapper.increment();
                         return session;
+                    }
+
+                    // 避免数组越界，直接用 null 填充
+                    // 此处可能产生的原因是方法定义了 N 个参数，但实际传入的参数小于 N
+                    if (index - wrapper.get() > maxLength - 1) {
+                        return null;
                     }
 
                     // 如果是 AviatorObject 类型的参数，则直接返回

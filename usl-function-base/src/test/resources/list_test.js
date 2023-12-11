@@ -2,8 +2,7 @@
 let list = list_of('a', 'b', 'c', 'd');
 
 for (let element in list) {
-    let number = list_indexOf(list, list_get(list, 1)) * 20;
-    logger_info(to_string(number));
+    logger_warn(env());
     logger_info(element);
 }
 
@@ -15,6 +14,11 @@ let mf = function matchFilter(ch) {
     return ch === 'a' || ch === 'b' || ch === 'c' || ch === 'd';
 };
 
+logger_warn(env());
+
 let allMatch = list_allMatch(list, mf);
+
+logger_warn(env());
+
 logger_info(allMatch);
 

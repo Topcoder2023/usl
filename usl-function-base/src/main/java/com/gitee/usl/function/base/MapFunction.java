@@ -20,6 +20,7 @@ import static com.googlecode.aviator.runtime.function.FunctionUtils.wrapReturn;
 /**
  * @author hongda.li
  */
+@SuppressWarnings("unused")
 @FunctionGroup
 public class MapFunction {
     @Function("map")

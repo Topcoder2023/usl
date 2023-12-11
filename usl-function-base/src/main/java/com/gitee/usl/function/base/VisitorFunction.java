@@ -14,12 +14,14 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author hongda.li
  */
+@SuppressWarnings("unused")
 @FunctionGroup
 public class VisitorFunction {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -39,6 +41,11 @@ public class VisitorFunction {
         }
         env.put(name, value);
         return value;
+    }
+
+    @Function("env")
+    public Map<String, Object> env(Env env) {
+        return new LinkedHashMap<>(env);
     }
 
     @Function("get")

@@ -1,4 +1,4 @@
-declare function list_group(a: any, b: any): any;
+declare function list_group(a: any, b: any, ): any;
 
 declare function list_add(a: any, b: any): any;
 
@@ -20,7 +20,7 @@ declare function list_size(a: any): any;
 
 declare function list_addAll(a: any, b: any): any;
 
-declare function list_toMap(a: any, b: any, c: any): any;
+declare function list_toMap(a: any, b: any, c: any, ): any;
 
 declare function list(): any;
 
@@ -30,49 +30,49 @@ declare function list_of(...a: any[]): any;
 
 declare function list_containsAll(a: any, b: any): any;
 
-declare function list_removeIf(a: any, b: any): any;
+declare function list_removeIf(a: any, b: any, ): any;
 
 declare function list_sort(a: any): any;
 
-declare function list_filter(a: any, b: any): any;
+declare function list_filter(a: any, b: any, ): any;
 
 declare function list_from(a: any): any;
 
-declare function list_convert(a: any, b: any): any;
+declare function list_convert(a: any, b: any, ): any;
 
-declare function list_allMatch(a: any, b: any): any;
+declare function list_allMatch(a: any, b: any, ): any;
 
-declare function list_anyMatch(a: any, b: any): any;
+declare function list_anyMatch(a: any, b: any, ): any;
 
 declare function list_distinct(a: any): any;
 
-declare function list_toJson(a: any): any;
-
-declare function list_disjunction(a: any, b: any): any;
-
-declare function list_unionAll(a: any, b: any): any;
+declare function list_containsAny(a: any, b: any): any;
 
 declare function list_union(a: any, b: any): any;
 
+declare function list_intersection(a: any, b: any): any;
+
+declare function list_unionAll(a: any, b: any): any;
+
 declare function list_unionDistinct(a: any, b: any): any;
 
-declare function list_intersection(a: any, b: any): any;
+declare function list_disjunction(a: any, b: any): any;
+
+declare function list_toJson(a: any): any;
 
 declare function list_sub(a: any, b: number, c: number): any;
 
-declare function list_containsAny(a: any, b: any): any;
-
 declare function list_intersectionDistinct(a: any, b: any): any;
-
-declare function list_foreach(a: any, b: any): any;
-
-declare function list_sortBy(a: any, b: any): any;
-
-declare function list_resort(a: any): any;
 
 declare function list_addTo(a: any, b: number, c: any): any;
 
-declare function list_resortBy(a: any, b: any): any;
+declare function list_resort(a: any): any;
+
+declare function list_resortBy(a: any, b: any, ): any;
+
+declare function list_sortBy(a: any, b: any, ): any;
+
+declare function list_foreach(a: any, b: any, ): any;
 
 declare function invoke(a: any, b: string, ...c: any[]): any;
 
@@ -82,9 +82,11 @@ declare function find(a: any, b: string): any;
 
 declare function set(a: any, b: string, c: any): any;
 
-declare function set_env(a: string, b: any): any;
+declare function env(): any;
 
-declare function get_env(a: string): any;
+declare function get_env(a: string, ): any;
+
+declare function set_env(a: string, b: any, ): any;
 
 declare function response_write_string(a: any, b: string): any;
 
@@ -94,15 +96,15 @@ declare function server_start(a: any): any;
 
 declare function server_stop(a: any): any;
 
-declare function server_filter(a: any, b: any): any;
+declare function server_filter(a: any, b: any, ): any;
 
-declare function server(a: number): any;
+declare function server(a: number, ): any;
 
-declare function server_resource(a: any, b: string): any;
+declare function server_route(a: any, b: string, c: any, ): any;
 
-declare function server_route_script(a: any, b: string, c: any): any;
+declare function server_route_script(a: any, b: string, c: any, ): any;
 
-declare function server_route(a: any, b: string, c: any): any;
+declare function server_resource(a: any, b: string, ): any;
 
 declare var Usl_Request: any;
 
@@ -112,27 +114,27 @@ declare function to_boolean(a: any): any;
 
 declare function to_string(a: any): any;
 
-declare function to_json(a: any): any;
-
-declare function to_date(a: any): any;
-
 declare function to_double(a: any): any;
 
 declare function to_bigDecimal(a: any): any;
 
 declare function to_long(a: any): any;
 
+declare function to_date(a: any): any;
+
+declare function to_json(a: any): any;
+
 declare function random_int(a: number, b: number): any;
-
-declare function random_chinese(): any;
-
-declare function random_long(a: number, b: number): any;
-
-declare function random_double(a: number, b: number, c: number, d: number): any;
 
 declare function random_float(a: number, b: number): any;
 
 declare function random_string(a: string, b: number): any;
+
+declare function random_double(a: number, b: number, c: number, d: number): any;
+
+declare function random_long(a: number, b: number): any;
+
+declare function random_chinese(): any;
 
 declare function map(): any;
 
@@ -168,21 +170,21 @@ declare function map_getOrDefault(a: any, b: any, c: any): any;
 
 declare function map_of(a: any, b: any): any;
 
-declare function map_removeIf(a: any, b: any): any;
+declare function map_removeIf(a: any, b: any, ): any;
 
-declare function map_filter(a: any, b: any): any;
+declare function map_filter(a: any, b: any, ): any;
 
-declare function map_toList(a: any, b: any): any;
+declare function map_toList(a: any, b: any, ): any;
 
 declare function map_toJson(a: any): any;
 
+declare function map_foreach(a: any, b: any, ): any;
+
 declare function map_putIfPresent(a: any, b: any, c: any): any;
 
-declare function map_filter_value(a: any, b: any): any;
+declare function map_filter_key(a: any, b: any, ): any;
 
-declare function map_foreach(a: any, b: any): any;
-
-declare function map_filter_key(a: any, b: any): any;
+declare function map_filter_value(a: any, b: any, ): any;
 
 declare function json_toMap(a: string): any;
 
@@ -214,47 +216,47 @@ declare function is_false(a: any): any;
 
 declare function is_true(a: any): any;
 
+declare function is_carDrivingLicence(a: string): any;
+
 declare function is_generalWithChinese(a: string): any;
 
-declare function is_carDrivingLicence(a: string): any;
+declare function is_citizenId(a: string): any;
 
 declare function is_email(a: string): any;
 
 declare function is_mobile(a: string): any;
 
-declare function is_chineseName(a: string): any;
-
 declare function is_hex(a: string): any;
-
-declare function is_plateNumber(a: string): any;
-
-declare function is_carVin(a: string): any;
-
-declare function is_citizenId(a: string): any;
-
-declare function is_ipv4(a: string): any;
-
-declare function is_url(a: string): any;
-
-declare function is_uuid(a: string): any;
-
-declare function is_birthday(a: string): any;
-
-declare function is_mac(a: string): any;
 
 declare function is_chinese(a: string): any;
 
 declare function is_ipv6(a: string): any;
 
+declare function is_mac(a: string): any;
+
 declare function is_creditCode(a: string): any;
 
-declare function script_run(a: any): any;
+declare function is_carVin(a: string): any;
 
-declare function script_result(a: any): any;
+declare function is_ipv4(a: string): any;
+
+declare function is_birthday(a: string): any;
+
+declare function is_plateNumber(a: string): any;
+
+declare function is_url(a: string): any;
+
+declare function is_chineseName(a: string): any;
+
+declare function is_uuid(a: string): any;
+
+declare function script_run(a: any, ): any;
+
+declare function script_result(a: any, ): any;
 
 declare function script_path(a: any): any;
 
-declare function script(a: string): any;
+declare function script(a: string, ): any;
 
 declare function script_content(a: any): any;
 

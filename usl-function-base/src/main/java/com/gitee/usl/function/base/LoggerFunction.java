@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author hongda.li
  */
+@SuppressWarnings("unused")
 @FunctionGroup
 public class LoggerFunction {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggerFunction.class);

@@ -144,7 +144,7 @@ public final class ScriptEngineManager implements Initializer {
         Expression expression = null;
 
         // 最大自旋次数
-        int count = NumberConstant.NORMAL_SIZE;
+        int count = NumberConstant.NORMAL_MAX_SIZE;
 
         // CPU 自旋阻塞获取编译后的表达式
         while (expression == null || count == 0) {

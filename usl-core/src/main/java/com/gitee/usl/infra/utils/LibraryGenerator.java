@@ -83,8 +83,9 @@ public class LibraryGenerator {
     private void generateForAnnotation(String functionName, Parameter[] parameters, FileWriter writer) {
         final StringBuilder builder = new StringBuilder("declare function ").append(functionName).append("(");
 
-        NumberWrapper.IntWrapper wrapper = NumberWrapper.ofIntWrapper();
-        wrapper.set(NumberConstant.INDEX_OF_LOWER_A);
+        ObjectWrapper.IntWrapper intWrapper = ObjectWrapper.ofIntWrapper();
+        intWrapper.set(NumberConstant.INDEX_OF_LOWER_A);
+        ObjectWrapper.BoolWrapper boolWrapper = ObjectWrapper.ofBoolWrapper();
 
         for (Parameter parameter : parameters) {
             Class<?> paramType = parameter.getType();
@@ -92,10 +93,11 @@ public class LibraryGenerator {
             if (Arrays.asList(USLRunner.class,
                     Env.class,
                     FunctionSession.class).contains(paramType)) {
+                boolWrapper.set(true);
                 continue;
             }
 
-            char ch = (char) wrapper.getAndIncrement();
+            char ch = (char) intWrapper.getAndIncrement();
 
             builder.append(ch);
             if (String.class.isAssignableFrom(paramType)) {
@@ -118,7 +120,7 @@ public class LibraryGenerator {
             }
         }
 
-        if (parameters.length != 0) {
+        if (parameters.length != 0 && !boolWrapper.get()) {
             // 删去最后的逗号和空格
             builder.deleteCharAt(builder.length() - 1);
             builder.deleteCharAt(builder.length() - 1);

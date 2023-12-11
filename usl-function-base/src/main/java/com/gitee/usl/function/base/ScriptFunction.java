@@ -9,6 +9,7 @@ import com.googlecode.aviator.utils.Env;
 /**
  * @author hongda.li
  */
+@SuppressWarnings("unused")
 @FunctionGroup
 public class ScriptFunction {
     @Function("script")

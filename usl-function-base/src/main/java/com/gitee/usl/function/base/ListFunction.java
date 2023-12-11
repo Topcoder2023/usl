@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  *
  * @author hongda.li
  */
+@SuppressWarnings("unused")
 @FunctionGroup
 public class ListFunction {
     @Function("list")

@@ -11,6 +11,7 @@ import java.util.Date;
 /**
  * @author hongda.li
  */
+@SuppressWarnings("unused")
 @FunctionGroup
 public class ConvertFunction {
 
