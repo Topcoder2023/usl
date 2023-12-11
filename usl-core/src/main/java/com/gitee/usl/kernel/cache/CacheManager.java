@@ -16,11 +16,11 @@ import com.google.auto.service.AutoService;
         viewUrl = "https://gitee.com/yixi-dlmu/usl/raw/master/usl-core/src/main/java/com/gitee/usl/kernel/cache/CacheManager.java")
 @AutoService(Initializer.class)
 public class CacheManager implements Initializer {
-    private Cache cache;
+    private ExpressionCache cache;
 
     @Override
     public void doInit(Configuration uslConfiguration) {
-        Cache found = ServiceSearcher.searchFirst(Cache.class);
+        ExpressionCache found = ServiceSearcher.searchFirst(ExpressionCache.class);
         if (found == null) {
             return;
         }
@@ -32,7 +32,7 @@ public class CacheManager implements Initializer {
         configuration.setCacheManager(this);
     }
 
-    public Cache cache() {
+    public ExpressionCache cache() {
         return cache;
     }
 }

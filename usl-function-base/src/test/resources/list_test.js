@@ -1,3 +1,4 @@
+// 创建List
 let list = list_of('a', 'b', 'c', 'd');
 
 for (let element in list) {

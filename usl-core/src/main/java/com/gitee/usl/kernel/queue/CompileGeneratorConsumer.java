@@ -6,6 +6,8 @@ import com.gitee.usl.infra.utils.ScriptCompileHelper;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.google.auto.service.AutoService;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.googlecode.aviator.Expression;
+import com.googlecode.aviator.code.CodeGenerator;
 import com.googlecode.aviator.lexer.ExpressionLexer;
 import com.googlecode.aviator.parser.ExpressionParser;
 import org.slf4j.Logger;
@@ -34,9 +36,10 @@ public class CompileGeneratorConsumer implements CompileConsumer {
 
         try {
             logger.debug("开始编译脚本 - {}", event.getEventId());
-            event.setExpression(new ExpressionParser(instance,
-                    new ExpressionLexer(instance, event.getContent()),
-                    instance.newCodeGenerator(null, true)).parse());
+            final ExpressionLexer lexer = new ExpressionLexer(instance, event.getContent());
+            final CodeGenerator codeGenerator = instance.newCodeGenerator(null, true);
+            final Expression expression = new ExpressionParser(instance, lexer, codeGenerator).parse();
+            event.setExpression(expression);
         } catch (Exception e) {
             logger.error("脚本编译失败", e);
             event.setExpression(ScriptCompileHelper.empty());

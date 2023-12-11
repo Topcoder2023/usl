@@ -40,6 +40,11 @@ public final class NumberConstant {
     public static final int COMMON_SIZE = 2 << 3;
 
     /**
+     * 常见的初始值大小
+     */
+    public static final int NORMAL_SIZE = 2 << 5;
+
+    /**
      * 小写字母 a 的索引
      */
     public static final int INDEX_OF_LOWER_A = 97;

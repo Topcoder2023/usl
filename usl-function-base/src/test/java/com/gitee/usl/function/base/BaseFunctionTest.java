@@ -21,6 +21,6 @@ class BaseFunctionTest {
 
     @Test
     void list() {
-        assertDoesNotThrow(() -> runner.run(new ResourceParam("list_test.js")));
+        System.out.println(runner.run(new ResourceParam("list_test.js")).getData());
     }
 }

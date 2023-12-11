@@ -3,8 +3,7 @@ package com.gitee.usl.kernel.queue;
 import com.gitee.usl.api.CompileConsumer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.ScriptCompileHelper;
-import com.gitee.usl.kernel.cache.Cache;
-import com.gitee.usl.kernel.engine.ScriptEngineManager;
+import com.gitee.usl.kernel.cache.ExpressionCache;
 import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,7 @@ public class CompileCacheConsumer implements CompileConsumer {
 
     @Override
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) {
-        final Cache cache = event.getConfiguration()
+        final ExpressionCache cache = event.getConfiguration()
                 .configCache()
                 .cacheManager()
                 .cache();

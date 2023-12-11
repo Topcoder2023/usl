@@ -52,6 +52,7 @@ public class CompileQueueInitializer implements Initializer {
     private CompileEventProducer producer;
     private Disruptor<CompileEvent> disruptor;
 
+    @SuppressWarnings("ReassignedVariable")
     @Override
     public void doInit(Configuration configuration) {
         QueueConfiguration config = configuration.configQueue();
@@ -88,7 +89,7 @@ public class CompileQueueInitializer implements Initializer {
         // 依次按序添加其余消费者组
         while (iterator.hasNext()) {
             Map.Entry<Integer, List<CompileConsumer>> next = iterator.next();
-            eventsWith.then(next.getValue().toArray(new CompileConsumer[]{}));
+            eventsWith = eventsWith.then(next.getValue().toArray(new CompileConsumer[]{}));
             Supplier<Object[]> supplierNext = () -> new Object[]{this.getConsumerNames(next.getValue())};
             info(logger, "设置脚本编译消费者 - {}", supplierNext);
         }

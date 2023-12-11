@@ -3,7 +3,7 @@ package com.gitee.usl.infra.time.impl;
 import com.gitee.usl.infra.time.FixedRateTimedTask;
 import com.gitee.usl.infra.time.TimedTask;
 import com.gitee.usl.kernel.cache.CacheManager;
-import com.gitee.usl.kernel.cache.Cache;
+import com.gitee.usl.kernel.cache.ExpressionCache;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.google.auto.service.AutoService;
 
@@ -35,6 +35,6 @@ public class CacheStatusWatcher implements FixedRateTimedTask {
     public void doTask(Configuration configuration) {
         Optional.ofNullable(configuration.configCache().cacheManager())
                 .map(CacheManager::cache)
-                .ifPresent(Cache::snapshot);
+                .ifPresent(ExpressionCache::snapshot);
     }
 }

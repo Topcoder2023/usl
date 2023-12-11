@@ -1,7 +1,9 @@
 package com.gitee.usl.kernel.cache;
 
+import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.configure.CacheConfiguration;
+import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import com.google.auto.service.AutoService;
@@ -13,8 +15,8 @@ import org.slf4j.LoggerFactory;
  * @author hongda.li
  */
 @Order(CaffeineCache.USL_CACHE_ORDER)
-@AutoService(Cache.class)
-public class CaffeineCache implements Cache {
+@AutoService(ExpressionCache.class)
+public class CaffeineCache implements ExpressionCache {
     /**
      * USL 缓存的优先级
      * 若想使用自定义缓存替代 USL 内置提供的 Caffeine 缓存
@@ -23,7 +25,7 @@ public class CaffeineCache implements Cache {
      */
     public static final int USL_CACHE_ORDER = Integer.MAX_VALUE - 100;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private com.github.benmanes.caffeine.cache.Cache<String, Expression> cache;
+    private Cache<String, Expression> cache;
 
     @Override
     public void init(CacheConfiguration configuration) {
@@ -45,10 +47,11 @@ public class CaffeineCache implements Cache {
 
     @Override
     public void insert(String key, Expression expression) {
+        Assert.notNull(expression, "Expression can't be null");
         this.cache.put(key, expression);
     }
 
-    public com.github.benmanes.caffeine.cache.Cache<String, Expression> getCache() {
+    public Cache<String, Expression> getCache() {
         return cache;
     }
 

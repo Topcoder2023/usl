@@ -7,7 +7,7 @@ import com.googlecode.aviator.Expression;
 /**
  * @author hongda.li
  */
-public interface Cache {
+public interface ExpressionCache {
     /**
      * 初始化缓存
      *

@@ -1,5 +1,7 @@
 package com.gitee.usl.kernel.engine;
 
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Notes;
@@ -8,7 +10,7 @@ import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.UslExecuteException;
 import com.gitee.usl.infra.utils.ScriptCompileHelper;
-import com.gitee.usl.kernel.cache.Cache;
+import com.gitee.usl.kernel.cache.ExpressionCache;
 import com.gitee.usl.kernel.configure.CacheConfiguration;
 import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.gitee.usl.kernel.configure.QueueConfiguration;
@@ -19,6 +21,7 @@ import com.google.auto.service.AutoService;
 import com.googlecode.aviator.*;
 
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 /**
  * USL 脚本引擎
@@ -38,6 +41,8 @@ import java.util.concurrent.TimeUnit;
         viewUrl = "https://gitee.com/yixi-dlmu/usl/raw/master/usl-core/src/main/java/com/gitee/usl/kernel/engine/ScriptEngineManager.java")
 @AutoService(Initializer.class)
 public final class ScriptEngineManager implements Initializer {
+    private static final Pattern PATTERN = Pattern.compile("//");
+    private static final String COMMENT = "##";
     private AviatorEvaluatorInstance instance;
     private Configuration configuration;
     private CacheConfiguration cacheConfiguration;
@@ -67,9 +72,12 @@ public final class ScriptEngineManager implements Initializer {
      */
     @SuppressWarnings({"unchecked", "ReassignedVariable"})
     public <T> Result<T> run(Param param) {
+        Assert.notBlank(param.getScript(), "Script content can't be blank");
+        param.setScript(PATTERN.matcher(param.getScript()).replaceAll(COMMENT));
+
         // 使用SHA512摘要算法生成唯一Key
         String key = ScriptCompileHelper.generateKey(param.getScript());
-        Cache cache = this.cacheConfiguration.cacheManager().cache();
+        ExpressionCache cache = this.cacheConfiguration.cacheManager().cache();
 
         Expression expression;
 
@@ -132,11 +140,14 @@ public final class ScriptEngineManager implements Initializer {
      */
     @SuppressWarnings("ReassignedVariable")
     private Expression getWithSpin(String key) {
-        Cache cache = this.cacheConfiguration.cacheManager().cache();
+        ExpressionCache cache = this.cacheConfiguration.cacheManager().cache();
         Expression expression = null;
 
+        // 最大自旋次数
+        int count = NumberConstant.NORMAL_SIZE;
+
         // CPU 自旋阻塞获取编译后的表达式
-        while (expression == null) {
+        while (expression == null || count == 0) {
             expression = cache.select(key);
 
             if (expression == null) {
@@ -144,6 +155,8 @@ public final class ScriptEngineManager implements Initializer {
                 // 在性能和资源两者直接平衡
                 ThreadUtil.sleep(NumberConstant.ONE, TimeUnit.NANOSECONDS);
             }
+
+            count--;
         }
 
         return expression;

@@ -423,17 +423,18 @@ class SpringServiceFinder implements ServiceFinder, ApplicationContextAware {
 其配套的`IDEA-Plugin`也很久没有维护，导致无法在高版本的`IDEA`上使用。然而专门开发一门代码编辑器其本身的投入远比维护`USL`所需时间精力
 大得多，因此，本人选择了一个折衷方案 —— 将`USL`即`Aviator`的基础语法结构对`JavaScript`保持兼容，即：
 
-1. 支持使用`let`和`var`关键字来定义变量，且两者语义完全等效；
-2. 支持使用`function`和`fn`关键字来定义函数，且两者语义完全等效；
+1. 支持使用`let`和`var`关键字来定义变量
+2. 支持使用`function`和`fn`关键字来定义函数
 3. 支持使用`===`和`==`运算符表示相等运算
-4. 支持`for`循环语句定义`()`左右括号结构，原生的结构如下：`for xxx in array`，支持`()`内变量前加`let`或者`var`关键字；
+4. 支持使用`//`和`##`来表示注释符
+5. 支持`for`循环语句定义`()`左右括号结构，原生的结构如下：`for xxx in array`，支持`()`内变量前加`let`或者`var`关键字；
 ```javascript
 for (var xxx in array) {
     do_something();
 }
 ```
-5. 由于`JavaScript`脚本最后一句不建议为`return`，因此提供`await`关键字，两者语义完全等效；
-6. 对于所有的自定义函数，提供`JavaScript`函数库示例文件生成器，该生成器会生成一组配置文件，在配置文件中的函数支持语法高亮和动态跳转
+6. 由于`JavaScript`脚本最后一句不建议为`return`，因此提供`await`关键字，两者语义完全等效；
+7. 对于所有的自定义函数，提供`JavaScript`函数库示例文件生成器，该生成器会生成一组配置文件，在配置文件中的函数支持语法高亮和动态跳转
 ```java
 static class Test {
     void test() {
