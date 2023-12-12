@@ -90,4 +90,9 @@ public class UslLogger extends AbstractUslEnabledLogger {
         // 若异常存在则打印到错误流中
         Optional.ofNullable(throwable).ifPresent(Throwable::printStackTrace);
     }
+
+    @Override
+    public boolean isTraceEnabled() {
+        return false;
+    }
 }

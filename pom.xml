@@ -19,6 +19,7 @@
         <module>usl-logger</module>
         <module>usl-all</module>
         <module>usl-resource</module>
+        <module>usl-spring-boot-starter</module>
     </modules>
 
     <groupId>com.gitee</groupId>

@@ -1,6 +1,8 @@
 // 创建List
 let list = list_of('a', 'b', 'c', 'd');
 
+logger_info(list[2]);
+
 for (let element in list) {
     logger_warn(env());
     logger_info(element);

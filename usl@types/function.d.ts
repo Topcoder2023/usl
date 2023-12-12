@@ -48,19 +48,19 @@ declare function list_distinct(a: any): any;
 
 declare function list_containsAny(a: any, b: any): any;
 
-declare function list_union(a: any, b: any): any;
-
-declare function list_intersection(a: any, b: any): any;
-
-declare function list_unionAll(a: any, b: any): any;
+declare function list_sub(a: any, b: number, c: number): any;
 
 declare function list_unionDistinct(a: any, b: any): any;
 
+declare function list_unionAll(a: any, b: any): any;
+
+declare function list_intersection(a: any, b: any): any;
+
 declare function list_disjunction(a: any, b: any): any;
 
-declare function list_toJson(a: any): any;
+declare function list_union(a: any, b: any): any;
 
-declare function list_sub(a: any, b: number, c: number): any;
+declare function list_toJson(a: any): any;
 
 declare function list_intersectionDistinct(a: any, b: any): any;
 
@@ -68,11 +68,11 @@ declare function list_addTo(a: any, b: number, c: any): any;
 
 declare function list_resort(a: any): any;
 
-declare function list_resortBy(a: any, b: any, ): any;
-
 declare function list_sortBy(a: any, b: any, ): any;
 
 declare function list_foreach(a: any, b: any, ): any;
+
+declare function list_resortBy(a: any, b: any, ): any;
 
 declare function invoke(a: any, b: string, ...c: any[]): any;
 
@@ -114,27 +114,27 @@ declare function to_boolean(a: any): any;
 
 declare function to_string(a: any): any;
 
+declare function to_long(a: any): any;
+
 declare function to_double(a: any): any;
 
 declare function to_bigDecimal(a: any): any;
-
-declare function to_long(a: any): any;
 
 declare function to_date(a: any): any;
 
 declare function to_json(a: any): any;
 
+declare function random_double(a: number, b: number, c: number, d: number): any;
+
 declare function random_int(a: number, b: number): any;
 
-declare function random_float(a: number, b: number): any;
-
-declare function random_string(a: string, b: number): any;
-
-declare function random_double(a: number, b: number, c: number, d: number): any;
+declare function random_chinese(): any;
 
 declare function random_long(a: number, b: number): any;
 
-declare function random_chinese(): any;
+declare function random_string(a: string, b: number): any;
+
+declare function random_float(a: number, b: number): any;
 
 declare function map(): any;
 
@@ -180,11 +180,11 @@ declare function map_toJson(a: any): any;
 
 declare function map_foreach(a: any, b: any, ): any;
 
-declare function map_putIfPresent(a: any, b: any, c: any): any;
-
 declare function map_filter_key(a: any, b: any, ): any;
 
 declare function map_filter_value(a: any, b: any, ): any;
+
+declare function map_putIfPresent(a: any, b: any, c: any): any;
 
 declare function json_toMap(a: string): any;
 
@@ -216,39 +216,39 @@ declare function is_false(a: any): any;
 
 declare function is_true(a: any): any;
 
-declare function is_carDrivingLicence(a: string): any;
-
 declare function is_generalWithChinese(a: string): any;
 
-declare function is_citizenId(a: string): any;
+declare function is_carDrivingLicence(a: string): any;
 
 declare function is_email(a: string): any;
 
-declare function is_mobile(a: string): any;
-
-declare function is_hex(a: string): any;
-
-declare function is_chinese(a: string): any;
-
-declare function is_ipv6(a: string): any;
-
-declare function is_mac(a: string): any;
-
-declare function is_creditCode(a: string): any;
-
-declare function is_carVin(a: string): any;
-
 declare function is_ipv4(a: string): any;
 
-declare function is_birthday(a: string): any;
+declare function is_mobile(a: string): any;
 
 declare function is_plateNumber(a: string): any;
 
 declare function is_url(a: string): any;
 
-declare function is_chineseName(a: string): any;
+declare function is_mac(a: string): any;
+
+declare function is_chinese(a: string): any;
 
 declare function is_uuid(a: string): any;
+
+declare function is_citizenId(a: string): any;
+
+declare function is_hex(a: string): any;
+
+declare function is_creditCode(a: string): any;
+
+declare function is_birthday(a: string): any;
+
+declare function is_ipv6(a: string): any;
+
+declare function is_chineseName(a: string): any;
+
+declare function is_carVin(a: string): any;
 
 declare function script_run(a: any, ): any;
 
