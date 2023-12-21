@@ -481,5 +481,3 @@ declare function logger_debug(a: string, b: any): any;
 ![动态链接库配置方式](img/usl@types.jpg)
 
 > 配置完以后，新建的`js`文件就支持`Aviator`以及`USL`所有的语法规则，并且支持`USL`自定义函数语法高亮和动态跳转
-
-![语法高亮示例](img/usl@example.jpg)
