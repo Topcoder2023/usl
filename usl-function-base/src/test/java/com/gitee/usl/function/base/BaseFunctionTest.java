@@ -19,6 +19,6 @@ class BaseFunctionTest {
 
     @Test
     void list() {
-        System.out.println(runner.run(new ResourceParam("list_test.js")).getData());
+        System.out.println(runner.run(new ResourceParam("list_test.usl")).getData());
     }
 }

@@ -37,6 +37,17 @@
         </dependency>
 
         <dependency>
+            <groupId>com.gitee</groupId>
+            <artifactId>usl-function-base</artifactId>
+        </dependency>
+
+        <dependency>
+            <artifactId>mysql-connector-java</artifactId>
+            <groupId>mysql</groupId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>

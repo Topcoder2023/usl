@@ -61,6 +61,7 @@
         <groovy-jsr223.version>3.0.19</groovy-jsr223.version>
         <jython-standalone.version>2.7.3</jython-standalone.version>
         <xjsonkit.version>1.4.3</xjsonkit.version>
+        <mysql.version>8.0.33</mysql.version>
 
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -137,7 +138,7 @@
 
             <dependency>
                 <groupId>cn.hutool</groupId>
-                <artifactId>hutool-core</artifactId>
+                <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
 
@@ -250,6 +251,13 @@
                 <groupId>org.python</groupId>
                 <artifactId>jython-standalone</artifactId>
                 <version>${jython-standalone.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <artifactId>mysql-connector-java</artifactId>
+                <groupId>mysql</groupId>
+                <version>${mysql.version}</version>
                 <optional>true</optional>
             </dependency>
 
