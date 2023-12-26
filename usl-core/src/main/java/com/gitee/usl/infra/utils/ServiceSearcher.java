@@ -5,6 +5,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.ServiceLoaderUtil;
 import com.gitee.usl.api.ServiceFinder;
+import com.gitee.usl.api.annotation.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -121,7 +122,7 @@ public class ServiceSearcher {
         // 若服务不为空则排序后返回
         AnnotatedComparator.sort(elements);
 
-        elements.forEach(item -> LOGGER.debug("Service instance found - [{} - {}]", serviceType.getName(), item.getClass().getName()));
+        elements.forEach(item -> LOGGER.debug("SPI服务实例 - [{} & {}]", serviceType.getName(), item.getClass().getName()));
 
         return elements;
     }
@@ -136,10 +137,10 @@ public class ServiceSearcher {
      * @return 首个可用的服务实现
      */
     public static <T> T searchFirst(Class<T> serviceType) {
-        // 加载所有可用服务并排序
+
+        @Description("加载所有可用服务并排序")
         Iterator<T> iterator = ServiceSearcher.searchAll(serviceType).iterator();
 
-        // 若服务不为空则返回首个可用服务
         return iterator.hasNext() ? iterator.next() : null;
     }
 }

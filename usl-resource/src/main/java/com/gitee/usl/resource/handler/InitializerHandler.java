@@ -6,8 +6,8 @@ import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Notes;
 import com.gitee.usl.infra.constant.ModuleConstant;
 import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.infra.utils.AnnotatedComparator;
-import com.gitee.usl.infra.utils.ObjectWrapper;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.entity.TreeInfo;
@@ -44,7 +44,7 @@ public class InitializerHandler implements WebHandler {
 
         List<Initializer> initializers = ServiceSearcher.searchAll(Initializer.class);
 
-        ObjectWrapper.IntWrapper wrapper = ObjectWrapper.ofIntWrapper();
+        IntWrapper wrapper = new IntWrapper();
 
         this.infoCache = initializers.stream()
                 .map(item -> {

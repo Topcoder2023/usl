@@ -6,20 +6,20 @@
     <packaging>pom</packaging>
 
     <name>usl</name>
+
     <modules>
         <module>usl-core</module>
         <module>usl-plugin</module>
         <module>usl-function-web</module>
-        <module>usl-function-text</module>
         <module>usl-function-base</module>
         <module>usl-function-system</module>
-        <module>usl-function-date</module>
         <module>usl-function-math</module>
         <module>usl-function-db</module>
         <module>usl-logger</module>
         <module>usl-all</module>
         <module>usl-resource</module>
         <module>usl-spring-boot-starter</module>
+        <module>usl-cli</module>
     </modules>
 
     <groupId>com.gitee</groupId>
@@ -62,6 +62,7 @@
         <jython-standalone.version>2.7.3</jython-standalone.version>
         <xjsonkit.version>1.4.3</xjsonkit.version>
         <mysql.version>8.0.33</mysql.version>
+        <lombok.version>1.18.30</lombok.version>
 
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -85,12 +86,6 @@
             <dependency>
                 <groupId>com.gitee</groupId>
                 <artifactId>usl-plugin</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.gitee</groupId>
-                <artifactId>usl-function-date</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -120,12 +115,6 @@
 
             <dependency>
                 <groupId>com.gitee</groupId>
-                <artifactId>usl-function-text</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.gitee</groupId>
                 <artifactId>usl-function-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -140,6 +129,13 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>

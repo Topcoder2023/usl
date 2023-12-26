@@ -43,11 +43,6 @@
 
         <dependency>
             <groupId>com.gitee</groupId>
-            <artifactId>usl-function-date</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
             <artifactId>usl-function-db</artifactId>
         </dependency>
 
@@ -64,11 +59,6 @@
         <dependency>
             <groupId>com.gitee</groupId>
             <artifactId>usl-function-system</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
-            <artifactId>usl-function-text</artifactId>
         </dependency>
 
         <dependency>

@@ -17,7 +17,7 @@ import com.google.auto.service.AutoService;
 public class SensitiveEnhancer extends AbstractFunctionEnhancer {
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        Sensitized sensitized = AnnotationUtil.getAnnotation(af.definition().methodMeta().method(), Sensitized.class);
+        Sensitized sensitized = AnnotationUtil.getAnnotation(af.definition().methodMeta().getMethod(), Sensitized.class);
         if (sensitized == null) {
             return;
         }
@@ -28,7 +28,7 @@ public class SensitiveEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        Sensitized sensitized = AnnotationUtil.getAnnotation(nf.definition().methodMeta().targetType(), Sensitized.class);
+        Sensitized sensitized = AnnotationUtil.getAnnotation(nf.definition().methodMeta().getTargetType(), Sensitized.class);
         if (sensitized == null) {
             return;
         }

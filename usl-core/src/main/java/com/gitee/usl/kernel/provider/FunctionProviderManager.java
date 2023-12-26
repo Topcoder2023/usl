@@ -6,7 +6,7 @@ import com.gitee.usl.api.annotation.Notes;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.constant.ModuleConstant;
 import com.gitee.usl.infra.utils.ServiceSearcher;
-import com.gitee.usl.kernel.configure.EngineConfiguration;
+import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.api.FunctionProvider;
@@ -36,10 +36,10 @@ public class FunctionProviderManager implements Initializer {
 
     @Override
     public void doInit(Configuration uslConfiguration) {
-        EngineConfiguration configuration = uslConfiguration.configEngine();
+        EngineConfig configuration = uslConfiguration.getEngineConfig();
 
         // 函数容器
-        final FunctionHolder holder = configuration.functionHolder();
+        final FunctionHolder holder = configuration.getFunctionHolder();
 
         // 加载所有函数定义信息提供者
         List<FunctionProvider> providers = ServiceSearcher.searchAll(FunctionProvider.class);

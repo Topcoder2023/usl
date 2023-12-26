@@ -26,6 +26,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.gitee</groupId>
             <artifactId>usl-logger</artifactId>
             <optional>true</optional>
@@ -54,11 +60,6 @@
         <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jline</groupId>
-            <artifactId>jline</artifactId>
         </dependency>
 
         <dependency>

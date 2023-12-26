@@ -149,7 +149,7 @@ public class Function extends AnnotatedFunction {
 
             // 如果额外属性不为空，也保存到函数定义信息中
             if (attributeMeta != null) {
-                definition.attribute().insertAll(attributeMeta.asMap());
+                definition.attribute().putAll(attributeMeta);
             }
 
             // 根据函数定义信息构造函数

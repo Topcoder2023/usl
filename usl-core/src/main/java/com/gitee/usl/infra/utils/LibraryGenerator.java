@@ -10,6 +10,8 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.infra.structure.wrapper.BoolWrapper;
+import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.googlecode.aviator.utils.Env;
 import org.slf4j.Logger;
@@ -83,9 +85,9 @@ public class LibraryGenerator {
     private void generateForAnnotation(String functionName, Parameter[] parameters, FileWriter writer) {
         final StringBuilder builder = new StringBuilder("declare function ").append(functionName).append("(");
 
-        ObjectWrapper.IntWrapper intWrapper = ObjectWrapper.ofIntWrapper();
+        IntWrapper intWrapper = new IntWrapper();
         intWrapper.set(NumberConstant.INDEX_OF_LOWER_A);
-        ObjectWrapper.BoolWrapper boolWrapper = ObjectWrapper.ofBoolWrapper();
+        BoolWrapper boolWrapper = new BoolWrapper();
 
         for (Parameter parameter : parameters) {
             Class<?> paramType = parameter.getType();
@@ -162,6 +164,7 @@ public class LibraryGenerator {
             if (output == null) {
                 output = new File(DEFAULT_OUTPUT);
             }
+
             return new LibraryGenerator(output, functionSet.stream()
                     .map(name -> ClassUtil.scanPackage(name, clz -> hasAnnotation(clz, FunctionGroup.class)))
                     .flatMap(Collection::stream)

@@ -73,7 +73,7 @@ public class CacheablePlugin implements BeginPlugin, SuccessPlugin {
     public static final class DefaultCacheKeyGenerator implements CacheKeyGenerator {
         @Override
         public String generateKey(String name, Invocation<?> invocation) {
-            Object[] args = invocation.args();
+            Object[] args = invocation.getArgs();
             if (ArrayUtil.isEmpty(args)) {
                 return name;
             }

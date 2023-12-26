@@ -37,7 +37,7 @@ public class WelcomeHandler implements WebHandler {
 
         Info info = this.getInfoCache(runner);
 
-        info.runTime = DateUtil.formatBetween(runner.startTime(), new Date(), BetweenFormatter.Level.SECOND);
+        info.runTime = DateUtil.formatBetween(runner.getStartTime(), new Date(), BetweenFormatter.Level.SECOND);
         info.scriptSize = ScriptSearcher.findCount();
 
         this.writeToJson(Returns.success(info));
@@ -48,7 +48,7 @@ public class WelcomeHandler implements WebHandler {
             return infoCache;
         }
         this.infoCache = new Info();
-        infoCache.name = runner.name();
+        infoCache.name = runner.getName();
         infoCache.helpDocUrl = HELP_DOC_URL;
         infoCache.version = StringConstant.VERSION;
         infoCache.sourceCodeUrl = SOURCE_URL_GITEE;

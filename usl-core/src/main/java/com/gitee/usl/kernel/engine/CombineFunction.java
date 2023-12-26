@@ -34,15 +34,15 @@ public class CombineFunction extends AnnotatedFunction {
     public CombineFunction(FunctionDefinition definition) {
         super(definition);
         AttributeMeta attribute = definition.attribute();
-        this.script = attribute.search(StringConstant.SCRIPT_NAME, String.class);
-        this.runner = attribute.search(StringConstant.RUNNER_NAME, USLRunner.class);
-        this.params = attribute.search(StringConstant.PARAMS_NAME, StringList.class);
-        this.compiledScript = attribute.search(StringConstant.COMPILED_SCRIPT, CompiledScript.class);
+        this.script = attribute.getStr(StringConstant.SCRIPT_NAME);
+        this.runner = attribute.getType(StringConstant.RUNNER_NAME, USLRunner.class);
+        this.params = attribute.getType(StringConstant.PARAMS_NAME, StringList.class);
+        this.compiledScript = attribute.getType(StringConstant.COMPILED_SCRIPT, CompiledScript.class);
     }
 
     @Override
     public Object handle(FunctionSession session) {
-        Object[] args = session.invocation().args();
+        Object[] args = session.invocation().getArgs();
         Assert.isTrue(args.length == params.size(), "The expected parameter does not match the actual parameter number.");
 
         Map<String, Object> context;
@@ -63,10 +63,7 @@ public class CombineFunction extends AnnotatedFunction {
             }
         }
 
-        Param param = new Param()
-                .setCached(true)
-                .setScript(this.script)
-                .setContext(context);
+        Param param = new Param().setCached(true).setScript(this.script).setContext(context);
 
         Result<?> result = this.runner.run(param);
         ResultCode resultCode = ResultCode.of(result.getCode());

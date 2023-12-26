@@ -93,9 +93,9 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
         // 构造函数定义信息
         FunctionDefinition definition = new FunctionDefinition(name, runner);
         AttributeMeta attribute = definition.attribute();
-        attribute.insert(StringConstant.SCRIPT_NAME, script);
-        attribute.insert(StringConstant.RUNNER_NAME, found);
-        attribute.insert(StringConstant.PARAMS_NAME, names);
+        attribute.put(StringConstant.SCRIPT_NAME, script);
+        attribute.put(StringConstant.RUNNER_NAME, found);
+        attribute.put(StringConstant.PARAMS_NAME, names);
 
         // 如果指定了引擎名称，则获取并编译脚本
         if (engineName != null) {
@@ -103,7 +103,7 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
             Assert.notNull(scriptEngine, "The specified script engine can not be found - {}", engineName.getName());
             try {
                 CompiledScript compiledScript = ((Compilable) scriptEngine).compile(script);
-                attribute.insert(StringConstant.COMPILED_SCRIPT, compiledScript);
+                attribute.put(StringConstant.COMPILED_SCRIPT, compiledScript);
             } catch (ScriptException e) {
                 throw new UslException(e);
             }

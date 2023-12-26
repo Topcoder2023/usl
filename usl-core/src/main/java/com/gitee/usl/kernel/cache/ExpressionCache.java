@@ -1,7 +1,7 @@
 package com.gitee.usl.kernel.cache;
 
 
-import com.gitee.usl.kernel.configure.CacheConfiguration;
+import com.gitee.usl.kernel.configure.CacheConfig;
 import com.googlecode.aviator.Expression;
 
 /**
@@ -13,7 +13,7 @@ public interface ExpressionCache {
      *
      * @param configuration 缓存配置信息
      */
-    void init(CacheConfiguration configuration);
+    void init(CacheConfig configuration);
 
     /**
      * 根据缓存键查询编译后的表达式

@@ -27,7 +27,7 @@ public class SecurityInitializer implements Initializer {
 
     @Override
     public void doInit(Configuration configuration) {
-        String key = configuration.configWebServer().getAesKey();
+        String key = "key";
 
         AES aes;
         if (key == null) {

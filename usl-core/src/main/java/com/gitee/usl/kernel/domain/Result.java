@@ -1,30 +1,31 @@
 package com.gitee.usl.kernel.domain;
 
 import cn.hutool.core.text.CharSequenceUtil;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.enums.ResultCode;
-
-import java.util.StringJoiner;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
- * 执行结果
- *
  * @author hongda.li
  */
+@Data
+@Description("执行结果")
+@Accessors(chain = true)
 public class Result<T> {
-    /**
-     * 返回值
-     */
+
+    @Description("返回值")
     private final T data;
 
-    /**
-     * 状态码
-     */
+    @Description("状态码")
     private final Integer code;
 
-    /**
-     * 消息描述
-     */
+    @Description("消息描述")
     private final String message;
+
+    public static <T> Result<T> empty() {
+        return new Result<>(ResultCode.SUCCESS, null, null);
+    }
 
     public static <T> Result<T> success() {
         return new Result<>(ResultCode.SUCCESS, CharSequenceUtil.EMPTY, null);
@@ -52,24 +53,4 @@ public class Result<T> {
         this.code = resultCode.code();
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", Result.class.getSimpleName() + "[", "]")
-                .add("data=" + data)
-                .add("code=" + code)
-                .add("message='" + message + "'")
-                .toString();
-    }
 }

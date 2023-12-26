@@ -5,10 +5,6 @@ package com.gitee.usl.infra.structure;
  */
 @FunctionalInterface
 public interface Context<C> {
-    /**
-     * Obtain context value
-     *
-     * @return Context value
-     */
+
     C context();
 }

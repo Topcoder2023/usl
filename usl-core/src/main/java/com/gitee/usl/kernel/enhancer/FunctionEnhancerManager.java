@@ -33,8 +33,8 @@ public class FunctionEnhancerManager implements Initializer {
     public void doInit(Configuration configuration) {
         List<FunctionEnhancer> enhancers = ServiceSearcher.searchAll(FunctionEnhancer.class);
 
-        configuration.configEngine()
-                .functionHolder()
+        configuration.getEngineConfig()
+                .getFunctionHolder()
                 .onVisit(function -> enhancers.forEach(enhancer -> enhancer.enhance(function)));
     }
 }

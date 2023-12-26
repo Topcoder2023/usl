@@ -1,5 +1,6 @@
 package com.gitee.usl.infra.utils;
 
+import com.gitee.usl.api.annotation.Description;
 import com.google.common.hash.Hashing;
 import com.googlecode.aviator.BaseExpression;
 import com.googlecode.aviator.Expression;
@@ -11,10 +12,8 @@ import java.util.Map;
  * @author hongda.li
  */
 public class ScriptCompileHelper {
-    /**
-     * 空的表达式占位对象
-     * 用以替代 null 的 Expression
-     */
+
+    @Description("空的表达式占位对象")
     private static final Expression EMPTY_PLACE_HOLDER = new BaseExpression(null, null, null) {
         private static final long serialVersionUID = -3628284719346231510L;
 
@@ -35,13 +34,7 @@ public class ScriptCompileHelper {
         return EMPTY_PLACE_HOLDER.equals(expression) || expression == null;
     }
 
-    /**
-     * 生成脚本内容对应的唯一缓存键
-     * 采用 SHA512 摘要算法
-     *
-     * @param content 脚本内容
-     * @return 唯一缓存键
-     */
+    @Description("生成脚本内容对应的唯一缓存键")
     @SuppressWarnings("UnstableApiUsage")
     public static String generateKey(String content) {
         return Hashing.sha512()

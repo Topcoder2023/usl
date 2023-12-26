@@ -6,9 +6,9 @@ import cn.hutool.core.lang.Singleton;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.api.annotation.Order;
-import com.gitee.usl.infra.thread.ExecutorPoolManager;
+import com.gitee.usl.infra.thread.ExecutorPoolInitializer;
 import com.gitee.usl.kernel.configure.Configuration;
-import com.gitee.usl.kernel.configure.ExecutorConfiguration;
+import com.gitee.usl.kernel.configure.ExecutorConfig;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.enhancer.AbstractFunctionEnhancer;
@@ -29,7 +29,7 @@ public class AsynchronousEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        Asynchronous async = AnnotationUtil.getAnnotation(af.definition().methodMeta().method(), Asynchronous.class);
+        Asynchronous async = AnnotationUtil.getAnnotation(af.definition().methodMeta().getMethod(), Asynchronous.class);
         if (async == null) {
             return;
         }
@@ -40,7 +40,7 @@ public class AsynchronousEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        Asynchronous async = AnnotationUtil.getAnnotation(nf.definition().methodMeta().targetType(), Asynchronous.class);
+        Asynchronous async = AnnotationUtil.getAnnotation(nf.definition().methodMeta().getTargetType(), Asynchronous.class);
         if (async == null) {
             return;
         }
@@ -56,9 +56,9 @@ public class AsynchronousEnhancer extends AbstractFunctionEnhancer {
         if (PLACE_HOLDER.equals(exists)) {
             executor = Optional.ofNullable(USLRunner.findRunnerByName(async.value()))
                     .map(USLRunner::configuration)
-                    .map(Configuration::configExecutor)
-                    .map(ExecutorConfiguration::executorManager)
-                    .map(ExecutorPoolManager::executor)
+                    .map(Configuration::getExecutorConfig)
+                    .map(ExecutorConfig::getPoolInitializer)
+                    .map(ExecutorPoolInitializer::getExecutor)
                     .orElse(null);
         } else {
             executor = exists instanceof ThreadPoolExecutor ? (ThreadPoolExecutor) exists : null;

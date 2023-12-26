@@ -1,47 +1,53 @@
 package com.gitee.usl.kernel.queue;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.api.CompileConsumer;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.ScriptCompileHelper;
-import com.gitee.usl.kernel.configure.EngineConfiguration;
 import com.google.auto.service.AutoService;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
 import com.googlecode.aviator.Expression;
 import com.googlecode.aviator.code.CodeGenerator;
 import com.googlecode.aviator.lexer.ExpressionLexer;
 import com.googlecode.aviator.parser.ExpressionParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * USL 字节码生成器 消费者
- *
  * @author hongda.li
  */
-@Order(CompileGeneratorConsumer.GENERATOR_ORDER)
+@Slf4j
+@Description("USL字节码生成器消费者")
 @AutoService(CompileConsumer.class)
+@Order(CompileGeneratorConsumer.GENERATOR_ORDER)
 public class CompileGeneratorConsumer implements CompileConsumer {
 
-    /**
-     * 编译字节码生成器消费者的顺序
-     */
+    @Description("编译字节码生成器消费者的顺序")
     public static final int GENERATOR_ORDER = Integer.MAX_VALUE - 1000;
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) {
-        EngineConfiguration configuration = event.getConfiguration().configEngine();
-        AviatorEvaluatorInstance instance = configuration.scriptEngineManager().getInstance();
+
+        @Description("脚本引擎实例")
+        AviatorEvaluatorInstance instance = event.getConfiguration()
+                .getEngineConfig()
+                .getEngineInitializer()
+                .getInstance();
+
+        if (CharSequenceUtil.isBlank(event.getContent())) {
+            event.setExpression(ScriptCompileHelper.empty());
+            log.warn("脚本内容为空");
+            return;
+        }
 
         try {
-            logger.debug("开始编译脚本 - {}", event.getEventId());
-            final ExpressionLexer lexer = new ExpressionLexer(instance, event.getContent());
-            final CodeGenerator codeGenerator = instance.newCodeGenerator(null, true);
-            final Expression expression = new ExpressionParser(instance, lexer, codeGenerator).parse();
+            log.debug("开始编译脚本 - {}", event.getEventId());
+            ExpressionLexer lexer = new ExpressionLexer(instance, event.getContent());
+            CodeGenerator codeGenerator = instance.newCodeGenerator(null, true);
+            Expression expression = new ExpressionParser(instance, lexer, codeGenerator).parse();
             event.setExpression(expression);
         } catch (Exception e) {
-            logger.error("脚本编译失败", e);
+            log.error("脚本编译失败", e);
             event.setExpression(ScriptCompileHelper.empty());
         }
     }

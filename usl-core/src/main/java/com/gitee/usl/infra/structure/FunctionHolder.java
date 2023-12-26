@@ -2,8 +2,10 @@ package com.gitee.usl.infra.structure;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,77 +14,58 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * 通过组合模式屏蔽 Map 的部分方法
- * 仅暴露注册、检索以及遍历的方法
- *
  * @author hongda.li
  */
+@Slf4j
+@Description("函数实例容器")
 public class FunctionHolder {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final List<Predicate<AviatorFunction>> filterList;
-    private final Map<String, AviatorFunction> container;
+
+    @Description("函数别名映射")
     private final Map<String, String> aliasMap;
 
+    @Description("函数名称映射")
+    private final Map<String, AviatorFunction> container;
+
     public FunctionHolder() {
-        this.filterList = new ArrayList<>(NumberConstant.EIGHT);
-        this.container = new HashMap<>(NumberConstant.COMMON_SIZE);
         this.aliasMap = new HashMap<>(NumberConstant.EIGHT);
+        this.container = new HashMap<>(NumberConstant.COMMON_SIZE);
     }
 
-    /**
-     * 注册函数
-     *
-     * @param function 非空的函数实例
-     */
+    @Description("注册函数")
     public void register(AviatorFunction function) {
-        Assert.notNull(function, "An empty function instance can not be registered");
-
-        // 过滤非法函数实例
-        for (Predicate<AviatorFunction> predicate : filterList) {
-            if (!predicate.test(function)) {
-                return;
-            }
-        }
-
         String name = function.getName();
 
         if (this.container.containsKey(name)) {
-            logger.warn("USL function has been registered - [{}]", name);
+            log.warn("函数已被注册 - [{}]", name);
             return;
         }
 
+        log.debug("注册函数 - [{}]", name);
         this.container.put(name, function);
-
-        logger.info("Register USL function - [{}]", name);
     }
 
+    @Description("注册函数")
     public void register(AviatorFunction function, Set<String> alias) {
         this.register(function);
 
-        if (CollUtil.isNotEmpty(alias)) {
-            String actualName = function.getName();
-            alias.forEach(aliasName -> {
-                this.aliasMap.put(aliasName, actualName);
-                logger.info("Alias USL function - [{} - {}]", actualName, aliasName);
-            });
+        if (CollUtil.isEmpty(alias)) {
+            return;
         }
+
+        String actualName = function.getName();
+
+        alias.forEach(aliasName -> {
+            this.aliasMap.put(aliasName, actualName);
+            log.debug("函数别名 - [{} - {}]", actualName, aliasName);
+        });
     }
 
-    /**
-     * 遍历函数
-     *
-     * @param consumer 函数消费者
-     */
+    @Description("遍历函数")
     public void onVisit(Consumer<AviatorFunction> consumer) {
-        this.container.values().forEach(consumer);
+        this.onVisit(any -> true, consumer);
     }
 
-    /**
-     * 遍历部分函数
-     *
-     * @param predicate 函数过滤器
-     * @param consumer  函数消费者
-     */
+    @Description("遍历指定函数")
     public void onVisit(Predicate<AviatorFunction> predicate, Consumer<AviatorFunction> consumer) {
         this.container.values()
                 .stream()
@@ -90,12 +73,7 @@ public class FunctionHolder {
                 .forEach(consumer);
     }
 
-    /**
-     * 通过函数名称检索函数实例
-     *
-     * @param name 函数名称
-     * @return 函数实例
-     */
+    @Description("通过函数名称检索函数实例")
     public AviatorFunction search(String name) {
         final String key;
         if (!this.container.containsKey(name)) {
@@ -107,19 +85,10 @@ public class FunctionHolder {
         AviatorFunction function = this.container.get(key);
 
         if (function == null) {
-            logger.warn("USL function not found - [{}]", name);
+            log.warn("函数尚未注册 - [{}]", name);
         }
 
         return function;
-    }
-
-    /**
-     * 添加函数名称过滤器
-     *
-     * @param filter 函数名称过滤器
-     */
-    public void addFilter(Predicate<AviatorFunction> filter) {
-        this.filterList.add(filter);
     }
 
     public List<AviatorFunction> toList() {

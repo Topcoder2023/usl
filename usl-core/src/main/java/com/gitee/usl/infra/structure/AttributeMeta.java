@@ -1,48 +1,43 @@
 package com.gitee.usl.infra.structure;
 
-import cn.hutool.core.convert.Convert;
-import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.api.annotation.Description;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.util.function.BiFunction;
 
 /**
- * 元数据属性
- *
  * @author hongda.li
  */
-public class AttributeMeta {
-    private final Map<String, Object> container;
+@Description("元数据属性")
+public class AttributeMeta extends StringMap {
 
-    public AttributeMeta() {
-        this.container = new HashMap<>(NumberConstant.EIGHT);
-    }
-
-    public void insert(String name, Object value) {
-        this.container.put(name, value);
-    }
-
-    public Object search(String name) {
-        return this.container.get(name);
-    }
-
-    public <T> T search(String name, Class<T> type) {
-        return Convert.convert(type, this.search(name));
-    }
-
-    public void insertAll(Map<String, Object> data) {
-        this.container.putAll(data);
-    }
-
-    public Map<String, Object> asMap() {
-        return new HashMap<>(container);
+    @Override
+    public Object remove(Object key) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public String toString() {
-        return new StringJoiner(", ", AttributeMeta.class.getSimpleName() + "[", "]")
-                .add("container=" + container)
-                .toString();
+    public boolean remove(Object key, Object value) {
+        throw new UnsupportedOperationException();
     }
+
+    @Override
+    public boolean replace(String key, Object oldValue, Object newValue) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Object replace(String key, Object value) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void clear() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void replaceAll(BiFunction<? super String, ? super Object, ?> function) {
+        throw new UnsupportedOperationException();
+    }
+
 }

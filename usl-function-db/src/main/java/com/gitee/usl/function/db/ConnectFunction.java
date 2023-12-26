@@ -13,6 +13,7 @@ import java.util.List;
  */
 @FunctionGroup
 public class ConnectFunction {
+
     @Function("db_query_count")
     public long queryCount(String sql, Object... params) throws SQLException {
         return Db.use().count(sql, params);
@@ -29,7 +30,14 @@ public class ConnectFunction {
     }
 
     @Function("db_insert_one")
-    public int inertOne(Entity entity) throws SQLException {
-        return Db.use().insert(entity);
+    public Entity inertOne(Entity entity) throws SQLException {
+        Db.use().insert(entity);
+        return entity;
+    }
+
+    @Function("db_insert_list")
+    public List<Entity> inertList(List<Entity> entityList) throws SQLException {
+        Db.use().insert(entityList);
+        return entityList;
     }
 }

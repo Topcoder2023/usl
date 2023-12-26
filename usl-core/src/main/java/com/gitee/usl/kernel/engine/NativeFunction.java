@@ -38,7 +38,7 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction>
 
     @Override
     protected Object intercept(Invocation<AviatorFunction> invocation, Object proxy) {
-        Object[] parameters = invocation.args();
+        Object[] parameters = invocation.getArgs();
         Assert.isTrue(parameters.length >= NumberConstant.ONE);
 
         // 理论上，Env一定存在

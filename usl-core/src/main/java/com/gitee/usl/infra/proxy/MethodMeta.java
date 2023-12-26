@@ -1,42 +1,31 @@
 package com.gitee.usl.infra.proxy;
 
+import com.gitee.usl.api.annotation.Description;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.lang.reflect.Method;
 
 /**
- * 方法元属性
- * 包含方法所在对象的实例以及其实例类型
- *
  * @author hongda.li
  */
+@Getter
+@ToString
+@AllArgsConstructor
+@Description("方法元属性")
 public final class MethodMeta<E> {
+
+    @Description("调用实例")
     private final Object target;
+
+    @Description("调用实例类型")
     private final Class<E> targetType;
+
+    @Description("调用实例方法")
     private final Method method;
 
-    public MethodMeta(Object target, Class<E> targetType, Method method) {
-        this.target = target;
-        this.targetType = targetType;
-        this.method = method;
-    }
-
-    public Object target() {
-        return target;
-    }
-
-    public Class<E> targetType() {
-        return targetType;
-    }
-
-    public Method method() {
-        return method;
-    }
-
-    /**
-     * 将方法元属性转为方法调用器
-     *
-     * @param args 方法调用的参数
-     * @return 方法调用器
-     */
+    @Description("将方法元属性转为方法调用器")
     public Invocation<?> toInvocation(Object[] args) {
         return new Invocation<>(target, targetType, method, args);
     }

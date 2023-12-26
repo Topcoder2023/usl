@@ -9,7 +9,6 @@ import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.api.WebInteractive;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.utils.ServiceSearcher;
-import com.gitee.usl.kernel.configure.WebServerConfiguration;
 import com.gitee.usl.resource.api.FilterRoute;
 import com.gitee.usl.resource.api.WebFilter;
 import com.gitee.usl.resource.api.WebHandler;
@@ -64,13 +63,11 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
 
     @Override
     public void open(USLRunner runner) {
-        WebServerConfiguration config = runner.configuration().configWebServer();
-
         bootstrap.configuration()
                 .host(host)
                 .bannerEnabled(false)
-                .debug(config.isDebug())
-                .serverName(config.getName());
+                .debug(false)
+                .serverName(runner.getName());
 
         bootstrap.httpHandler(new HttpServerHandler() {
             @Override
@@ -126,9 +123,9 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
             }
         });
 
-        bootstrap.setPort(config.getPort());
+        bootstrap.setPort(10086);
         bootstrap.start();
 
-        logger.info("Web-Interactive start success - [{}://{}:{}]", "http", host, config.getPort() + SecurityFilter.LOGIN_PAGE);
+        logger.info("Web-Interactive start success - [{}://{}:{}]", "http", host, 10086 + SecurityFilter.LOGIN_PAGE);
     }
 }

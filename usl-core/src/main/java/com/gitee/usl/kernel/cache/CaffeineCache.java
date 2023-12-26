@@ -1,38 +1,43 @@
 package com.gitee.usl.kernel.cache;
 
 import cn.hutool.core.lang.Assert;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Order;
-import com.gitee.usl.kernel.configure.CacheConfiguration;
+import com.gitee.usl.kernel.configure.CacheConfig;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import com.google.auto.service.AutoService;
 import com.googlecode.aviator.Expression;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author hongda.li
  */
+@Slf4j
+@Getter
 @Order(CaffeineCache.USL_CACHE_ORDER)
 @AutoService(ExpressionCache.class)
 public class CaffeineCache implements ExpressionCache {
-    /**
-     * USL 缓存的优先级
-     * 若想使用自定义缓存替代 USL 内置提供的 Caffeine 缓存
-     * 或想使用多级缓存来替代 USL 内置的一级缓存
-     * 则可以实现 UslCache 接口，默认优先级为 0
-     */
+
+    @Description("USL内置缓存默认实现类的优先级")
     public static final int USL_CACHE_ORDER = Integer.MAX_VALUE - 100;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Description("Caffeine缓存实例")
     private Cache<String, Expression> cache;
 
     @Override
-    public void init(CacheConfiguration configuration) {
+    public void init(CacheConfig configuration) {
         this.cache = Caffeine.newBuilder()
-                .maximumSize(10)
+                .softValues()
                 .recordStats()
+                .maximumSize(configuration.getMaxSize())
+                .initialCapacity(configuration.getInitSize())
+                .expireAfterAccess(configuration.getDuration())
                 .build();
+
+        log.info("缓存实例构建成功 - {}", configuration.snapshot());
     }
 
     @Override
@@ -43,23 +48,21 @@ public class CaffeineCache implements ExpressionCache {
     @Override
     public void remove(String key) {
         this.cache.invalidate(key);
+        log.debug("剔除缓存 - [{}]", key);
     }
 
     @Override
     public void insert(String key, Expression expression) {
         Assert.notNull(expression, "Expression can't be null");
         this.cache.put(key, expression);
-    }
-
-    public Cache<String, Expression> getCache() {
-        return cache;
+        log.debug("新增缓存 - [{}]", key);
     }
 
     @Override
     public void snapshot() {
         CacheStats stats = this.cache.stats();
 
-        logger.info("[USL Cache Snapshot] => [HC : {}, MC : {}, EC : {}]",
+        log.info("[USL缓存快照] => [命中数 : {}, 未命中数 : {}, 剔除数 : {}]",
                 stats.hitCount(),
                 stats.missCount(),
                 stats.evictionCount());

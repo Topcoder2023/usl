@@ -21,9 +21,9 @@ public class HttpServer {
         this.port = port;
         this.server = new SimpleServer(host, port);
         this.server.setExecutor(runner.configuration()
-                .configExecutor()
-                .executorManager()
-                .executor());
+                .getExecutorConfig()
+                .getPoolInitializer()
+                .getExecutor());
     }
 
     public SimpleServer getServer() {

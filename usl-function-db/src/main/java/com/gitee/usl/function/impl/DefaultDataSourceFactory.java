@@ -24,7 +24,7 @@ public class DefaultDataSourceFactory implements Initializer {
         DataSourceFactory searched = Optional.ofNullable(ServiceSearcher.searchFirst(DataSourceFactory.class))
                 .orElse(config -> {
                     Setting setting = new Setting();
-                    config.configCustom()
+                    config.getCustomConfig()
                             .forEach((key, value) -> {
                                 if (CharSequenceUtil.startWith(key, DATABASE_PREFIX)) {
                                     setting.set(CharSequenceUtil.removePrefix(key, DATABASE_PREFIX), String.valueOf(value));

@@ -15,7 +15,7 @@ class ConnectFunctionTest {
     @Test
     void query() {
         Configuration configuration = USLRunner.defaultConfiguration();
-        Map<String, Object> custom = configuration.configCustom();
+        Map<String, Object> custom = configuration.getCustomConfig();
         custom.put("database.url", "jdbc:mysql://localhost:3306");
         custom.put("database.user", "root");
         custom.put("database.password", "123456");

@@ -6,6 +6,7 @@ import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.enhancer.AbstractFunctionEnhancer;
+import com.gitee.usl.kernel.enhancer.ParameterBinderEnhancer;
 import com.gitee.usl.plugin.annotation.Limited;
 import com.gitee.usl.plugin.impl.RateLimitPlugin;
 import com.google.auto.service.AutoService;
@@ -19,7 +20,7 @@ public class RateLimitEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        Limited limited = AnnotationUtil.getAnnotation(af.definition().methodMeta().method(), Limited.class);
+        Limited limited = AnnotationUtil.getAnnotation(af.definition().methodMeta().getMethod(), Limited.class);
         if (limited == null) {
             return;
         }
@@ -29,7 +30,7 @@ public class RateLimitEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        Limited limited = AnnotationUtil.getAnnotation(nf.definition().methodMeta().targetType(), Limited.class);
+        Limited limited = AnnotationUtil.getAnnotation(nf.definition().methodMeta().getTargetType(), Limited.class);
         if (limited == null) {
             return;
         }

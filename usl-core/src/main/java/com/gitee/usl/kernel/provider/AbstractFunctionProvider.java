@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.provider;
 
 import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.kernel.configure.EngineConfiguration;
+import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.api.FunctionProvider;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 public abstract class AbstractFunctionProvider implements FunctionProvider {
 
     @Override
-    public List<AviatorFunction> provide(EngineConfiguration configuration) {
-        USLRunner runner = configuration.finish().getRunner();
+    public List<AviatorFunction> provide(EngineConfig configuration) {
+        USLRunner runner = configuration.getConfiguration().getRunner();
 
         return configuration.getPackageNameList()
                 .stream()

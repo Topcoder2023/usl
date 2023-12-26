@@ -50,7 +50,7 @@ public class NativeFunctionProvider extends AbstractFunctionProvider {
     protected AviatorFunction definition2Func(FunctionDefinition definition) {
         // 创建 USL-Aviator 代理函数
         // 动态代理 AviatorFunction 接口中的 call() 方法
-        return new NativeFunction(definition, definition.methodMeta().target()).createProxy();
+        return new NativeFunction(definition, definition.methodMeta().getTarget()).createProxy();
     }
 
     @Override

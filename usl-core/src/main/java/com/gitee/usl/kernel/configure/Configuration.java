@@ -1,87 +1,35 @@
 package com.gitee.usl.kernel.configure;
 
 import com.gitee.usl.USLRunner;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.infra.structure.StringMap;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * USL 配置类
- * USL 配置类由不同功能模块的配置类共同组成
- * 配置类通常不会直接暴露其底层实现
- * 每个具体的配置类持有当前功能模块的配置参数与管理者实例
- * 例如，QueueConfiguration 持有 CompileQueueManager 实例
- * CacheConfiguration 持有 UslCache 实例
- * 因此，可以通过 USL 配置类获取任意功能模块的管理者
- * 并通过功能模块的管理者进行模块之间的调度
- * 同时，为了更好的扩展其它未知参数，USL 预留了 customConfiguration 自定义的 Map 类型
- *
  * @author hongda.li
  */
+@Data
+@Description("USL 配置类")
 public final class Configuration {
-    /**
-     * 当前配置对应的 USL 实例
-     */
+
+    @Description("当前配置对应的USL实例")
     private USLRunner runner;
-    /**
-     * 缓存配置类
-     */
-    private final CacheConfiguration cacheConfiguration = new CacheConfiguration(this);
 
-    /**
-     * 编译队列配置类
-     */
-    private final QueueConfiguration queueConfiguration = new QueueConfiguration(this);
+    @Description("自定义扩展配置类")
+    private final StringMap customConfig = new StringMap();
 
-    /**
-     * 自定义扩展配置类
-     */
-    private final Map<String, Object> customConfiguration = new ConcurrentHashMap<>();
+    @Description("缓存配置类")
+    private final CacheConfig cacheConfig = new CacheConfig(this);
 
-    /**
-     * 脚本引擎配置类
-     */
-    private final EngineConfiguration engineConfiguration = new EngineConfiguration(this);
+    @Description("编译队列配置类")
+    private final QueueConfig queueConfig = new QueueConfig(this);
 
-    /**
-     * 线程池配置类
-     */
-    private final ExecutorConfiguration executorConfiguration = new ExecutorConfiguration(this);
+    @Description("脚本引擎配置类")
+    private final EngineConfig engineConfig = new EngineConfig(this);
 
-    /**
-     * 网络服务端配置类
-     */
-    private final WebServerConfiguration webServerConfiguration = new WebServerConfiguration(this);
+    @Description("线程池配置类")
+    private final ExecutorConfig executorConfig = new ExecutorConfig(this);
 
-    public USLRunner getRunner() {
-        return runner;
-    }
-
-    public void setRunner(USLRunner runner) {
-        this.runner = runner;
-    }
-
-    public CacheConfiguration configCache() {
-        return cacheConfiguration;
-    }
-
-    public QueueConfiguration configQueue() {
-        return queueConfiguration;
-    }
-
-    public Map<String, Object> configCustom() {
-        return customConfiguration;
-    }
-
-    public EngineConfiguration configEngine() {
-        return engineConfiguration;
-    }
-
-    public ExecutorConfiguration configExecutor() {
-        return executorConfiguration;
-    }
-
-    public WebServerConfiguration configWebServer() {
-        return webServerConfiguration;
-    }
 }
