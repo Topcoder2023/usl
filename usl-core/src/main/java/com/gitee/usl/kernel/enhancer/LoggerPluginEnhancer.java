@@ -19,7 +19,7 @@ public class LoggerPluginEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        Logger logger = AnnotationUtil.getAnnotation(nf.definition().methodMeta().getTargetType(), Logger.class);
+        Logger logger = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().getTargetType(), Logger.class);
         if (logger == null) {
             return;
         }
@@ -29,7 +29,7 @@ public class LoggerPluginEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        Logger logger = AnnotationUtil.getAnnotation(af.definition().methodMeta().getMethod(), Logger.class);
+        Logger logger = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().getMethod(), Logger.class);
         if (logger == null) {
             return;
         }

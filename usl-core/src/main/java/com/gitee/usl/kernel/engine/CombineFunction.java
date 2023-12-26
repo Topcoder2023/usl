@@ -33,7 +33,7 @@ public class CombineFunction extends AnnotatedFunction {
 
     public CombineFunction(FunctionDefinition definition) {
         super(definition);
-        AttributeMeta attribute = definition.attribute();
+        AttributeMeta attribute = definition.getAttribute();
         this.script = attribute.getStr(StringConstant.SCRIPT_NAME);
         this.runner = attribute.getType(StringConstant.RUNNER_NAME, USLRunner.class);
         this.params = attribute.getType(StringConstant.PARAMS_NAME, StringList.class);

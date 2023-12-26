@@ -89,7 +89,7 @@ public class TimeWatchPlugin implements BeginPlugin, SuccessPlugin, FailurePlugi
         public void onListen(FunctionSession session, long totalTime) {
             long converted = unit.convert(totalTime, TimeUnit.NANOSECONDS);
             LOGGER.warn("Function[{}] execute finished and cost time - [{}({})]",
-                    session.definition().name(),
+                    session.definition().getName(),
                     converted,
                     unit.name());
         }

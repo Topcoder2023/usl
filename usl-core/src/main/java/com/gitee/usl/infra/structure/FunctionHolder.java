@@ -54,10 +54,12 @@ public class FunctionHolder {
 
         String actualName = function.getName();
 
-        alias.forEach(aliasName -> {
-            this.aliasMap.put(aliasName, actualName);
-            log.debug("函数别名 - [{} - {}]", actualName, aliasName);
-        });
+        alias.stream()
+                .filter(item -> !Objects.equals(item, actualName))
+                .forEach(aliasName -> {
+                    this.aliasMap.put(aliasName, actualName);
+                    log.debug("函数别名 - [{} - {}]", actualName, aliasName);
+                });
     }
 
     @Description("遍历函数")

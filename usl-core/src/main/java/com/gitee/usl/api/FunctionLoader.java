@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author hongda.li
  */
-public interface FunctionProvider {
+public interface FunctionLoader {
 
     /**
      * 通过脚本引擎配置提供函数定义信息
@@ -16,5 +16,5 @@ public interface FunctionProvider {
      * @param configuration 脚本引擎配置
      * @return 函数定义信息集合
      */
-    List<AviatorFunction> provide(EngineConfig configuration);
+    List<AviatorFunction> load(EngineConfig configuration);
 }

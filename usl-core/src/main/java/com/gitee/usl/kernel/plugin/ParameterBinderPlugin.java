@@ -32,7 +32,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
     @SuppressWarnings("ReassignedVariable")
     @Override
     public void onBegin(FunctionSession session) {
-        MethodMeta<?> methodMeta = session.definition().methodMeta();
+        MethodMeta<?> methodMeta = session.definition().getMethodMeta();
 
         // 跳过无参函数
         Method method = methodMeta.getMethod();
@@ -72,7 +72,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
                     if (USLRunner.class.equals(type)) {
                         logger.debug("[参数绑定] - 自动绑定USL实例");
                         wrapper.increment();
-                        return session.definition().runner();
+                        return session.definition().getRunner();
                     }
 
                     // 如果是 FunctionSession 类型的参数，则返回会话信息

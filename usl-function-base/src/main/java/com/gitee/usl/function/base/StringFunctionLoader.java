@@ -1,7 +1,7 @@
 package com.gitee.usl.function.base;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import com.gitee.usl.api.FunctionProvider;
+import com.gitee.usl.api.FunctionLoader;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.engine.Function;
 import com.google.auto.service.AutoService;
@@ -12,15 +12,15 @@ import java.util.List;
 /**
  * @author hongda.li
  */
-@AutoService(FunctionProvider.class)
-public class StringFunctionProvider implements FunctionProvider {
+@AutoService(FunctionLoader.class)
+public class StringFunctionLoader implements FunctionLoader {
     /**
      * 字符串类函数的统一前缀
      */
     public static final String STRING_FUNCTION_PREFIX = "string_";
 
     @Override
-    public List<AviatorFunction> provide(EngineConfig configuration) {
+    public List<AviatorFunction> load(EngineConfig configuration) {
         return Function.newBuilder()
                 .runner(configuration.getConfiguration().getRunner())
                 .clazz(CharSequenceUtil.class)

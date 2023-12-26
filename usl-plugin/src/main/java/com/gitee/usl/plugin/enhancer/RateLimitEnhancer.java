@@ -20,7 +20,7 @@ public class RateLimitEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        Limited limited = AnnotationUtil.getAnnotation(af.definition().methodMeta().getMethod(), Limited.class);
+        Limited limited = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().getMethod(), Limited.class);
         if (limited == null) {
             return;
         }
@@ -30,7 +30,7 @@ public class RateLimitEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        Limited limited = AnnotationUtil.getAnnotation(nf.definition().methodMeta().getTargetType(), Limited.class);
+        Limited limited = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().getTargetType(), Limited.class);
         if (limited == null) {
             return;
         }

@@ -19,4 +19,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.gitee</groupId>
+            <artifactId>usl-logger</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gitee</groupId>
+            <artifactId>usl-function-base</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

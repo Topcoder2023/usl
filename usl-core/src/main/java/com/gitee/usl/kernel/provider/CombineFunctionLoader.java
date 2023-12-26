@@ -2,11 +2,10 @@ package com.gitee.usl.kernel.provider;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.FunctionProvider;
+import com.gitee.usl.api.FunctionLoader;
 import com.gitee.usl.api.annotation.*;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
@@ -30,8 +29,8 @@ import java.util.stream.Stream;
 /**
  * @author hongda.li
  */
-@AutoService(FunctionProvider.class)
-public class CombineFunctionProvider extends AbstractFunctionProvider {
+@AutoService(FunctionLoader.class)
+public class CombineFunctionLoader extends AbstractFunctionLoader {
     private final ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
 
     @Override
@@ -42,13 +41,11 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
                     String[] accept = AnnotationUtil.getAnnotationValue(method, Function.class);
 
                     if (accept == null) {
-                        // 未指定函数名称，则取方法名
                         return this.toDef(method.getName(), clz, method, runner);
                     } else {
-                        // 指定了函数名称，则取指定的函数名称
                         String firstName = accept[NumberConstant.ZERO];
                         FunctionDefinition definition = this.toDef(firstName, clz, method, runner);
-                        definition.addAlias(ArrayUtil.sub(accept, NumberConstant.ONE, accept.length));
+                        definition.addAlias(accept);
                         return definition;
                     }
                 })
@@ -92,7 +89,7 @@ public class CombineFunctionProvider extends AbstractFunctionProvider {
 
         // 构造函数定义信息
         FunctionDefinition definition = new FunctionDefinition(name, runner);
-        AttributeMeta attribute = definition.attribute();
+        AttributeMeta attribute = definition.getAttribute();
         attribute.put(StringConstant.SCRIPT_NAME, script);
         attribute.put(StringConstant.RUNNER_NAME, found);
         attribute.put(StringConstant.PARAMS_NAME, names);

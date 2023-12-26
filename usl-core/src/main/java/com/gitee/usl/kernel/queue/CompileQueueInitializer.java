@@ -68,7 +68,7 @@ public class CompileQueueInitializer implements Initializer {
             this.producer = producer;
         }
 
-        log.info("编译队列生产者 - [{}]", this.producer.getClass().getName());
+        log.info("编译队列生产者 - {}", this.producer.getClass().getName());
         this.producer.init(this.disruptor);
 
         this.initHandlers();

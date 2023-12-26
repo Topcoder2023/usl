@@ -22,11 +22,6 @@
     <dependencies>
         <dependency>
             <groupId>com.gitee</groupId>
-            <artifactId>usl-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
             <artifactId>usl-plugin</artifactId>
         </dependency>
 

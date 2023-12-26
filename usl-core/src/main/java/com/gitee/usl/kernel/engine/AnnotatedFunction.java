@@ -43,7 +43,7 @@ public class AnnotatedFunction extends AbstractVariadicFunction
             list.add(NumberConstant.ZERO, env);
             params = list.toArray();
         }
-        session.setInvocation(this.definition.methodMeta().toInvocation(params));
+        session.setInvocation(this.definition.getMethodMeta().toInvocation(params));
         session.setHandler(this::handle);
 
         // 基于插件来执行函数可以更好的动态扩展功能
@@ -57,7 +57,7 @@ public class AnnotatedFunction extends AbstractVariadicFunction
 
     @Override
     public String getName() {
-        return Optional.ofNullable(this.definition).map(FunctionDefinition::name).orElse(null);
+        return Optional.ofNullable(this.definition).map(FunctionDefinition::getName).orElse(null);
     }
 
     @Override

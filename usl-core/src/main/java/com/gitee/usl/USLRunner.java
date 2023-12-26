@@ -167,9 +167,9 @@ public class USLRunner {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             shutdowns = ServiceSearcher.searchAll(Shutdown.class);
             ENGINE_CONTEXT.values().forEach(runner -> {
-                log.info("{} - 开始销毁USL执行器", runner.name);
+                log.info("{} - 开始销毁执行器", runner.name);
                 shutdowns.forEach(shutdown -> shutdown.close(runner.configuration));
-                log.info("{} - USL执行器销毁完成", runner.name);
+                log.info("{} - 执行器销毁完成", runner.name);
             });
         }));
     }

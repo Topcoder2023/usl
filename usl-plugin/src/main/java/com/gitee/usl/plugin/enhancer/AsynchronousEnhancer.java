@@ -29,7 +29,7 @@ public class AsynchronousEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        Asynchronous async = AnnotationUtil.getAnnotation(af.definition().methodMeta().getMethod(), Asynchronous.class);
+        Asynchronous async = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().getMethod(), Asynchronous.class);
         if (async == null) {
             return;
         }
@@ -40,7 +40,7 @@ public class AsynchronousEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        Asynchronous async = AnnotationUtil.getAnnotation(nf.definition().methodMeta().getTargetType(), Asynchronous.class);
+        Asynchronous async = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().getTargetType(), Asynchronous.class);
         if (async == null) {
             return;
         }

@@ -26,21 +26,21 @@ public class LoggerPlugin implements BeginPlugin, SuccessPlugin, FailurePlugin {
 
     @Override
     public void onBegin(FunctionSession session) {
-        String name = session.definition().name();
+        String name = session.definition().getName();
         Supplier<Object[]> supplier = () -> new Object[]{name, format(session.env(), session.objects())};
         EnabledLogger.debug(logger, "参数列表 - [{}] : [{}]", supplier);
     }
 
     @Override
     public void onFailure(FunctionSession session) {
-        String name = session.definition().name();
+        String name = session.definition().getName();
         Supplier<Object[]> supplier = () -> new Object[]{name, session.exception().getMessage()};
         EnabledLogger.warn(logger, "执行失败 - [{}] : [{}]", supplier);
     }
 
     @Override
     public void onSuccess(FunctionSession session) {
-        String name = session.definition().name();
+        String name = session.definition().getName();
         Supplier<Object[]> supplier = () -> new Object[]{name, session.result()};
         EnabledLogger.debug(logger, "执行成功 - [{}] : [{}]", supplier);
     }

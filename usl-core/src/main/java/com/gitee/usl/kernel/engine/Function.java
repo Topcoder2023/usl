@@ -133,7 +133,7 @@ public class Function extends AnnotatedFunction {
 
             // 如果存在函数别名，将函数别名添加到函数定义信息中
             if (nameList.size() > NumberConstant.ONE) {
-                definition.alias().addAll(nameList.subList(NumberConstant.ONE, nameList.size()));
+                definition.getAlias().addAll(nameList.subList(NumberConstant.ONE, nameList.size()));
             }
 
             // 如果实例可以被构造，则创建默认实例
@@ -149,7 +149,7 @@ public class Function extends AnnotatedFunction {
 
             // 如果额外属性不为空，也保存到函数定义信息中
             if (attributeMeta != null) {
-                definition.attribute().putAll(attributeMeta);
+                definition.getAttribute().putAll(attributeMeta);
             }
 
             // 根据函数定义信息构造函数
