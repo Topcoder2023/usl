@@ -5,8 +5,6 @@ import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.gitee.usl.api.Initializer;
-import com.gitee.usl.api.annotation.Notes;
-import com.gitee.usl.infra.constant.ModuleConstant;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.resource.filter.SecurityFilter;
 import com.google.auto.service.AutoService;
@@ -18,9 +16,6 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author hongda.li
  */
-@Notes(value = "安全策略初始化器",
-        belongs = ModuleConstant.USL_RESOURCE,
-        viewUrl = "https://gitee.com/yixi-dlmu/usl/raw/master/usl-resource/src/main/java/com/gitee/usl/resource/SecurityInitializer.java")
 @AutoService(Initializer.class)
 public class SecurityInitializer implements Initializer {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

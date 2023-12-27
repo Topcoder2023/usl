@@ -44,7 +44,7 @@ public class CacheablePlugin implements BeginPlugin, SuccessPlugin {
 
     @Override
     public void onBegin(FunctionSession session) {
-        String key = cacheKeyGenerator.generateKey(session.definition().getName(), session.invocation());
+        String key = cacheKeyGenerator.generateKey(session.getDefinition().getName(), session.getInvocation());
 
         // 缓存为空直接跳过
         Object ifPresent = cache.getIfPresent(key);
@@ -60,13 +60,13 @@ public class CacheablePlugin implements BeginPlugin, SuccessPlugin {
 
     @Override
     public void onSuccess(FunctionSession session) {
-        String key = cacheKeyGenerator.generateKey(session.definition().getName(), session.invocation());
+        String key = cacheKeyGenerator.generateKey(session.getDefinition().getName(), session.getInvocation());
 
         if (cache.getIfPresent(key) != null) {
             return;
         }
 
-        this.cache.put(key, session.result());
+        this.cache.put(key, session.getResult());
         logger.debug("Cache updated success - [{}]", key);
     }
 

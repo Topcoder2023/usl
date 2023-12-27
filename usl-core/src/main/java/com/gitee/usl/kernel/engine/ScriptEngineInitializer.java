@@ -18,12 +18,14 @@ import com.gitee.usl.kernel.domain.Result;
 import com.google.auto.service.AutoService;
 import com.googlecode.aviator.*;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author hongda.li
  */
+@Slf4j
 @Description({"USL脚本引擎",
         "SHA512 —— 唯一缓存键生成",
         "SpinLock —— 异步加载编译结果",
@@ -103,6 +105,7 @@ public final class ScriptEngineInitializer implements Initializer {
         try {
             return Result.success((T) expression.get().execute(param.getContext()));
         } catch (UslExecuteException uee) {
+            log.warn("USL执行出现错误", uee);
             return Result.failure(uee.getResultCode(), uee.getMessage());
         }
     }

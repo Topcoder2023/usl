@@ -29,7 +29,7 @@ public class RetryPlugin implements BeginPlugin {
     @Override
     public void onBegin(FunctionSession session) {
         try {
-            session.setResult(retryer.call(() -> session.handler().apply(session)));
+            session.setResult(retryer.call(() -> session.getHandler().apply(session)));
         } catch (ExecutionException | RetryException e) {
             throw new UslExecuteException(e);
         }

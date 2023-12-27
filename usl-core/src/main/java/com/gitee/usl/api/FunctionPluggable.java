@@ -47,13 +47,13 @@ public interface FunctionPluggable {
             // 正常来说执行结果还没有被初始化，这里应该为空
             // 但如果不为空，说明前置插件已经设置了本次调用返回值
             // 那么就直接将前置插件的返回值作为最终结果
-            if (session.result() != null) {
+            if (session.getResult() != null) {
                 // 如果前置插件设置了返回值，则会被视为执行成功
                 // 因此同样会执行成功回调插件
                 this.plugins().execute(SuccessPlugin.class, plugin -> plugin.onSuccess(session));
 
                 // 统一包装返回值
-                return FunctionUtils.wrapReturn(session.result());
+                return FunctionUtils.wrapReturn(session.getResult());
             }
 
             // 调用实际处理逻辑
@@ -68,7 +68,7 @@ public interface FunctionPluggable {
             // 统一包装返回值
             // 这里的返回值取的是调用会话中的返回值
             // 也就意味着执行成功回调插件可以改变返回值
-            return FunctionUtils.wrapReturn(session.result());
+            return FunctionUtils.wrapReturn(session.getResult());
         } catch (Exception e) {
 
             // 设置当前调用的异常
@@ -80,7 +80,7 @@ public interface FunctionPluggable {
             // 正常来说当前调用异常一定不为空
             // 但是如果为空说明失败回调插件清空了当前调用异常
             // 那么就直接返回调用会话中的返回值
-            Optional.ofNullable(session.exception()).ifPresent(error -> {
+            Optional.ofNullable(session.getException()).ifPresent(error -> {
                 // 如果调用异常不为空，则将调用异常统一包装为 USL-Execute 异常
                 // 这样做是为了更好的区分整个脚本执行周期中的异常来源
                 if (error instanceof UslExecuteException) {
@@ -91,7 +91,7 @@ public interface FunctionPluggable {
             });
 
             // 返回并包装调用会话中的返回值
-            return FunctionUtils.wrapReturn(session.result());
+            return FunctionUtils.wrapReturn(session.getResult());
         } finally {
 
             // 执行最终回调插件

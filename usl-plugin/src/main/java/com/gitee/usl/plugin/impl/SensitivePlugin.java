@@ -26,10 +26,10 @@ public class SensitivePlugin implements SuccessPlugin {
     @Override
     public void onSuccess(FunctionSession session) {
         Object original;
-        if (session.result() instanceof AviatorObject) {
-            original = ((AviatorObject) session.result()).getValue(session.env());
+        if (session.getResult() instanceof AviatorObject) {
+            original = ((AviatorObject) session.getResult()).getValue(session.getEnv());
         } else {
-            original = session.result();
+            original = session.getResult();
         }
 
         SensitiveContext context = new SensitiveContext(original, type);

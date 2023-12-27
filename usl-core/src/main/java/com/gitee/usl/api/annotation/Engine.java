@@ -13,12 +13,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Engine {
-    /**
-     * 使用的脚本引擎名称
-     * 默认使用 JavaScript 脚本引擎
-     * 该脚本引擎内置于 JDK8 中，无需额外引入依赖
-     *
-     * @return 引擎名称
-     */
+
+    @Description("使用的脚本引擎名称")
     EngineName value() default EngineName.JS;
+
 }

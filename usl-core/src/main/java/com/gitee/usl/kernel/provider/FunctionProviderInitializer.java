@@ -18,26 +18,26 @@ import java.util.Set;
  * @author hongda.li
  */
 @Description("函数定义信息提供器管理者")
-@Order(FunctionProviderManager.USL_FUNC_PROVIDER_ORDER)
+@Order(FunctionProviderInitializer.USL_FUNC_PROVIDER_ORDER)
 @AutoService(Initializer.class)
-public class FunctionProviderManager implements Initializer {
+public class FunctionProviderInitializer implements Initializer {
 
     @Description("函数提供者管理器的优先级")
     public static final int USL_FUNC_PROVIDER_ORDER = Integer.MIN_VALUE + 1000;
 
     @Override
-    public void doInit(Configuration uslConfiguration) {
+    public void doInit(Configuration configuration) {
 
         @Description("引擎配置类")
-        EngineConfig configuration = uslConfiguration.getEngineConfig();
+        EngineConfig engineConfig = configuration.getEngineConfig();
 
         @Description("函数容器")
-        FunctionHolder holder = configuration.getFunctionHolder();
+        FunctionHolder holder = engineConfig.getFunctionHolder();
 
         @Description("函数定义加载器集合")
         List<FunctionLoader> providers = ServiceSearcher.searchAll(FunctionLoader.class);
 
-        providers.forEach(provider -> provider.load(configuration).forEach(function -> {
+        providers.forEach(provider -> provider.load(engineConfig).forEach(function -> {
             if (function instanceof Definable) {
                 Set<String> alias = ((Definable) function).definition().getAlias();
                 holder.register(function, alias);
@@ -46,4 +46,5 @@ public class FunctionProviderManager implements Initializer {
             }
         }));
     }
+
 }

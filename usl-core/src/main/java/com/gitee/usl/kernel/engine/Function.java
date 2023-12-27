@@ -3,6 +3,7 @@ package com.gitee.usl.kernel.engine;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.plugin.Plugin;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
@@ -20,10 +21,9 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 /**
- * 手动实现注解的注解函数
- *
  * @author hongda.li
  */
+@Description("手动实现注解的注解函数")
 public class Function extends AnnotatedFunction {
     private static final long serialVersionUID = 1538520882629592567L;
 

@@ -42,7 +42,7 @@ public class CombineFunction extends AnnotatedFunction {
 
     @Override
     public Object handle(FunctionSession session) {
-        Object[] args = session.invocation().getArgs();
+        Object[] args = session.getInvocation().getArgs();
         Assert.isTrue(args.length == params.size(), "The expected parameter does not match the actual parameter number.");
 
         Map<String, Object> context;

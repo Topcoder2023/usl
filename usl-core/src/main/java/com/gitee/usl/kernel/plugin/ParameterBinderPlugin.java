@@ -2,6 +2,7 @@ package com.gitee.usl.kernel.plugin;
 
 import cn.hutool.core.convert.Convert;
 import com.gitee.usl.USLRunner;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
@@ -18,21 +19,16 @@ import java.lang.reflect.Parameter;
 import java.util.stream.IntStream;
 
 /**
- * 参数绑定插件
- * 原生的参数格式为 [Env, AviatorObject1, AviatorObject2...]
- * 因此需要手动通过 obj1.getValue(env) 的方式获取真正的值
- * 参数绑定插件将按照方法定义的参数类型和格式，从传入的参数值中动态绑定
- * 以减少手动获取参数值的冗余逻辑
- *
  * @author hongda.li
  */
+@Description("参数绑定插件")
 public class ParameterBinderPlugin implements BeginPlugin {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @SuppressWarnings("ReassignedVariable")
     @Override
     public void onBegin(FunctionSession session) {
-        MethodMeta<?> methodMeta = session.definition().getMethodMeta();
+        MethodMeta<?> methodMeta = session.getDefinition().getMethodMeta();
 
         // 跳过无参函数
         Method method = methodMeta.getMethod();
@@ -46,11 +42,11 @@ public class ParameterBinderPlugin implements BeginPlugin {
         int length = parameters.length;
 
         // 当前函数的实际参数及实际的参数长度
-        AviatorObject[] objects = session.objects();
+        AviatorObject[] objects = session.getObjects();
         int maxLength = objects.length;
 
         // 当前的上下文环境
-        final Env env = session.env();
+        final Env env = session.getEnv();
 
         IntWrapper wrapper = new IntWrapper();
 
@@ -72,7 +68,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
                     if (USLRunner.class.equals(type)) {
                         logger.debug("[参数绑定] - 自动绑定USL实例");
                         wrapper.increment();
-                        return session.definition().getRunner();
+                        return session.getDefinition().getRunner();
                     }
 
                     // 如果是 FunctionSession 类型的参数，则返回会话信息

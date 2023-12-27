@@ -26,22 +26,22 @@ public class LoggerPlugin implements BeginPlugin, SuccessPlugin, FailurePlugin {
 
     @Override
     public void onBegin(FunctionSession session) {
-        String name = session.definition().getName();
-        Supplier<Object[]> supplier = () -> new Object[]{name, format(session.env(), session.objects())};
+        String name = session.getDefinition().getName();
+        Supplier<Object[]> supplier = () -> new Object[]{name, format(session.getEnv(), session.getObjects())};
         EnabledLogger.debug(logger, "参数列表 - [{}] : [{}]", supplier);
     }
 
     @Override
     public void onFailure(FunctionSession session) {
-        String name = session.definition().getName();
-        Supplier<Object[]> supplier = () -> new Object[]{name, session.exception().getMessage()};
+        String name = session.getDefinition().getName();
+        Supplier<Object[]> supplier = () -> new Object[]{name, session.getException().getMessage()};
         EnabledLogger.warn(logger, "执行失败 - [{}] : [{}]", supplier);
     }
 
     @Override
     public void onSuccess(FunctionSession session) {
-        String name = session.definition().getName();
-        Supplier<Object[]> supplier = () -> new Object[]{name, session.result()};
+        String name = session.getDefinition().getName();
+        Supplier<Object[]> supplier = () -> new Object[]{name, session.getResult()};
         EnabledLogger.debug(logger, "执行成功 - [{}] : [{}]", supplier);
     }
 
@@ -51,4 +51,5 @@ public class LoggerPlugin implements BeginPlugin, SuccessPlugin, FailurePlugin {
                 .map(item -> String.valueOf(item.getValue(env)))
                 .collect(Collectors.joining(CharPool.COMMA + CharSequenceUtil.SPACE));
     }
+
 }

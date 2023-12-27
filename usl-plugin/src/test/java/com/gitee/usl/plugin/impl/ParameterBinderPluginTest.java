@@ -59,7 +59,7 @@ class ParameterBinderPluginTest {
 
         @Function
         void test5(Env env, FunctionSession session, AviatorObject object) {
-            System.out.println(session.definition().getName() + object.getValue(env));
+            System.out.println(session.getDefinition().getName() + object.getValue(env));
         }
     }
 

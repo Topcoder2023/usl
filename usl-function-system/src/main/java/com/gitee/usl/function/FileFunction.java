@@ -1,4 +1,4 @@
-package com.gitee.usl.function.base;
+package com.gitee.usl.function;
 
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;

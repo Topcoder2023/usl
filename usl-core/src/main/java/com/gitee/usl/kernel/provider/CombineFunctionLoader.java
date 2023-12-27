@@ -41,10 +41,10 @@ public class CombineFunctionLoader extends AbstractFunctionLoader {
                     String[] accept = AnnotationUtil.getAnnotationValue(method, Function.class);
 
                     if (accept == null) {
-                        return this.toDef(method.getName(), clz, method, runner);
+                        return this.toDefinition(method.getName(), clz, method, runner);
                     } else {
                         String firstName = accept[NumberConstant.ZERO];
-                        FunctionDefinition definition = this.toDef(firstName, clz, method, runner);
+                        FunctionDefinition definition = this.toDefinition(firstName, clz, method, runner);
                         definition.addAlias(accept);
                         return definition;
                     }
@@ -62,43 +62,35 @@ public class CombineFunctionLoader extends AbstractFunctionLoader {
         return clz.isInterface() && AnnotationUtil.hasAnnotation(clz, FunctionGroup.class);
     }
 
-    /**
-     * 封装函数定义信息
-     *
-     * @param name   函数名称
-     * @param clz    函数对应的类
-     * @param method 函数对应的方法
-     * @param runner 当前使用的 USL 实例
-     * @return 函数定义信息
-     */
-    protected FunctionDefinition toDef(String name, Class<?> clz, Method method, USLRunner runner) {
-        // 获取组合函数注解以及注解中的脚本内容
+    @Description("封装函数定义信息")
+    protected FunctionDefinition toDefinition(String name, Class<?> clz, Method method, USLRunner runner) {
+
+        @Description("组合函数注解")
         Combine combine = AnnotationUtil.getAnnotation(method, Combine.class);
+
+        @Description("组合函数注解中的脚本内容")
         String script = combine.value();
 
-        // 获取脚本引擎注解，可能为空
+        @Description("脚本引擎注解")
         EngineName engineName = AnnotationUtil.getAnnotationValue(method, Engine.class);
-        // 获取USL执行器实例，可能为空
-        USLRunner found = USLRunner.findRunnerByName(combine.runnerName());
 
-        // 校验脚本
-        Assert.notBlank(script, "Script content can not be blank.");
+        Assert.notBlank(script, "脚本内容不能为空");
 
-        // 解析参数名称
+        @Description("参数名称")
         StringList names = this.resolveName(method.getParameters());
 
-        // 构造函数定义信息
+        @Description("函数定义信息")
         FunctionDefinition definition = new FunctionDefinition(name, runner);
         AttributeMeta attribute = definition.getAttribute();
         attribute.put(StringConstant.SCRIPT_NAME, script);
-        attribute.put(StringConstant.RUNNER_NAME, found);
+        attribute.put(StringConstant.RUNNER_NAME, runner);
         attribute.put(StringConstant.PARAMS_NAME, names);
 
-        // 如果指定了引擎名称，则获取并编译脚本
         if (engineName != null) {
             ScriptEngine scriptEngine = scriptEngineManager.getEngineByName(engineName.getName());
-            Assert.notNull(scriptEngine, "The specified script engine can not be found - {}", engineName.getName());
+            Assert.notNull(scriptEngine, "无法加载指定的脚本引擎 - {}", engineName.getName());
             try {
+                @Description("编译脚本结果")
                 CompiledScript compiledScript = ((Compilable) scriptEngine).compile(script);
                 attribute.put(StringConstant.COMPILED_SCRIPT, compiledScript);
             } catch (ScriptException e) {
