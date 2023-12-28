@@ -7,7 +7,7 @@ import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.enhancer.AbstractFunctionEnhancer;
 import com.gitee.usl.plugin.annotation.Sensitized;
-import com.gitee.usl.plugin.impl.SensitivePlugin;
+import com.gitee.usl.plugin.impl.sensitive.SensitivePlugin;
 import com.google.auto.service.AutoService;
 
 /**

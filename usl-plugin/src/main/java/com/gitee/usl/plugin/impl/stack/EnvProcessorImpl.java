@@ -1,0 +1,38 @@
+package com.gitee.usl.plugin.impl.stack;
+
+import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.kernel.engine.FunctionSession;
+import com.googlecode.aviator.EnvProcessor;
+import com.googlecode.aviator.Expression;
+import com.googlecode.aviator.utils.Env;
+import lombok.Getter;
+import lombok.ToString;
+
+import java.util.Map;
+
+/**
+ * @author hongda.li
+ */
+@Getter
+@ToString
+@Description("上下文环境处理器")
+public class EnvProcessorImpl implements EnvProcessor {
+
+    @Description("USL执行器的名称")
+    private final String runnerName;
+
+    public EnvProcessorImpl(String runnerName) {
+        this.runnerName = runnerName;
+    }
+
+    @Override
+    public void beforeExecute(Map<String, Object> env, Expression script) {
+        CallStack.push(runnerName, new FunctionSession((Env) env, null, null));
+    }
+
+    @Override
+    public void afterExecute(Map<String, Object> env, Expression script) {
+        CallStack.clear(runnerName);
+    }
+
+}

@@ -1,6 +1,7 @@
 package com.gitee.usl.function.base;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.comparator.CompareUtil;
 import cn.hutool.core.text.StrPool;
 import cn.zhxu.xjson.JsonKit;
@@ -32,7 +33,7 @@ public class ListFunction {
     @SafeVarargs
     @Function("list_of")
     public final <T> List<T> of(T... elements) {
-        return Arrays.asList(elements);
+        return ListUtil.toList(elements);
     }
 
     @Function("list_from")
@@ -124,40 +125,47 @@ public class ListFunction {
 
     @Function("list_sort")
     public <T extends Comparable<? super T>> List<T> sort(List<T> from) {
-        if (from != null) {
-            from.sort(CompareUtil::compare);
-        }
-        return from;
-    }
-
-    @Function("list_sortBy")
-    public <T> List<T> sortBy(Env env, List<T> from, AviatorFunction function) {
-        if (from != null) {
-            from.sort((o1, o2) -> {
-                AviatorObject result = function.call(env, FunctionUtils.wrapReturn(o1), FunctionUtils.wrapReturn(o2));
-                return FunctionUtils.getNumberValue(result, env).intValue();
-            });
-        }
-        return from;
+        return sort(from, false);
     }
 
     @Function("list_resort")
     public <T extends Comparable<? super T>> List<T> resort(List<T> from) {
-        if (from != null) {
-            from.sort((o1, o2) -> CompareUtil.compare(o2, o1));
+        return sort(from, true);
+    }
+
+    private <T extends Comparable<? super T>> List<T> sort(List<T> from, boolean reverse) {
+        if (from == null) {
+            return new ArrayList<>();
         }
-        return from;
+
+        List<T> sorted = new ArrayList<>(from);
+        sorted.sort((o1, o2) -> reverse ? CompareUtil.compare(o2, o1) : CompareUtil.compare(o1, o2));
+        return sorted;
+    }
+
+    @Function("list_sortBy")
+    public <T> List<T> sortBy(Env env, List<T> from, AviatorFunction function) {
+        return resortBy(env, from, function, false);
     }
 
     @Function("list_resortBy")
     public <T> List<T> resortBy(Env env, List<T> from, AviatorFunction function) {
-        if (from != null) {
-            from.sort((o1, o2) -> {
-                AviatorObject result = function.call(env, FunctionUtils.wrapReturn(o2), FunctionUtils.wrapReturn(o1));
-                return FunctionUtils.getNumberValue(result, env).intValue();
-            });
+        return resortBy(env, from, function, true);
+    }
+
+    private <T> List<T> resortBy(Env env, List<T> from, AviatorFunction function, boolean reverse) {
+        if (from == null) {
+            return new ArrayList<>();
         }
-        return from;
+
+        List<T> sorted = new ArrayList<>(from);
+        sorted.sort((o1, o2) -> {
+            AviatorObject result = function.call(env,
+                    FunctionUtils.wrapReturn(reverse ? o2 : o1),
+                    FunctionUtils.wrapReturn(reverse ? o1 : o2));
+            return FunctionUtils.getNumberValue(result, env).intValue();
+        });
+        return sorted;
     }
 
     @Function("list_sub")

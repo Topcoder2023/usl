@@ -1,4 +1,4 @@
-package com.gitee.usl.plugin.impl;
+package com.gitee.usl.plugin.impl.sensitive;
 
 import cn.hutool.core.lang.Singleton;
 import com.gitee.usl.api.plugin.SuccessPlugin;

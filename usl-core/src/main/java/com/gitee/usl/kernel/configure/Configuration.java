@@ -3,14 +3,16 @@ package com.gitee.usl.kernel.configure;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.structure.StringMap;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * @author hongda.li
  */
-@Data
+@Getter
+@Setter
+@Accessors(chain = true)
 @Description("USL 配置类")
 public final class Configuration {
 

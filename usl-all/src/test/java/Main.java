@@ -11,19 +11,9 @@ import java.util.Date;
  */
 public class Main {
     public static void main(String[] args) {
-//        USLRunner runner = new USLRunner();
-//        runner.start();
-//
-//        System.out.println(runner.run(new ResourceParam("Test.js")).getData());
+        USLRunner runner = new USLRunner();
+        runner.start();
 
-        IntWrapper wrapper = new IntWrapper(ArrayUtil.isEmpty(args) ? 1 : args.length + 1);
-        Object[] params = new Object[wrapper.get()];
-        params[NumberConstant.ZERO] = new Date();
-        while (wrapper.get() != 1) {
-            params[params.length - wrapper.get() + 1] = args[params.length - wrapper.get()];
-            wrapper.decrement();
-        }
-
-        System.out.println(ArrayUtil.toString(params));
+        System.out.println(runner.run(new ResourceParam("Test.js")).getData());
     }
 }
