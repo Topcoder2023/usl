@@ -64,7 +64,7 @@ public class OptimizeCodeGenerator implements CodeGenerator {
 
 
   public OptimizeCodeGenerator(final AviatorEvaluatorInstance instance, final String sourceFile,
-      final ClassLoader classLoader, final OutputStream traceOutStream) {
+      final ClassLoader classLoader) {
     this.instance = instance;
     this.sourceFile = sourceFile;
     this.codeGen = instance.newEvalCodeGenerator((AviatorClassLoader) classLoader, sourceFile);

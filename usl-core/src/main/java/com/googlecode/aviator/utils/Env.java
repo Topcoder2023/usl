@@ -204,7 +204,7 @@ public class Env implements Map<String, Object>, Serializable {
       throw new ClassNotFoundException(name);
     }
     put2cache(name, clazz);
-    return this.instance.checkIfClassIsAllowed(checkIfAllow, clazz);
+    return clazz;
   }
 
   private Class<?> resolveFromImportedPackages(final String name) {

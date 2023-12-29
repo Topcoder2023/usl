@@ -109,7 +109,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
   }
 
   public ASMCodeGenerator(final AviatorEvaluatorInstance instance, final String sourceFile,
-      final AviatorClassLoader classLoader, final OutputStream traceOut) {
+      final AviatorClassLoader classLoader) {
     super(instance, sourceFile, classLoader);
     // Generate inner class name
     this.className =

@@ -32,7 +32,7 @@ public class IsDefFunction extends AbstractFunction {
     }
     final String varName = ((AviatorJavaType) arg1).getName();
     return AviatorBoolean.valueOf(
-        env.containsKey(varName) || RuntimeUtils.getInstance(env).containsFunction(varName));
+        env.containsKey(varName) || RuntimeUtils.getInstance(env).existsSystemFunction(varName));
   }
 
 }

@@ -157,7 +157,7 @@ public class OperationRuntime {
 
   public static boolean containsOpFunction(final Map<String, Object> env,
       final OperatorType opType) {
-    return RuntimeUtils.getInstance(env).getOpsMap().containsKey(opType);
+    return RuntimeUtils.getInstance(env).getOperatorFunctionMap().containsKey(opType);
   }
 
   private static final String WHITE_SPACE = " ";

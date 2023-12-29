@@ -1,7 +1,7 @@
 package com.googlecode.aviator.runtime;
 
-import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.googlecode.aviator.EvalMode;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.runtime.function.LambdaFunction;
 import com.googlecode.aviator.runtime.function.internal.UnpackingArgsFunction;
@@ -37,7 +37,7 @@ public final class RuntimeUtils {
     if (env instanceof Env) {
       return ((Env) env).getInstance();
     }
-    return AviatorEvaluator.getInstance();
+    return new AviatorEvaluatorInstance(EvalMode.ASM);
 
   }
 
@@ -116,11 +116,7 @@ public final class RuntimeUtils {
 
 
   public static final void printlnTrace(final Map<String, Object> env, final String msg) {
-    try {
-      getInstance(env).getTraceOutputStream().write(("[Aviator TRACE] " + msg + "\n").getBytes());
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+
   }
 
   public static final boolean isTracedEval(final Map<String, Object> env) {

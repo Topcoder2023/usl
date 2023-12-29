@@ -15,15 +15,10 @@ import java.util.Set;
 public enum Options {
 
   /**
-   * Optimize level, default is {@link AviatorEvaluator#EVAL}
-   *
-   * @see AviatorEvaluator#EVAL
-   * @see AviatorEvaluator#COMPILE
    */
   OPTIMIZE_LEVEL,
 
   /**
-   * Math context for decimal, default is {@link MathContext.DECIMAL128}
    *
    * @see MathContext
    */
@@ -31,7 +26,6 @@ public enum Options {
 
   /**
    * When true, always parsing floating-point number into BigDecial, default is false.It replaces
-   * {@link #ALWAYS_USE_DOUBLE_AS_DECIMAL} option.
    */
   ALWAYS_PARSE_FLOATING_POINT_NUMBER_INTO_DECIMAL,
   /**
@@ -118,7 +112,6 @@ public enum Options {
 
   /**
    * Whether the compiled expression is serializable. If true, the compiled expression will
-   * implement {@link #jva.io.Serializable} and can be encoded/decoded by java serialization.
    */
   SERIALIZABLE;
 
@@ -237,12 +230,7 @@ public enum Options {
       case SERIALIZABLE:
         return ((boolean) val) ? TRUE_VALUE : FALSE_VALUE;
       case OPTIMIZE_LEVEL: {
-        int level = (int) val;
-        if (level == AviatorEvaluator.EVAL) {
-          return EVAL_VALUE;
-        } else {
-          return COMPILE_VALUE;
-        }
+        return EVAL_VALUE;
       }
       case MAX_LOOP_COUNT:
         return new Value(((Number) val).intValue());
@@ -278,7 +266,7 @@ public enum Options {
       case OPTIMIZE_LEVEL:
         final int level = ((Integer) val).intValue();
         return val instanceof Integer
-            && (level == AviatorEvaluator.EVAL || level == AviatorEvaluator.COMPILE);
+            && (level == 1 || level == 0);
       case MAX_LOOP_COUNT:
         return val instanceof Long || val instanceof Integer;
       case MATH_CONTEXT:
@@ -297,9 +285,9 @@ public enum Options {
 
   public static final Value DEFAULT_MATH_CONTEXT = new Value(MathContext.DECIMAL128);
 
-  public static final Value EVAL_VALUE = new Value(AviatorEvaluator.EVAL);
+  public static final Value EVAL_VALUE = new Value(1);
 
-  public static final Value COMPILE_VALUE = new Value(AviatorEvaluator.COMPILE);
+  public static final Value COMPILE_VALUE = new Value(0);
 
   private static final Value FULL_FEATURE_SET = new Value(Feature.getFullFeatures());
   private static final boolean TRACE_EVAL_DEFAULT_VAL =

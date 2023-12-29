@@ -55,9 +55,8 @@ public final class ScriptEngineInitializer implements Initializer {
 
         EngineConfig configEngine = configuration.getEngineConfig();
 
-        this.instance = AviatorEvaluator.newInstance();
-        this.instance.removeFunctionLoader(ClassPathConfigFunctionLoader.getInstance());
-        this.instance.addFunctionLoader(name -> configEngine.getFunctionHolder().search(name));
+        this.instance = new AviatorEvaluatorInstance(EvalMode.ASM);
+        this.instance.setFunctionLoader(name -> configEngine.getFunctionHolder().search(name));
         this.instance.setFunctionMissing(new MethodInvokerOnMissing()
                 .setFunctionMissing(configEngine.getFunctionMissing())
                 .setEnabled(Boolean.TRUE.equals(configEngine.getEnableMethodInvoke())));

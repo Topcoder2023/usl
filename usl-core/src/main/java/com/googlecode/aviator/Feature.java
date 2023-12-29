@@ -1,8 +1,6 @@
 package com.googlecode.aviator;
 
 import com.googlecode.aviator.runtime.function.internal.*;
-import com.googlecode.aviator.runtime.function.system.LoadFunction;
-import com.googlecode.aviator.runtime.function.system.RequireFunction;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.utils.IdentityHashSet;
 
@@ -62,10 +60,6 @@ public enum Feature {
    * Internal vars such as __env__, __instance__
    */
   InternalVars,
-  /**
-   * module system such as exports/require/load function supporting.
-   */
-  Module(asList(LoadFunction.INSTANCE, RequireFunction.INSTANCE)),
   /**
    * try..catch..finally and throw statement to handle exceptions.
    */

@@ -630,7 +630,7 @@ public class ExpressionParser implements Parser {
             if (lexeme.equals("-")) {
                 lexeme = "-sub";
             }
-            return this.instance.containsFunction(lexeme);
+            return this.instance.existsSystemFunction(lexeme);
         } else {
             back();
             return false;
@@ -1243,7 +1243,7 @@ public class ExpressionParser implements Parser {
         if (SymbolTable.isReservedKeyword(fnName)) {
             reportSyntaxError("The function name `" + fnName + "` is a reserved keyword");
         }
-        if (warnOnExists && this.instance.getFuncMap().containsKey(fnName)) {
+        if (warnOnExists && this.instance.getSystemFunctionMap().containsKey(fnName)) {
             System.out.println("[Aviator WARN] The function '" + fnName
                     + "' is already exists, but is replaced with new one.");
         }

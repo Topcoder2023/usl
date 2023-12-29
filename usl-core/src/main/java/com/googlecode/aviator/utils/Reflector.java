@@ -801,7 +801,6 @@ public class Reflector {
       if (target.innerClazz != null) {
         final AviatorEvaluatorInstance instance = RuntimeUtils.getInstance(env);
         // check innerClazz is allowed
-        instance.checkIfClassIsAllowed(true, target.innerClazz);
 
         if (tryResolveStaticMethod && instance.isFeatureEnabled(Feature.StaticMethods)
             && names.length == 2) {
