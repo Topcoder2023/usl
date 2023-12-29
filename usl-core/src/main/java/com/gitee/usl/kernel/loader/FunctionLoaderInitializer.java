@@ -1,4 +1,4 @@
-package com.gitee.usl.kernel.provider;
+package com.gitee.usl.kernel.loader;
 
 import com.gitee.usl.api.Definable;
 import com.gitee.usl.api.Initializer;
@@ -18,9 +18,9 @@ import java.util.Set;
  * @author hongda.li
  */
 @Description("函数定义信息提供器管理者")
-@Order(FunctionProviderInitializer.USL_FUNC_PROVIDER_ORDER)
+@Order(FunctionLoaderInitializer.USL_FUNC_PROVIDER_ORDER)
 @AutoService(Initializer.class)
-public class FunctionProviderInitializer implements Initializer {
+public class FunctionLoaderInitializer implements Initializer {
 
     @Description("函数提供者管理器的优先级")
     public static final int USL_FUNC_PROVIDER_ORDER = Integer.MIN_VALUE + 1000;

@@ -1,4 +1,4 @@
-package com.gitee.usl.kernel.provider;
+package com.gitee.usl.kernel.loader;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ArrayUtil;
