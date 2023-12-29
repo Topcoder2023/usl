@@ -1,4 +1,4 @@
-let list = list_of('a', 'b', 'c', 'd');
+let list = list_of(sw, 'b', 'c', 'd');
 
 for (let element in list) {
     logger_info(element);

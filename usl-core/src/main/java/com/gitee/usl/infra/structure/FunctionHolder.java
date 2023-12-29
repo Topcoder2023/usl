@@ -89,19 +89,14 @@ public class FunctionHolder {
     @Description("通过函数名称检索函数实例")
     public AviatorFunction search(String name) {
         final String key;
+
         if (!this.container.containsKey(name)) {
             key = this.aliasMap.get(name);
         } else {
             key = name;
         }
 
-        AviatorFunction function = this.container.get(key);
-
-        if (function == null) {
-            log.warn("函数尚未注册 - [{}]", name);
-        }
-
-        return function;
+        return this.container.get(key);
     }
 
     @Description("获取所有函数实例")

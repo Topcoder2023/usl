@@ -7,11 +7,17 @@ import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.ScriptCompileHelper;
 import com.google.auto.service.AutoService;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.googlecode.aviator.BaseExpression;
 import com.googlecode.aviator.Expression;
 import com.googlecode.aviator.code.CodeGenerator;
 import com.googlecode.aviator.lexer.ExpressionLexer;
+import com.googlecode.aviator.lexer.SymbolTable;
+import com.googlecode.aviator.lexer.token.Variable;
 import com.googlecode.aviator.parser.ExpressionParser;
+import com.googlecode.aviator.runtime.LambdaFunctionBootstrap;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Map;
 
 /**
  * @author hongda.li
@@ -44,8 +50,13 @@ public class CompileGeneratorConsumer implements CompileConsumer {
             log.debug("开始编译脚本 - {}", event.getEventId());
             ExpressionLexer lexer = new ExpressionLexer(instance, event.getContent());
             CodeGenerator codeGenerator = instance.newCodeGenerator(null, true);
-            Expression expression = new ExpressionParser(instance, lexer, codeGenerator).parse();
+            BaseExpression expression = (BaseExpression) new ExpressionParser(instance, lexer, codeGenerator).parse();
             event.setExpression(expression);
+
+            @Description("变量表")
+            Map<String, Variable> variableMap = expression.getSymbolTable().getTable();
+            System.out.println(variableMap);
+
         } catch (Exception e) {
             log.error("脚本编译失败", e);
             event.setExpression(ScriptCompileHelper.empty());

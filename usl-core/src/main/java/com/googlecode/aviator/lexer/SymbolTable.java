@@ -4,20 +4,31 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.structure.AwaitVariable;
 import com.gitee.usl.infra.structure.FunctionVariable;
 import com.gitee.usl.infra.structure.VarVariable;
 import com.googlecode.aviator.lexer.token.Token;
 import com.googlecode.aviator.lexer.token.Variable;
+import lombok.Getter;
 
 /**
- * 关键字变量表
+ * @author hongda.li
  */
+@Getter
+@Description("关键字变量表")
 public class SymbolTable implements Serializable {
+
+    @Description("序列号")
     private static final long serialVersionUID = -9019014977807517193L;
+
+    @Description("变量表")
     private final Map<String, Variable> table = new HashMap<>();
+
+    @Description("关键字")
     private static final Map<String, Variable> RESERVED = new HashMap<>();
 
+    @Description("定义关键字")
     private static void reserveKeyword(final Variable v) {
         RESERVED.put(v.getLexeme(), v);
     }

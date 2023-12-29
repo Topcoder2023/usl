@@ -40,6 +40,13 @@ public class Param {
         return this;
     }
 
+    public Param addContext(Map<String, Object> other) {
+        if (other != null) {
+            this.context.putAll(other);
+        }
+        return this;
+    }
+
     public Param setContext(Map<String, Object> map) {
         this.context = new StringMap(map);
         return this;

@@ -21,7 +21,11 @@ import static cn.hutool.core.map.MapUtil.DEFAULT_LOAD_FACTOR;
 @Description("String类型作为唯一键的Map结构，并扩展多种快速转换返回值方法")
 public class StringMap extends LinkedHashMap<String, Object> implements BasicTypeGetter<String>, OptBasicTypeGetter<String> {
     public StringMap() {
-        super(NumberConstant.COMMON_SIZE);
+        this(NumberConstant.COMMON_SIZE);
+    }
+
+    public StringMap(int size) {
+        super(size);
     }
 
     public StringMap(Map<String, Object> otherMap) {

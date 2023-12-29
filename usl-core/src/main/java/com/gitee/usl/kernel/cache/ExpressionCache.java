@@ -21,7 +21,7 @@ public interface ExpressionCache {
      * @param key 缓存键
      * @return 编译后的表达式
      */
-    Expression select(String key);
+    CacheValue select(String key);
 
     /**
      * 根据缓存键移除编译后的表达式
@@ -34,9 +34,9 @@ public interface ExpressionCache {
      * 插入缓存
      *
      * @param key        缓存键
-     * @param expression 缓存编译后的表达式
+     * @param cacheValue 缓存编译后的表达式
      */
-    void insert(String key, Expression expression);
+    void insert(String key, CacheValue cacheValue);
 
     /**
      * 输出快照

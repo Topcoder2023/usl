@@ -10,6 +10,7 @@ import com.gitee.usl.infra.structure.StringConsumer;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.infra.structure.wrapper.ObjectWrapper;
 import com.gitee.usl.infra.utils.ScriptCompileHelper;
+import com.gitee.usl.kernel.cache.CacheValue;
 import com.gitee.usl.kernel.cache.ExpressionCache;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.configure.Configuration;
@@ -82,7 +83,7 @@ public final class ScriptEngineInitializer implements Initializer {
         IntWrapper count = new IntWrapper(NumberConstant.NORMAL_MAX_SIZE);
 
         @Description("表达式编译值")
-        ObjectWrapper<Expression> expression = new ObjectWrapper<>(expressionCache.select(key));
+        ObjectWrapper<CacheValue> expression = new ObjectWrapper<>(expressionCache.select(key));
 
         if (expression.isEmpty()) {
             this.publisher.accept(script);
@@ -98,12 +99,14 @@ public final class ScriptEngineInitializer implements Initializer {
             }
         }
 
-        if (ScriptCompileHelper.isEmpty(expression.get())) {
+        if (ScriptCompileHelper.isEmpty(expression.get().getExpression())) {
             return Result.failure(ResultCode.COMPILE_FAILURE);
         }
 
         try {
-            return Result.success((T) expression.get().execute(param.getContext()));
+            return Result.success((T) expression.get()
+                    .getExpression()
+                    .execute(param.addContext(expression.get().getInitEnv()).getContext()));
         } catch (UslExecuteException uee) {
             log.warn("USL执行出现错误", uee);
             return Result.failure(uee.getResultCode(), uee.getMessage());

@@ -25,7 +25,7 @@ public class CaffeineCache implements ExpressionCache {
     public static final int USL_CACHE_ORDER = Integer.MAX_VALUE - 100;
 
     @Description("Caffeine缓存实例")
-    private Cache<String, Expression> cache;
+    private Cache<String, CacheValue> cache;
 
     @Override
     public void init(CacheConfig configuration) {
@@ -41,7 +41,7 @@ public class CaffeineCache implements ExpressionCache {
     }
 
     @Override
-    public Expression select(String key) {
+    public CacheValue select(String key) {
         return this.cache.getIfPresent(key);
     }
 
@@ -52,9 +52,9 @@ public class CaffeineCache implements ExpressionCache {
     }
 
     @Override
-    public void insert(String key, Expression expression) {
-        Assert.notNull(expression, "Expression can't be null");
-        this.cache.put(key, expression);
+    public void insert(String key, CacheValue cacheValue) {
+        Assert.notNull(cacheValue, "缓存值不能为空");
+        this.cache.put(key, cacheValue);
         log.debug("新增缓存 - [{}]", key);
     }
 

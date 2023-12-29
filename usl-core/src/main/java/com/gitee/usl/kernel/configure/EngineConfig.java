@@ -2,6 +2,7 @@ package com.gitee.usl.kernel.configure;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ClassUtil;
+import com.gitee.usl.api.VariableInitializer;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.structure.FunctionHolder;
@@ -21,6 +22,12 @@ public class EngineConfig {
 
     @Description("脚本创建路径")
     private String scriptPath = FileUtil.getUserHomePath();
+
+    @Description("是否开启调试")
+    private Boolean enableDebug;
+
+    @Description("变量初始化器")
+    private VariableInitializer varInitializer;
 
     @Description("USL配置类")
     private final Configuration configuration;

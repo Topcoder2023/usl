@@ -4,6 +4,7 @@ import com.gitee.usl.api.CompileConsumer;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.utils.ScriptCompileHelper;
+import com.gitee.usl.kernel.cache.CacheValue;
 import com.google.auto.service.AutoService;
 
 /**
@@ -20,10 +21,13 @@ public class CompileCacheConsumer implements CompileConsumer {
         @Description("唯一缓存键")
         String generated = ScriptCompileHelper.generateKey(event.getContent());
 
+        @Description("缓存值")
+        CacheValue cacheValue = CacheValue.of(event.getInitEnv(), event.getExpression());
+
         event.getConfiguration()
                 .getCacheConfig()
                 .getCacheInitializer()
                 .getCache()
-                .insert(generated, event.getExpression());
+                .insert(generated, cacheValue);
     }
 }
