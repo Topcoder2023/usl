@@ -7,6 +7,7 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.kernel.engine.ScriptEngineInitializer;
+import com.googlecode.aviator.FunctionMissing;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -24,7 +25,13 @@ public class EngineConfig {
     private String scriptPath = FileUtil.getUserHomePath();
 
     @Description("是否开启调试")
-    private Boolean enableDebug;
+    private Boolean enableDebug = Boolean.FALSE;
+
+    @Description("是否开启对象方法调用")
+    private Boolean enableMethodInvoke = Boolean.TRUE;
+
+    @Description("函数访问兜底机制")
+    private FunctionMissing functionMissing;
 
     @Description("变量初始化器")
     private VariableInitializer varInitializer;

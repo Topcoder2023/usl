@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 public class CompileEvent {
 
     @Description("脚本事件ID")
-    private final String eventId = IdUtil.nanoId();
+    private final String eventId = IdUtil.fastSimpleUUID();
 
     @Description("脚本内容")
     private String content;

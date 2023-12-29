@@ -6,6 +6,7 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.UslExecuteException;
+import com.gitee.usl.infra.utils.MethodInvokerOnMissing;
 import com.gitee.usl.infra.structure.StringConsumer;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.infra.structure.wrapper.ObjectWrapper;
@@ -57,6 +58,9 @@ public final class ScriptEngineInitializer implements Initializer {
         this.instance = AviatorEvaluator.newInstance();
         this.instance.removeFunctionLoader(ClassPathConfigFunctionLoader.getInstance());
         this.instance.addFunctionLoader(name -> configEngine.getFunctionHolder().search(name));
+        this.instance.setFunctionMissing(new MethodInvokerOnMissing()
+                .setFunctionMissing(configEngine.getFunctionMissing())
+                .setEnabled(Boolean.TRUE.equals(configEngine.getEnableMethodInvoke())));
 
         configEngine.setEngineInitializer(this);
 

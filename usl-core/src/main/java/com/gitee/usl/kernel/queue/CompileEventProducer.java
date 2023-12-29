@@ -30,7 +30,7 @@ public class CompileEventProducer implements CompileProducer {
             unpublished.setContent(content);
             unpublished.setConfiguration(configuration);
 
-            log.debug("发布[脚本编译事件] - [事件ID : {}, 事件序列 : {}]\n{}", unpublished.getEventId(), sequence, content);
+            log.debug("发布脚本编译事件 - [事件ID : {}, 事件序列 : {}]\n{}", unpublished.getEventId(), sequence, content);
         });
     }
 }
