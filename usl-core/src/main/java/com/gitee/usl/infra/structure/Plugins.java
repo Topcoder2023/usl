@@ -12,7 +12,10 @@ import java.util.function.Consumer;
 /**
  * @author hongda.li
  */
+@Description("插件链")
 public class Plugins {
+
+    @Description("插件容器")
     private final List<Plugin> container;
 
     public Plugins() {

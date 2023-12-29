@@ -2,12 +2,14 @@ package com.gitee.usl.kernel.engine;
 
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.AttributeMeta;
 import com.gitee.usl.infra.structure.StringSet;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -46,6 +48,14 @@ public class FunctionDefinition {
 
     public void addAlias(String... names) {
         this.alias.addAll(Arrays.asList(names));
+    }
+
+    @Description("获取形参长度")
+    public int getArgsLength() {
+        return Optional.ofNullable(methodMeta)
+                .map(MethodMeta::getMethod)
+                .map(Method::getParameterCount)
+                .orElse(NumberConstant.ZERO);
     }
 
 }

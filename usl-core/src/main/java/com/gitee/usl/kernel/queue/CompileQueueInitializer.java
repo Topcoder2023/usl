@@ -8,7 +8,7 @@ import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.structure.wrapper.ObjectWrapper;
 import com.gitee.usl.infra.thread.NamedThreadFactory;
 import com.gitee.usl.infra.utils.AnnotatedComparator;
-import com.gitee.usl.infra.utils.CollectorHelper;
+import com.gitee.usl.infra.utils.LambdaHelper;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.QueueConfig;
 import com.gitee.usl.kernel.configure.Configuration;
@@ -85,7 +85,7 @@ public class CompileQueueInitializer implements Initializer {
         @Description("排序后的消费者")
         Map<Integer, List<CompileConsumer>> group = ServiceSearcher.searchAll(CompileConsumer.class)
                 .stream()
-                .collect(CollectorHelper.group(consumer -> AnnotatedComparator.getOrder(consumer.getClass())));
+                .collect(LambdaHelper.group(consumer -> AnnotatedComparator.getOrder(consumer.getClass())));
 
         group.values().forEach(consumers -> {
             CompileConsumer[] array = consumers.toArray(new CompileConsumer[]{});

@@ -19,8 +19,7 @@ import java.util.Arrays;
  * @author hongda.li
  */
 @Description("原生接口实现类进行代理的函数")
-public class NativeFunction extends MethodInterceptor<AviatorFunction>
-        implements FunctionPluggable, Definable {
+public class NativeFunction extends MethodInterceptor<AviatorFunction> implements FunctionPluggable, Definable {
 
     @Description("插件链")
     private final Plugins plugins = new Plugins();

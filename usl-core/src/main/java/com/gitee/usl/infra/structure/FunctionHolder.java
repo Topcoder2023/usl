@@ -1,13 +1,13 @@
 package com.gitee.usl.infra.structure;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Assert;
+import com.gitee.usl.api.Definable;
+import com.gitee.usl.api.Overloaded;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.infra.utils.LambdaHelper;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -35,8 +35,23 @@ public class FunctionHolder {
     public void register(AviatorFunction function) {
         String name = function.getName();
 
-        if (this.container.containsKey(name)) {
-            log.warn("函数已被注册 - [{}]", name);
+        AviatorFunction found = this.container.get(name);
+
+        if (found != null) {
+
+            @Description("函数重载")
+            boolean overload = found instanceof Overloaded
+                    && function instanceof Overloaded
+                    && ((Definable) found).definition().getArgsLength()
+                    != ((Definable) function).definition().getArgsLength();
+
+            if (overload) {
+                ((Overloaded<?>) found).addOverloadImpl((Overloaded<?>) function);
+                log.warn("同名函数重载 - [{}]", name);
+            } else {
+                log.warn("函数已被注册 - [{}]", name);
+            }
+
             return;
         }
 
@@ -54,8 +69,7 @@ public class FunctionHolder {
 
         String actualName = function.getName();
 
-        alias.stream()
-                .filter(item -> !Objects.equals(item, actualName))
+        alias.stream().filter(item -> !Objects.equals(item, actualName))
                 .forEach(aliasName -> {
                     this.aliasMap.put(aliasName, actualName);
                     log.debug("函数别名 - [{} - {}]", actualName, aliasName);
@@ -64,15 +78,12 @@ public class FunctionHolder {
 
     @Description("遍历函数")
     public void onVisit(Consumer<AviatorFunction> consumer) {
-        this.onVisit(any -> true, consumer);
+        this.onVisit(LambdaHelper.anyTrue(), consumer);
     }
 
     @Description("遍历指定函数")
     public void onVisit(Predicate<AviatorFunction> predicate, Consumer<AviatorFunction> consumer) {
-        this.container.values()
-                .stream()
-                .filter(predicate)
-                .forEach(consumer);
+        this.toList().stream().filter(predicate).forEach(consumer);
     }
 
     @Description("通过函数名称检索函数实例")
@@ -93,7 +104,17 @@ public class FunctionHolder {
         return function;
     }
 
+    @Description("获取所有函数实例")
     public List<AviatorFunction> toList() {
-        return new ArrayList<>(this.container.values());
+        List<AviatorFunction> functions = new ArrayList<>(this.container.values());
+        this.container.values()
+                .stream()
+                .filter(item -> item instanceof Overloaded)
+                .map(item -> (Overloaded<?>) item)
+                .map(Overloaded::allOverloadImpl)
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream)
+                .forEach(functions::add);
+        return functions;
     }
 }
