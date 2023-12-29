@@ -28,7 +28,7 @@ public class NativeFunctionLoader extends AbstractFunctionLoader {
 
         if (ifPossible == null) {
             log.warn("无法实例化指定类 - {}", clz.getName());
-            log.warn("请考虑提供无参构造器或自定义函数初加载器");
+            log.warn("请考虑提供无参构造器或自定义函数加载器");
 
             return Collections.emptyList();
         }
