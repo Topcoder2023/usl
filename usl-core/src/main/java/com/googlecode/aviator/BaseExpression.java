@@ -41,11 +41,20 @@ public abstract class BaseExpression implements Expression {
     public static final String FUNC_PARAMS_VAR = "__funcs_args__";
     protected List<String> varNames;
     protected List<String> varFullNames;
+
+    @Getter
     private List<VariableMeta> vars;
+
+    @Getter
+    @Setter
     private String expression;
+
     @Setter
     protected transient AviatorEvaluatorInstance instance;
+
+    @Getter
     private Env compileEnv;
+
     private Map<Integer, List<FunctionArgument>> funcsArgs = Collections.emptyMap();
     @Getter
     protected SymbolTable symbolTable;
@@ -55,6 +64,9 @@ public abstract class BaseExpression implements Expression {
 
     @Setter
     protected String sourceFile;
+
+    @Getter
+    @Setter
     protected Map<String, LambdaFunctionBootstrap> lambdaBootstraps;
 
     @Override
@@ -258,27 +270,9 @@ public abstract class BaseExpression implements Expression {
         }
     }
 
-    public Env getCompileEnv() {
-        return this.compileEnv;
-    }
-
     public void setCompileEnv(final Env compileEnv) {
         this.compileEnv = compileEnv;
         this.compileEnv.setExpression(this);
-    }
-
-    /**
-     * Returns the expression string when turn on {@link Options#TRACE_EVAL} option, else returns
-     * null.
-     *
-     * @return expression in string.
-     */
-    public String getExpression() {
-        return this.expression;
-    }
-
-    public void setExpression(final String expression) {
-        this.expression = expression;
     }
 
     @Override
@@ -304,10 +298,6 @@ public abstract class BaseExpression implements Expression {
     public List<String> getVariableFullNames() {
         populateFullNames();
         return this.varFullNames;
-    }
-
-    public List<VariableMeta> getVars() {
-        return this.vars;
     }
 
     /*
@@ -350,14 +340,6 @@ public abstract class BaseExpression implements Expression {
 
     protected Env newEnv(final Map<String, Object> map) {
         return newEnv(map, false);
-    }
-
-    public Map<String, LambdaFunctionBootstrap> getLambdaBootstraps() {
-        return this.lambdaBootstraps;
-    }
-
-    public void setLambdaBootstraps(final Map<String, LambdaFunctionBootstrap> lambdaBootstraps) {
-        this.lambdaBootstraps = lambdaBootstraps;
     }
 
     public LambdaFunction newLambda(final Env env, final String name) {

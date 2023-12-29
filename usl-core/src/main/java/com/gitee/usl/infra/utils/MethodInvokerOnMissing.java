@@ -13,13 +13,15 @@ import lombok.experimental.Accessors;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * @author hongda.li
  */
 @Data
 @Accessors(chain = true)
+@Description({"此类作为FunctionMissing接口的默认实现",
+        "在启用了方法调用配置的前提上",
+        "会解析<变量名.方法名()>，并通过反射传入参数并获取其返回值"})
 public class MethodInvokerOnMissing implements FunctionMissing {
 
     @Description("是否启用")
@@ -32,7 +34,7 @@ public class MethodInvokerOnMissing implements FunctionMissing {
     private static final String REGEX = "\\.";
 
     @Description("异常消费者")
-    private static final Function<String, AviatorObject> THROW_ERROR = name -> {
+    private static final FunctionMissing DEFAULT_IMPL = (name, env, args) -> {
         throw new UslNotFoundException("无法加载此函数 - {}", name);
     };
 
@@ -40,32 +42,38 @@ public class MethodInvokerOnMissing implements FunctionMissing {
     public AviatorObject onFunctionMissing(String name, Map<String, Object> env, AviatorObject... args) {
 
         if (functionMissing == null) {
-            functionMissing = (arg1, arg2, arg3) -> THROW_ERROR.apply(arg1);
+            functionMissing = DEFAULT_IMPL;
         }
 
         if (!enabled) {
             return functionMissing.onFunctionMissing(name, env, args);
         }
 
+        @Description("<变量名.方法名()>")
         String[] metaInfo = name.split(REGEX);
 
         if (metaInfo.length < 2) {
-            return THROW_ERROR.apply(name);
+            return functionMissing.onFunctionMissing(name, env, args);
         }
 
+        @Description("变量名")
         String targetName = metaInfo[0];
+
+        @Description("方法名")
         String methodName = metaInfo[1];
 
+        @Description("变量实例")
         Object target = env.get(targetName);
 
         if (target == null) {
-            return THROW_ERROR.apply(name);
+            return functionMissing.onFunctionMissing(name, env, args);
         }
 
+        @Description("方法实例")
         Method method = ReflectUtil.getMethodByName(target.getClass(), methodName);
 
         if (method == null) {
-            return THROW_ERROR.apply(name);
+            return functionMissing.onFunctionMissing(name, env, args);
         }
 
         Assert.isTrue(metaInfo.length == 2, "不支持链式调用对象方法");

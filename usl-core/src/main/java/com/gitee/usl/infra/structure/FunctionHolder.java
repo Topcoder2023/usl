@@ -47,7 +47,7 @@ public class FunctionHolder {
 
             if (overload) {
                 ((Overloaded<?>) found).addOverloadImpl((Overloaded<?>) function);
-                log.warn("同名函数重载 - [{}]", name);
+                log.debug("函数重载 - [{}]", name);
             } else {
                 log.warn("函数已被注册 - [{}]", name);
             }

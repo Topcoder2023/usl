@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.enhancer;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.lang.Singleton;
-import com.gitee.usl.api.annotation.Logger;
+import com.gitee.usl.api.annotation.EnableLogger;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
@@ -18,22 +18,17 @@ import com.google.auto.service.AutoService;
 public class LoggerPluginEnhancer extends AbstractFunctionEnhancer {
 
     @Override
-    protected void enhanceNativeFunction(NativeFunction nf) {
-        Logger logger = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().getTargetType(), Logger.class);
-        if (logger == null) {
-            return;
+    protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
+        if (AnnotationUtil.hasAnnotation(af.definition().getMethodMeta().getMethod(), EnableLogger.class)) {
+            af.plugins().install(Singleton.get(LoggerPlugin.class));
         }
-
-        nf.plugins().install(Singleton.get(LoggerPlugin.class));
     }
 
     @Override
-    protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        Logger logger = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().getMethod(), Logger.class);
-        if (logger == null) {
-            return;
+    protected void enhanceNativeFunction(NativeFunction nf) {
+        if (AnnotationUtil.hasAnnotation(nf.definition().getMethodMeta().getTargetType(), EnableLogger.class)) {
+            nf.plugins().install(Singleton.get(LoggerPlugin.class));
         }
-
-        af.plugins().install(Singleton.get(LoggerPlugin.class));
     }
+
 }
