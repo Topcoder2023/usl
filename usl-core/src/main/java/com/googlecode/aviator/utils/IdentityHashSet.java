@@ -26,9 +26,10 @@ public class IdentityHashSet<E> extends AbstractSet<E> {
 
   @Override
   public boolean contains(final Object o) {
-    return this.delegate.containsKey(o);
+    return this.delegate.containsKey((E) o);
   }
 
+  @SuppressWarnings("NullableProblems")
   @Override
   public Iterator<E> iterator() {
     return this.delegate.keySet().iterator();

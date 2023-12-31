@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.domain;
 
 import cn.hutool.core.io.resource.ResourceUtil;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.infra.exception.UslNotFoundException;
+import com.gitee.usl.infra.exception.USLNotFoundException;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -29,7 +29,7 @@ public class ResourceParam extends Param {
         try {
             this.setScript(ResourceUtil.readUtf8Str(this.resource));
         } catch (Exception e) {
-            throw new UslNotFoundException(NOT_FOUND, this.resource);
+            throw new USLNotFoundException(NOT_FOUND, this.resource);
         }
     }
 

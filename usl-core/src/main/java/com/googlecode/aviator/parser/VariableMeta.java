@@ -48,7 +48,7 @@ public class VariableMeta implements Serializable {
     if (!this.isInit) {
       this.isInit = token.getMeta(Constants.INIT_META, false);
     }
-    this.type = (CompileTypes) token.getMeta(Constants.TYPE_META);
+    this.type = token.getMeta(Constants.TYPE_META);
   }
 
   public int getRefs() {

@@ -7,7 +7,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
-import com.gitee.usl.infra.exception.UslException;
+import com.gitee.usl.infra.exception.USLException;
 import com.googlecode.aviator.utils.Env;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +69,7 @@ public class VisitorFunction {
 
             return ReflectUtil.getFieldValue(obj, fieldName);
         } catch (Exception e) {
-            logger.warn("对象属性获取失败", new UslException(e));
+            logger.warn("对象属性获取失败", new USLException(e));
             return null;
         }
     }
@@ -104,7 +104,7 @@ public class VisitorFunction {
             ReflectUtil.setFieldValue(obj, field, value);
             return value;
         } catch (UtilException e) {
-            logger.warn("对象属性设置失败", new UslException(e));
+            logger.warn("对象属性设置失败", new USLException(e));
             return null;
         }
     }
@@ -122,7 +122,7 @@ public class VisitorFunction {
                 return ReflectUtil.invoke(obj, methodName, params);
             }
         } catch (UtilException e) {
-            logger.warn("对象方法调用失败", new UslException(e));
+            logger.warn("对象方法调用失败", new USLException(e));
             return null;
         }
     }
@@ -132,7 +132,7 @@ public class VisitorFunction {
         try {
             return new BeanPath(expression).get(obj);
         } catch (Exception e) {
-            logger.warn("对象属性查找失败", new UslException(e));
+            logger.warn("对象属性查找失败", new USLException(e));
             return null;
         }
     }

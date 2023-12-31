@@ -5,12 +5,12 @@ package com.gitee.usl.infra.exception;
  *
  * @author hongda.li
  */
-public class UslNotFoundException extends UslException {
-    public UslNotFoundException() {
+public class USLNotFoundException extends USLException {
+    public USLNotFoundException() {
         super();
     }
 
-    public UslNotFoundException(String message, Object... arguments) {
+    public USLNotFoundException(String message, Object... arguments) {
         super(message, arguments);
     }
 }

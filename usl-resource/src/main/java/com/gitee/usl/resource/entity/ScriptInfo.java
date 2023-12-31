@@ -2,7 +2,7 @@ package com.gitee.usl.resource.entity;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.text.StrPool;
-import com.gitee.usl.infra.exception.UslException;
+import com.gitee.usl.infra.exception.USLException;
 
 import java.util.StringJoiner;
 
@@ -19,7 +19,7 @@ public class ScriptInfo {
 
     public void valid() {
         if (CharSequenceUtil.contains(belongs, StrPool.AT) || CharSequenceUtil.contains(scriptName, StrPool.AT)) {
-            throw new UslException("脚本名称或功能分组不能包含 '@' 符号");
+            throw new USLException("脚本名称或功能分组不能包含 '@' 符号");
         }
     }
 

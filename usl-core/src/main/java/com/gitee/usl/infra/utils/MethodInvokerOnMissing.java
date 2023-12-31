@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.infra.exception.UslNotFoundException;
+import com.gitee.usl.infra.exception.USLNotFoundException;
 import com.googlecode.aviator.FunctionMissing;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import lombok.Data;
@@ -35,7 +35,7 @@ public class MethodInvokerOnMissing implements FunctionMissing {
 
     @Description("异常消费者")
     private static final FunctionMissing DEFAULT_IMPL = (name, env, args) -> {
-        throw new UslNotFoundException("无法加载此函数 - {}", name);
+        throw new USLNotFoundException("无法加载此函数 - {}", name);
     };
 
     @Override

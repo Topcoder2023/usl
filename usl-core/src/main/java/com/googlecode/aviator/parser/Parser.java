@@ -1,19 +1,26 @@
 package com.googlecode.aviator.parser;
 
+import com.gitee.usl.api.annotation.Description;
+import com.googlecode.aviator.Expression;
 import com.googlecode.aviator.code.CodeGenerator;
 import com.googlecode.aviator.lexer.SymbolTable;
 
-
+/**
+ * @author hongda.li
+ */
 public interface Parser {
 
-  SymbolTable getSymbolTable();
+    @Description("解析表达式并编译")
+    Expression parse();
 
-  CodeGenerator getCodeGenerator();
+    SymbolTable getSymbolTable();
 
-  void setCodeGenerator(CodeGenerator codeGenerator);
+    CodeGenerator getCodeGenerator();
 
-  ScopeInfo enterScope(boolean inForLoop);
+    void setCodeGenerator(CodeGenerator codeGenerator);
 
-  void restoreScope(ScopeInfo info);
+    ScopeInfo enterScope(boolean inForLoop);
+
+    void restoreScope(ScopeInfo info);
 
 }

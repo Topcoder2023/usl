@@ -7,7 +7,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.enums.ResultCode;
-import com.gitee.usl.infra.exception.UslExecuteException;
+import com.gitee.usl.infra.exception.USLExecuteException;
 
 import java.util.Map;
 import java.util.Objects;
@@ -41,7 +41,7 @@ public class TypeFunction {
             return CollUtil.isEmpty((Map<?, ?>) obj);
         }
 
-        throw new UslExecuteException(ResultCode.FAILURE, "不支持的类型 - " + obj.getClass().getName());
+        throw new USLExecuteException(ResultCode.FAILURE, "不支持的类型 - " + obj.getClass().getName());
     }
 
     @Function("is_email")

@@ -3,7 +3,7 @@ package com.gitee.usl.kernel.domain;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.infra.exception.UslNotFoundException;
+import com.gitee.usl.infra.exception.USLNotFoundException;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -33,7 +33,7 @@ public class FileParam extends Param {
     }
 
     private void init() {
-        Assert.isTrue(this.file.exists(), () -> new UslNotFoundException(NOT_FOUND, file.getAbsolutePath()));
+        Assert.isTrue(this.file.exists(), () -> new USLNotFoundException(NOT_FOUND, file.getAbsolutePath()));
         this.setScript(new FileReader(this.file).readString());
     }
 

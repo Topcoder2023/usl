@@ -6,8 +6,8 @@ import cn.zhxu.data.TypeRef;
 import cn.zhxu.xjson.JsonKit;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
-import com.gitee.usl.infra.exception.UslException;
-import com.gitee.usl.infra.exception.UslExecuteException;
+import com.gitee.usl.infra.exception.USLException;
+import com.gitee.usl.infra.exception.USLExecuteException;
 import org.smartboot.http.common.enums.HeaderNameEnum;
 import org.smartboot.http.common.enums.HeaderValueEnum;
 import org.smartboot.http.common.enums.HttpStatus;
@@ -58,7 +58,7 @@ public interface WebHelper {
             response.setContentType(HeaderValueEnum.APPLICATION_JSON.getName() + StringConstant.CONTENT_TYPE_SUFFIX);
             response.write(JsonKit.toJson(result).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            throw new UslExecuteException(e);
+            throw new USLExecuteException(e);
         }
     }
 
@@ -73,7 +73,7 @@ public interface WebHelper {
             response.setContentType(HeaderValueEnum.DEFAULT_CONTENT_TYPE.getName());
             response.write(String.valueOf(result).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            throw new UslExecuteException(e);
+            throw new USLExecuteException(e);
         }
     }
 
@@ -110,7 +110,7 @@ public interface WebHelper {
         try {
             return JsonKit.toArray(IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8)).toList(type);
         } catch (IOException e) {
-            throw new UslException(e);
+            throw new USLException(e);
         }
     }
 
@@ -125,7 +125,7 @@ public interface WebHelper {
         try {
             return JsonKit.toBean(typeReference, IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
-            throw new UslException(e);
+            throw new USLException(e);
         }
     }
 
@@ -140,7 +140,7 @@ public interface WebHelper {
         try {
             return JsonKit.toBean(type, IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
-            throw new UslException(e);
+            throw new USLException(e);
         }
     }
 }

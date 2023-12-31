@@ -5,7 +5,7 @@ import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.ResultCode;
-import com.gitee.usl.infra.exception.UslExecuteException;
+import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.infra.utils.MethodInvokerOnMissing;
 import com.gitee.usl.infra.structure.StringConsumer;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
@@ -55,7 +55,7 @@ public final class ScriptEngineInitializer implements Initializer {
 
         EngineConfig configEngine = configuration.getEngineConfig();
 
-        this.instance = new AviatorEvaluatorInstance(EvalMode.ASM);
+        this.instance = new AviatorEvaluatorInstance();
         this.instance.setFunctionLoader(name -> configEngine.getFunctionHolder().search(name));
         this.instance.setFunctionMissing(new MethodInvokerOnMissing()
                 .setFunctionMissing(configEngine.getFunctionMissing())
@@ -110,7 +110,7 @@ public final class ScriptEngineInitializer implements Initializer {
             return Result.success((T) expression.get()
                     .getExpression()
                     .execute(param.addContext(expression.get().getInitEnv()).getContext()));
-        } catch (UslExecuteException uee) {
+        } catch (USLExecuteException uee) {
             log.warn("USL执行出现错误", uee);
             return Result.failure(uee.getResultCode(), uee.getMessage());
         }

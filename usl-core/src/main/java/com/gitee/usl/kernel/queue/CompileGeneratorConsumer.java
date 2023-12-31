@@ -43,7 +43,7 @@ public class CompileGeneratorConsumer implements CompileConsumer {
         try {
             log.debug("开始编译脚本 - {}", event.getEventId());
             ExpressionLexer lexer = new ExpressionLexer(instance, event.getContent());
-            CodeGenerator codeGenerator = instance.newCodeGenerator(null, true);
+            CodeGenerator codeGenerator = instance.codeGenerator();
             BaseExpression expression = (BaseExpression) new ExpressionParser(instance, lexer, codeGenerator).parse();
             event.setExpression(expression);
         } catch (Exception e) {

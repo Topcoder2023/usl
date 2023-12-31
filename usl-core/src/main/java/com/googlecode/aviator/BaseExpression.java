@@ -12,12 +12,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
-import com.googlecode.aviator.AviatorEvaluatorInstance.StringSegments;
+
 import com.googlecode.aviator.exception.ExpressionNotFoundException;
 import com.googlecode.aviator.lexer.SymbolTable;
 import com.googlecode.aviator.lexer.token.Variable;
@@ -28,7 +24,6 @@ import com.googlecode.aviator.runtime.LambdaFunctionBootstrap;
 import com.googlecode.aviator.runtime.function.LambdaFunction;
 import com.googlecode.aviator.utils.Constants;
 import com.googlecode.aviator.utils.Env;
-import com.googlecode.aviator.utils.Reflector;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -58,9 +53,6 @@ public abstract class BaseExpression implements Expression {
     private Map<Integer, List<FunctionArgument>> funcsArgs = Collections.emptyMap();
     @Getter
     protected SymbolTable symbolTable;
-    // cached compiled string segments for string interpolation.
-    private transient ConcurrentHashMap<String, FutureTask<StringSegments>> stringSegs =
-            new ConcurrentHashMap<String, FutureTask<StringSegments>>();
 
     @Setter
     protected String sourceFile;
@@ -176,36 +168,6 @@ public abstract class BaseExpression implements Expression {
 
         afterPopulateFullNames(fullNames, parentVars);
         return fullNames;
-    }
-
-    public StringSegments getStringSegements(final String lexeme, final int lineNo) {
-        FutureTask<StringSegments> task = this.stringSegs.get(lexeme);
-        if (task == null) {
-            task = new FutureTask<>(new Callable<StringSegments>() {
-                @Override
-                public StringSegments call() throws Exception {
-                    final StringSegments compiledSegs = BaseExpression.this.instance
-                            .compileStringSegments(lexeme, BaseExpression.this.sourceFile, lineNo);
-                    return compiledSegs;
-                }
-            });
-
-            FutureTask<StringSegments> existsTask = this.stringSegs.putIfAbsent(lexeme, task);
-            if (existsTask != null) {
-                task = existsTask;
-            } else {
-                task.run(); // first run
-            }
-        }
-
-        try {
-            return task.get();
-        } catch (ExecutionException t) {
-            throw Reflector.sneakyThrow(t.getCause());
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw Reflector.sneakyThrow(e);
-        }
     }
 
     private class SymbolHashMap extends HashMap<String, Object> {
@@ -359,7 +321,6 @@ public abstract class BaseExpression implements Expression {
         this.symbolTable = (SymbolTable) input.readObject();
         this.sourceFile = (String) input.readObject();
         this.lambdaBootstraps = (Map<String, LambdaFunctionBootstrap>) input.readObject();
-        this.stringSegs = new ConcurrentHashMap<String, FutureTask<StringSegments>>();
     }
 
     public void customWriteObject(ObjectOutputStream output) throws IOException {

@@ -8,7 +8,7 @@ import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.ResultCode;
-import com.gitee.usl.infra.exception.UslExecuteException;
+import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.infra.structure.AttributeMeta;
 import com.gitee.usl.infra.structure.StringList;
 import com.gitee.usl.kernel.domain.Param;
@@ -59,7 +59,7 @@ public class CombineFunction extends AnnotatedFunction {
             try {
                 return compiledScript.eval(new SimpleBindings(context));
             } catch (ScriptException e) {
-                throw new UslExecuteException(e);
+                throw new USLExecuteException(e);
             }
         }
 
@@ -67,7 +67,7 @@ public class CombineFunction extends AnnotatedFunction {
 
         Result<?> result = this.runner.run(param);
         ResultCode resultCode = ResultCode.of(result.getCode());
-        Assert.isTrue(ResultCode.SUCCESS == resultCode, () -> new UslExecuteException(resultCode, result.getMessage()));
+        Assert.isTrue(ResultCode.SUCCESS == resultCode, () -> new USLExecuteException(resultCode, result.getMessage()));
 
         return result.getData();
     }

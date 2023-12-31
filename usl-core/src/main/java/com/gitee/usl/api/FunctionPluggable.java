@@ -4,7 +4,7 @@ import com.gitee.usl.api.plugin.BeginPlugin;
 import com.gitee.usl.api.plugin.FailurePlugin;
 import com.gitee.usl.api.plugin.FinallyPlugin;
 import com.gitee.usl.api.plugin.SuccessPlugin;
-import com.gitee.usl.infra.exception.UslExecuteException;
+import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.infra.structure.Plugins;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
@@ -83,10 +83,10 @@ public interface FunctionPluggable {
             Optional.ofNullable(session.getException()).ifPresent(error -> {
                 // 如果调用异常不为空，则将调用异常统一包装为 USL-Execute 异常
                 // 这样做是为了更好的区分整个脚本执行周期中的异常来源
-                if (error instanceof UslExecuteException) {
-                    throw (UslExecuteException) error;
+                if (error instanceof USLExecuteException) {
+                    throw (USLExecuteException) error;
                 } else {
-                    throw new UslExecuteException(error);
+                    throw new USLExecuteException(error);
                 }
             });
 

@@ -10,7 +10,7 @@ import com.gitee.usl.api.annotation.*;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.EngineName;
-import com.gitee.usl.infra.exception.UslException;
+import com.gitee.usl.infra.exception.USLException;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.AttributeMeta;
 import com.gitee.usl.infra.structure.StringList;
@@ -94,7 +94,7 @@ public class CombineFunctionLoader extends AbstractFunctionLoader {
                 CompiledScript compiledScript = ((Compilable) scriptEngine).compile(script);
                 attribute.put(StringConstant.COMPILED_SCRIPT, compiledScript);
             } catch (ScriptException e) {
-                throw new UslException(e);
+                throw new USLException(e);
             }
         }
 

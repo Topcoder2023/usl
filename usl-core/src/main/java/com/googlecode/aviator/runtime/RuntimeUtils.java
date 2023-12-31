@@ -12,7 +12,6 @@ import com.googlecode.aviator.runtime.type.Sequence;
 import com.googlecode.aviator.runtime.type.seq.*;
 import com.googlecode.aviator.utils.Env;
 
-import java.io.IOException;
 import java.math.MathContext;
 import java.util.Map;
 
@@ -37,7 +36,7 @@ public final class RuntimeUtils {
     if (env instanceof Env) {
       return ((Env) env).getInstance();
     }
-    return new AviatorEvaluatorInstance(EvalMode.ASM);
+    return new AviatorEvaluatorInstance();
 
   }
 

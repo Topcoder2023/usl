@@ -1,146 +1,141 @@
 /**
  * Copyright (C) 2010 dennis zhuang (killme2008@gmail.com)
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation; either version
  * 2.1 of the License, or (at your option) any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License along with this program;
  * if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
  **/
 package com.googlecode.aviator.code;
 
+import com.gitee.usl.api.annotation.Description;
 import com.googlecode.aviator.Expression;
 import com.googlecode.aviator.lexer.token.Token;
 import com.googlecode.aviator.parser.Parser;
 import com.googlecode.aviator.runtime.FunctionParam;
 
-
 /**
- * Code generator interface
- *
- * @author dennis
- *
+ * @author hongda.li
  */
+@Description("字节码生成器接口")
 public interface CodeGenerator {
 
-  public void onAssignment(Token<?> lookhead);
+    Expression getResult(boolean unboxObject);
 
-  public void setParser(Parser parser);
+    void onAssignment(Token<?> token);
 
-  public void onShiftRight(Token<?> lookhead);
+    void setParser(Parser parser);
 
+    void onShiftRight(Token<?> token);
 
-  public void onShiftLeft(Token<?> lookhead);
+    void onShiftLeft(Token<?> token);
 
 
-  public void onUnsignedShiftRight(Token<?> lookhead);
+    void onUnsignedShiftRight(Token<?> token);
 
 
-  public void onBitOr(Token<?> lookhead);
+    void onBitOr(Token<?> token);
 
 
-  public void onBitAnd(Token<?> lookhead);
+    void onBitAnd(Token<?> token);
 
 
-  public void onBitXor(Token<?> lookhead);
+    void onBitXor(Token<?> token);
 
 
-  public void onBitNot(Token<?> lookhead);
+    void onBitNot(Token<?> token);
 
 
-  public void onAdd(Token<?> lookhead);
+    void onAdd(Token<?> token);
 
 
-  public void onSub(Token<?> lookhead);
+    void onSub(Token<?> token);
 
 
-  public void onMult(Token<?> lookhead);
+    void onMult(Token<?> token);
 
-  public void onExponent(Token<?> loohead);
+    void onExponent(Token<?> loohead);
 
 
-  public void onDiv(Token<?> lookhead);
+    void onDiv(Token<?> token);
 
 
-  public void onAndLeft(Token<?> lookhead);
+    void onAndLeft(Token<?> token);
 
 
-  public void onAndRight(Token<?> lookhead);
+    void onAndRight(Token<?> token);
 
+    @Description("三元表达式的布尔表达式部分")
+    void onTernaryBoolean(Token<?> token);
 
-  public void onTernaryBoolean(Token<?> lookhead);
+    void onTernaryLeft(Token<?> token);
 
 
-  public void onTernaryLeft(Token<?> lookhead);
+    void onTernaryRight(Token<?> token);
 
+    void onTernaryEnd(Token<?> token);
 
-  public void onTernaryRight(Token<?> lookhead);
 
-  public void onTernaryEnd(Token<?> lookhead);
+    void onJoinLeft(Token<?> token);
 
 
-  public void onJoinLeft(Token<?> lookhead);
+    void onJoinRight(Token<?> token);
 
 
-  public void onJoinRight(Token<?> lookhead);
+    void onEq(Token<?> token);
 
 
-  public void onEq(Token<?> lookhead);
+    void onMatch(Token<?> token);
 
 
-  public void onMatch(Token<?> lookhead);
+    void onNeq(Token<?> token);
 
 
-  public void onNeq(Token<?> lookhead);
+    void onLt(Token<?> token);
 
 
-  public void onLt(Token<?> lookhead);
+    void onLe(Token<?> token);
 
 
-  public void onLe(Token<?> lookhead);
+    void onGt(Token<?> token);
 
 
-  public void onGt(Token<?> lookhead);
+    void onGe(Token<?> token);
 
 
-  public void onGe(Token<?> lookhead);
+    void onMod(Token<?> token);
 
 
-  public void onMod(Token<?> lookhead);
+    void onNot(Token<?> token);
 
 
-  public void onNot(Token<?> lookhead);
+    void onNeg(Token<?> token);
 
+    void onConstant(Token<?> token);
 
-  public void onNeg(Token<?> lookhead);
+    void onMethodName(Token<?> token);
 
-  public Expression getResult(boolean unboxObject);
+    void onMethodParameter(Token<?> token);
 
-  public void onConstant(Token<?> lookhead);
+    void onMethodInvoke(Token<?> token);
 
-  public void onMethodName(Token<?> lookhead);
+    void onLambdaDefineStart(Token<?> token);
 
-  public void onMethodParameter(Token<?> lookhead);
+    void onLambdaArgument(Token<?> token, FunctionParam param);
 
-  public void onMethodInvoke(Token<?> lookhead);
+    void onLambdaBodyStart(Token<?> token);
 
-  public void onLambdaDefineStart(Token<?> lookhead);
+    void onLambdaBodyEnd(Token<?> token);
 
-  public void onLambdaArgument(Token<?> lookhead, FunctionParam param);
+    void onArray(Token<?> token);
 
-  public void onLambdaBodyStart(Token<?> lookhead);
+    void onArrayIndexStart(Token<?> token);
 
-  public void onLambdaBodyEnd(Token<?> lookhead);
-
-  public void onArray(Token<?> lookhead);
-
-  public void onArrayIndexStart(Token<?> token);
-
-  public void onArrayIndexEnd(Token<?> lookhead);
+    void onArrayIndexEnd(Token<?> token);
 }

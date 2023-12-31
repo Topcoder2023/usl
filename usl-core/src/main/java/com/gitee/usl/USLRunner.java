@@ -9,7 +9,7 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
-import com.gitee.usl.infra.exception.UslException;
+import com.gitee.usl.infra.exception.USLException;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.configure.EngineConfig;
@@ -112,7 +112,7 @@ public class USLRunner {
                 .map(Configuration::getEngineConfig)
                 .map(EngineConfig::getEngineInitializer)
                 .map(manager -> manager.<T>run(param))
-                .orElseThrow(() -> new UslException("USL执行器尚未初始化"));
+                .orElseThrow(() -> new USLException("USL执行器尚未初始化"));
     }
 
     @Description("获取当前USL-Runner执行器的配置类")

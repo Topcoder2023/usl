@@ -63,26 +63,6 @@ public class ClassMethodFunction extends AbstractVariadicFunction {
     }
   }
 
-  private void readObject(ObjectInputStream input) throws ClassNotFoundException, IOException {
-    this.name = (String) input.readObject();
-    this.clazz = (Class<?>) input.readObject();
-    this.isStatic = input.readBoolean();
-    this.methodName = (String) input.readObject();
-
-    Map<String, List<Method>> allMethods = Reflector.findMethodsFromClass(clazz, isStatic);
-
-    List<Method> methods = allMethods.get(this.methodName);
-    if (methods == null) {
-      methods = Collections.emptyList();
-    }
-
-    try {
-      this.init(this.isStatic, this.methodName, methods);
-    } catch (Throwable t) {
-      throw Reflector.sneakyThrow(t);
-    }
-  }
-
   private void writeObject(ObjectOutputStream output) throws IOException {
     output.writeObject(this.name);
     output.writeObject(this.clazz);
