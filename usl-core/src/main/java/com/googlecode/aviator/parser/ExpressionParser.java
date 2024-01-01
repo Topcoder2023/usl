@@ -701,7 +701,7 @@ public class ExpressionParser implements Parser {
             // binary operation as variable for seq functions
             if (this.current.getType() == TokenType.Char) {
                 CharToken charToken = (CharToken) this.current;
-                if (!ExpressionLexer.isBinaryOP(charToken.getCh())) {
+                if (!CommonUtils.isBinaryOperator(charToken.getCh())) {
                     reportSyntaxError("unexpect char '" + charToken.getCh() + "'");
                 }
                 // make it as variable

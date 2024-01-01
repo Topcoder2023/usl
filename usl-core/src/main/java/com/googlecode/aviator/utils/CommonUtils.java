@@ -10,7 +10,33 @@ import com.gitee.usl.infra.exception.USLCompileException;
  * @author hongda.li
  */
 public class CommonUtils {
+    @Description("二元操作符")
+    private static final char[] OPS = {'=', '>', '<', '+', '-', '*', '/', '%', '!', '&', '|'};
+
+    @Description("十六进制字符")
+    private static final char[] VALID_HEX_CHAR = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f'};
+
     private CommonUtils() {
+    }
+
+    @Description("是否为有效的十六进制字符")
+    public static boolean isValidHexChar(final char ch) {
+        for (char c : VALID_HEX_CHAR) {
+            if (c == ch) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Description("是否为二元操作符")
+    public static boolean isBinaryOperator(final char ch) {
+        for (char tmp : OPS) {
+            if (tmp == ch) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Description("是否为非法的Java标识符")
