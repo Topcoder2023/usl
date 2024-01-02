@@ -4,10 +4,10 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.api.CompileConsumer;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Order;
-import com.gitee.usl.infra.utils.ScriptCompileHelper;
+import com.gitee.usl.grammar.asm.ES;
 import com.google.auto.service.AutoService;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
-import com.googlecode.aviator.BaseExpression;
+import com.gitee.usl.grammar.asm.BS;
 import com.googlecode.aviator.code.CodeGenerator;
 import com.googlecode.aviator.lexer.ExpressionLexer;
 import com.googlecode.aviator.parser.ExpressionParser;
@@ -35,7 +35,7 @@ public class CompileGeneratorConsumer implements CompileConsumer {
                 .getInstance();
 
         if (CharSequenceUtil.isBlank(event.getContent())) {
-            event.setExpression(ScriptCompileHelper.empty());
+            event.setExpression(ES.empty());
             log.warn("脚本内容为空");
             return;
         }
@@ -44,11 +44,11 @@ public class CompileGeneratorConsumer implements CompileConsumer {
             log.debug("开始编译脚本 - {}", event.getEventId());
             ExpressionLexer lexer = new ExpressionLexer(instance, event.getContent());
             CodeGenerator codeGenerator = instance.codeGenerator();
-            BaseExpression expression = (BaseExpression) new ExpressionParser(instance, lexer, codeGenerator).parse();
+            BS expression = (BS) new ExpressionParser(instance, lexer, codeGenerator).parse();
             event.setExpression(expression);
         } catch (Exception e) {
             log.error("脚本编译失败", e);
-            event.setExpression(ScriptCompileHelper.empty());
+            event.setExpression(ES.empty());
         }
     }
 }

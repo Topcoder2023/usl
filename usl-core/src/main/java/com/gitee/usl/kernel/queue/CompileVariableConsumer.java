@@ -9,7 +9,7 @@ import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.google.auto.service.AutoService;
-import com.googlecode.aviator.BaseExpression;
+import com.gitee.usl.grammar.asm.BS;
 import com.googlecode.aviator.lexer.token.Variable;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +25,7 @@ import java.util.Optional;
 public class CompileVariableConsumer implements CompileConsumer {
     @Override
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) {
-        BaseExpression expression = (BaseExpression) event.getExpression();
+        BS expression = (BS) event.getExpression();
 
         @Description("变量表")
         Map<String, Variable> variableMap = expression.getSymbolTable().getTable();
@@ -46,7 +46,7 @@ public class CompileVariableConsumer implements CompileConsumer {
         FunctionHolder functionHolder = engineConfig.getFunctionHolder();
 
         @Description("初始化结果")
-        StringMap initEnv = new StringMap(variableMap.size());
+        StringMap<Object> initEnv = new StringMap<>(variableMap.size());
 
         variableMap.forEach((name, var) -> {
             if (functionHolder.search(name) == null) {

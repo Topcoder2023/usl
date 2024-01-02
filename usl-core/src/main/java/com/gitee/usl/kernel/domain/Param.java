@@ -22,17 +22,17 @@ public class Param {
     private String script;
 
     @Description("上下文变量")
-    private StringMap context;
+    private StringMap<Object> context;
 
     public Param() {
         this.cached = true;
-        this.context = new StringMap();
+        this.context = new StringMap<>();
     }
 
     public Param(String script) {
         this.script = script;
         this.cached = true;
-        this.context = new StringMap();
+        this.context = new StringMap<>();
     }
 
     public Param addContext(String name, Object value) {
@@ -48,7 +48,7 @@ public class Param {
     }
 
     public Param setContext(Map<String, Object> map) {
-        this.context = new StringMap(map);
+        this.context = new StringMap<>(map);
         return this;
     }
 

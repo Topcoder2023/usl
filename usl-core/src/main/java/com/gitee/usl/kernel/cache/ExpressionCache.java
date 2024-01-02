@@ -2,7 +2,6 @@ package com.gitee.usl.kernel.cache;
 
 
 import com.gitee.usl.kernel.configure.CacheConfig;
-import com.googlecode.aviator.Expression;
 
 /**
  * @author hongda.li

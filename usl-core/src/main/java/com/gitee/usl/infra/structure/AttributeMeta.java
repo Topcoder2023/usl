@@ -8,7 +8,7 @@ import java.util.function.BiFunction;
  * @author hongda.li
  */
 @Description("元数据属性")
-public class AttributeMeta extends StringMap {
+public class AttributeMeta extends StringMap<Object> {
 
     @Override
     public Object remove(Object key) {

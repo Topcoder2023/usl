@@ -2,7 +2,9 @@ package com.googlecode.aviator;
 
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.grammar.ExceptionHandler;
 import com.gitee.usl.infra.exception.USLException;
+import com.gitee.usl.infra.structure.StringMap;
 import com.googlecode.aviator.Options.Value;
 import com.googlecode.aviator.asm.Opcodes;
 import com.googlecode.aviator.code.CodeGenerator;
@@ -49,11 +51,16 @@ public final class AviatorEvaluatorInstance {
     @Description("自定义类加载器")
     private final AviatorClassLoader classLoader;
 
-    @Description("系统函数表")
-    private final Map<String, Object> systemFunctionMap = new HashMap<>();
-
     @Description("脚本引擎选项配置集合")
     private volatile Map<Options, Value> options = new IdentityHashMap<>();
+
+    @Description("系统函数表")
+    private final StringMap<AviatorFunction> systemFunctionMap = new StringMap<>();
+
+    @Setter
+    @Getter
+    @Description("自定义异常处理器")
+    private ExceptionHandler exceptionHandler;
 
     @Description("操作符别名映射关系")
     private final Map<OperatorType, String> aliasOperatorTokens = new IdentityHashMap<>();
@@ -203,7 +210,7 @@ public final class AviatorEvaluatorInstance {
         Assert.notNull(functionLoader, "函数加载器尚未初始化");
 
         @Description("从内置函数中尝试获取函数")
-        AviatorFunction function = (AviatorFunction) this.systemFunctionMap.get(name);
+        AviatorFunction function = this.systemFunctionMap.get(name);
         if (function != null) {
             return function;
         }
@@ -247,12 +254,12 @@ public final class AviatorEvaluatorInstance {
 
     @Description("构建一个运行期间优先的字节码生成器")
     public CodeGenerator codeGenerator() {
-        return this.codeGenerator(this.classLoader, null);
+        return this.codeGenerator(this.classLoader);
     }
 
     @Description("构建一个运行期间优先的字节码生成器")
-    public CodeGenerator codeGenerator(final AviatorClassLoader classLoader, final String sourceFile) {
-        return new OptimizeCodeGenerator(this, sourceFile, classLoader);
+    public CodeGenerator codeGenerator(final AviatorClassLoader classLoader) {
+        return new OptimizeCodeGenerator(this, classLoader);
     }
 
 }

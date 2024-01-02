@@ -55,7 +55,7 @@ public class Reflector {
         if (t == null) {
             throw new NullPointerException();
         }
-        Reflector.<RuntimeException>sneakyThrow0(t);
+        Reflector.sneakyThrow0(t);
         return null;
     }
 

@@ -40,12 +40,12 @@ public interface Opcodes {
   // versions
 
   int V1_1 = 3 << 16 | 45;
-  int V1_2 = 0 << 16 | 46;
-  int V1_3 = 0 << 16 | 47;
-  int V1_4 = 0 << 16 | 48;
-  int V1_5 = 0 << 16 | 49;
-  int V1_6 = 0 << 16 | 50;
-  int V1_7 = 0 << 16 | 51;
+  int V1_2 = 46;
+  int V1_3 = 47;
+  int V1_4 = 48;
+  int V1_5 = 49;
+  int V1_6 = 50;
+  int V1_7 = 51;
 
   // access flags
 

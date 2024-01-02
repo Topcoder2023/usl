@@ -1,9 +1,9 @@
 package com.gitee.usl.kernel.queue;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.gitee.usl.api.CompileConsumer;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Order;
-import com.gitee.usl.infra.utils.ScriptCompileHelper;
 import com.gitee.usl.kernel.cache.CacheValue;
 import com.google.auto.service.AutoService;
 
@@ -19,7 +19,7 @@ public class CompileCacheConsumer implements CompileConsumer {
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) {
 
         @Description("唯一缓存键")
-        String generated = ScriptCompileHelper.generateKey(event.getContent());
+        String generated = DigestUtil.sha512Hex(event.getContent());
 
         @Description("缓存值")
         CacheValue cacheValue = CacheValue.of(event.getInitEnv(), event.getExpression());

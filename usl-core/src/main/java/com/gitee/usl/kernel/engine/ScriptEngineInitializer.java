@@ -1,8 +1,11 @@
 package com.gitee.usl.kernel.engine;
 
 import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.grammar.asm.ES;
+import com.gitee.usl.grammar.asm.Script;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.USLExecuteException;
@@ -10,7 +13,6 @@ import com.gitee.usl.infra.utils.MethodInvokerOnMissing;
 import com.gitee.usl.infra.structure.StringConsumer;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.infra.structure.wrapper.ObjectWrapper;
-import com.gitee.usl.infra.utils.ScriptCompileHelper;
 import com.gitee.usl.kernel.cache.CacheValue;
 import com.gitee.usl.kernel.cache.ExpressionCache;
 import com.gitee.usl.kernel.configure.EngineConfig;
@@ -80,7 +82,7 @@ public final class ScriptEngineInitializer implements Initializer {
         boolean enableCache = param.isCached();
 
         @Description("表达式缓存键")
-        String key = ScriptCompileHelper.generateKey(script);
+        String key = DigestUtil.sha512Hex(script);
 
         @Description("自旋次数阈值")
         IntWrapper count = new IntWrapper(NumberConstant.NORMAL_MAX_SIZE);
@@ -102,14 +104,16 @@ public final class ScriptEngineInitializer implements Initializer {
             }
         }
 
-        if (ScriptCompileHelper.isEmpty(expression.get().getExpression())) {
+        CacheValue cacheValue = expression.get();
+        Script compiled = cacheValue.getExpression();
+
+        if (compiled == null || ES.empty().equals(compiled)) {
             return Result.failure(ResultCode.COMPILE_FAILURE);
         }
 
         try {
-            return Result.success((T) expression.get()
-                    .getExpression()
-                    .execute(param.addContext(expression.get().getInitEnv()).getContext()));
+            Object result = compiled.execute(param.addContext(cacheValue.getInitEnv()).getContext());
+            return Result.success((T) result);
         } catch (USLExecuteException uee) {
             log.warn("USL执行出现错误", uee);
             return Result.failure(uee.getResultCode(), uee.getMessage());

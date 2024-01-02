@@ -1,22 +1,13 @@
-/**
- * Copyright (C) 2010 dennis zhuang (killme2008@gmail.com)
- * <p>
- * This library is free software; you can redistribute it and/or modify it under the terms of the
- * GNU Lesser General Public License as published by the Free Software Foundation; either version
- * 2.1 of the License, or (at your option) any later version.
- * <p>
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
- * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * <p>
- * You should have received a copy of the GNU Lesser General Public License along with this program;
- * if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- **/
 package com.googlecode.aviator.code.asm;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.text.StrPool;
+import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.infra.constant.AsmConstants;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
-import com.googlecode.aviator.ClassExpression;
-import com.googlecode.aviator.Expression;
+import com.gitee.usl.grammar.asm.CS;
+import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.asm.ClassWriter;
 import com.googlecode.aviator.asm.Label;
@@ -40,8 +31,8 @@ import com.googlecode.aviator.runtime.LambdaFunctionBootstrap;
 import com.googlecode.aviator.runtime.op.OperationRuntime;
 import com.googlecode.aviator.utils.Constants;
 import com.googlecode.aviator.utils.TypeUtils;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -49,56 +40,32 @@ import java.util.concurrent.atomic.AtomicLong;
 import static com.googlecode.aviator.asm.Opcodes.*;
 
 /**
- * Code generator using asm
- *
- * @author dennis
- *
+ * @author hongda.li
  */
+@Slf4j
 public class ASMCodeGenerator extends BaseEvalCodeGenerator {
-
     private static final String RUNTIME_UTILS = "com/googlecode/aviator/runtime/RuntimeUtils";
     private static final String OBJECT_DESC = "Lcom/googlecode/aviator/runtime/type/AviatorObject;";
-    private static final String JAVA_TYPE_OWNER =
-            "com/googlecode/aviator/runtime/type/AviatorJavaType";
+    private static final String JAVA_TYPE_OWNER = "com/googlecode/aviator/runtime/type/AviatorJavaType";
     private static final String CONSTRUCTOR_METHOD_NAME = "<init>";
     private static final String OBJECT_OWNER = "com/googlecode/aviator/runtime/type/AviatorObject";
     public static final String FUNC_ARGS_INNER_VAR = "__fas__";
     private static final String FIELD_PREFIX = "f";
-    // Class Writer to generate class
-    // private final ClassWriter clazzWriter;
-    // Trace visitor
-    // private ClassVisitor traceClassVisitor;
-    // Check visitor
     private final ClassWriter classWriter;
-    // Method visitor
     private MethodVisitor mv;
-    // Class name
     private final String className;
     private static final AtomicLong CLASS_COUNTER = new AtomicLong();
-
-    /**
-     * Operands count to check stack frames
-     */
     private int operandsCount = 0;
-
     private int maxStacks = 0;
     private int maxLocals = 2;
-
     private int fieldCounter = 0;
 
-    private Map<String/* variable name */, String/* inner var name */> innerVars =
-            Collections.emptyMap();
-    private Map<String/* method name */, String/* inner method name */> innerMethodMap =
-            Collections.emptyMap();
-    private Map<Token<?>/* constant token */, String/* field name */> constantPool =
-            Collections.emptyMap();
-
-    private Map<String, Integer/* counter */> methodTokens = Collections.emptyMap();
-
-    private final Map<Label, Map<String/* inner name */, Integer/* local index */>> labelNameIndexMap =
-            new IdentityHashMap<>();
+    private Map<String, String> innerVars = Collections.emptyMap();
+    private Map<String, String> innerMethodMap = Collections.emptyMap();
+    private Map<Token<?>, String> constantPool = Collections.emptyMap();
+    private Map<String, Integer> methodTokens = Collections.emptyMap();
+    private final Map<Label, Map<String, Integer>> labelNameIndexMap = new IdentityHashMap<>();
     private static final Label START_LABEL = new Label();
-
     private Label currentLabel = START_LABEL;
 
     private void setMaxStacks(final int newMaxStacks) {
@@ -107,21 +74,15 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         }
     }
 
-    public ASMCodeGenerator(final AviatorEvaluatorInstance instance, final String sourceFile,
+    public ASMCodeGenerator(final AviatorEvaluatorInstance instance,
                             final AviatorClassLoader classLoader) {
-        super(instance, sourceFile, classLoader);
-        // Generate inner class name
-        this.className =
-                "AviatorScript_" + System.currentTimeMillis() + "_" + CLASS_COUNTER.getAndIncrement();
-        // Auto compute frames
+        super(instance, classLoader);
+        this.className = AsmConstants.CLASS_NAME_PREFIX
+                + DateUtil.format(new DateTime(), AsmConstants.DATETIME_FORMAT)
+                + StrPool.UNDERLINE
+                + CLASS_COUNTER.getAndIncrement();
         this.classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-        // if (trace) {
-        // this.traceClassVisitor = new TraceClassVisitor(this.clazzWriter, new
-        // PrintWriter(traceOut));
-        // this.classWriter = new CheckClassAdapter(this.traceClassVisitor);
-        // } else {
-        // this.classWriter = new CheckClassAdapter(this.clazzWriter);
-        // }
+        log.debug("字节码构建开始，类名 - {}", this.className);
         visitClass();
     }
 
@@ -136,7 +97,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
     }
 
     private void startVisitMethodCode() {
-        this.mv = this.classWriter.visitMethod(ACC_PUBLIC + +ACC_FINAL, "execute0",
+        this.mv = this.classWriter.visitMethod(ACC_PUBLIC + +ACC_FINAL, "customImpl",
                 "(Lcom/googlecode/aviator/utils/Env;)Ljava/lang/Object;",
                 "(Lcom/googlecode/aviator/utils/Env;)Ljava/lang/Object;", null);
         this.mv.visitCode();
@@ -167,7 +128,6 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         }
         this.mv.visitMaxs(this.maxStacks, this.maxLocals);
         this.mv.visitEnd();
-
     }
 
     private void endVisitClass() {
@@ -187,7 +147,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         this.mv.visitVarInsn(ALOAD, 1);
         this.mv.visitVarInsn(ALOAD, 2);
         this.mv.visitVarInsn(ALOAD, 3);
-        this.mv.visitMethodInsn(INVOKESPECIAL, "com/googlecode/aviator/ClassExpression",
+        this.mv.visitMethodInsn(INVOKESPECIAL, AsmConstants.EXPRESSION_CLASS_NAME,
                 CONSTRUCTOR_METHOD_NAME,
                 "(Lcom/googlecode/aviator/AviatorEvaluatorInstance;Ljava/util/List;Lcom/googlecode/aviator/lexer/SymbolTable;)V");
         if (!this.innerVars.isEmpty()) {
@@ -238,9 +198,9 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
 
     }
 
+    @Description("通过字节码访问类")
     private void visitClass() {
-        this.classWriter.visit(this.instance.getBytecodeVersion(), ACC_PUBLIC + ACC_SUPER,
-                this.className, null, "com/googlecode/aviator/ClassExpression", null);
+        this.classWriter.visit(this.instance.getBytecodeVersion(), ACC_PUBLIC + ACC_SUPER, this.className, null, AsmConstants.EXPRESSION_CLASS_NAME, null);
         this.classWriter.visitSource(this.sourceFile == null ? this.className : this.sourceFile, null);
     }
 
@@ -677,24 +637,20 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
      * @see com.googlecode.aviator.code.CodeGenerator#getResult()
      */
     @Override
-    public Expression getResult(final boolean unboxObject) {
+    public Script getResult(final boolean unboxObject) {
         end(unboxObject);
 
         byte[] bytes = this.classWriter.toByteArray();
         try {
             boolean enableSerializable = this.instance.getOptionValue(Options.SERIALIZABLE).bool;
-            Class<?> defineClass = ClassDefiner.defineClass(this.className, Expression.class, bytes,
+            Class<?> defineClass = ClassDefiner.defineClass(this.className, Script.class, bytes,
                     this.classLoader, enableSerializable);
             Constructor<?> constructor =
                     defineClass.getConstructor(AviatorEvaluatorInstance.class, List.class, SymbolTable.class);
-            ClassExpression exp = (ClassExpression) constructor.newInstance(this.instance,
-                    new ArrayList<VariableMeta>(this.variables.values()), this.symbolTable);
+            CS exp = (CS) constructor.newInstance(this.instance,
+                    new ArrayList<>(this.variables.values()), this.symbolTable);
             exp.setLambdaBootstraps(this.lambdaBootstraps);
-            exp.setFuncsArgs(this.funcsArgs);
-            exp.setSourceFile(this.sourceFile);
-            if (enableSerializable) {
-                exp.setClassBytes(bytes);
-            }
+            exp.setFunctionsArgs(this.funcsArgs);
             return exp;
         } catch (ExpressionRuntimeException e) {
             throw e;
@@ -1201,9 +1157,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         if (this.lambdaGenerator == null) {
             Boolean newLexicalScope = lookhead.getMeta(Constants.SCOPE_META, false);
             Boolean inheritEnv = lookhead.getMeta(Constants.INHERIT_ENV_META, false);
-            // TODO cache?
-            this.lambdaGenerator = new LambdaGenerator(this.instance, this, this.parser, this.classLoader,
-                    this.sourceFile, newLexicalScope, inheritEnv);
+            this.lambdaGenerator = new LambdaGenerator(this.instance, this, this.parser, this.classLoader, newLexicalScope, inheritEnv);
             this.lambdaGenerator.setScopeInfo(this.parser.enterScope(newLexicalScope));
         } else {
             throw new CompileExpressionErrorException("Compile lambda error");

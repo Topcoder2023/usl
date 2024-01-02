@@ -4,14 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import com.googlecode.aviator.AviatorEvaluatorInstance;
-
-import com.googlecode.aviator.BaseExpression;
-import com.googlecode.aviator.Feature;
 import com.googlecode.aviator.exception.CompareNotSupportedException;
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
-import com.googlecode.aviator.runtime.RuntimeUtils;
-import com.googlecode.aviator.utils.Constants;
 import com.googlecode.aviator.utils.TypeUtils;
 
 /**

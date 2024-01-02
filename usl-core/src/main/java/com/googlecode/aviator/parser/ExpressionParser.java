@@ -14,7 +14,7 @@ import com.gitee.usl.infra.structure.AwaitVariable;
 import com.gitee.usl.infra.structure.FunctionVariable;
 import com.gitee.usl.infra.structure.VarVariable;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
-import com.googlecode.aviator.Expression;
+import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.Feature;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.code.CodeGenerator;
@@ -121,7 +121,7 @@ public class ExpressionParser implements Parser {
     }
 
     @Override
-    public Expression parse() {
+    public Script parse() {
         StatementType statementType = statements();
         if (this.current != null) {
             if (statementType == StatementType.Ternary) {

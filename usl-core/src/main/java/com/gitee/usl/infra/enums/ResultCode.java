@@ -62,6 +62,9 @@ public enum ResultCode {
     @Description("不支持的值类型")
     NOT_SUPPORT_VALUE_TYPE(522),
 
+    @Description("Lambda匿名函数不存在")
+    NOT_FOUND_OF_LAMBDA(523),
+
     @Description("等待超时")
     TIMEOUT(600);
 

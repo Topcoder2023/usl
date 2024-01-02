@@ -2,8 +2,8 @@ package com.googlecode.aviator.runtime.function;
 
 import java.util.List;
 import java.util.Map;
-import com.googlecode.aviator.BaseExpression;
-import com.googlecode.aviator.Expression;
+import com.gitee.usl.grammar.asm.BS;
+import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.runtime.FunctionParam;
 import com.googlecode.aviator.runtime.RuntimeUtils;
 import com.googlecode.aviator.runtime.type.AviatorJavaType;
@@ -27,7 +27,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
   protected List<FunctionParam> params;
 
   // the compiled lambda body expression
-  protected BaseExpression expression;
+  protected BS expression;
 
   // closure context
   protected Env context;
@@ -70,12 +70,12 @@ public final class LambdaFunction extends AbstractVariadicFunction {
   }
 
   public LambdaFunction(final String name, final List<FunctionParam> params,
-      final Expression expression, final Env context) {
+                        final Script expression, final Env context) {
     super();
     this.name = name;
     this.params = params;
     this.context = context;
-    this.expression = (BaseExpression) expression;
+    this.expression = (BS) expression;
     if (!this.params.isEmpty()) {
       this.isVariadic = this.params.get(this.params.size() - 1).isVariadic();
     } else {
@@ -83,7 +83,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
     }
   }
 
-  public BaseExpression getExpression() {
+  public BS getExpression() {
     return this.expression;
   }
 
@@ -112,7 +112,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
       if (this.isVariadic && !this.installed) {
         return variadicCall(env, true);
       }
-      return AviatorRuntimeJavaType.valueOf(this.expression.executeDirectly(newEnv(env)));
+      return AviatorRuntimeJavaType.valueOf(this.expression.defaultImpl(newEnv(env)));
     } finally {
       if (this.inheritEnv) {
         this.context = null;
@@ -126,7 +126,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
       if (this.isVariadic && !this.installed) {
         return variadicCall(env, true, arg1);
       }
-      return AviatorRuntimeJavaType.valueOf(this.expression.executeDirectly(newEnv(env, arg1)));
+      return AviatorRuntimeJavaType.valueOf(this.expression.defaultImpl(newEnv(env, arg1)));
     } finally {
       if (this.inheritEnv) {
         this.context = null;
@@ -142,7 +142,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
         return variadicCall(env, true, arg1, arg2);
       }
       return AviatorRuntimeJavaType
-          .valueOf(this.expression.executeDirectly(newEnv(env, arg1, arg2)));
+          .valueOf(this.expression.defaultImpl(newEnv(env, arg1, arg2)));
     } finally {
       if (this.inheritEnv) {
         this.context = null;
@@ -158,7 +158,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
         return variadicCall(env, true, arg1, arg2, arg3);
       }
       return AviatorRuntimeJavaType
-          .valueOf(this.expression.executeDirectly(newEnv(env, arg1, arg2, arg3)));
+          .valueOf(this.expression.defaultImpl(newEnv(env, arg1, arg2, arg3)));
     } finally {
       if (this.inheritEnv) {
         this.context = null;
@@ -174,7 +174,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
         return variadicCall(env, true, arg1, arg2, arg3, arg4);
       }
       return AviatorRuntimeJavaType
-          .valueOf(this.expression.executeDirectly(newEnv(env, arg1, arg2, arg3, arg4)));
+          .valueOf(this.expression.defaultImpl(newEnv(env, arg1, arg2, arg3, arg4)));
     } finally {
       if (this.inheritEnv) {
         this.context = null;
@@ -191,7 +191,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
         return variadicCall(env, true, arg1, arg2, arg3, arg4, arg5);
       }
       return AviatorRuntimeJavaType
-          .valueOf(this.expression.executeDirectly(newEnv(env, arg1, arg2, arg3, arg4, arg5)));
+          .valueOf(this.expression.defaultImpl(newEnv(env, arg1, arg2, arg3, arg4, arg5)));
     } finally {
       if (this.inheritEnv) {
         this.context = null;
@@ -209,7 +209,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
         return variadicCall(env, true, arg1, arg2, arg3, arg4, arg5, arg6);
       }
       return AviatorRuntimeJavaType.valueOf(
-          this.expression.executeDirectly(newEnv(env, arg1, arg2, arg3, arg4, arg5, arg6)));
+          this.expression.defaultImpl(newEnv(env, arg1, arg2, arg3, arg4, arg5, arg6)));
     } finally {
       if (this.inheritEnv) {
         this.context = null;
@@ -227,7 +227,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
         return variadicCall(env, true, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
       }
       return AviatorRuntimeJavaType.valueOf(
-          this.expression.executeDirectly(newEnv(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7)));
+          this.expression.defaultImpl(newEnv(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7)));
     } finally {
       if (this.inheritEnv) {
         this.context = null;
@@ -274,7 +274,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
       args = DispatchFunction.processVariadicArgs(env, args.length, this, args);
     }
 
-    return AviatorRuntimeJavaType.valueOf(this.expression.executeDirectly(newEnv(env, args)));
+    return AviatorRuntimeJavaType.valueOf(this.expression.defaultImpl(newEnv(env, args)));
   }
 
   @Override

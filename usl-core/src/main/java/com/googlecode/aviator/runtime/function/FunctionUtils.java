@@ -18,8 +18,10 @@ package com.googlecode.aviator.runtime.function;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import com.gitee.usl.infra.constant.AsmConstants;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
-import com.googlecode.aviator.BaseExpression;
+import com.gitee.usl.grammar.asm.BS;
 import com.googlecode.aviator.code.asm.ASMCodeGenerator;
 import com.googlecode.aviator.runtime.FunctionArgument;
 import com.googlecode.aviator.runtime.RuntimeUtils;
@@ -52,7 +54,7 @@ public class FunctionUtils {
   @SuppressWarnings("unchecked")
   public static List<FunctionArgument> getFunctionArguments(final Map<String, Object> env) {
     Map<Integer, List<FunctionArgument>> funcParams =
-        (Map<Integer, List<FunctionArgument>>) env.get(BaseExpression.FUNC_PARAMS_VAR);
+        (Map<Integer, List<FunctionArgument>>) env.get(AsmConstants.FUNC_PARAMS_VAR);
     if (funcParams == null) {
       return null;
     }

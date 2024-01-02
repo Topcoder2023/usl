@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.googlecode.aviator.AviatorEvaluatorInstance;
-import com.googlecode.aviator.Expression;
+import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.Feature;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.function.internal.ReducerResult;
@@ -64,7 +64,7 @@ public class Env implements Map<String, Object>, Serializable {
   /** Override values map. */
   private Map<String, Object> mOverrides;
 
-  private Expression expression;
+  private Script expression;
 
   private List<String> importedSymbols;
 
@@ -104,11 +104,11 @@ public class Env implements Map<String, Object>, Serializable {
     return this.importedSymbols;
   }
 
-  public Expression getExpression() {
+  public Script getExpression() {
     return this.expression;
   }
 
-  public void setExpression(final Expression expression) {
+  public void setExpression(final Script expression) {
     this.expression = expression;
   }
 
@@ -148,7 +148,7 @@ public class Env implements Map<String, Object>, Serializable {
     this.instance = instance;
   }
 
-  public void configure(final AviatorEvaluatorInstance instance, final Expression exp) {
+  public void configure(final AviatorEvaluatorInstance instance, final Script exp) {
     this.instance = instance;
     this.expression = exp;
   }

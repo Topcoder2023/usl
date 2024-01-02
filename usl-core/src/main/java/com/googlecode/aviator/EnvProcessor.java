@@ -1,5 +1,7 @@
 package com.googlecode.aviator;
 
+import com.gitee.usl.grammar.asm.Script;
+
 import java.util.Map;
 
 /**
@@ -15,7 +17,7 @@ public interface EnvProcessor {
    * @param env the env object
    * @param script the script object
    */
-  void beforeExecute(Map<String, Object> env, Expression script);
+  void beforeExecute(Map<String, Object> env, Script script);
 
   /**
    * This method will be called after executing the expression.
@@ -23,5 +25,5 @@ public interface EnvProcessor {
    * @param env the env object
    * @param script the script object
    */
-  void afterExecute(Map<String, Object> env, Expression script);
+  void afterExecute(Map<String, Object> env, Script script);
 }

@@ -1,7 +1,7 @@
 package com.googlecode.aviator.runtime;
 
-import com.googlecode.aviator.BaseExpression;
-import com.googlecode.aviator.Expression;
+import com.gitee.usl.grammar.asm.BS;
+import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.parser.VariableMeta;
 import com.googlecode.aviator.runtime.function.LambdaFunction;
 import com.googlecode.aviator.utils.Env;
@@ -25,7 +25,7 @@ public class LambdaFunctionBootstrap implements Comparable<LambdaFunctionBootstr
   // the generated lambda class name
   private final String name;
   // The compiled lambda body expression
-  private final BaseExpression expression;
+  private final BS expression;
   // The method handle to create lambda instance.
   // private final MethodHandle constructor;
   // The arguments list.
@@ -44,39 +44,18 @@ public class LambdaFunctionBootstrap implements Comparable<LambdaFunctionBootstr
     return this.name;
   }
 
-  public LambdaFunctionBootstrap(final String name, final Expression expression,
+  public LambdaFunctionBootstrap(final String name, final Script expression,
       final List<FunctionParam> arguments, final boolean inheritEnv) {
     super();
     this.name = name;
-    this.expression = (BaseExpression) expression;
+    this.expression = (BS) expression;
     // this.constructor = constructor;
     this.params = arguments;
     this.inheritEnv = inheritEnv;
   }
 
 
-  public Collection<VariableMeta> getClosureOverFullVarNames() {
-    Map<String, VariableMeta> fullNames = this.expression.getFullNameMetas();
-
-    for (FunctionParam param : this.params) {
-      fullNames.remove(param.getName());
-    }
-
-    Iterator<Map.Entry<String, VariableMeta>> it = fullNames.entrySet().iterator();
-    while (it.hasNext()) {
-      Map.Entry<String, VariableMeta> fullName = it.next();
-      for (FunctionParam param : this.params) {
-        if (fullName.getKey().startsWith(param.getName() + ".")) {
-          it.remove();
-          break;
-        }
-      }
-    }
-
-    return fullNames.values();
-  }
-
-  public Expression getExpression() {
+  public Script getExpression() {
     return this.expression;
   }
 

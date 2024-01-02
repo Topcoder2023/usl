@@ -12,35 +12,28 @@ import com.googlecode.aviator.utils.Env;
 
 import java.util.*;
 
+/**
+ * @author hongda.li
+ */
 public abstract class BaseEvalCodeGenerator implements EvalCodeGenerator {
 
   protected final AviatorEvaluatorInstance instance;
+
   protected Map<String, VariableMeta> variables = Collections.emptyMap();
-  protected final String sourceFile;
+  protected final String sourceFile = null;
   protected LambdaGenerator lambdaGenerator;
   protected final AviatorClassLoader classLoader;
+
   protected Parser parser;
   protected SymbolTable symbolTable;
-  /**
-   * parent code generator when compiling lambda.
-   */
   protected CodeGenerator parentCodeGenerator;
-  /**
-   * Compiled lambda functions.
-   */
   protected Map<String, LambdaFunctionBootstrap> lambdaBootstraps;
   protected final ArrayDeque<MethodMetaData> methodMetaDataStack = new ArrayDeque<>();
-  /**
-   * function params info.
-   */
-  protected Map<Integer/* internal function id */, List<FunctionArgument>> funcsArgs;
+  protected Map<Integer, List<FunctionArgument>> funcsArgs;
   private int funcInvocationId = 0;
-  /**
-   * Compile environment only has the *instance*.
-   */
   protected final Env compileEnv;
 
-  protected Map<Integer/* internal function id */, List<FunctionArgument>> getFuncsArgs() {
+  protected Map<Integer, List<FunctionArgument>> getFuncsArgs() {
     if (this.funcsArgs == null) {
       this.funcsArgs = new HashMap<>();
     }
@@ -67,13 +60,13 @@ public abstract class BaseEvalCodeGenerator implements EvalCodeGenerator {
     return this.classLoader;
   }
 
-  public BaseEvalCodeGenerator(final AviatorEvaluatorInstance instance, final String sourceFile,
+  public BaseEvalCodeGenerator(final AviatorEvaluatorInstance instance,
       final AviatorClassLoader classLoader) {
     super();
     this.instance = instance;
     this.compileEnv = new Env();
     this.compileEnv.setInstance(this.instance);
-    this.sourceFile = sourceFile;
+
     this.classLoader = classLoader;
   }
 

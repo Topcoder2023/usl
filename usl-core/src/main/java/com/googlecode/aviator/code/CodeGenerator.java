@@ -15,7 +15,7 @@
 package com.googlecode.aviator.code;
 
 import com.gitee.usl.api.annotation.Description;
-import com.googlecode.aviator.Expression;
+import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.lexer.token.Token;
 import com.googlecode.aviator.parser.Parser;
 import com.googlecode.aviator.runtime.FunctionParam;
@@ -26,7 +26,7 @@ import com.googlecode.aviator.runtime.FunctionParam;
 @Description("字节码生成器接口")
 public interface CodeGenerator {
 
-    Expression getResult(boolean unboxObject);
+    Script getResult(boolean unboxObject);
 
     void onAssignment(Token<?> token);
 

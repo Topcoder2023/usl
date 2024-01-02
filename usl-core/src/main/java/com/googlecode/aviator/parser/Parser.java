@@ -1,7 +1,7 @@
 package com.googlecode.aviator.parser;
 
 import com.gitee.usl.api.annotation.Description;
-import com.googlecode.aviator.Expression;
+import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.code.CodeGenerator;
 import com.googlecode.aviator.lexer.SymbolTable;
 
@@ -11,7 +11,7 @@ import com.googlecode.aviator.lexer.SymbolTable;
 public interface Parser {
 
     @Description("解析表达式并编译")
-    Expression parse();
+    Script parse();
 
     SymbolTable getSymbolTable();
 

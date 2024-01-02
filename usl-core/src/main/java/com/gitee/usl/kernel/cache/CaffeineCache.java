@@ -8,7 +8,6 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import com.google.auto.service.AutoService;
-import com.googlecode.aviator.Expression;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 

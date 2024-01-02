@@ -3,7 +3,7 @@ package com.gitee.usl.plugin.impl.stack;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.googlecode.aviator.EnvProcessor;
-import com.googlecode.aviator.Expression;
+import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.utils.Env;
 import lombok.Getter;
 import lombok.ToString;
@@ -26,12 +26,12 @@ public class EnvProcessorImpl implements EnvProcessor {
     }
 
     @Override
-    public void beforeExecute(Map<String, Object> env, Expression script) {
+    public void beforeExecute(Map<String, Object> env, Script script) {
         CallStack.push(runnerName, new FunctionSession((Env) env, null, null));
     }
 
     @Override
-    public void afterExecute(Map<String, Object> env, Expression script) {
+    public void afterExecute(Map<String, Object> env, Script script) {
         CallStack.clear(runnerName);
     }
 

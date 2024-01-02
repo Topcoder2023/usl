@@ -1,6 +1,9 @@
 package com.googlecode.aviator.code;
 
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.grammar.asm.BS;
+import com.gitee.usl.grammar.asm.Script;
+import com.gitee.usl.grammar.asm.LS;
 import com.googlecode.aviator.*;
 import com.googlecode.aviator.code.asm.ASMCodeGenerator;
 import com.googlecode.aviator.exception.CompileExpressionErrorException;
@@ -45,14 +48,9 @@ public class OptimizeCodeGenerator implements CodeGenerator {
      */
     private Map<String, LambdaFunctionBootstrap> lambdaBootstraps;
 
-    private final String sourceFile;
-
-    public OptimizeCodeGenerator(final AviatorEvaluatorInstance instance,
-                                 final String sourceFile,
-                                 final ClassLoader classLoader) {
+    public OptimizeCodeGenerator(final AviatorEvaluatorInstance instance, final ClassLoader classLoader) {
         this.instance = instance;
-        this.sourceFile = sourceFile;
-        this.evalCodeGenerator = new ASMCodeGenerator(instance, sourceFile, (AviatorClassLoader) classLoader);
+        this.evalCodeGenerator = new ASMCodeGenerator(instance, (AviatorClassLoader) classLoader);
     }
 
     private Env getCompileEnv() {
@@ -310,7 +308,7 @@ public class OptimizeCodeGenerator implements CodeGenerator {
 
 
     @Override
-    public Expression getResult(final boolean unboxObject) {
+    public Script getResult(final boolean unboxObject) {
         // execute literal expression
         while (execute() > 0) {
             ;
@@ -396,16 +394,16 @@ public class OptimizeCodeGenerator implements CodeGenerator {
             }
         }
 
-        Expression exp = null;
+        Script exp = null;
 
         // Last token is a literal token,then return a LiteralExpression
         if (this.tokenList.size() <= 1) {
             if (this.tokenList.isEmpty()) {
-                exp = new LiteralExpression(this.instance, null, new ArrayList<>(variables.values()));
+                exp = new LS(this.instance, null, new ArrayList<>(variables.values()));
             } else {
                 final Token<?> lastToken = this.tokenList.get(0);
                 if (ExpressionParser.isLiteralToken(lastToken)) {
-                    exp = new LiteralExpression(this.instance,
+                    exp = new LS(this.instance,
                             getAviatorObjectFromToken(lastToken).getValue(getCompileEnv()),
                             new ArrayList<>(variables.values()));
                 }
@@ -419,9 +417,8 @@ public class OptimizeCodeGenerator implements CodeGenerator {
             exp = this.evalCodeGenerator.getResult(unboxObject);
         }
 
-        if (exp instanceof BaseExpression) {
-            ((BaseExpression) exp).setCompileEnv(getCompileEnv());
-            ((BaseExpression) exp).setSourceFile(this.sourceFile);
+        if (exp instanceof BS) {
+            ((BS) exp).setCompileEnv(getCompileEnv());
         }
 
         return exp;
@@ -706,7 +703,7 @@ public class OptimizeCodeGenerator implements CodeGenerator {
             Boolean newLexicalScope = token.getMeta(Constants.SCOPE_META, false);
             Boolean inheritEnv = token.getMeta(Constants.INHERIT_ENV_META, false);
             this.lambdaGenerator = new LambdaGenerator(this.instance, this, this.parser,
-                    this.evalCodeGenerator.getClassLoader(), this.sourceFile, newLexicalScope, inheritEnv);
+                    this.evalCodeGenerator.getClassLoader(), newLexicalScope, inheritEnv);
             this.lambdaGenerator.setScopeInfo(this.parser.enterScope(newLexicalScope));
         } else {
             throw new CompileExpressionErrorException("Compile lambda error");

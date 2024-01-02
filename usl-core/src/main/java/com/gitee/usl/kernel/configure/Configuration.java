@@ -20,7 +20,7 @@ public final class Configuration {
     private USLRunner runner;
 
     @Description("自定义扩展配置类")
-    private final StringMap customConfig = new StringMap();
+    private final StringMap<Object> customConfig = new StringMap<>();
 
     @Description("缓存配置类")
     private final CacheConfig cacheConfig = new CacheConfig(this);

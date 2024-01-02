@@ -1,6 +1,6 @@
 package com.googlecode.aviator.runtime.type.string;
 
-import com.googlecode.aviator.Expression;
+import com.gitee.usl.grammar.asm.Script;
 
 import java.util.Map;
 
@@ -11,9 +11,9 @@ import java.util.Map;
  *
  */
 public class ExpressionSegment implements StringSegment {
-  Expression exp;
+  Script exp;
 
-  public ExpressionSegment(final Expression exp) {
+  public ExpressionSegment(final Script exp) {
     super();
     this.exp = exp;
   }

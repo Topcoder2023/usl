@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
-import com.googlecode.aviator.Expression;
+import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.lexer.token.Token;
 import com.googlecode.aviator.parser.AviatorClassLoader;
 import com.googlecode.aviator.parser.Parser;
@@ -40,12 +40,12 @@ public class LambdaGenerator implements CodeGenerator {
 
   public LambdaGenerator(final AviatorEvaluatorInstance instance,
       final CodeGenerator parentCodeGenerator, final Parser parser,
-      final AviatorClassLoader classLoader, final String sourceFile, final boolean newLexicalScope,
+      final AviatorClassLoader classLoader, final boolean newLexicalScope,
       final boolean inheritEnv) {
     this.params = new ArrayList<>();
     // this.instance = instance;
     this.parentCodeGenerator = parentCodeGenerator;
-    this.codeGenerator = instance.codeGenerator(classLoader, sourceFile);
+    this.codeGenerator = instance.codeGenerator(classLoader);
     this.codeGenerator.setParser(parser);
     // this.classLoader = classLoader;
     this.newLexicalScope = newLexicalScope;
@@ -186,7 +186,7 @@ public class LambdaGenerator implements CodeGenerator {
   // }
 
   public LambdaFunctionBootstrap getLmabdaBootstrap() {
-    Expression expression = getResult(!this.newLexicalScope);
+    Script expression = getResult(!this.newLexicalScope);
     // endVisitClass();
     // byte[] bytes = this.classWriter.toByteArray();
     // try {
@@ -420,7 +420,7 @@ public class LambdaGenerator implements CodeGenerator {
 
 
   @Override
-  public Expression getResult(final boolean unboxObject) {
+  public Script getResult(final boolean unboxObject) {
     return this.codeGenerator.getResult(unboxObject);
   }
 

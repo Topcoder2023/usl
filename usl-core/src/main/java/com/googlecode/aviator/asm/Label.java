@@ -21,6 +21,8 @@
  */
 package com.googlecode.aviator.asm;
 
+import lombok.EqualsAndHashCode;
+
 /**
  * A label represents a position in the bytecode of a method. Labels are used for jump, goto, and
  * switch instructions, and for try catch blocks. A label designates the <i>instruction</i> that is
@@ -29,6 +31,7 @@ package com.googlecode.aviator.asm;
  *
  * @author Eric Bruneton
  */
+@EqualsAndHashCode
 public class Label {
 
   /**
