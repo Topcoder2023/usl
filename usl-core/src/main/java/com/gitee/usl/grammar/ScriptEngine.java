@@ -1,17 +1,16 @@
-package com.googlecode.aviator;
+package com.gitee.usl.grammar;
 
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.grammar.ExceptionHandler;
+import com.gitee.usl.grammar.asm.GlobalClassLoader;
 import com.gitee.usl.infra.exception.USLException;
 import com.gitee.usl.infra.structure.StringMap;
+import com.googlecode.aviator.*;
 import com.googlecode.aviator.Options.Value;
 import com.googlecode.aviator.asm.Opcodes;
 import com.googlecode.aviator.code.CodeGenerator;
 import com.googlecode.aviator.code.OptimizeCodeGenerator;
-import com.googlecode.aviator.lexer.SymbolTable;
 import com.googlecode.aviator.lexer.token.OperatorType;
-import com.googlecode.aviator.parser.AviatorClassLoader;
 import com.googlecode.aviator.runtime.RuntimeFunctionDelegator;
 import com.googlecode.aviator.runtime.function.system.*;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
@@ -30,11 +29,11 @@ import java.util.*;
 @Slf4j
 @Getter
 @Description("脚本引擎实例")
-public final class AviatorEvaluatorInstance {
+public final class ScriptEngine {
 
     @Setter
     @Description("前置后置处理器")
-    private EnvProcessor envProcessor;
+    private ScriptProcessor envProcessor;
 
     @Setter
     @Description("函数加载器")
@@ -49,7 +48,7 @@ public final class AviatorEvaluatorInstance {
     private int bytecodeVersion = Opcodes.V1_7;
 
     @Description("自定义类加载器")
-    private final AviatorClassLoader classLoader;
+    private final GlobalClassLoader classLoader;
 
     @Description("脚本引擎选项配置集合")
     private volatile Map<Options, Value> options = new IdentityHashMap<>();
@@ -69,14 +68,14 @@ public final class AviatorEvaluatorInstance {
     private final Map<OperatorType, AviatorFunction> operatorFunctionMap = new IdentityHashMap<>();
 
     @Description("脚本引擎实例构造器")
-    public AviatorEvaluatorInstance() {
+    public ScriptEngine() {
         for (Options opt : Options.values()) {
             this.options.put(opt, opt.getDefaultValueObject());
         }
         setOption(Options.EVAL_MODE, EvalMode.ASM);
         loadFeatureFunctions();
         loadSystemFunctions();
-        this.classLoader = AccessController.doPrivileged((PrivilegedAction<AviatorClassLoader>) () -> new AviatorClassLoader(this.getClass().getClassLoader()));
+        this.classLoader = AccessController.doPrivileged((PrivilegedAction<GlobalClassLoader>) () -> new GlobalClassLoader(this.getClass().getClassLoader()));
     }
 
     @Description("为操作符函数建立别名")
@@ -188,7 +187,7 @@ public final class AviatorEvaluatorInstance {
 
         String name = function.getName();
 
-        if (SymbolTable.isReservedKeyword(name)) {
+        if (ScriptKeyword.isReservedKeyword(name)) {
             throw new USLException("函数名称与保留关键字冲突 - {}", name);
         }
 
@@ -206,7 +205,7 @@ public final class AviatorEvaluatorInstance {
     }
 
     @Description("尝试获取函数")
-    public AviatorFunction getFunction(final String name, final SymbolTable symbolTable) {
+    public AviatorFunction getFunction(final String name, final ScriptKeyword symbolTable) {
         Assert.notNull(functionLoader, "函数加载器尚未初始化");
 
         @Description("从内置函数中尝试获取函数")
@@ -258,7 +257,7 @@ public final class AviatorEvaluatorInstance {
     }
 
     @Description("构建一个运行期间优先的字节码生成器")
-    public CodeGenerator codeGenerator(final AviatorClassLoader classLoader) {
+    public CodeGenerator codeGenerator(final GlobalClassLoader classLoader) {
         return new OptimizeCodeGenerator(this, classLoader);
     }
 

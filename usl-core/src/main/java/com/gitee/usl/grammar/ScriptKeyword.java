@@ -1,6 +1,5 @@
-package com.googlecode.aviator.lexer;
+package com.gitee.usl.grammar;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,10 +16,7 @@ import lombok.Getter;
  */
 @Getter
 @Description("关键字变量表")
-public class SymbolTable implements Serializable {
-
-    @Description("序列号")
-    private static final long serialVersionUID = -9019014977807517193L;
+public class ScriptKeyword {
 
     @Description("变量表")
     private final Map<String, Variable> table = new HashMap<>();

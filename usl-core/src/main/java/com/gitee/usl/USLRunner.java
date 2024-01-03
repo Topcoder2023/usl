@@ -1,17 +1,23 @@
 package com.gitee.usl;
 
+import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.Shutdown;
 import com.gitee.usl.api.Interactive;
 import com.gitee.usl.api.CliInteractive;
 import com.gitee.usl.api.WebInteractive;
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.grammar.asm.ES;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
-import com.gitee.usl.infra.exception.USLException;
+import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.infra.structure.FunctionHolder;
+import com.gitee.usl.infra.structure.wrapper.ObjectWrapper;
 import com.gitee.usl.infra.utils.ServiceSearcher;
+import com.gitee.usl.kernel.cache.CacheValue;
+import com.gitee.usl.kernel.cache.ExpressionCache;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.domain.Param;
@@ -22,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -107,12 +114,51 @@ public class USLRunner {
     }
 
     @Description("执行脚本")
+    @SuppressWarnings("unchecked")
     public <T> Result<T> run(@Description("脚本参数") Param param) {
-        return Optional.ofNullable(this.configuration)
-                .map(Configuration::getEngineConfig)
-                .map(EngineConfig::getEngineInitializer)
-                .map(manager -> manager.<T>run(param))
-                .orElseThrow(() -> new USLException("USL执行器尚未初始化"));
+
+        @Description("缓存实例")
+        ExpressionCache cache = configuration.getCacheConfig().getCacheInitializer().getCache();
+
+        @Description("脚本内容")
+        String content = param.getScript();
+
+        @Description("表达式缓存键")
+        String key = DigestUtil.sha256Hex(content);
+
+        @Description("表达式编译值")
+        ObjectWrapper<CacheValue> wrapper = new ObjectWrapper<>(cache.select(key));
+
+        if (wrapper.isEmpty()) {
+            configuration.getQueueConfig()
+                    .getQueueInitializer()
+                    .getProducer()
+                    .produce(content, configuration);
+
+            while (wrapper.isEmpty()) {
+                ThreadUtil.sleep(NumberConstant.ONE, TimeUnit.NANOSECONDS);
+                wrapper.set(cache.select(key));
+            }
+
+            if (!param.isCached()) {
+                cache.remove(key);
+            }
+        }
+
+        CacheValue value = wrapper.get();
+
+        if (value.getScript() instanceof ES) {
+            throw ((ES) value.getScript()).getException();
+        }
+
+        try {
+            param.addContext(value.getInitEnv());
+            Object result = value.getScript().execute(param.getContext());
+            return Result.success((T) result);
+        } catch (USLExecuteException uee) {
+            log.warn("USL执行出现错误", uee);
+            return Result.failure(uee.getResultCode(), uee.getMessage());
+        }
     }
 
     @Description("获取当前USL-Runner执行器的配置类")

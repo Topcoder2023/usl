@@ -61,7 +61,7 @@ public class CaffeineCache implements ExpressionCache {
     public void snapshot() {
         CacheStats stats = this.cache.stats();
 
-        log.info("[USL缓存快照] => [命中数 : {}, 未命中数 : {}, 剔除数 : {}]",
+        log.info("[USL缓存快照] - [命中数 : {}, 未命中数 : {}, 剔除数 : {}]",
                 stats.hitCount(),
                 stats.missCount(),
                 stats.evictionCount());

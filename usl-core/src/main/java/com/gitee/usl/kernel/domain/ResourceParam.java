@@ -21,6 +21,7 @@ public class ResourceParam extends Param {
     private final String resource;
 
     public ResourceParam(String resource) {
+        super();
         this.resource = resource;
         init();
     }

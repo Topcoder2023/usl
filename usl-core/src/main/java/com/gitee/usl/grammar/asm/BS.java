@@ -6,13 +6,12 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.annotation.AsmMethod;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.grammar.EmptyEnvProcessor;
 import com.gitee.usl.infra.constant.AsmConstants;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.USLCompileException;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
-import com.googlecode.aviator.EnvProcessor;
-import com.googlecode.aviator.lexer.SymbolTable;
+import com.gitee.usl.grammar.ScriptEngine;
+import com.gitee.usl.grammar.ScriptProcessor;
+import com.gitee.usl.grammar.ScriptKeyword;
 import com.googlecode.aviator.parser.VariableMeta;
 import com.googlecode.aviator.runtime.FunctionArgument;
 import com.googlecode.aviator.runtime.LambdaFunctionBootstrap;
@@ -29,16 +28,16 @@ import lombok.Setter;
 public abstract class BS implements Script, ScriptEnhancer {
 
     @Description("变量表")
-    private final SymbolTable symbolTable;
+    private final ScriptKeyword symbolTable;
 
     @Description("上下文前后置处理器")
-    private final EnvProcessor envProcessor;
+    private final ScriptProcessor envProcessor;
 
     @Description("变量属性表")
     private final List<VariableMeta> metaList;
 
     @Description("脚本引擎实例")
-    private final AviatorEvaluatorInstance instance;
+    private final ScriptEngine instance;
 
     @Description("上下文环境")
     private Env compileEnv;
@@ -50,15 +49,13 @@ public abstract class BS implements Script, ScriptEnhancer {
     @Description("函数参数表")
     private Map<Integer, List<FunctionArgument>> functionsArgs = Collections.emptyMap();
 
-    public BS(final AviatorEvaluatorInstance instance,
+    public BS(final ScriptEngine instance,
               final List<VariableMeta> metaList,
-              final SymbolTable symbolTable) {
+              final ScriptKeyword symbolTable) {
         this.metaList = metaList;
         this.instance = instance;
         this.symbolTable = symbolTable;
-        this.envProcessor = Optional.ofNullable(this.instance)
-                .map(AviatorEvaluatorInstance::getEnvProcessor)
-                .orElse(EmptyEnvProcessor.getInstance());
+        this.envProcessor = Optional.ofNullable(this.instance).map(ScriptEngine::getEnvProcessor).orElse(ScriptProcessor.EMPTY);
     }
 
     @Description("函数逻辑的默认实现")
@@ -67,11 +64,11 @@ public abstract class BS implements Script, ScriptEnhancer {
     @Override
     public Object execute(Map<String, Object> context) {
         final Env env = this.buildEnv(context);
-        envProcessor.beforeExecute(env, this);
         try {
+            envProcessor.onBegin(env, this);
             return this.defaultImpl(env);
         } finally {
-            envProcessor.afterExecute(env, this);
+            envProcessor.onAfter(env, this);
         }
     }
 

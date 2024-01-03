@@ -1,7 +1,6 @@
 package com.googlecode.aviator.runtime;
 
-import com.googlecode.aviator.AviatorEvaluatorInstance;
-import com.googlecode.aviator.EvalMode;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.runtime.function.LambdaFunction;
 import com.googlecode.aviator.runtime.function.internal.UnpackingArgsFunction;
@@ -32,11 +31,11 @@ public final class RuntimeUtils {
    *
    * @return
    */
-  public static final AviatorEvaluatorInstance getInstance(final Map<String, Object> env) {
+  public static final ScriptEngine getInstance(final Map<String, Object> env) {
     if (env instanceof Env) {
       return ((Env) env).getInstance();
     }
-    return new AviatorEvaluatorInstance();
+    return new ScriptEngine();
 
   }
 

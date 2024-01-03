@@ -1,7 +1,7 @@
 package com.gitee.usl.grammar.asm;
 
 import com.gitee.usl.api.annotation.Description;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.googlecode.aviator.parser.VariableMeta;
 import lombok.Getter;
 import lombok.ToString;
@@ -19,7 +19,7 @@ public class LS extends BS {
     @Description("常量结果")
     private final Object result;
 
-    public LS(final AviatorEvaluatorInstance instance,
+    public LS(final ScriptEngine instance,
               final Object result,
               final List<VariableMeta> vars) {
         super(instance, vars, null);

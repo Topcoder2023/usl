@@ -1,7 +1,8 @@
 package com.googlecode.aviator.lexer;
 
 import com.gitee.usl.api.annotation.Description;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.grammar.ScriptEngine;
+import com.gitee.usl.grammar.ScriptKeyword;
 import com.googlecode.aviator.Feature;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.exception.CompileExpressionErrorException;
@@ -35,22 +36,22 @@ public class ExpressionLexer {
     private int lineNo;
 
     @Getter
-    private final SymbolTable symbolTable;
+    private final ScriptKeyword symbolTable;
     // Tokens buffer
     private LinkedList<Token<?>> tokenBuffer;
-    private final AviatorEvaluatorInstance instance;
+    private final ScriptEngine instance;
     private final String expression;
     private final MathContext mathContext;
     private final boolean parseFloatIntoDecimal;
     private final boolean parseIntegralNumberIntoDecimal;
 
-    public ExpressionLexer(final AviatorEvaluatorInstance instance, final String expression) {
+    public ExpressionLexer(final ScriptEngine instance, final String expression) {
         this.lineNo = 1;
         this.instance = instance;
         this.expression = expression;
         this.iterator = new StringCharacterIterator(expression);
         this.peek = this.iterator.current();
-        this.symbolTable = new SymbolTable();
+        this.symbolTable = new ScriptKeyword();
         this.mathContext = this.instance.getOptionValue(Options.MATH_CONTEXT).mathContext;
         this.parseFloatIntoDecimal = this.instance.getOptionValue(Options.ALWAYS_PARSE_FLOATING_POINT_NUMBER_INTO_DECIMAL).bool;
         this.parseIntegralNumberIntoDecimal = this.instance.getOptionValue(Options.ALWAYS_PARSE_INTEGRAL_NUMBER_INTO_DECIMAL).bool;

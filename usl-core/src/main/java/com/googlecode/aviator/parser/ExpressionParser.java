@@ -13,14 +13,14 @@ import com.gitee.usl.infra.exception.USLCompileException;
 import com.gitee.usl.infra.structure.AwaitVariable;
 import com.gitee.usl.infra.structure.FunctionVariable;
 import com.gitee.usl.infra.structure.VarVariable;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.Feature;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.code.CodeGenerator;
 import com.googlecode.aviator.exception.ExpressionSyntaxErrorException;
 import com.googlecode.aviator.lexer.ExpressionLexer;
-import com.googlecode.aviator.lexer.SymbolTable;
+import com.gitee.usl.grammar.ScriptKeyword;
 import com.googlecode.aviator.lexer.token.CharToken;
 import com.googlecode.aviator.lexer.token.DelegateToken;
 import com.googlecode.aviator.lexer.token.DelegateToken.DelegateTokenType;
@@ -69,7 +69,7 @@ public class ExpressionParser implements Parser {
     private int parsedTokens;
 
     @Description("脚本引擎实例")
-    private final AviatorEvaluatorInstance instance;
+    private final ScriptEngine instance;
 
     @Description("已启用的特性")
     private final Set<Feature> featureSet;
@@ -84,7 +84,7 @@ public class ExpressionParser implements Parser {
     }
 
     @Override
-    public SymbolTable getSymbolTable() {
+    public ScriptKeyword getSymbolTable() {
         return this.lexer.getSymbolTable();
     }
 
@@ -105,7 +105,7 @@ public class ExpressionParser implements Parser {
         this.scope = info;
     }
 
-    public ExpressionParser(final AviatorEvaluatorInstance instance,
+    public ExpressionParser(final ScriptEngine instance,
                             final ExpressionLexer lexer,
                             final CodeGenerator codeGenerator) {
         this.lexer = lexer;
@@ -1201,7 +1201,7 @@ public class ExpressionParser implements Parser {
 
     private void checkFunctionName(final Token<?> token, final boolean warnOnExists) {
         String fnName = token.getLexeme();
-        if (SymbolTable.isReservedKeyword(fnName)) {
+        if (ScriptKeyword.isReservedKeyword(fnName)) {
             reportSyntaxError("The function name `" + fnName + "` is a reserved keyword");
         }
         if (warnOnExists && this.instance.getSystemFunctionMap().containsKey(fnName)) {
@@ -1985,7 +1985,7 @@ public class ExpressionParser implements Parser {
         }
     }
 
-    public static boolean isConstant(final Token<?> token, final AviatorEvaluatorInstance instance) {
+    public static boolean isConstant(final Token<?> token, final ScriptEngine instance) {
         switch (token.getType()) {
             case Number:
             case Pattern:

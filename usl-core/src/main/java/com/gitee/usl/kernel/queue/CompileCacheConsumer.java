@@ -19,7 +19,7 @@ public class CompileCacheConsumer implements CompileConsumer {
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) {
 
         @Description("唯一缓存键")
-        String generated = DigestUtil.sha512Hex(event.getContent());
+        String generated = DigestUtil.sha256Hex(event.getContent());
 
         @Description("缓存值")
         CacheValue cacheValue = CacheValue.of(event.getInitEnv(), event.getExpression());
@@ -30,4 +30,5 @@ public class CompileCacheConsumer implements CompileConsumer {
                 .getCache()
                 .insert(generated, cacheValue);
     }
+
 }

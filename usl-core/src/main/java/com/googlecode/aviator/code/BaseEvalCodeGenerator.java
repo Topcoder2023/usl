@@ -1,9 +1,9 @@
 package com.googlecode.aviator.code;
 
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.googlecode.aviator.code.asm.ASMCodeGenerator.MethodMetaData;
-import com.googlecode.aviator.lexer.SymbolTable;
-import com.googlecode.aviator.parser.AviatorClassLoader;
+import com.gitee.usl.grammar.ScriptKeyword;
+import com.gitee.usl.grammar.asm.GlobalClassLoader;
 import com.googlecode.aviator.parser.Parser;
 import com.googlecode.aviator.parser.VariableMeta;
 import com.googlecode.aviator.runtime.FunctionArgument;
@@ -17,15 +17,14 @@ import java.util.*;
  */
 public abstract class BaseEvalCodeGenerator implements EvalCodeGenerator {
 
-  protected final AviatorEvaluatorInstance instance;
+  protected final ScriptEngine instance;
 
   protected Map<String, VariableMeta> variables = Collections.emptyMap();
-  protected final String sourceFile = null;
   protected LambdaGenerator lambdaGenerator;
-  protected final AviatorClassLoader classLoader;
+  protected final GlobalClassLoader classLoader;
 
   protected Parser parser;
-  protected SymbolTable symbolTable;
+  protected ScriptKeyword symbolTable;
   protected CodeGenerator parentCodeGenerator;
   protected Map<String, LambdaFunctionBootstrap> lambdaBootstraps;
   protected final ArrayDeque<MethodMetaData> methodMetaDataStack = new ArrayDeque<>();
@@ -56,12 +55,12 @@ public abstract class BaseEvalCodeGenerator implements EvalCodeGenerator {
   }
 
   @Override
-  public AviatorClassLoader getClassLoader() {
+  public GlobalClassLoader getClassLoader() {
     return this.classLoader;
   }
 
-  public BaseEvalCodeGenerator(final AviatorEvaluatorInstance instance,
-      final AviatorClassLoader classLoader) {
+  public BaseEvalCodeGenerator(final ScriptEngine instance,
+      final GlobalClassLoader classLoader) {
     super();
     this.instance = instance;
     this.compileEnv = new Env();

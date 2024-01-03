@@ -4,7 +4,7 @@ import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.plugin.FinallyPlugin;
 import com.gitee.usl.kernel.engine.FunctionSession;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.grammar.ScriptEngine;
 
 /**
  * @author hongda.li
@@ -19,7 +19,7 @@ public class CallStackPlugin implements FinallyPlugin {
         this.runner = runner;
 
         @Description("Aviator引擎实例")
-        AviatorEvaluatorInstance instance = this.runner.getConfiguration()
+        ScriptEngine instance = this.runner.getConfiguration()
                 .getEngineConfig()
                 .getEngineInitializer()
                 .getInstance();

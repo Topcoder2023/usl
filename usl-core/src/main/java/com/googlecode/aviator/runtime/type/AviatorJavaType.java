@@ -18,7 +18,7 @@ package com.googlecode.aviator.runtime.type;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.exception.CompareNotSupportedException;
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
-import com.googlecode.aviator.lexer.SymbolTable;
+import com.gitee.usl.grammar.ScriptKeyword;
 import com.googlecode.aviator.runtime.RuntimeFunctionDelegator;
 import com.googlecode.aviator.runtime.RuntimeUtils;
 import com.googlecode.aviator.runtime.function.DispatchFunction;
@@ -47,11 +47,11 @@ public class AviatorJavaType extends AviatorObject {
   protected String name;
   private boolean containsDot;
   private String[] subNames;
-  private SymbolTable symbolTable;
+  private ScriptKeyword symbolTable;
 
   private void readObject(ObjectInputStream input) throws ClassNotFoundException, IOException {
     String name = (String) input.readObject();
-    SymbolTable symbolTable = (SymbolTable) input.readObject();
+    ScriptKeyword symbolTable = (ScriptKeyword) input.readObject();
     init(name, symbolTable);
   }
 
@@ -73,12 +73,12 @@ public class AviatorJavaType extends AviatorObject {
     this(name, null);
   }
 
-  public AviatorJavaType(final String name, final SymbolTable symbolTable) {
+  public AviatorJavaType(final String name, final ScriptKeyword symbolTable) {
     super();
     init(name, symbolTable);
   }
 
-  private void init(final String name, final SymbolTable symbolTable) {
+  private void init(final String name, final ScriptKeyword symbolTable) {
     if (name != null) {
       String rName = reserveName(name);
       if (rName != null) {

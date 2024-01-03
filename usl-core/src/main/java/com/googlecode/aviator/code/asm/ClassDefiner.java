@@ -4,7 +4,7 @@ import static java.lang.invoke.MethodType.methodType;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
-import com.googlecode.aviator.parser.AviatorClassLoader;
+import com.gitee.usl.grammar.asm.GlobalClassLoader;
 
 /**
  * A class definer
@@ -67,13 +67,12 @@ public class ClassDefiner {
 
   private static int errorTimes = 0;
 
-  public static final Class<?> defineClass(final String className, final Class<?> clazz,
-      final byte[] bytes, final AviatorClassLoader classLoader, boolean forceClassLoader)
+  public static Class<?> defineClass(final String className, final Class<?> clazz,
+                                     final byte[] bytes, final GlobalClassLoader classLoader)
       throws NoSuchFieldException, IllegalAccessException {
-    if (!preferClassLoader && !forceClassLoader && DEFINE_CLASS_HANDLE != null) {
+    if (!preferClassLoader && DEFINE_CLASS_HANDLE != null) {
       try {
-        Class<?> defineClass = (Class<?>) DEFINE_CLASS_HANDLE.invokeExact(clazz, bytes, EMPTY_OBJS);
-        return defineClass;
+          return (Class<?>) DEFINE_CLASS_HANDLE.invokeExact(clazz, bytes, EMPTY_OBJS);
       } catch (Throwable e) {
         // fallback to class loader mode.
         if (errorTimes++ > 10000) {
@@ -87,7 +86,7 @@ public class ClassDefiner {
   }
 
   public static Class<?> defineClassByClassLoader(final String className, final byte[] bytes,
-      final AviatorClassLoader classLoader) {
+      final GlobalClassLoader classLoader) {
     return classLoader.defineClass(className, bytes);
   }
 }

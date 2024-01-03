@@ -24,6 +24,7 @@ public class FileParam extends Param {
     private final File file;
 
     public FileParam(File file) {
+        super();
         this.file = file;
         init();
     }

@@ -2,7 +2,7 @@ package com.googlecode.aviator.code;
 
 import com.gitee.usl.api.annotation.Description;
 import com.googlecode.aviator.lexer.token.Token;
-import com.googlecode.aviator.parser.AviatorClassLoader;
+import com.gitee.usl.grammar.asm.GlobalClassLoader;
 import com.googlecode.aviator.parser.VariableMeta;
 import com.googlecode.aviator.runtime.LambdaFunctionBootstrap;
 
@@ -24,7 +24,7 @@ public interface EvalCodeGenerator extends CodeGenerator {
 
     void setLambdaBootstraps(final Map<String, LambdaFunctionBootstrap> lambdaBootstraps);
 
-    AviatorClassLoader getClassLoader();
+    GlobalClassLoader getClassLoader();
 
     void genNewLambdaCode(final LambdaFunctionBootstrap bootstrap);
 

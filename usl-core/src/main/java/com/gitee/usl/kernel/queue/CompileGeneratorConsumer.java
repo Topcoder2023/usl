@@ -5,8 +5,10 @@ import com.gitee.usl.api.CompileConsumer;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.grammar.asm.ES;
+import com.gitee.usl.infra.enums.ResultCode;
+import com.gitee.usl.infra.exception.USLCompileException;
 import com.google.auto.service.AutoService;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.asm.BS;
 import com.googlecode.aviator.code.CodeGenerator;
 import com.googlecode.aviator.lexer.ExpressionLexer;
@@ -29,13 +31,13 @@ public class CompileGeneratorConsumer implements CompileConsumer {
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) {
 
         @Description("脚本引擎实例")
-        AviatorEvaluatorInstance instance = event.getConfiguration()
+        ScriptEngine instance = event.getConfiguration()
                 .getEngineConfig()
                 .getEngineInitializer()
                 .getInstance();
 
         if (CharSequenceUtil.isBlank(event.getContent())) {
-            event.setExpression(ES.empty());
+            event.setExpression(ES.empty().setException(new USLCompileException(ResultCode.SCRIPT_EMPTY)));
             log.warn("脚本内容为空");
             return;
         }
@@ -46,9 +48,13 @@ public class CompileGeneratorConsumer implements CompileConsumer {
             CodeGenerator codeGenerator = instance.codeGenerator();
             BS expression = (BS) new ExpressionParser(instance, lexer, codeGenerator).parse();
             event.setExpression(expression);
+        } catch (USLCompileException uce) {
+            log.error("脚本编译失败", uce);
+            event.setExpression(ES.empty().setException(uce));
         } catch (Exception e) {
             log.error("脚本编译失败", e);
-            event.setExpression(ES.empty());
+            event.setExpression(ES.empty().setException(new USLCompileException(e)));
         }
     }
+
 }

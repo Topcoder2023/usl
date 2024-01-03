@@ -4,7 +4,7 @@ import java.util.Map;
 import com.googlecode.aviator.FunctionMissing;
 import com.googlecode.aviator.exception.CompareNotSupportedException;
 import com.googlecode.aviator.exception.FunctionNotFoundException;
-import com.googlecode.aviator.lexer.SymbolTable;
+import com.gitee.usl.grammar.ScriptKeyword;
 import com.googlecode.aviator.runtime.function.system.ConstantFunction;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.runtime.type.AviatorJavaType;
@@ -301,7 +301,7 @@ public final class RuntimeFunctionDelegator extends AviatorObject implements Avi
 
   private final FunctionMissing functionMissing;
 
-  public RuntimeFunctionDelegator(final String name, final SymbolTable symbolTable,
+  public RuntimeFunctionDelegator(final String name, final ScriptKeyword symbolTable,
       final FunctionMissing functionMissing) {
     if (symbolTable != null) {
       this.name = symbolTable.reserve(name).getLexeme();

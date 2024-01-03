@@ -15,14 +15,14 @@ import lombok.experimental.Accessors;
 public class CacheValue {
 
     @Description("表达式编译值")
-    private Script expression;
+    private Script script;
 
     @Description("变量初始值")
     private StringMap<Object> initEnv;
 
     @Description("构造一个缓存值")
     public static CacheValue of(StringMap<Object> initEnv, Script expression) {
-        return new CacheValue().setInitEnv(initEnv).setExpression(expression);
+        return new CacheValue().setInitEnv(initEnv).setScript(expression);
     }
 
 }

@@ -20,8 +20,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.gitee.usl.infra.constant.AsmConstants;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
-import com.gitee.usl.grammar.asm.BS;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.googlecode.aviator.code.asm.ASMCodeGenerator;
 import com.googlecode.aviator.runtime.FunctionArgument;
 import com.googlecode.aviator.runtime.RuntimeUtils;
@@ -157,7 +156,7 @@ public class FunctionUtils {
       rt = (AviatorFunction) env.get(name);
     }
     if (rt == null) {
-      AviatorEvaluatorInstance instance = RuntimeUtils.getInstance(env);
+      ScriptEngine instance = RuntimeUtils.getInstance(env);
       rt = instance.getFunction(name);
     }
     return rt;

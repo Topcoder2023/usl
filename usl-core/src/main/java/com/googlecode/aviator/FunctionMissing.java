@@ -8,6 +8,7 @@ package com.googlecode.aviator;
  *
  */
 
+import com.gitee.usl.grammar.ScriptEngine;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 
 import java.io.Serializable;
@@ -18,7 +19,7 @@ import java.util.Map;
  * {@link FunctionMissing#onFunctionMissing(String, Map, AviatorObject...)} method will be called
  * when function not found, return the invocation result.
  *
- * @see AviatorEvaluatorInstance#setFunctionMissing(FunctionMissing)
+ * @see ScriptEngine#setFunctionMissing(FunctionMissing)
  * @see AviatorEvaluator#setFunctionMissing(FunctionMissing)
  * @author dennis zhuang(killme2008@gmail.com)
  * @since 4.2.5

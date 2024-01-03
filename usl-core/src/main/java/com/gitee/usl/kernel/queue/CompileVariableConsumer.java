@@ -5,6 +5,7 @@ import com.gitee.usl.api.CompileConsumer;
 import com.gitee.usl.api.VariableInitializer;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Order;
+import com.gitee.usl.grammar.asm.ES;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.kernel.configure.EngineConfig;
@@ -26,6 +27,10 @@ public class CompileVariableConsumer implements CompileConsumer {
     @Override
     public void onEvent(CompileEvent event, long sequence, boolean endOfBatch) {
         BS expression = (BS) event.getExpression();
+
+        if (expression == null || expression instanceof ES) {
+            return;
+        }
 
         @Description("变量表")
         Map<String, Variable> variableMap = expression.getSymbolTable().getTable();

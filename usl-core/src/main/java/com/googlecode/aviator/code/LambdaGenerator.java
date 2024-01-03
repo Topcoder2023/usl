@@ -9,10 +9,10 @@ package com.googlecode.aviator.code;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.lexer.token.Token;
-import com.googlecode.aviator.parser.AviatorClassLoader;
+import com.gitee.usl.grammar.asm.GlobalClassLoader;
 import com.googlecode.aviator.parser.Parser;
 import com.googlecode.aviator.parser.ScopeInfo;
 import com.googlecode.aviator.runtime.FunctionParam;
@@ -38,10 +38,10 @@ public class LambdaGenerator implements CodeGenerator {
   private final boolean newLexicalScope;
   private final boolean inheritEnv;
 
-  public LambdaGenerator(final AviatorEvaluatorInstance instance,
-      final CodeGenerator parentCodeGenerator, final Parser parser,
-      final AviatorClassLoader classLoader, final boolean newLexicalScope,
-      final boolean inheritEnv) {
+  public LambdaGenerator(final ScriptEngine instance,
+                         final CodeGenerator parentCodeGenerator, final Parser parser,
+                         final GlobalClassLoader classLoader, final boolean newLexicalScope,
+                         final boolean inheritEnv) {
     this.params = new ArrayList<>();
     // this.instance = instance;
     this.parentCodeGenerator = parentCodeGenerator;

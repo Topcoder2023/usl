@@ -3,8 +3,8 @@ package com.gitee.usl.grammar.asm;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.AsmMethod;
 import com.gitee.usl.infra.exception.USLExecuteException;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
-import com.googlecode.aviator.lexer.SymbolTable;
+import com.gitee.usl.grammar.ScriptEngine;
+import com.gitee.usl.grammar.ScriptKeyword;
 import com.googlecode.aviator.parser.VariableMeta;
 import com.googlecode.aviator.utils.Env;
 
@@ -18,9 +18,9 @@ import java.util.Optional;
 @Description("基于类的表达式")
 public abstract class CS extends BS {
 
-    public CS(final AviatorEvaluatorInstance instance,
+    public CS(final ScriptEngine instance,
               final List<VariableMeta> vars,
-              final SymbolTable symbolTable) {
+              final ScriptKeyword symbolTable) {
         super(instance, vars, symbolTable);
     }
 

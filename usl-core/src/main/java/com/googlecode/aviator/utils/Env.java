@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.Feature;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
@@ -59,7 +59,7 @@ public class Env implements Map<String, Object>, Serializable {
   /**
    * Current evaluator instance that executes current expression.
    */
-  private transient AviatorEvaluatorInstance instance;
+  private transient ScriptEngine instance;
 
   /** Override values map. */
   private Map<String, Object> mOverrides;
@@ -140,15 +140,15 @@ public class Env implements Map<String, Object>, Serializable {
     }
   }
 
-  public AviatorEvaluatorInstance getInstance() {
+  public ScriptEngine getInstance() {
     return this.instance;
   }
 
-  public void setInstance(final AviatorEvaluatorInstance instance) {
+  public void setInstance(final ScriptEngine instance) {
     this.instance = instance;
   }
 
-  public void configure(final AviatorEvaluatorInstance instance, final Script exp) {
+  public void configure(final ScriptEngine instance, final Script exp) {
     this.instance = instance;
     this.expression = exp;
   }

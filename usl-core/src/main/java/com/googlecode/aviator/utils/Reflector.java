@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.googlecode.aviator.Feature;
 import com.googlecode.aviator.exception.NoSuchPropertyException;
 import com.googlecode.aviator.runtime.RuntimeUtils;
@@ -795,7 +795,7 @@ public class Reflector {
             Object val = null;
 
             if (target.innerClazz != null) {
-                final AviatorEvaluatorInstance instance = RuntimeUtils.getInstance(env);
+                final ScriptEngine instance = RuntimeUtils.getInstance(env);
                 // check innerClazz is allowed
 
                 if (tryResolveStaticMethod && instance.isFeatureEnabled(Feature.StaticMethods)

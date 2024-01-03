@@ -5,7 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.text.StrPool;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.AsmConstants;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.asm.CS;
 import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.Options;
@@ -17,13 +17,13 @@ import com.googlecode.aviator.code.BaseEvalCodeGenerator;
 import com.googlecode.aviator.code.LambdaGenerator;
 import com.googlecode.aviator.exception.CompileExpressionErrorException;
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
-import com.googlecode.aviator.lexer.SymbolTable;
+import com.gitee.usl.grammar.ScriptKeyword;
 import com.googlecode.aviator.lexer.token.NumberToken;
 import com.googlecode.aviator.lexer.token.OperatorType;
 import com.googlecode.aviator.lexer.token.Token;
 import com.googlecode.aviator.lexer.token.Token.TokenType;
 import com.googlecode.aviator.lexer.token.Variable;
-import com.googlecode.aviator.parser.AviatorClassLoader;
+import com.gitee.usl.grammar.asm.GlobalClassLoader;
 import com.googlecode.aviator.parser.VariableMeta;
 import com.googlecode.aviator.runtime.FunctionArgument;
 import com.googlecode.aviator.runtime.FunctionParam;
@@ -74,8 +74,8 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         }
     }
 
-    public ASMCodeGenerator(final AviatorEvaluatorInstance instance,
-                            final AviatorClassLoader classLoader) {
+    public ASMCodeGenerator(final ScriptEngine instance,
+                            final GlobalClassLoader classLoader) {
         super(instance, classLoader);
         this.className = AsmConstants.CLASS_NAME_PREFIX
                 + DateUtil.format(new DateTime(), AsmConstants.DATETIME_FORMAT)
@@ -84,10 +84,6 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         this.classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
         log.debug("字节码构建开始，类名 - {}", this.className);
         visitClass();
-    }
-
-    LambdaGenerator getLambdaGenerator() {
-        return this.lambdaGenerator;
     }
 
     @Override
@@ -138,18 +134,23 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
      * Make a default constructor
      */
     private void makeConstructor() {
+        final String constructorDesc = AsmConstants.CLASS_DESC_LEFT
+                + AsmConstants.SCRIPT_ENGINE_DESC
+                + AsmConstants.CLASS_DESC_SPLIT
+                + AsmConstants.LIST_DESC
+                + AsmConstants.CLASS_DESC_SPLIT
+                + AsmConstants.SYMBOL_TABLE_DESC
+                + AsmConstants.CLASS_DESC_SPLIT
+                + AsmConstants.CLASS_DESC_RIGHT
+                + AsmConstants.CLASS_DESC_SUFFIX;
 
-        this.mv = this.classWriter.visitMethod(ACC_PUBLIC, CONSTRUCTOR_METHOD_NAME,
-                "(Lcom/googlecode/aviator/AviatorEvaluatorInstance;Ljava/util/List;Lcom/googlecode/aviator/lexer/SymbolTable;)V",
-                null, null);
+        this.mv = this.classWriter.visitMethod(ACC_PUBLIC, CONSTRUCTOR_METHOD_NAME, constructorDesc, null, null);
         this.mv.visitCode();
         this.mv.visitVarInsn(ALOAD, 0);
         this.mv.visitVarInsn(ALOAD, 1);
         this.mv.visitVarInsn(ALOAD, 2);
         this.mv.visitVarInsn(ALOAD, 3);
-        this.mv.visitMethodInsn(INVOKESPECIAL, AsmConstants.EXPRESSION_CLASS_NAME,
-                CONSTRUCTOR_METHOD_NAME,
-                "(Lcom/googlecode/aviator/AviatorEvaluatorInstance;Ljava/util/List;Lcom/googlecode/aviator/lexer/SymbolTable;)V");
+        this.mv.visitMethodInsn(INVOKESPECIAL, AsmConstants.EXPRESSION_CLASS_NAME, CONSTRUCTOR_METHOD_NAME, constructorDesc);
         if (!this.innerVars.isEmpty()) {
             for (Map.Entry<String, String> entry : this.innerVars.entrySet()) {
                 String outterName = entry.getKey();
@@ -160,7 +161,13 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
                 this.mv.visitLdcInsn(outterName);
                 this.mv.visitVarInsn(ALOAD, 3);
                 this.mv.visitMethodInsn(INVOKESPECIAL, JAVA_TYPE_OWNER, CONSTRUCTOR_METHOD_NAME,
-                        "(Ljava/lang/String;Lcom/googlecode/aviator/lexer/SymbolTable;)V");
+                        AsmConstants.CLASS_DESC_LEFT
+                                + AsmConstants.STRING_DESC
+                                + AsmConstants.CLASS_DESC_SPLIT
+                                + AsmConstants.SYMBOL_TABLE_DESC
+                                + AsmConstants.CLASS_DESC_SPLIT
+                                + AsmConstants.CLASS_DESC_RIGHT
+                                + AsmConstants.CLASS_DESC_SUFFIX);
                 this.mv.visitFieldInsn(PUTFIELD, this.className, innerName,
                         "Lcom/googlecode/aviator/runtime/type/AviatorJavaType;");
             }
@@ -173,9 +180,9 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
                 this.mv.visitVarInsn(ALOAD, 1);
                 this.mv.visitLdcInsn(outterName);
                 this.mv.visitVarInsn(ALOAD, 3);
-                this.mv.visitMethodInsn(INVOKEVIRTUAL, "com/googlecode/aviator/AviatorEvaluatorInstance",
+                this.mv.visitMethodInsn(INVOKEVIRTUAL, AsmConstants.SCRIPT_ENGINE_PATH,
                         "getFunction",
-                        "(Ljava/lang/String;Lcom/googlecode/aviator/lexer/SymbolTable;)Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
+                        "(Ljava/lang/String;" + AsmConstants.SYMBOL_TABLE_DESC + ";)Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
                 this.mv.visitFieldInsn(PUTFIELD, this.className, innerName,
                         "Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
             }
@@ -200,8 +207,13 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
 
     @Description("通过字节码访问类")
     private void visitClass() {
-        this.classWriter.visit(this.instance.getBytecodeVersion(), ACC_PUBLIC + ACC_SUPER, this.className, null, AsmConstants.EXPRESSION_CLASS_NAME, null);
-        this.classWriter.visitSource(this.sourceFile == null ? this.className : this.sourceFile, null);
+        this.classWriter.visit(this.instance.getBytecodeVersion(),
+                ACC_PUBLIC + ACC_SUPER,
+                this.className,
+                null,
+                AsmConstants.EXPRESSION_CLASS_NAME,
+                null);
+        this.classWriter.visitSource(this.className, null);
     }
 
     /**
@@ -642,13 +654,9 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
 
         byte[] bytes = this.classWriter.toByteArray();
         try {
-            boolean enableSerializable = this.instance.getOptionValue(Options.SERIALIZABLE).bool;
-            Class<?> defineClass = ClassDefiner.defineClass(this.className, Script.class, bytes,
-                    this.classLoader, enableSerializable);
-            Constructor<?> constructor =
-                    defineClass.getConstructor(AviatorEvaluatorInstance.class, List.class, SymbolTable.class);
-            CS exp = (CS) constructor.newInstance(this.instance,
-                    new ArrayList<>(this.variables.values()), this.symbolTable);
+            Class<?> defineClass = ClassDefiner.defineClass(this.className, Script.class, bytes, this.classLoader);
+            Constructor<?> constructor = defineClass.getConstructor(ScriptEngine.class, List.class, ScriptKeyword.class);
+            CS exp = (CS) constructor.newInstance(this.instance, new ArrayList<>(this.variables.values()), this.symbolTable);
             exp.setLambdaBootstraps(this.lambdaBootstraps);
             exp.setFunctionsArgs(this.funcsArgs);
             return exp;
@@ -662,104 +670,9 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         }
     }
 
-    private void genReadObject() {
-        // 1. BaseExpresson#customReadObject
-        MethodVisitor mv = this.classWriter.visitMethod(ACC_PRIVATE, "readObject",
-                "(Ljava/io/ObjectInputStream;)V", "(Ljava/io/ObjectInputStream;)V",
-                new String[]{"java/lang/ClassNotFoundException", "java/io/IOException"});
-        mv.visitCode();
-        mv.visitVarInsn(ALOAD, 0);
-        mv.visitVarInsn(ALOAD, 1);
-        mv.visitMethodInsn(INVOKESPECIAL, "com/googlecode/aviator/BaseExpression", "customReadObject",
-                "(Ljava/io/ObjectInputStream;)V");
-        // 2.read inner variables
-        for (String innerName : this.innerVars.values()) {
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitVarInsn(ALOAD, 1);
-            mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/ObjectInputStream", "readObject",
-                    "()Ljava/lang/Object;");
-            mv.visitTypeInsn(CHECKCAST, JAVA_TYPE_OWNER);
-            mv.visitFieldInsn(PUTFIELD, this.className, innerName,
-                    "Lcom/googlecode/aviator/runtime/type/AviatorJavaType;");
-
-        }
-        // 3.read constant pool
-        for (String innerName : this.constantPool.values()) {
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitVarInsn(ALOAD, 1);
-            mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/ObjectInputStream", "readObject",
-                    "()Ljava/lang/Object;");
-            mv.visitTypeInsn(CHECKCAST, OBJECT_OWNER);
-            mv.visitFieldInsn(PUTFIELD, this.className, innerName, OBJECT_DESC);
-        }
-        // 4. read inner functions
-        for (String innerName : this.innerMethodMap.values()) {
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitVarInsn(ALOAD, 1);
-            mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/ObjectInputStream", "readObject",
-                    "()Ljava/lang/Object;");
-            mv.visitTypeInsn(CHECKCAST, "com/googlecode/aviator/runtime/type/AviatorFunction");
-            mv.visitFieldInsn(PUTFIELD, this.className, innerName,
-                    "Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
-        }
-
-        mv.visitInsn(RETURN);
-        mv.visitMaxs(2, 2);
-        mv.visitEnd();
-    }
-
-    private void genCustomSerializeMethod() {
-        if (this.instance.getOptionValue(Options.SERIALIZABLE).bool) {
-            this.genReadObject();
-            this.genWriteObject();
-        }
-    }
-
-    private void genWriteObject() {
-        // 1. BaseExpression#customWriteObject
-        MethodVisitor mv =
-                this.classWriter.visitMethod(ACC_PRIVATE, "writeObject", "(Ljava/io/ObjectOutputStream;)V",
-                        "(Ljava/io/ObjectOutputStream;)V", new String[]{"java/io/IOException"});
-        mv.visitCode();
-        mv.visitVarInsn(ALOAD, 0);
-        mv.visitVarInsn(ALOAD, 1);
-        mv.visitMethodInsn(INVOKESPECIAL, "com/googlecode/aviator/BaseExpression", "customWriteObject",
-                "(Ljava/io/ObjectOutputStream;)V");
-        // 2.write inner variables
-        for (String innerName : this.innerVars.values()) {
-            mv.visitVarInsn(ALOAD, 1);
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitFieldInsn(GETFIELD, this.className, innerName,
-                    "Lcom/googlecode/aviator/runtime/type/AviatorJavaType;");
-            mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/ObjectOutputStream", "writeObject",
-                    "(Ljava/lang/Object;)V");
-        }
-        // 3.write constant pool
-        for (String innerName : this.constantPool.values()) {
-            mv.visitVarInsn(ALOAD, 1);
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitFieldInsn(GETFIELD, this.className, innerName, OBJECT_DESC);
-            mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/ObjectOutputStream", "writeObject",
-                    "(Ljava/lang/Object;)V");
-        }
-        // 4. write inner functions
-        for (String innerName : this.innerMethodMap.values()) {
-            mv.visitVarInsn(ALOAD, 1);
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitFieldInsn(GETFIELD, this.className, innerName,
-                    "Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
-            mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/ObjectOutputStream", "writeObject",
-                    "(Ljava/lang/Object;)V");
-        }
-
-        mv.visitInsn(RETURN);
-        mv.visitMaxs(2, 2);
-        mv.visitEnd();
-    }
 
     private void end(final boolean unboxObject) {
         endVisitMethodCode(unboxObject);
-        genCustomSerializeMethod();
         endVisitClass();
     }
 
@@ -803,7 +716,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
 
                     if (inConstructor) {
                         methodDesc =
-                                "(Lcom/googlecode/aviator/AviatorEvaluatorInstance;Ljava/lang/String;)Lcom/googlecode/aviator/runtime/type/AviatorDecimal;";
+                                "(Lcom/gitee/usl/grammar/ScriptEngine;Ljava/lang/String;)Lcom/googlecode/aviator/runtime/type/AviatorDecimal;";
                     }
                     this.mv.visitMethodInsn(INVOKESTATIC,
                             "com/googlecode/aviator/runtime/type/AviatorDecimal", "valueOf", methodDesc);

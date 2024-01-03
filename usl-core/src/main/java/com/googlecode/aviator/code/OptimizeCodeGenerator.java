@@ -1,13 +1,15 @@
 package com.googlecode.aviator.code;
 
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.grammar.asm.GlobalClassLoader;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.asm.BS;
 import com.gitee.usl.grammar.asm.Script;
 import com.gitee.usl.grammar.asm.LS;
 import com.googlecode.aviator.*;
 import com.googlecode.aviator.code.asm.ASMCodeGenerator;
 import com.googlecode.aviator.exception.CompileExpressionErrorException;
-import com.googlecode.aviator.lexer.SymbolTable;
+import com.gitee.usl.grammar.ScriptKeyword;
 import com.googlecode.aviator.lexer.token.*;
 import com.googlecode.aviator.lexer.token.DelegateToken.DelegateTokenType;
 import com.googlecode.aviator.lexer.token.Token.TokenType;
@@ -37,7 +39,7 @@ public class OptimizeCodeGenerator implements CodeGenerator {
 
     private CodeGenerator parentCodeGenerator;
 
-    private final AviatorEvaluatorInstance instance;
+    private final ScriptEngine instance;
 
     private Parser parser;
 
@@ -48,9 +50,9 @@ public class OptimizeCodeGenerator implements CodeGenerator {
      */
     private Map<String, LambdaFunctionBootstrap> lambdaBootstraps;
 
-    public OptimizeCodeGenerator(final AviatorEvaluatorInstance instance, final ClassLoader classLoader) {
+    public OptimizeCodeGenerator(final ScriptEngine instance, final ClassLoader classLoader) {
         this.instance = instance;
-        this.evalCodeGenerator = new ASMCodeGenerator(instance, (AviatorClassLoader) classLoader);
+        this.evalCodeGenerator = new ASMCodeGenerator(instance, (GlobalClassLoader) classLoader);
     }
 
     private Env getCompileEnv() {
@@ -338,7 +340,7 @@ public class OptimizeCodeGenerator implements CodeGenerator {
                 case Variable:
 
                     @Description("保留关键字标识")
-                    boolean isKeyword = SymbolTable.isReservedKeyword((Variable) token);
+                    boolean isKeyword = ScriptKeyword.isReservedKeyword((Variable) token);
                     if (isKeyword) {
                         continue;
                     }

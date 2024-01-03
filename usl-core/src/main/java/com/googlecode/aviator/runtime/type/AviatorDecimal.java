@@ -2,7 +2,7 @@ package com.googlecode.aviator.runtime.type;
 
 import java.math.BigDecimal;
 import java.util.Map;
-import com.googlecode.aviator.AviatorEvaluatorInstance;
+import com.gitee.usl.grammar.ScriptEngine;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.runtime.RuntimeUtils;
 
@@ -35,7 +35,7 @@ public class AviatorDecimal extends AviatorNumber {
   }
 
 
-  public static final AviatorDecimal valueOf(final AviatorEvaluatorInstance instance,
+  public static final AviatorDecimal valueOf(final ScriptEngine instance,
       final String d) {
     return new AviatorDecimal(
         new BigDecimal(d, instance.getOptionValue(Options.MATH_CONTEXT).mathContext));
