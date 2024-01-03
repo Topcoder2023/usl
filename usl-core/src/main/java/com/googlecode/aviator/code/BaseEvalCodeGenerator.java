@@ -17,56 +17,56 @@ import java.util.*;
  */
 public abstract class BaseEvalCodeGenerator implements EvalCodeGenerator {
 
-  protected final ScriptEngine instance;
+    protected final ScriptEngine instance;
 
-  protected Map<String, VariableMeta> variables = Collections.emptyMap();
-  protected LambdaGenerator lambdaGenerator;
-  protected final GlobalClassLoader classLoader;
+    protected Map<String, VariableMeta> variables = Collections.emptyMap();
+    protected LambdaGenerator lambdaGenerator;
+    protected final GlobalClassLoader classLoader;
 
-  protected Parser parser;
-  protected ScriptKeyword symbolTable;
-  protected CodeGenerator parentCodeGenerator;
-  protected Map<String, LambdaFunctionBootstrap> lambdaBootstraps;
-  protected final ArrayDeque<MethodMetaData> methodMetaDataStack = new ArrayDeque<>();
-  protected Map<Integer, List<FunctionArgument>> funcsArgs;
-  private int funcInvocationId = 0;
-  protected final Env compileEnv;
+    protected Parser parser;
+    protected ScriptKeyword symbolTable;
+    protected CodeGenerator parentCodeGenerator;
+    protected Map<String, LambdaFunctionBootstrap> lambdaBootstraps;
+    protected final ArrayDeque<MethodMetaData> methodMetaDataStack = new ArrayDeque<>();
+    protected List<FunctionArgument> funcsArgs;
+    private int funcInvocationId = 0;
+    protected final Env compileEnv;
 
-  protected Map<Integer, List<FunctionArgument>> getFuncsArgs() {
-    if (this.funcsArgs == null) {
-      this.funcsArgs = new HashMap<>();
+    protected List<FunctionArgument> getFuncsArgs() {
+        if (this.funcsArgs == null) {
+            this.funcsArgs = new ArrayList<>();
+        }
+        return this.funcsArgs;
     }
-    return this.funcsArgs;
-  }
 
-  protected int getNextFuncInvocationId() {
-    return this.funcInvocationId++;
-  }
+    protected int getNextFuncInvocationId() {
+        return this.funcInvocationId++;
+    }
 
-  @Override
-  public void setParser(final Parser parser) {
-    this.parser = parser;
-    this.symbolTable = this.parser.getSymbolTable();
-  }
+    @Override
+    public void setParser(final Parser parser) {
+        this.parser = parser;
+        this.symbolTable = this.parser.getSymbolTable();
+    }
 
-  @Override
-  public void setLambdaBootstraps(final Map<String, LambdaFunctionBootstrap> lambdaBootstraps) {
-    this.lambdaBootstraps = lambdaBootstraps;
-  }
+    @Override
+    public void setLambdaBootstraps(final Map<String, LambdaFunctionBootstrap> lambdaBootstraps) {
+        this.lambdaBootstraps = lambdaBootstraps;
+    }
 
-  @Override
-  public GlobalClassLoader getClassLoader() {
-    return this.classLoader;
-  }
+    @Override
+    public GlobalClassLoader getClassLoader() {
+        return this.classLoader;
+    }
 
-  public BaseEvalCodeGenerator(final ScriptEngine instance,
-      final GlobalClassLoader classLoader) {
-    super();
-    this.instance = instance;
-    this.compileEnv = new Env();
-    this.compileEnv.setInstance(this.instance);
+    public BaseEvalCodeGenerator(final ScriptEngine instance,
+                                 final GlobalClassLoader classLoader) {
+        super();
+        this.instance = instance;
+        this.compileEnv = new Env();
+        this.compileEnv.setInstance(this.instance);
 
-    this.classLoader = classLoader;
-  }
+        this.classLoader = classLoader;
+    }
 
 }

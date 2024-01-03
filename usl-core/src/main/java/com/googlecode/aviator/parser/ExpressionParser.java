@@ -932,7 +932,7 @@ public class ExpressionParser implements Parser {
                 }
 
                 getCodeGeneratorWithTimes().onMethodParameter(this.current);
-                params.add(new FunctionArgument(paramIndex++, getParamExp(lastTokenIndex)));
+                params.add(new FunctionArgument(methodName, paramIndex++, getParamExp(lastTokenIndex)));
                 while (expectChar(',')) {
                     move(true);
                     isPackArgs = false;
@@ -958,7 +958,7 @@ public class ExpressionParser implements Parser {
                     }
 
                     getCodeGeneratorWithTimes().onMethodParameter(this.current);
-                    params.add(new FunctionArgument(paramIndex++, getParamExp(lastTokenIndex)));
+                    params.add(new FunctionArgument(methodName, paramIndex++, getParamExp(lastTokenIndex)));
                 }
             }
             if (unpackArguments) {

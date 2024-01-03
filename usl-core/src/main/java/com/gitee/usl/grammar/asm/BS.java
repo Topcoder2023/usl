@@ -27,6 +27,9 @@ import lombok.Setter;
 @Description("基础脚本")
 public abstract class BS implements Script, ScriptEnhancer {
 
+    @Description("脚本引擎实例")
+    private final ScriptEngine instance;
+
     @Description("变量表")
     private final ScriptKeyword symbolTable;
 
@@ -36,9 +39,6 @@ public abstract class BS implements Script, ScriptEnhancer {
     @Description("变量属性表")
     private final List<VariableMeta> metaList;
 
-    @Description("脚本引擎实例")
-    private final ScriptEngine instance;
-
     @Description("上下文环境")
     private Env compileEnv;
 
@@ -47,7 +47,7 @@ public abstract class BS implements Script, ScriptEnhancer {
     private Map<String, LambdaFunctionBootstrap> lambdaBootstraps;
 
     @Description("函数参数表")
-    private Map<Integer, List<FunctionArgument>> functionsArgs = Collections.emptyMap();
+    private List<FunctionArgument> functionsArgs = Collections.emptyList();
 
     public BS(final ScriptEngine instance,
               final List<VariableMeta> metaList,
@@ -63,6 +63,7 @@ public abstract class BS implements Script, ScriptEnhancer {
 
     @Override
     public Object execute(Map<String, Object> context) {
+        this.buildArgumentList();
         final Env env = this.buildEnv(context);
         try {
             envProcessor.onBegin(env, this);
@@ -73,10 +74,8 @@ public abstract class BS implements Script, ScriptEnhancer {
     }
 
     @Override
-    public void setFunctionsArgs(final Map<Integer, List<FunctionArgument>> functionsArgs) {
-        Optional.ofNullable(functionsArgs)
-                .map(Collections::unmodifiableMap)
-                .ifPresent(args -> this.functionsArgs = args);
+    public void setFunctionsArgs(final List<FunctionArgument> functionsArgs) {
+        Optional.ofNullable(functionsArgs).ifPresent(args -> this.functionsArgs = args);
     }
 
     @Override
@@ -112,6 +111,24 @@ public abstract class BS implements Script, ScriptEnhancer {
         LambdaFunctionBootstrap bootstrap = this.lambdaBootstraps.get(name);
         Assert.notNull(bootstrap, () -> new USLCompileException(ResultCode.NOT_FOUND_OF_LAMBDA, name));
         return bootstrap.newInstance(env);
+    }
+
+    @Description("合并所有参数列表")
+    private void buildArgumentList() {
+        if (CollUtil.isEmpty(lambdaBootstraps)) {
+            return;
+        }
+        lambdaBootstraps.values().forEach(lambdaFunctionBootstrap -> {
+            Script expression = lambdaFunctionBootstrap.getExpression();
+            if (!(expression instanceof CS)) {
+                return;
+            }
+            List<FunctionArgument> arguments = ((CS) expression).getFunctionsArgs();
+            if (CollUtil.isEmpty(arguments)) {
+                return;
+            }
+            this.functionsArgs.addAll(arguments);
+        });
     }
 
 }

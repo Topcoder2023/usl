@@ -916,7 +916,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
                 : Collections.EMPTY_LIST;
 
         int funcId = getNextFuncInvocationId();
-        getFuncsArgs().put(funcId, Collections.unmodifiableList(params));
+        getFuncsArgs().addAll(params);
         loadEnv();
         this.mv.visitLdcInsn(FUNC_ARGS_INNER_VAR);
         this.mv.visitLdcInsn(funcId);

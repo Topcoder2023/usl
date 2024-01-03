@@ -22,7 +22,7 @@ public interface ScriptEnhancer {
     }
 
     @Description("设置当前函数参数")
-    default void setFunctionsArgs(final Map<Integer, List<FunctionArgument>> functionsArgs) {
+    default void setFunctionsArgs(final List<FunctionArgument> functionsArgs) {
     }
 
     @Description("设置上下文环境")
