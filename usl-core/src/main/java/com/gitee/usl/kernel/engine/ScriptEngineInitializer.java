@@ -34,7 +34,7 @@ public final class ScriptEngineInitializer implements Initializer {
         EngineConfig configEngine = configuration.getEngineConfig();
 
         this.instance = new ScriptEngine();
-        this.instance.setFunctionLoader(name -> configEngine.getFunctionHolder().search(name));
+        this.instance.setFunctionMapping(name -> configEngine.getFunctionHolder().search(name));
         this.instance.setFunctionMissing(new MethodInvokerOnMissing()
                 .setFunctionMissing(configEngine.getFunctionMissing())
                 .setEnabled(Boolean.TRUE.equals(configEngine.getEnableMethodInvoke())));

@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * @author hongda.li
@@ -36,10 +37,6 @@ public final class ScriptEngine {
     private ScriptProcessor envProcessor;
 
     @Setter
-    @Description("函数加载器")
-    private FunctionLoader functionLoader;
-
-    @Setter
     @Description("函数兜底机制")
     private FunctionMissing functionMissing;
 
@@ -49,6 +46,10 @@ public final class ScriptEngine {
 
     @Description("自定义类加载器")
     private final GlobalClassLoader classLoader;
+
+    @Setter
+    @Description("函数映射")
+    private Function<String, AviatorFunction> functionMapping;
 
     @Description("脚本引擎选项配置集合")
     private volatile Map<Options, Value> options = new IdentityHashMap<>();
@@ -206,7 +207,7 @@ public final class ScriptEngine {
 
     @Description("尝试获取函数")
     public AviatorFunction getFunction(final String name, final ScriptKeyword symbolTable) {
-        Assert.notNull(functionLoader, "函数加载器尚未初始化");
+        Assert.notNull(functionMapping, "函数加载器尚未初始化");
 
         @Description("从内置函数中尝试获取函数")
         AviatorFunction function = this.systemFunctionMap.get(name);
@@ -214,8 +215,8 @@ public final class ScriptEngine {
             return function;
         }
 
-        @Description("从函数加载器中尝试获取函数")
-        AviatorFunction fromLoader = functionLoader.onFunctionNotFound(name);
+        @Description("从函数映射中尝试获取函数")
+        AviatorFunction fromLoader = functionMapping.apply(name);
         if (fromLoader != null) {
             return fromLoader;
         }

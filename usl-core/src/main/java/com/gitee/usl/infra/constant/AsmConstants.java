@@ -41,6 +41,9 @@ public class AsmConstants {
     @Description("函数参数定义")
     public static final String FUNC_PARAMS_VAR = "__functions_args__";
 
+    @Description("函数参数索引")
+    public static final String FUNC_PARAMS_INDEX = "__functions_index__";
+
     @Description("类名前缀")
     public static final String CLASS_NAME_PREFIX = "Script_";
 

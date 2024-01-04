@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.gitee.usl.infra.utils.EnabledLogger.info;
 
@@ -62,11 +63,7 @@ public class CompileQueueInitializer implements Initializer {
 
         @Description("编译队列生产者")
         CompileProducer producer = ServiceSearcher.searchFirst(CompileProducer.class);
-        if (producer == null) {
-            this.producer = new CompileEventProducer();
-        } else {
-            this.producer = producer;
-        }
+        this.producer = Objects.requireNonNullElseGet(producer, CompileEventProducer::new);
 
         log.info("编译队列生产者 - {}", this.producer.getClass().getName());
         this.producer.init(this.disruptor);

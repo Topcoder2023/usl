@@ -4,7 +4,6 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.infra.exception.USLNotFoundException;
 import com.googlecode.aviator.FunctionMissing;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import lombok.Data;
@@ -33,27 +32,22 @@ public class MethodInvokerOnMissing implements FunctionMissing {
     @Description("方法调用标识")
     private static final String REGEX = "\\.";
 
-    @Description("异常消费者")
-    private static final FunctionMissing DEFAULT_IMPL = (name, env, args) -> {
-        throw new USLNotFoundException("无法加载此函数 - {}", name);
-    };
-
     @Override
-    public AviatorObject onFunctionMissing(String name, Map<String, Object> env, AviatorObject... args) {
+    public AviatorObject onFunctionMissing(String name, Map<String, Object> env, AviatorObject... arguments) {
 
         if (functionMissing == null) {
-            functionMissing = DEFAULT_IMPL;
+            functionMissing = DEFAULT;
         }
 
         if (!enabled) {
-            return functionMissing.onFunctionMissing(name, env, args);
+            return functionMissing.onFunctionMissing(name, env, arguments);
         }
 
         @Description("<变量名.方法名()>")
         String[] metaInfo = name.split(REGEX);
 
         if (metaInfo.length < 2) {
-            return functionMissing.onFunctionMissing(name, env, args);
+            return functionMissing.onFunctionMissing(name, env, arguments);
         }
 
         @Description("变量名")
@@ -66,22 +60,23 @@ public class MethodInvokerOnMissing implements FunctionMissing {
         Object target = env.get(targetName);
 
         if (target == null) {
-            return functionMissing.onFunctionMissing(name, env, args);
+            return functionMissing.onFunctionMissing(name, env, arguments);
         }
 
         @Description("方法实例")
         Method method = ReflectUtil.getMethodByName(target.getClass(), methodName);
 
         if (method == null) {
-            return functionMissing.onFunctionMissing(name, env, args);
+            return functionMissing.onFunctionMissing(name, env, arguments);
         }
 
         Assert.isTrue(metaInfo.length == 2, "不支持链式调用对象方法");
 
-        if (ArrayUtil.isEmpty(args)) {
+        if (ArrayUtil.isEmpty(arguments)) {
             return ReflectUtil.invoke(target, method);
         } else {
-            return ReflectUtil.invoke(target, method, Arrays.stream(args).map(arg -> arg.getValue(env)).toArray());
+            return ReflectUtil.invoke(target, method, Arrays.stream(arguments).map(arg -> arg.getValue(env)).toArray());
         }
     }
+
 }

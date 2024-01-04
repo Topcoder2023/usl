@@ -7,6 +7,8 @@ import com.gitee.usl.kernel.configure.Configuration;
 import com.google.auto.service.AutoService;
 import lombok.Getter;
 
+import java.util.Objects;
+
 /**
  * @author hongda.li
  */
@@ -22,11 +24,7 @@ public class CacheInitializer implements Initializer {
     public void doInit(Configuration configuration) {
         ExpressionCache found = ServiceSearcher.searchFirst(ExpressionCache.class);
 
-        if (found == null) {
-            this.cache = new CaffeineCache();
-        } else {
-            this.cache = found;
-        }
+        this.cache = Objects.requireNonNullElseGet(found, CaffeineCache::new);
 
         this.cache.init(configuration.getCacheConfig().setCacheInitializer(this));
     }

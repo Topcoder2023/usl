@@ -1,38 +1,24 @@
 package com.googlecode.aviator;
-/**
- *
- * Called when function not found, return the invocation result.
- *
- * @author dennis(killme2008@gmail.com)
- * @since 4.2.5
- *
- */
 
-import com.gitee.usl.grammar.ScriptEngine;
+import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.infra.exception.USLNotFoundException;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 
-import java.io.Serializable;
 import java.util.Map;
 
 /**
- * Function not found hook interface. The
- * {@link FunctionMissing#onFunctionMissing(String, Map, AviatorObject...)} method will be called
- * when function not found, return the invocation result.
- *
- * @see ScriptEngine#setFunctionMissing(FunctionMissing)
- * @see AviatorEvaluator#setFunctionMissing(FunctionMissing)
- * @author dennis zhuang(killme2008@gmail.com)
- * @since 4.2.5
- *
+ * @author hongda.li
  */
-public interface FunctionMissing extends Serializable {
-  /**
-   * Called when function not found, return the invocation result.
-   *
-   * @param name function name
-   * @param env invocation env
-   * @param args invocation arguments.
-   * @return The invocation result.
-   */
-  AviatorObject onFunctionMissing(String name, Map<String, Object> env, AviatorObject... args);
+@FunctionalInterface
+public interface FunctionMissing {
+
+    @Description("函数兜底逻辑")
+    AviatorObject onFunctionMissing(@Description("函数名称") final String name,
+                                    @Description("上下文环境") final Map<String, Object> env,
+                                    @Description("函数参数") final AviatorObject... arguments);
+
+    FunctionMissing DEFAULT = (name, env, args) -> {
+        throw new USLNotFoundException("无法加载此函数 - {}", name);
+    };
+
 }

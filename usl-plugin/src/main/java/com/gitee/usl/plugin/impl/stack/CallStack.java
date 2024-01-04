@@ -5,8 +5,10 @@ import cn.hutool.core.text.CharPool;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.infra.constant.AsmConstants;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.kernel.engine.FunctionSession;
+import com.googlecode.aviator.code.asm.ASMCodeGenerator;
 import com.googlecode.aviator.utils.Env;
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,18 +67,23 @@ public class CallStack {
         @Description("调用栈日志输出")
         StringBuilder stackInfo = new StringBuilder();
 
-        first.getEnv().forEach((key, value) -> stackInfo.append(key)
-                .append(" => ")
-                .append(value)
-                .append("\n")
-                .append(SPLIT));
+        first.getEnv()
+                .entrySet()
+                .stream()
+                .filter(entry -> !AsmConstants.FUNC_PARAMS_VAR.equals(entry.getKey()))
+                .filter(entry -> !ASMCodeGenerator.FUNC_ARGS_INNER_VAR.equals(entry.getKey()))
+                .forEach(entry -> stackInfo.append(entry.getKey())
+                        .append(" => ")
+                        .append(entry.getValue())
+                        .append("\n")
+                        .append(SPLIT));
 
         Optional.ofNullable(first.getInvocation()).ifPresent(invocation -> {
-            stackInfo.append("函数类名 : ").append(invocation.getTargetType().getName()).append("\n").append(SPLIT);
-            stackInfo.append("方法名称 : ").append(invocation.getMethod().getName()).append("\n").append(SPLIT);
+            stackInfo.append("函数类名 : ").append(invocation.targetType().getName()).append("\n").append(SPLIT);
+            stackInfo.append("方法名称 : ").append(invocation.method().getName()).append("\n").append(SPLIT);
             stackInfo.append("函数名称 : ").append(first.getDefinition().getName()).append("\n").append(SPLIT);
 
-            Optional.ofNullable(invocation.getArgs()).ifPresent(args -> stackInfo.append("参数列表 : ")
+            Optional.ofNullable(invocation.args()).ifPresent(args -> stackInfo.append("参数列表 : ")
                     .append(Stream.of(args)
                             .filter(arg -> arg == null || !Env.class.equals(arg.getClass()))
                             .map(ObjectUtil::toString)

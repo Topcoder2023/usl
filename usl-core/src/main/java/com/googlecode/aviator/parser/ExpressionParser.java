@@ -1194,8 +1194,7 @@ public class ExpressionParser implements Parser {
             }
             lambda(true);
             instance.ensureFeatureEnabled(Feature.Assignment);
-            getCodeGeneratorWithTimes()
-                    .onAssignment(currentToken().withMeta(Constants.DEFINE_META, true));
+            getCodeGeneratorWithTimes().onAssignment(currentToken().withMeta(Constants.DEFINE_META, true));
         }
     }
 

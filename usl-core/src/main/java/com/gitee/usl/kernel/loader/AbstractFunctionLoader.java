@@ -25,9 +25,9 @@ public abstract class AbstractFunctionLoader implements FunctionLoader {
                 .flatMap(packageName -> ClassUtil.scanPackage(packageName, this::filter)
                         .stream()
                         .flatMap(clz -> this.class2Definition(clz, runner).stream())
-                        .collect(Collectors.toList())
+                        .toList()
                         .stream())
-                .collect(Collectors.toList())
+                .toList()
                 .stream()
                 .map(this::definition2Func)
                 .collect(Collectors.toList());

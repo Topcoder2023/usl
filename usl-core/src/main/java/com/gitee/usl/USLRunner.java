@@ -190,20 +190,12 @@ public class USLRunner {
 
     @Description("开启交互")
     private void interactive(@Description("交互模式") InteractiveMode mode) {
-        final Interactive interactive;
-        switch (mode) {
-            case CLI:
-                interactive = ServiceSearcher.searchFirst(CliInteractive.class);
-                break;
-            case WEB:
-                interactive = ServiceSearcher.searchFirst(WebInteractive.class);
-                break;
-            case NONE:
-            default:
-                interactive = runner -> {
-                };
-                break;
-        }
+        final Interactive interactive = switch (mode) {
+            case CLI -> ServiceSearcher.searchFirst(CliInteractive.class);
+            case WEB -> ServiceSearcher.searchFirst(WebInteractive.class);
+            default -> runner -> {
+            };
+        };
 
         Optional.ofNullable(interactive).ifPresent(item -> item.open(this));
     }

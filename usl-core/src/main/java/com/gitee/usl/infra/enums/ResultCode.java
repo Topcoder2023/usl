@@ -65,6 +65,9 @@ public enum ResultCode {
     @Description("Lambda匿名函数不存在")
     NOT_FOUND_OF_LAMBDA(523),
 
+    @Description("函数参数个数不匹配")
+    NOT_MATCH_OF_ARGUMENT_COUNT(524),
+
     @Description("等待超时")
     TIMEOUT(600);
 

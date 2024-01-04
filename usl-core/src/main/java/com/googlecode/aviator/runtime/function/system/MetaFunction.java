@@ -30,7 +30,7 @@ public class MetaFunction extends AbstractFunction {
 
   @Override
   public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1) {
-    final Map<Object, Object> m = arg1.getMetadata();
+    final Map<String, Object> m = arg1.getMetadata();
     return AviatorRuntimeJavaType.valueOf(m.isEmpty() ? null : m);
   }
 

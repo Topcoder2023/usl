@@ -12,13 +12,13 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author hongda.li
  */
 @Slf4j
-@Description("支持自定义线程名称的线程工厂")
+@Description("支持自定义线程名称的虚拟线程工厂")
 public class NamedThreadFactory implements ThreadFactory {
     @Description("线程创建成功时的信息")
-    private static final String THREAD_CREATE = "线程创建成功 - {}";
+    private static final String THREAD_CREATE = "虚拟线程创建成功 - {}";
 
     @Description("线程执行发生异常时的信息")
-    private static final String THREAD_ERROR = "线程执行出现错误 - [{} - {}]";
+    private static final String THREAD_ERROR = "虚拟线程执行出现错误 - [{} - {}]";
 
     @Description("线程名称的前缀")
     private final String prefix;
@@ -33,9 +33,7 @@ public class NamedThreadFactory implements ThreadFactory {
     @SuppressWarnings("NullableProblems")
     @Override
     public Thread newThread(Runnable runnable) {
-        Thread thread = new Thread(runnable);
-
-        thread.setDaemon(false);
+        Thread thread = Thread.ofVirtual().unstarted(runnable);
 
         thread.setName(this.prefix + StrPool.UNDERLINE + count.getAndIncrement());
 

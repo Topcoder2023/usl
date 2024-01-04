@@ -58,4 +58,9 @@ public class FunctionDefinition {
                 .orElse(NumberConstant.ZERO);
     }
 
+    @Description("函数名称是否匹配")
+    public boolean matchName(String name) {
+        return this.name.equals(name) || this.alias.contains(name);
+    }
+
 }

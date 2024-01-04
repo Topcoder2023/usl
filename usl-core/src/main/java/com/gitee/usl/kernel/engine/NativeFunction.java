@@ -41,7 +41,7 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction> implement
     protected Object intercept(Invocation<AviatorFunction> invocation, Object proxy) {
 
         @Description("原始参数列表")
-        Object[] parameters = invocation.getArgs();
+        Object[] parameters = invocation.args();
 
         @Description("上下文参数")
         Env env = (Env) parameters[0];
