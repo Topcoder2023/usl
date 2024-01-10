@@ -137,7 +137,7 @@ public class LibraryGenerator {
     }
 
     public static final class LibraryGeneratorBuilder {
-        public static final String DEFAULT_OUTPUT = "usl@types";
+        public static final String DEFAULT_OUTPUT = "@types";
         private File output;
         private final Set<String> functionSet = new HashSet<>(NumberConstant.COMMON_SIZE);
 

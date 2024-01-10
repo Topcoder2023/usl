@@ -42,6 +42,10 @@ public class CacheStatusWatcher implements FixedRateTimedTask {
         }
 
         ExpressionCache cache = initializer.getCache();
-        cache.snapshot();
+        configuration.getExecutorConfig()
+                .getPoolInitializer()
+                .getExecutor()
+                .submit(cache::snapshot);
     }
+
 }

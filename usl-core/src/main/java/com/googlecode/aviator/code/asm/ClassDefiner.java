@@ -4,7 +4,7 @@ import static java.lang.invoke.MethodType.methodType;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
-import com.gitee.usl.grammar.asm.GlobalClassLoader;
+import com.gitee.usl.grammar.ScriptClassLoader;
 
 /**
  * A class definer
@@ -68,7 +68,7 @@ public class ClassDefiner {
   private static int errorTimes = 0;
 
   public static Class<?> defineClass(final String className, final Class<?> clazz,
-                                     final byte[] bytes, final GlobalClassLoader classLoader)
+                                     final byte[] bytes, final ScriptClassLoader classLoader)
       throws NoSuchFieldException, IllegalAccessException {
     if (!preferClassLoader && DEFINE_CLASS_HANDLE != null) {
       try {
@@ -86,7 +86,7 @@ public class ClassDefiner {
   }
 
   public static Class<?> defineClassByClassLoader(final String className, final byte[] bytes,
-      final GlobalClassLoader classLoader) {
+      final ScriptClassLoader classLoader) {
     return classLoader.defineClass(className, bytes);
   }
 }

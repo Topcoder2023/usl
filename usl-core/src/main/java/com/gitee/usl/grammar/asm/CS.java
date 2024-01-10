@@ -2,6 +2,7 @@ package com.gitee.usl.grammar.asm;
 
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.AsmMethod;
+import com.gitee.usl.grammar.ExceptionHandler;
 import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.ScriptKeyword;
@@ -34,9 +35,7 @@ public abstract class CS extends BS {
             return this.customImpl((Env) env);
         } catch (Throwable t) {
             Optional.ofNullable(getInstance().getExceptionHandler())
-                    .orElse(error -> {
-                        throw new USLExecuteException(error);
-                    })
+                    .orElse(ExceptionHandler.DEFAULT)
                     .accept(t);
             return null;
         }

@@ -1,7 +1,7 @@
 package com.googlecode.aviator.code;
 
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.grammar.asm.GlobalClassLoader;
+import com.gitee.usl.grammar.ScriptClassLoader;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.asm.BS;
 import com.gitee.usl.grammar.asm.Script;
@@ -52,7 +52,7 @@ public class OptimizeCodeGenerator implements CodeGenerator {
 
     public OptimizeCodeGenerator(final ScriptEngine instance, final ClassLoader classLoader) {
         this.instance = instance;
-        this.evalCodeGenerator = new ASMCodeGenerator(instance, (GlobalClassLoader) classLoader);
+        this.evalCodeGenerator = new ASMCodeGenerator(instance, (ScriptClassLoader) classLoader);
     }
 
     private Env getCompileEnv() {

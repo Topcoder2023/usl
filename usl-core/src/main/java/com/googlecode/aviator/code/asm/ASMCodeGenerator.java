@@ -23,7 +23,7 @@ import com.googlecode.aviator.lexer.token.OperatorType;
 import com.googlecode.aviator.lexer.token.Token;
 import com.googlecode.aviator.lexer.token.Token.TokenType;
 import com.googlecode.aviator.lexer.token.Variable;
-import com.gitee.usl.grammar.asm.GlobalClassLoader;
+import com.gitee.usl.grammar.ScriptClassLoader;
 import com.googlecode.aviator.parser.VariableMeta;
 import com.googlecode.aviator.runtime.FunctionArgument;
 import com.googlecode.aviator.runtime.FunctionParam;
@@ -75,7 +75,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
     }
 
     public ASMCodeGenerator(final ScriptEngine instance,
-                            final GlobalClassLoader classLoader) {
+                            final ScriptClassLoader classLoader) {
         super(instance, classLoader);
         this.className = AsmConstants.CLASS_NAME_PREFIX
                 + DateUtil.format(new DateTime(), AsmConstants.DATETIME_FORMAT)

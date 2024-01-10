@@ -8,6 +8,7 @@ import cn.hutool.core.util.ClassUtil;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
 
+import java.io.Serial;
 import java.util.Date;
 import java.util.Optional;
 import java.util.function.Function;
@@ -20,6 +21,7 @@ import static java.lang.System.out;
  * @author hongda.li
  */
 public class UslLogger extends AbstractUslEnabledLogger {
+    @Serial
     private static final long serialVersionUID = -6857629823140297158L;
 
     public UslLogger(String name) {
@@ -39,26 +41,12 @@ public class UslLogger extends AbstractUslEnabledLogger {
     /**
      * 日志级别与日志对应的颜色映射关系
      */
-    private static final Function<Level, AnsiColor> COLOR_MAPPING = level -> {
-        AnsiColor color;
-        switch (level) {
-            case INFO:
-                color = AnsiColor.BRIGHT_CYAN;
-                break;
-            case ERROR:
-                color = AnsiColor.BRIGHT_RED;
-                break;
-            case TRACE:
-                color = AnsiColor.BRIGHT_BLUE;
-                break;
-            case WARN:
-                color = AnsiColor.BRIGHT_YELLOW;
-                break;
-            case DEBUG:
-            default:
-                color = AnsiColor.WHITE;
-        }
-        return color;
+    private static final Function<Level, AnsiColor> COLOR_MAPPING = level -> switch (level) {
+        case INFO -> AnsiColor.BRIGHT_CYAN;
+        case ERROR -> AnsiColor.BRIGHT_RED;
+        case TRACE -> AnsiColor.BRIGHT_BLUE;
+        case WARN -> AnsiColor.BRIGHT_YELLOW;
+        default -> AnsiColor.WHITE;
     };
 
     @Override

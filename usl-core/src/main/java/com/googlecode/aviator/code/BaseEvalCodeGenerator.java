@@ -3,7 +3,7 @@ package com.googlecode.aviator.code;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.googlecode.aviator.code.asm.ASMCodeGenerator.MethodMetaData;
 import com.gitee.usl.grammar.ScriptKeyword;
-import com.gitee.usl.grammar.asm.GlobalClassLoader;
+import com.gitee.usl.grammar.ScriptClassLoader;
 import com.googlecode.aviator.parser.Parser;
 import com.googlecode.aviator.parser.VariableMeta;
 import com.googlecode.aviator.runtime.FunctionArgument;
@@ -21,7 +21,7 @@ public abstract class BaseEvalCodeGenerator implements EvalCodeGenerator {
 
     protected Map<String, VariableMeta> variables = Collections.emptyMap();
     protected LambdaGenerator lambdaGenerator;
-    protected final GlobalClassLoader classLoader;
+    protected final ScriptClassLoader classLoader;
 
     protected Parser parser;
     protected ScriptKeyword symbolTable;
@@ -55,12 +55,12 @@ public abstract class BaseEvalCodeGenerator implements EvalCodeGenerator {
     }
 
     @Override
-    public GlobalClassLoader getClassLoader() {
+    public ScriptClassLoader getClassLoader() {
         return this.classLoader;
     }
 
     public BaseEvalCodeGenerator(final ScriptEngine instance,
-                                 final GlobalClassLoader classLoader) {
+                                 final ScriptClassLoader classLoader) {
         super();
         this.instance = instance;
         this.compileEnv = new Env();

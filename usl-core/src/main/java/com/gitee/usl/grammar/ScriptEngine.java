@@ -2,7 +2,6 @@ package com.gitee.usl.grammar;
 
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.grammar.asm.GlobalClassLoader;
 import com.gitee.usl.infra.exception.USLException;
 import com.gitee.usl.infra.structure.StringMap;
 import com.googlecode.aviator.*;
@@ -19,8 +18,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.*;
 import java.util.function.Function;
 
@@ -45,7 +42,7 @@ public final class ScriptEngine {
     private int bytecodeVersion = Opcodes.V1_7;
 
     @Description("自定义类加载器")
-    private final GlobalClassLoader classLoader;
+    private final ScriptClassLoader classLoader;
 
     @Setter
     @Description("函数映射")
@@ -76,7 +73,7 @@ public final class ScriptEngine {
         setOption(Options.EVAL_MODE, EvalMode.ASM);
         loadFeatureFunctions();
         loadSystemFunctions();
-        this.classLoader = AccessController.doPrivileged((PrivilegedAction<GlobalClassLoader>) () -> new GlobalClassLoader(this.getClass().getClassLoader()));
+        this.classLoader = new ScriptClassLoader(this.getClass().getClassLoader());
     }
 
     @Description("为操作符函数建立别名")
@@ -258,7 +255,7 @@ public final class ScriptEngine {
     }
 
     @Description("构建一个运行期间优先的字节码生成器")
-    public CodeGenerator codeGenerator(final GlobalClassLoader classLoader) {
+    public CodeGenerator codeGenerator(final ScriptClassLoader classLoader) {
         return new OptimizeCodeGenerator(this, classLoader);
     }
 

@@ -7,7 +7,6 @@ import com.googlecode.aviator.runtime.function.LambdaFunction;
 import com.googlecode.aviator.utils.Env;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author hongda.li

@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.lexer.token.Token;
-import com.gitee.usl.grammar.asm.GlobalClassLoader;
+import com.gitee.usl.grammar.ScriptClassLoader;
 import com.googlecode.aviator.parser.Parser;
 import com.googlecode.aviator.parser.ScopeInfo;
 import com.googlecode.aviator.runtime.FunctionParam;
@@ -40,7 +40,7 @@ public class LambdaGenerator implements CodeGenerator {
 
   public LambdaGenerator(final ScriptEngine instance,
                          final CodeGenerator parentCodeGenerator, final Parser parser,
-                         final GlobalClassLoader classLoader, final boolean newLexicalScope,
+                         final ScriptClassLoader classLoader, final boolean newLexicalScope,
                          final boolean inheritEnv) {
     this.params = new ArrayList<>();
     // this.instance = instance;

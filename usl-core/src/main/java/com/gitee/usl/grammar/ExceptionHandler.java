@@ -1,6 +1,7 @@
 package com.gitee.usl.grammar;
 
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.infra.exception.USLExecuteException;
 
 import java.util.function.Consumer;
 
@@ -9,4 +10,10 @@ import java.util.function.Consumer;
  */
 @Description("异常处理器")
 public interface ExceptionHandler extends Consumer<Throwable> {
+
+    @Description("默认的异常处理器")
+    ExceptionHandler DEFAULT = error -> {
+        throw new USLExecuteException(error);
+    };
+
 }

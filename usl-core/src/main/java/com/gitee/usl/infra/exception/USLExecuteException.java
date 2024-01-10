@@ -4,12 +4,15 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.infra.enums.ResultCode;
 import lombok.Getter;
 
+import java.io.Serial;
+
 /**
  * @author hongda.li
  */
 @Getter
 public class USLExecuteException extends USLException {
 
+    @Serial
     private static final long serialVersionUID = -2700399654507293658L;
 
     public USLExecuteException() {
