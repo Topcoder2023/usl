@@ -1,6 +1,6 @@
 package com.googlecode.aviator.exception;
 
-import com.googlecode.aviator.Feature;
+import com.gitee.usl.grammar.Feature;
 
 public class UnsupportedFeatureException extends ExpressionSyntaxErrorException {
   private static final long serialVersionUID = 6543462982851212129L;

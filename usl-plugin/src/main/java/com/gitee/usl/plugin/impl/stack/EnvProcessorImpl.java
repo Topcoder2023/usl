@@ -3,8 +3,8 @@ package com.gitee.usl.plugin.impl.stack;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.grammar.ScriptProcessor;
-import com.gitee.usl.grammar.asm.Script;
-import com.googlecode.aviator.utils.Env;
+import com.gitee.usl.grammar.script.Script;
+import com.gitee.usl.grammar.utils.Env;
 import lombok.Getter;
 import lombok.ToString;
 

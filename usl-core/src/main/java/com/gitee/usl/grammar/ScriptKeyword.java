@@ -7,8 +7,8 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.structure.AwaitVariable;
 import com.gitee.usl.infra.structure.FunctionVariable;
 import com.gitee.usl.infra.structure.VarVariable;
-import com.googlecode.aviator.lexer.token.Token;
-import com.googlecode.aviator.lexer.token.Variable;
+import com.gitee.usl.grammar.lexer.token.Token;
+import com.gitee.usl.grammar.lexer.token.Variable;
 import lombok.Getter;
 
 /**

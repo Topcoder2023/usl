@@ -17,7 +17,7 @@ import com.gitee.usl.infra.structure.StringList;
 import com.gitee.usl.kernel.engine.CombineFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.google.auto.service.AutoService;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 
 import javax.script.*;
 import java.lang.reflect.Method;

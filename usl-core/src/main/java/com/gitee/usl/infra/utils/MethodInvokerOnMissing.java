@@ -4,8 +4,8 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Description;
-import com.googlecode.aviator.FunctionMissing;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.api.FunctionMissing;
+import com.gitee.usl.grammar.runtime.type.AviatorObject;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

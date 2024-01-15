@@ -10,8 +10,8 @@ import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.plugin.api.CacheKeyGenerator;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.googlecode.aviator.runtime.type.AviatorObject;
-import com.googlecode.aviator.utils.Env;
+import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.utils.Env;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

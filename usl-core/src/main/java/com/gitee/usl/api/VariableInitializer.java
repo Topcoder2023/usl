@@ -1,7 +1,7 @@
 package com.gitee.usl.api;
 
 import com.gitee.usl.api.annotation.Description;
-import com.googlecode.aviator.lexer.token.Variable;
+import com.gitee.usl.grammar.lexer.token.Variable;
 
 /**
  * @author hongda.li

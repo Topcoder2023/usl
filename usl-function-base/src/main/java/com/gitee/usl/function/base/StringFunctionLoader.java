@@ -5,7 +5,7 @@ import com.gitee.usl.api.FunctionLoader;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.engine.Function;
 import com.google.auto.service.AutoService;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 
 import java.util.List;
 

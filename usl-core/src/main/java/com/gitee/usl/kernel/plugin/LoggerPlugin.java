@@ -8,8 +8,8 @@ import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.api.plugin.BeginPlugin;
 import com.gitee.usl.api.plugin.FailurePlugin;
 import com.gitee.usl.api.plugin.SuccessPlugin;
-import com.googlecode.aviator.runtime.type.AviatorObject;
-import com.googlecode.aviator.utils.Env;
+import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.utils.Env;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

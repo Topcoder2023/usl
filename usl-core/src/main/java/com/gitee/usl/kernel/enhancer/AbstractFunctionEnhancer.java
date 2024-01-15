@@ -4,7 +4,7 @@ import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 
 import java.lang.reflect.Proxy;
 

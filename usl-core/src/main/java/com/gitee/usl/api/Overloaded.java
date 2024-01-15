@@ -1,7 +1,7 @@
 package com.gitee.usl.api;
 
 import com.gitee.usl.api.annotation.Description;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 
 import java.util.List;
 

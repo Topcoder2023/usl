@@ -1,15 +1,17 @@
 package com.gitee.usl.kernel.loader;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
+import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.api.FunctionLoader;
 import com.google.auto.service.AutoService;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
@@ -54,7 +56,8 @@ public class NativeFunctionLoader extends AbstractFunctionLoader {
     protected boolean filter(Class<?> clz) {
         return AviatorFunction.class.isAssignableFrom(clz)
                 && ClassUtil.isNormalClass(clz)
-                && !AnnotatedFunction.class.isAssignableFrom(clz);
+                && !AnnotatedFunction.class.isAssignableFrom(clz)
+                && !AnnotationUtil.hasAnnotation(clz, SystemFunction.class);
     }
 
 }

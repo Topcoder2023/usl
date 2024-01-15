@@ -7,9 +7,9 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.structure.Plugins;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
-import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
-import com.googlecode.aviator.runtime.type.AviatorObject;
-import com.googlecode.aviator.utils.Env;
+import com.gitee.usl.grammar.runtime.function.AbstractVariadicFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.utils.Env;
 
 import java.util.*;
 

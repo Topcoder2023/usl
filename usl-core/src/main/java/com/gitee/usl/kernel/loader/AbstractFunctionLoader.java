@@ -6,7 +6,7 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.api.FunctionLoader;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 
 import java.util.List;
 import java.util.stream.Collectors;

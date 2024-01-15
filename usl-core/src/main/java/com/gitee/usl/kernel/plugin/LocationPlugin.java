@@ -2,8 +2,8 @@ package com.gitee.usl.kernel.plugin;
 
 import com.gitee.usl.api.plugin.BeginPlugin;
 import com.gitee.usl.kernel.engine.FunctionSession;
-import com.googlecode.aviator.runtime.FunctionArgument;
-import com.googlecode.aviator.runtime.function.FunctionUtils;
+import com.gitee.usl.grammar.runtime.FunctionArgument;
+import com.gitee.usl.grammar.runtime.function.FunctionUtils;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@ import cn.hutool.core.util.IdUtil;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.kernel.configure.Configuration;
-import com.gitee.usl.grammar.asm.Script;
+import com.gitee.usl.grammar.script.Script;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

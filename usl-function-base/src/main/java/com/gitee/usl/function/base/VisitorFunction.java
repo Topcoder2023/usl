@@ -8,7 +8,7 @@ import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.exception.USLException;
-import com.googlecode.aviator.utils.Env;
+import com.gitee.usl.grammar.utils.Env;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

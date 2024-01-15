@@ -7,7 +7,7 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.kernel.engine.ScriptEngineInitializer;
-import com.googlecode.aviator.FunctionMissing;
+import com.gitee.usl.api.FunctionMissing;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

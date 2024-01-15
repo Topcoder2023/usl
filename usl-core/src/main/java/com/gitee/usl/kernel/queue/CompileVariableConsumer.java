@@ -5,13 +5,13 @@ import com.gitee.usl.api.CompileConsumer;
 import com.gitee.usl.api.VariableInitializer;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Order;
-import com.gitee.usl.grammar.asm.ES;
+import com.gitee.usl.grammar.script.ES;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.google.auto.service.AutoService;
-import com.gitee.usl.grammar.asm.BS;
-import com.googlecode.aviator.lexer.token.Variable;
+import com.gitee.usl.grammar.script.BS;
+import com.gitee.usl.grammar.lexer.token.Variable;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;

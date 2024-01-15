@@ -1,7 +1,7 @@
 package com.gitee.usl.grammar;
 
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.grammar.asm.Script;
+import com.gitee.usl.grammar.script.Script;
 
 import java.util.Map;
 

@@ -8,7 +8,7 @@ import com.gitee.usl.api.Interactive;
 import com.gitee.usl.api.CliInteractive;
 import com.gitee.usl.api.WebInteractive;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.grammar.asm.ES;
+import com.gitee.usl.grammar.script.ES;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
@@ -22,7 +22,7 @@ import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 

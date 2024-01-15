@@ -10,7 +10,7 @@ import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.AttributeMeta;
 import com.gitee.usl.infra.structure.Plugins;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

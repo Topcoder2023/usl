@@ -6,7 +6,7 @@ import com.gitee.usl.api.Overloaded;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.utils.LambdaHelper;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;

@@ -1,6 +1,6 @@
 package com.gitee.usl.infra.structure;
 
-import com.googlecode.aviator.lexer.token.Variable;
+import com.gitee.usl.grammar.lexer.token.Variable;
 
 import java.util.Map;
 

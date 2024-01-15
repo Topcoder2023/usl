@@ -1,19 +1,18 @@
 package com.gitee.usl.grammar;
 
 import cn.hutool.core.lang.Assert;
+import com.gitee.usl.api.FunctionMissing;
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.grammar.runtime.function.system.*;
 import com.gitee.usl.infra.exception.USLException;
 import com.gitee.usl.infra.structure.StringMap;
-import com.googlecode.aviator.*;
-import com.googlecode.aviator.Options.Value;
-import com.googlecode.aviator.asm.Opcodes;
-import com.googlecode.aviator.code.CodeGenerator;
-import com.googlecode.aviator.code.OptimizeCodeGenerator;
-import com.googlecode.aviator.lexer.token.OperatorType;
-import com.googlecode.aviator.runtime.RuntimeFunctionDelegator;
-import com.googlecode.aviator.runtime.function.system.*;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
-import com.googlecode.aviator.utils.CommonUtils;
+import com.gitee.usl.grammar.Options.Value;
+import com.gitee.usl.grammar.code.CodeGenerator;
+import com.gitee.usl.grammar.code.interpreter.InterpretCodeGenerator;
+import com.gitee.usl.grammar.lexer.token.OperatorType;
+import com.gitee.usl.grammar.runtime.RuntimeFunctionDelegator;
+import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.utils.CommonUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -36,10 +35,6 @@ public final class ScriptEngine {
     @Setter
     @Description("函数兜底机制")
     private FunctionMissing functionMissing;
-
-    @Setter
-    @Description("字节码版本号")
-    private int bytecodeVersion = Opcodes.V1_7;
 
     @Description("自定义类加载器")
     private final ScriptClassLoader classLoader;
@@ -256,7 +251,7 @@ public final class ScriptEngine {
 
     @Description("构建一个运行期间优先的字节码生成器")
     public CodeGenerator codeGenerator(final ScriptClassLoader classLoader) {
-        return new OptimizeCodeGenerator(this, classLoader);
+        return new InterpretCodeGenerator(this, classLoader);
     }
 
 }

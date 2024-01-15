@@ -6,9 +6,9 @@ import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.plugin.annotation.Asynchronous;
-import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
-import com.googlecode.aviator.runtime.type.AviatorNil;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.function.AbstractVariadicFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorNil;
+import com.gitee.usl.grammar.runtime.type.AviatorObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;

@@ -8,8 +8,8 @@ import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.infra.structure.wrapper.ParameterWrapper;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.api.plugin.BeginPlugin;
-import com.googlecode.aviator.runtime.type.AviatorObject;
-import com.googlecode.aviator.utils.Env;
+import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.utils.Env;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Parameter;

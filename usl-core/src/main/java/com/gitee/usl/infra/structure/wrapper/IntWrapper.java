@@ -11,6 +11,7 @@ public class IntWrapper implements BaseWrapper<Integer> {
     private int value;
 
     public IntWrapper() {
+        this(NumberConstant.ZERO);
     }
 
     public IntWrapper(int value) {

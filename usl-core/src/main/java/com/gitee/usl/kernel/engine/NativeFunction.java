@@ -8,9 +8,9 @@ import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.infra.proxy.MethodInterceptor;
 import com.gitee.usl.infra.structure.Plugins;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
-import com.googlecode.aviator.runtime.type.AviatorObject;
-import com.googlecode.aviator.utils.Env;
+import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.utils.Env;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;

@@ -8,8 +8,7 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.AsmConstants;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.kernel.engine.FunctionSession;
-import com.googlecode.aviator.code.asm.ASMCodeGenerator;
-import com.googlecode.aviator.utils.Env;
+import com.gitee.usl.grammar.utils.Env;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -71,7 +70,7 @@ public class CallStack {
                 .entrySet()
                 .stream()
                 .filter(entry -> !AsmConstants.FUNC_PARAMS_VAR.equals(entry.getKey()))
-                .filter(entry -> !ASMCodeGenerator.FUNC_ARGS_INNER_VAR.equals(entry.getKey()))
+                .filter(entry -> !"__fas__".equals(entry.getKey()))
                 .forEach(entry -> stackInfo.append(entry.getKey())
                         .append(" => ")
                         .append(entry.getValue())

@@ -7,8 +7,8 @@ import com.gitee.usl.api.plugin.SuccessPlugin;
 import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.infra.structure.Plugins;
 import com.gitee.usl.kernel.engine.FunctionSession;
-import com.googlecode.aviator.runtime.function.FunctionUtils;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.function.FunctionUtils;
+import com.gitee.usl.grammar.runtime.type.AviatorObject;
 
 import java.util.Optional;
 
