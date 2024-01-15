@@ -6,7 +6,6 @@ import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.asm.BS;
 import com.gitee.usl.grammar.asm.Script;
 import com.gitee.usl.grammar.asm.LS;
-import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.*;
 import com.googlecode.aviator.code.asm.ASMCodeGenerator;
 import com.googlecode.aviator.exception.CompileExpressionErrorException;
@@ -160,7 +159,7 @@ public class OptimizeCodeGenerator implements CodeGenerator {
         // if we can execute it on compile
         if (canExecute) {
             // arguments
-            USLObject[] args = new USLObject[operandCount];
+            AviatorObject[] args = new AviatorObject[operandCount];
             int index = 0;
             for (int j = operandStartIndex; j < operatorIndex; j++) {
                 token = this.tokenList.get(j);
@@ -173,7 +172,7 @@ public class OptimizeCodeGenerator implements CodeGenerator {
                 this.tokenList.set(j, null);
 
             }
-            USLObject result = OperationRuntime.eval(getCompileEnv(), args, operatorType);
+            AviatorObject result = OperationRuntime.eval(getCompileEnv(), args, operatorType);
             // set result as token to tokenList for next executing
             this.tokenList.set(operatorIndex, getTokenFromOperand(operatorToken, result));
             return 1;
@@ -210,7 +209,7 @@ public class OptimizeCodeGenerator implements CodeGenerator {
      * @param operand
      * @return
      */
-    private Token<?> getTokenFromOperand(final Token<?> operatorToken, final USLObject operand) {
+    private Token<?> getTokenFromOperand(final Token<?> operatorToken, final AviatorObject operand) {
         Token<?> token = null;
         switch (operand.getAviatorType()) {
             case JavaType:
@@ -274,8 +273,8 @@ public class OptimizeCodeGenerator implements CodeGenerator {
     }
 
 
-    private USLObject getAviatorObjectFromToken(final Token<?> token) {
-        USLObject result = null;
+    private AviatorObject getAviatorObjectFromToken(final Token<?> token) {
+        AviatorObject result = null;
         switch (token.getType()) {
             case Number:
                 // load numbers

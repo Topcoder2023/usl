@@ -1,9 +1,9 @@
 package com.googlecode.aviator.runtime.function.internal;
 
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
-import com.gitee.usl.grammar.type.USLFunction;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.runtime.type.AviatorJavaType;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 
 import java.util.ArrayList;
@@ -35,13 +35,13 @@ public class CatchHandlerFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public USLObject variadicCall(final Map<String, Object> env, final USLObject... args) {
+  public AviatorObject variadicCall(final Map<String, Object> env, final AviatorObject... args) {
     assert (args.length > 0);
     List<String> exceptionClasses = new ArrayList<String>(args.length - 1);
     for (int i = 1; i < args.length; i++) {
       exceptionClasses.add(((AviatorJavaType) args[i]).getName());
     }
 
-    return new CatchHandler((Env) env, (USLFunction) args[0], exceptionClasses);
+    return new CatchHandler((Env) env, (AviatorFunction) args[0], exceptionClasses);
   }
 }

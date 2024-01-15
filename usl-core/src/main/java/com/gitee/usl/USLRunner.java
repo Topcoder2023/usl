@@ -22,7 +22,7 @@ import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
-import com.gitee.usl.grammar.type.USLFunction;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -171,7 +171,7 @@ public class USLRunner {
     }
 
     @Description("返回所有可用的函数实例")
-    public List<USLFunction> functions() {
+    public List<AviatorFunction> functions() {
         return Optional.ofNullable(this.configuration)
                 .map(Configuration::getEngineConfig)
                 .map(EngineConfig::getFunctionHolder)

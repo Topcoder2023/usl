@@ -9,8 +9,8 @@ import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
-import com.gitee.usl.grammar.type.USLFunction;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 
 import java.util.*;
@@ -95,12 +95,12 @@ public class ListFunction {
     }
 
     @Function("list_removeIf")
-    public <T> List<T> removeIf(Env env, List<T> from, USLFunction function) {
+    public <T> List<T> removeIf(Env env, List<T> from, AviatorFunction function) {
         if (from == null || function == null) {
             return from;
         }
         return CollUtil.removeWithAddIf(from, element -> {
-            USLObject result = function.call(env, FunctionUtils.wrapReturn(element));
+            AviatorObject result = function.call(env, FunctionUtils.wrapReturn(element));
             return FunctionUtils.getBooleanValue(result, env);
         });
     }
@@ -144,23 +144,23 @@ public class ListFunction {
     }
 
     @Function("list_sortBy")
-    public <T> List<T> sortBy(Env env, List<T> from, USLFunction function) {
+    public <T> List<T> sortBy(Env env, List<T> from, AviatorFunction function) {
         return resortBy(env, from, function, false);
     }
 
     @Function("list_resortBy")
-    public <T> List<T> resortBy(Env env, List<T> from, USLFunction function) {
+    public <T> List<T> resortBy(Env env, List<T> from, AviatorFunction function) {
         return resortBy(env, from, function, true);
     }
 
-    private <T> List<T> resortBy(Env env, List<T> from, USLFunction function, boolean reverse) {
+    private <T> List<T> resortBy(Env env, List<T> from, AviatorFunction function, boolean reverse) {
         if (from == null) {
             return new ArrayList<>();
         }
 
         List<T> sorted = new ArrayList<>(from);
         sorted.sort((o1, o2) -> {
-            USLObject result = function.call(env,
+            AviatorObject result = function.call(env,
                     FunctionUtils.wrapReturn(reverse ? o2 : o1),
                     FunctionUtils.wrapReturn(reverse ? o1 : o2));
             return FunctionUtils.getNumberValue(result, env).intValue();
@@ -174,13 +174,13 @@ public class ListFunction {
     }
 
     @Function("list_filter")
-    public <T> List<T> filter(Env env, List<T> from, USLFunction function) {
+    public <T> List<T> filter(Env env, List<T> from, AviatorFunction function) {
         if (from == null || function == null) {
             return from;
         }
         return from.stream()
                 .filter(element -> {
-                    USLObject result = function.call(env, FunctionUtils.wrapReturn(element));
+                    AviatorObject result = function.call(env, FunctionUtils.wrapReturn(element));
                     return FunctionUtils.getBooleanValue(result, env);
                 })
                 .collect(Collectors.toList());
@@ -242,31 +242,31 @@ public class ListFunction {
     }
 
     @Function("list_allMatch")
-    public <T> boolean allMatch(Env env, List<T> from, USLFunction function) {
+    public <T> boolean allMatch(Env env, List<T> from, AviatorFunction function) {
         return CollUtil.allMatch(from, element -> FunctionUtils.getBooleanValue(function.call(env, FunctionUtils.wrapReturn(element)), env));
     }
 
     @Function("list_anyMatch")
-    public <T> boolean anyMatch(Env env, List<T> from, USLFunction function) {
+    public <T> boolean anyMatch(Env env, List<T> from, AviatorFunction function) {
         return CollUtil.anyMatch(from, element -> FunctionUtils.getBooleanValue(function.call(env, FunctionUtils.wrapReturn(element)), env));
     }
 
     @Function("list_toMap")
-    public <T> Map<?, ?> toMap(Env env, List<T> from, USLFunction keyMapping, USLFunction valueMapping) {
+    public <T> Map<?, ?> toMap(Env env, List<T> from, AviatorFunction keyMapping, AviatorFunction valueMapping) {
         if (from == null || keyMapping == null || valueMapping == null) {
             return new LinkedHashMap<>(NumberConstant.EIGHT);
         }
         Map<Object, Object> result = new LinkedHashMap<>(from.size());
         for (T element : from) {
-            USLObject key = keyMapping.call(env, FunctionUtils.wrapReturn(element));
-            USLObject value = valueMapping.call(env, FunctionUtils.wrapReturn(element));
+            AviatorObject key = keyMapping.call(env, FunctionUtils.wrapReturn(element));
+            AviatorObject value = valueMapping.call(env, FunctionUtils.wrapReturn(element));
             result.put(key.getValue(env), value.getValue(env));
         }
         return result;
     }
 
     @Function("list_foreach")
-    public <T> List<T> foreach(Env env, List<T> from, USLFunction function) {
+    public <T> List<T> foreach(Env env, List<T> from, AviatorFunction function) {
         if (from != null) {
             from.forEach(element -> function.call(env, FunctionUtils.wrapReturn(element)));
         }
@@ -274,7 +274,7 @@ public class ListFunction {
     }
 
     @Function("list_convert")
-    public <T> List<?> convert(Env env, List<T> from, USLFunction function) {
+    public <T> List<?> convert(Env env, List<T> from, AviatorFunction function) {
         List<?> result;
         if (from != null && function != null) {
             result = from.stream()
@@ -287,7 +287,7 @@ public class ListFunction {
     }
 
     @Function("list_group")
-    public <E> Map<?, List<E>> group(Env env, List<E> from, USLFunction function) {
+    public <E> Map<?, List<E>> group(Env env, List<E> from, AviatorFunction function) {
         if (from == null || function == null) {
             return new LinkedHashMap<>(NumberConstant.EIGHT);
         }

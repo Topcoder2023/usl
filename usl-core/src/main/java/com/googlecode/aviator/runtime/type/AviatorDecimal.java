@@ -3,7 +3,6 @@ package com.googlecode.aviator.runtime.type;
 import java.math.BigDecimal;
 import java.util.Map;
 import com.gitee.usl.grammar.ScriptEngine;
-import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.runtime.RuntimeUtils;
 
@@ -43,7 +42,7 @@ public class AviatorDecimal extends AviatorNumber {
   }
 
   @Override
-  public USLObject innerSub(final Map<String, Object> env, final AviatorNumber other) {
+  public AviatorObject innerSub(final Map<String, Object> env, final AviatorNumber other) {
     if (other.getAviatorType() != AviatorType.Double) {
       return AviatorDecimal
           .valueOf(toDecimal(env).subtract(other.toDecimal(env), RuntimeUtils.getMathContext(env)));
@@ -54,13 +53,13 @@ public class AviatorDecimal extends AviatorNumber {
 
 
   @Override
-  public USLObject neg(final Map<String, Object> env) {
+  public AviatorObject neg(final Map<String, Object> env) {
     return AviatorDecimal.valueOf(toDecimal(env).negate());
   }
 
 
   @Override
-  public USLObject innerMult(final Map<String, Object> env, final AviatorNumber other) {
+  public AviatorObject innerMult(final Map<String, Object> env, final AviatorNumber other) {
     if (other.getAviatorType() != AviatorType.Double) {
       return AviatorDecimal
           .valueOf(toDecimal(env).multiply(other.toDecimal(env), RuntimeUtils.getMathContext(env)));
@@ -71,7 +70,7 @@ public class AviatorDecimal extends AviatorNumber {
 
 
   @Override
-  public USLObject innerMod(final Map<String, Object> env, final AviatorNumber other) {
+  public AviatorObject innerMod(final Map<String, Object> env, final AviatorNumber other) {
     if (other.getAviatorType() != AviatorType.Double) {
       return AviatorDecimal.valueOf(
           toDecimal(env).remainder(other.toDecimal(env), RuntimeUtils.getMathContext(env)));
@@ -82,7 +81,7 @@ public class AviatorDecimal extends AviatorNumber {
 
 
   @Override
-  public USLObject innerDiv(final Map<String, Object> env, final AviatorNumber other) {
+  public AviatorObject innerDiv(final Map<String, Object> env, final AviatorNumber other) {
     if (other.getAviatorType() != AviatorType.Double) {
       return AviatorDecimal
           .valueOf(toDecimal(env).divide(other.toDecimal(env), RuntimeUtils.getMathContext(env)));

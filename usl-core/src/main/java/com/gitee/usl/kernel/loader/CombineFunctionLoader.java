@@ -17,7 +17,7 @@ import com.gitee.usl.infra.structure.StringList;
 import com.gitee.usl.kernel.engine.CombineFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.google.auto.service.AutoService;
-import com.gitee.usl.grammar.type.USLFunction;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import javax.script.*;
 import java.lang.reflect.Method;
@@ -53,7 +53,7 @@ public class CombineFunctionLoader extends AbstractFunctionLoader {
     }
 
     @Override
-    protected USLFunction definition2Func(FunctionDefinition definition) {
+    protected AviatorFunction definition2Func(FunctionDefinition definition) {
         return new CombineFunction(definition);
     }
 

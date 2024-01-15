@@ -1,6 +1,5 @@
 package com.googlecode.aviator.runtime.type;
 
-import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.exception.CompareNotSupportedException;
 import com.googlecode.aviator.utils.ArrayUtils;
 import com.googlecode.aviator.utils.Env;
@@ -14,7 +13,7 @@ import java.util.*;
  * @author dennis(killme2008@gmail.com)
  * @since 5.0.0
  */
-public final class Range extends USLObject implements Sequence<Number> {
+public final class Range extends AviatorObject implements Sequence<Number> {
 
 
   private static final long serialVersionUID = 1463899968843425932L;
@@ -52,7 +51,7 @@ public final class Range extends USLObject implements Sequence<Number> {
 
 
   @Override
-  public int innerCompare(final USLObject other, final Map<String, Object> env) {
+  public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
     throw new CompareNotSupportedException();
   }
 

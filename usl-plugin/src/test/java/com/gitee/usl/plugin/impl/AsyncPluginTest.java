@@ -8,7 +8,7 @@ import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.plugin.annotation.Asynchronous;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.type.AviatorNil;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -44,7 +44,7 @@ class AsyncPluginTest {
     static class AsyncFunction extends AbstractVariadicFunction {
 
         @Override
-        public USLObject variadicCall(Map<String, Object> env, USLObject... args) {
+        public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {
             // 睡眠六十秒
             ThreadUtil.sleep(1000 * 60);
             return AviatorNil.NIL;

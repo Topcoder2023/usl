@@ -1,6 +1,5 @@
 package com.googlecode.aviator.code.asm;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.text.StrPool;
@@ -9,6 +8,7 @@ import com.gitee.usl.infra.constant.AsmConstants;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.asm.CS;
 import com.gitee.usl.grammar.asm.Script;
+import com.googlecode.aviator.Options;
 import com.googlecode.aviator.asm.ClassWriter;
 import com.googlecode.aviator.asm.Label;
 import com.googlecode.aviator.asm.MethodVisitor;
@@ -44,7 +44,11 @@ import static com.googlecode.aviator.asm.Opcodes.*;
  */
 @Slf4j
 public class ASMCodeGenerator extends BaseEvalCodeGenerator {
+    private static final String RUNTIME_UTILS = "com/googlecode/aviator/runtime/RuntimeUtils";
+    private static final String OBJECT_DESC = "Lcom/googlecode/aviator/runtime/type/AviatorObject;";
+    private static final String JAVA_TYPE_OWNER = "com/googlecode/aviator/runtime/type/AviatorJavaType";
     private static final String CONSTRUCTOR_METHOD_NAME = "<init>";
+    private static final String OBJECT_OWNER = "com/googlecode/aviator/runtime/type/AviatorObject";
     public static final String FUNC_ARGS_INNER_VAR = "__fas__";
     private static final String FIELD_PREFIX = "f";
     private final ClassWriter classWriter;
@@ -55,6 +59,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
     private int maxStacks = 0;
     private int maxLocals = 2;
     private int fieldCounter = 0;
+
     private Map<String, String> innerVars = Collections.emptyMap();
     private Map<String, String> innerMethodMap = Collections.emptyMap();
     private Map<Token<?>, String> constantPool = Collections.emptyMap();
@@ -88,7 +93,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
     }
 
     private void startVisitMethodCode() {
-        this.mv = this.classWriter.visitMethod(ACC_PUBLIC + ACC_FINAL, "customImpl",
+        this.mv = this.classWriter.visitMethod(ACC_PUBLIC + +ACC_FINAL, "customImpl",
                 "(Lcom/googlecode/aviator/utils/Env;)Ljava/lang/Object;",
                 "(Lcom/googlecode/aviator/utils/Env;)Ljava/lang/Object;", null);
         this.mv.visitCode();
@@ -98,12 +103,11 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         if (this.operandsCount > 0) {
             loadEnv();
             if (unboxObject) {
-                this.mv.visitMethodInsn(INVOKEVIRTUAL, AsmConstants.USL_OBJECT_TYPE_PATH, "getValue",
+                this.mv.visitMethodInsn(INVOKEVIRTUAL, OBJECT_OWNER, "getValue",
                         "(Ljava/util/Map;)Ljava/lang/Object;");
             } else {
-                this.mv.visitMethodInsn(INVOKEVIRTUAL, AsmConstants.USL_OBJECT_TYPE_PATH, "deref",
-                        "(Ljava/util/Map;)" +
-                                AsmConstants.USL_OBJECT_TYPE_DESC);
+                this.mv.visitMethodInsn(INVOKEVIRTUAL, OBJECT_OWNER, "deref",
+                        "(Ljava/util/Map;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
             }
             this.mv.visitInsn(ARETURN);
             this.popOperand();
@@ -147,14 +151,16 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         this.mv.visitVarInsn(ALOAD, 2);
         this.mv.visitVarInsn(ALOAD, 3);
         this.mv.visitMethodInsn(INVOKESPECIAL, AsmConstants.EXPRESSION_CLASS_NAME, CONSTRUCTOR_METHOD_NAME, constructorDesc);
-        if (CollUtil.isNotEmpty(this.innerVars)) {
-            this.innerVars.forEach((outerName, innerName) -> {
+        if (!this.innerVars.isEmpty()) {
+            for (Map.Entry<String, String> entry : this.innerVars.entrySet()) {
+                String outterName = entry.getKey();
+                String innerName = entry.getValue();
                 this.mv.visitVarInsn(ALOAD, 0);
-                this.mv.visitTypeInsn(NEW, AsmConstants.USL_JAVA_TYPE_PATH);
+                this.mv.visitTypeInsn(NEW, JAVA_TYPE_OWNER);
                 this.mv.visitInsn(DUP);
-                this.mv.visitLdcInsn(outerName);
+                this.mv.visitLdcInsn(outterName);
                 this.mv.visitVarInsn(ALOAD, 3);
-                this.mv.visitMethodInsn(INVOKESPECIAL, AsmConstants.USL_JAVA_TYPE_PATH, CONSTRUCTOR_METHOD_NAME,
+                this.mv.visitMethodInsn(INVOKESPECIAL, JAVA_TYPE_OWNER, CONSTRUCTOR_METHOD_NAME,
                         AsmConstants.CLASS_DESC_LEFT
                                 + AsmConstants.STRING_DESC
                                 + AsmConstants.CLASS_DESC_SPLIT
@@ -162,22 +168,24 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
                                 + AsmConstants.CLASS_DESC_SPLIT
                                 + AsmConstants.CLASS_DESC_RIGHT
                                 + AsmConstants.CLASS_DESC_SUFFIX);
-                this.mv.visitFieldInsn(PUTFIELD, this.className, innerName, AsmConstants.USL_JAVA_TYPE_DESC + AsmConstants.CLASS_DESC_SPLIT);
-            });
+                this.mv.visitFieldInsn(PUTFIELD, this.className, innerName,
+                        "Lcom/googlecode/aviator/runtime/type/AviatorJavaType;");
+            }
         }
-
-        if (CollUtil.isNotEmpty(this.innerMethodMap)) {
-            this.innerMethodMap.forEach((outerName, innerName) -> {
+        if (!this.innerMethodMap.isEmpty()) {
+            for (Map.Entry<String, String> entry : this.innerMethodMap.entrySet()) {
+                String outterName = entry.getKey();
+                String innerName = entry.getValue();
                 this.mv.visitVarInsn(ALOAD, 0);
                 this.mv.visitVarInsn(ALOAD, 1);
-                this.mv.visitLdcInsn(outerName);
+                this.mv.visitLdcInsn(outterName);
                 this.mv.visitVarInsn(ALOAD, 3);
                 this.mv.visitMethodInsn(INVOKEVIRTUAL, AsmConstants.SCRIPT_ENGINE_PATH,
                         "getFunction",
-                        "(Ljava/lang/String;" + AsmConstants.SYMBOL_TABLE_DESC + ";)" + AsmConstants.USL_FUNCTION_TYPE_DESC + AsmConstants.CLASS_DESC_SPLIT);
+                        "(Ljava/lang/String;" + AsmConstants.SYMBOL_TABLE_DESC + ";)Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
                 this.mv.visitFieldInsn(PUTFIELD, this.className, innerName,
-                        AsmConstants.USL_FUNCTION_TYPE_DESC + AsmConstants.CLASS_DESC_SPLIT);
-            });
+                        "Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
+            }
         }
 
         if (!this.constantPool.isEmpty()) {
@@ -187,7 +195,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
                 this.mv.visitVarInsn(ALOAD, 0);
                 onConstant0(token, true);
                 this.popOperand();
-                this.mv.visitFieldInsn(PUTFIELD, this.className, fieldName, AsmConstants.USL_OBJECT_TYPE_DESC);
+                this.mv.visitFieldInsn(PUTFIELD, this.className, fieldName, OBJECT_DESC);
             }
         }
 
@@ -281,23 +289,13 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         loadEnv();
         if (!OperationRuntime.hasRuntimeContext(this.compileEnv, opType)) {
             String methodName = (opType == OperatorType.DEFINE) ? "defineValue" : "setValue";
-            this.mv.visitMethodInsn(INVOKEVIRTUAL, AsmConstants.USL_OBJECT_TYPE_PATH, methodName,
-                    AsmConstants.CLASS_DESC_LEFT
-                            + AsmConstants.USL_OBJECT_TYPE_DESC
-                            + "Ljava/util/Map;" +
-                            AsmConstants.CLASS_DESC_RIGHT
-                            + AsmConstants.USL_OBJECT_TYPE_DESC);
+            this.mv.visitMethodInsn(INVOKEVIRTUAL, OBJECT_OWNER, methodName,
+                    "(Lcom/googlecode/aviator/runtime/type/AviatorObject;Ljava/util/Map;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
         } else {
             loadOpType(opType);
             this.mv.visitMethodInsn(INVOKESTATIC, "com/googlecode/aviator/runtime/op/OperationRuntime",
                     "eval",
-                    AsmConstants.CLASS_DESC_LEFT
-                            + AsmConstants.USL_OBJECT_TYPE_DESC
-                            + AsmConstants.USL_OBJECT_TYPE_DESC
-                            + "Ljava/util/Map;" +
-                            "Lcom/googlecode/aviator/lexer/token/OperatorType;"
-                            + AsmConstants.CLASS_DESC_RIGHT +
-                            AsmConstants.USL_OBJECT_TYPE_DESC);
+                    "(Lcom/googlecode/aviator/runtime/type/AviatorObject;Lcom/googlecode/aviator/runtime/type/AviatorObject;Ljava/util/Map;Lcom/googlecode/aviator/lexer/token/OperatorType;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
             this.popOperand();
         }
         this.popOperand(3);
@@ -334,7 +332,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
     }
 
     private void visitBoolean() {
-        this.mv.visitMethodInsn(INVOKEVIRTUAL, AsmConstants.USL_OBJECT_TYPE_PATH, "booleanValue", "(Ljava/util/Map;)Z");
+        this.mv.visitMethodInsn(INVOKEVIRTUAL, OBJECT_OWNER, "booleanValue", "(Ljava/util/Map;)Z");
     }
 
     private void pushLabel0(final Label l0) {
@@ -377,13 +375,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
             visitLineNumber(lookhead);
             this.mv.visitMethodInsn(INVOKESTATIC, "com/googlecode/aviator/runtime/op/OperationRuntime",
                     "eval",
-                    AsmConstants.CLASS_DESC_LEFT +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            "Ljava/util/Map;" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            "Lcom/googlecode/aviator/lexer/token/OperatorType;" +
-                            ")" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC);
+                    "(Lcom/googlecode/aviator/runtime/type/AviatorObject;Ljava/util/Map;Lcom/googlecode/aviator/runtime/type/AviatorObject;Lcom/googlecode/aviator/lexer/token/OperatorType;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
             this.popOperand();
         }
     }
@@ -527,11 +519,8 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
 
     private void visitCompare(final int ints, final OperatorType opType) {
         if (!OperationRuntime.hasRuntimeContext(this.compileEnv, opType)) {
-            this.mv.visitMethodInsn(INVOKEVIRTUAL, AsmConstants.USL_OBJECT_TYPE_PATH, isEqNe(ints) ? "compareEq" : "compare",
-                    "(" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            "Ljava/util/Map;" +
-                            ")I");
+            this.mv.visitMethodInsn(INVOKEVIRTUAL, OBJECT_OWNER, isEqNe(ints) ? "compareEq" : "compare",
+                    "(Lcom/googlecode/aviator/runtime/type/AviatorObject;Ljava/util/Map;)I");
             Label l0 = makeLabel();
             Label l1 = makeLabel();
             this.mv.visitJumpInsn(ints, l0);
@@ -546,13 +535,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
             loadOpType(opType);
             this.mv.visitMethodInsn(INVOKESTATIC, "com/googlecode/aviator/runtime/op/OperationRuntime",
                     "eval",
-                    "(" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            "Ljava/util/Map;" +
-                            "Lcom/googlecode/aviator/lexer/token/OperatorType;" +
-                            ")" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC);
+                    "(Lcom/googlecode/aviator/runtime/type/AviatorObject;Lcom/googlecode/aviator/runtime/type/AviatorObject;Ljava/util/Map;Lcom/googlecode/aviator/lexer/token/OperatorType;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
             this.popOperand();
         }
 
@@ -601,23 +584,14 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
                 this.mv.visitInsn(SWAP);
             }
             loadEnv();
-            this.mv.visitMethodInsn(INVOKEVIRTUAL, AsmConstants.USL_OBJECT_TYPE_PATH, methodName,
-                    "(" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            "Ljava/util/Map;" +
-                            ")" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC);
+            this.mv.visitMethodInsn(INVOKEVIRTUAL, OBJECT_OWNER, methodName,
+                    "(Lcom/googlecode/aviator/runtime/type/AviatorObject;Ljava/util/Map;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
         } else {
             loadEnv();
             loadOpType(opType);
             this.mv.visitMethodInsn(INVOKESTATIC, "com/googlecode/aviator/runtime/op/OperationRuntime",
                     "eval",
-                    "(" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            "Ljava/util/Map;" +
-                            "Lcom/googlecode/aviator/lexer/token/OperatorType;)" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC);
+                    "(Lcom/googlecode/aviator/runtime/type/AviatorObject;Lcom/googlecode/aviator/runtime/type/AviatorObject;Ljava/util/Map;Lcom/googlecode/aviator/lexer/token/OperatorType;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
             this.popOperand();
         }
         this.popOperand();
@@ -633,25 +607,17 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
     private void visitUnaryOperator(final Token<?> lookhead, final OperatorType opType,
                                     final String methodName) {
         visitLineNumber(lookhead);
-        this.mv.visitTypeInsn(CHECKCAST, AsmConstants.USL_OBJECT_TYPE_PATH);
+        this.mv.visitTypeInsn(CHECKCAST, OBJECT_OWNER);
         loadEnv();
 
         if (!OperationRuntime.hasRuntimeContext(this.compileEnv, opType)) {
-            this.mv.visitMethodInsn(INVOKEVIRTUAL, AsmConstants.USL_OBJECT_TYPE_PATH, methodName,
-                    "(" +
-                            "Ljava/util/Map;" +
-                            ")" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC);
+            this.mv.visitMethodInsn(INVOKEVIRTUAL, OBJECT_OWNER, methodName,
+                    "(Ljava/util/Map;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
         } else {
             loadOpType(opType);
             this.mv.visitMethodInsn(INVOKESTATIC, "com/googlecode/aviator/runtime/op/OperationRuntime",
                     "eval",
-                    "(" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            "Ljava/util/Map;" +
-                            "Lcom/googlecode/aviator/lexer/token/OperatorType;" +
-                            ")" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC);
+                    "(Lcom/googlecode/aviator/runtime/type/AviatorObject;Ljava/util/Map;Lcom/googlecode/aviator/lexer/token/OperatorType;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
             this.popOperand();
         }
 
@@ -739,8 +705,8 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
 
                 if (TypeUtils.isBigInt(number)) {
                     this.mv.visitLdcInsn(numberToken.getLexeme());
-                    this.mv.visitMethodInsn(INVOKESTATIC, AsmConstants.USL_BIG_INT_TYPE_PATH,
-                            "valueOf", "(Ljava/lang/String;)" + AsmConstants.USL_BIG_INT_TYPE_DESC);
+                    this.mv.visitMethodInsn(INVOKESTATIC, "com/googlecode/aviator/runtime/type/AviatorBigInt",
+                            "valueOf", "(Ljava/lang/String;)Lcom/googlecode/aviator/runtime/type/AviatorBigInt;");
                 } else if (TypeUtils.isDecimal(number)) {
                     loadEnv();
                     // this.pushOperand();
@@ -826,7 +792,8 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
                         } else {
                             // Get field at first time
                             this.mv.visitVarInsn(ALOAD, 0);
-                            this.mv.visitFieldInsn(GETFIELD, this.className, innerVarName, AsmConstants.USL_JAVA_TYPE_DESC + AsmConstants.CLASS_DESC_SPLIT);
+                            this.mv.visitFieldInsn(GETFIELD, this.className, innerVarName,
+                                    "Lcom/googlecode/aviator/runtime/type/AviatorJavaType;");
                             // Variable is used more than once,store it to local
                             if (this.variables.get(outterVarName).getRefs() > 1) {
                                 this.mv.visitInsn(DUP);
@@ -846,10 +813,10 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
                         }
 
                     } else {
-                        this.mv.visitTypeInsn(NEW, AsmConstants.USL_JAVA_TYPE_PATH);
+                        this.mv.visitTypeInsn(NEW, JAVA_TYPE_OWNER);
                         this.mv.visitInsn(DUP);
                         this.mv.visitLdcInsn(outterVarName);
-                        this.mv.visitMethodInsn(INVOKESPECIAL, AsmConstants.USL_JAVA_TYPE_PATH, CONSTRUCTOR_METHOD_NAME,
+                        this.mv.visitMethodInsn(INVOKESPECIAL, JAVA_TYPE_OWNER, CONSTRUCTOR_METHOD_NAME,
                                 "(Ljava/lang/String;)V");
                         this.pushOperand(3);
                         this.popOperand(2);
@@ -864,7 +831,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         String fieldName;
         if (!inConstructor && (fieldName = this.constantPool.get(lookhead)) != null) {
             this.mv.visitVarInsn(ALOAD, 0);
-            this.mv.visitFieldInsn(GETFIELD, this.className, fieldName, AsmConstants.USL_OBJECT_TYPE_DESC);
+            this.mv.visitFieldInsn(GETFIELD, this.className, fieldName, OBJECT_DESC);
             this.pushOperand();
             return true;
         }
@@ -883,7 +850,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
             String innerVarName = getInnerName(outterVarName);
             this.innerVars.put(outterVarName, innerVarName);
             this.classWriter.visitField(ACC_PRIVATE, innerVarName,
-                    AsmConstants.USL_JAVA_TYPE_DESC + AsmConstants.CLASS_DESC_SPLIT, null, null).visitEnd();
+                    "Lcom/googlecode/aviator/runtime/type/AviatorJavaType;", null, null).visitEnd();
 
         }
     }
@@ -903,7 +870,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         for (Token<?> token : constants) {
             String fieldName = getInnerName(token.getLexeme());
             this.constantPool.put(token, fieldName);
-            this.classWriter.visitField(ACC_PRIVATE, fieldName, AsmConstants.USL_OBJECT_TYPE_DESC, null, null).visitEnd();
+            this.classWriter.visitField(ACC_PRIVATE, fieldName, OBJECT_DESC, null, null).visitEnd();
         }
     }
 
@@ -916,7 +883,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
             String innerMethodName = getInnerName(outterMethodName);
             this.innerMethodMap.put(outterMethodName, innerMethodName);
             this.classWriter.visitField(ACC_PRIVATE, innerMethodName,
-                    AsmConstants.USL_FUNCTION_TYPE_DESC + AsmConstants.CLASS_DESC_SPLIT, null, null).visitEnd();
+                    "Lcom/googlecode/aviator/runtime/type/AviatorFunction;", null, null).visitEnd();
         }
     }
 
@@ -928,14 +895,16 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         StringBuilder sb = new StringBuilder("(Ljava/util/Map;");
         if (paramCount <= 20) {
             for (int i = 0; i < paramCount; i++) {
-                sb.append(AsmConstants.USL_OBJECT_TYPE_DESC);
+                sb.append(OBJECT_DESC);
             }
         } else {
-            sb.append((AsmConstants.USL_OBJECT_TYPE_DESC).repeat(20));
+            for (int i = 0; i < 20; i++) {
+                sb.append(OBJECT_DESC);
+            }
             // variadic params as an array
-            sb.append("[").append(AsmConstants.USL_OBJECT_TYPE_DESC);
+            sb.append("[Lcom/googlecode/aviator/runtime/type/AviatorObject;");
         }
-        sb.append(")").append(AsmConstants.USL_OBJECT_TYPE_DESC);
+        sb.append(")Lcom/googlecode/aviator/runtime/type/AviatorObject;");
         return sb.toString();
     }
 
@@ -971,7 +940,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
             } else {
                 // to array
                 this.mv.visitMethodInsn(INVOKEINTERFACE, "java/util/List", "size", "()I");
-                this.mv.visitTypeInsn(Opcodes.ANEWARRAY, AsmConstants.USL_OBJECT_TYPE_PATH);
+                this.mv.visitTypeInsn(Opcodes.ANEWARRAY, OBJECT_OWNER);
                 int arrayIndex = getLocalIndex();
                 this.mv.visitVarInsn(ASTORE, arrayIndex);
                 this.mv.visitVarInsn(ALOAD, methodMetaData.variadicListIndex);
@@ -979,21 +948,17 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
                 this.mv.visitMethodInsn(INVOKEINTERFACE, "java/util/List", "toArray",
                         "([Ljava/lang/Object;)[Ljava/lang/Object;");
 
-                this.mv.visitTypeInsn(CHECKCAST, "[" +
-                        AsmConstants.USL_OBJECT_TYPE_DESC);
+                this.mv.visitTypeInsn(CHECKCAST, "[Lcom/googlecode/aviator/runtime/type/AviatorObject;");
 
                 this.popOperand(); // pop list to get size
                 this.pushOperand(2); // new array, store and load it, then load the list
                 this.popOperand(); // list.toArray
             }
         }
-        this.mv.visitMethodInsn(INVOKEINTERFACE, AsmConstants.USL_FUNCTION_TYPE_PATH,
+        this.mv.visitMethodInsn(INVOKEINTERFACE, "com/googlecode/aviator/runtime/type/AviatorFunction",
                 "call", getInvokeMethodDesc(parameterCount));
-        this.mv.visitMethodInsn(INVOKESTATIC, AsmConstants.RUNTIME_PATH, "assertNotNull",
-                "(" +
-                        AsmConstants.USL_OBJECT_TYPE_DESC +
-                        ")" +
-                        AsmConstants.USL_OBJECT_TYPE_DESC);
+        this.mv.visitMethodInsn(INVOKESTATIC, RUNTIME_UTILS, "assertNotNull",
+                "(Lcom/googlecode/aviator/runtime/type/AviatorObject;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
 
         this.popOperand(); // method object
         this.popOperand(); // env map
@@ -1037,6 +1002,13 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
             this.pushOperand(); // new list
         }
 
+        // // add parameter to list
+        // this.mv.visitMethodInsn(INVOKEINTERFACE, "java/util/List", "add",
+        // "(Ljava/lang/Object;)Z");
+        // // pop boolean
+        // this.mv.visitInsn(POP);
+        // this.mv.visitVarInsn(ALOAD,
+        // this.methodMetaDataStack.peek().parameterListIndex);
     }
 
     private void pushOperand() {
@@ -1075,22 +1047,13 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
     public void onArrayIndexEnd(final Token<?> lookhead) {
         visitLineNumber(lookhead);
         if (!OperationRuntime.hasRuntimeContext(this.compileEnv, OperatorType.INDEX)) {
-            this.mv.visitMethodInsn(INVOKEVIRTUAL, AsmConstants.USL_OBJECT_TYPE_PATH, "getElement",
-                    "(Ljava/util/Map;" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            ")" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC);
+            this.mv.visitMethodInsn(INVOKEVIRTUAL, OBJECT_OWNER, "getElement",
+                    "(Ljava/util/Map;Lcom/googlecode/aviator/runtime/type/AviatorObject;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
         } else {
             loadOpType(OperatorType.INDEX);
             this.mv.visitMethodInsn(INVOKESTATIC, "com/googlecode/aviator/runtime/op/OperationRuntime",
                     "eval",
-                    "(" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            "Ljava/util/Map;" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC +
-                            "Lcom/googlecode/aviator/lexer/token/OperatorType;" +
-                            ")" +
-                            AsmConstants.USL_OBJECT_TYPE_DESC);
+                    "(Lcom/googlecode/aviator/runtime/type/AviatorObject;Ljava/util/Map;Lcom/googlecode/aviator/runtime/type/AviatorObject;Lcom/googlecode/aviator/lexer/token/OperatorType;)Lcom/googlecode/aviator/runtime/type/AviatorObject;");
             this.popOperand();
         }
 
@@ -1131,7 +1094,7 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         LambdaFunctionBootstrap bootstrap = this.lambdaGenerator.getLmabdaBootstrap();
         if (this.lambdaBootstraps == null) {
             // keep in order
-            this.lambdaBootstraps = new LinkedHashMap<>();
+            this.lambdaBootstraps = new LinkedHashMap<String, LambdaFunctionBootstrap>();
         }
         this.lambdaBootstraps.put(bootstrap.getName(), bootstrap);
         visitLineNumber(lookhead);
@@ -1165,19 +1128,19 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
             }
         } else {
             loadEnv();
-            this.mv.visitMethodInsn(INVOKESTATIC, AsmConstants.RUNTIME_PATH, "getFunction",
-                    "(Ljava/lang/Object;Ljava/util/Map;)" + AsmConstants.USL_FUNCTION_TYPE_DESC + AsmConstants.CLASS_DESC_SPLIT);
+            this.mv.visitMethodInsn(INVOKESTATIC, RUNTIME_UTILS, "getFunction",
+                    "(Ljava/lang/Object;Ljava/util/Map;)Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
             this.popOperand();
         }
-
+        if (this.instance.getOptionValue(Options.TRACE_EVAL).bool) {
+            this.mv.visitMethodInsn(INVOKESTATIC, "com/googlecode/aviator/runtime/function/TraceFunction",
+                    "wrapTrace",
+                    "(Lcom/googlecode/aviator/runtime/type/AviatorFunction;)Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
+        }
+        // FIXME it will not work in compile mode.
         if (lookhead.getMeta(Constants.UNPACK_ARGS, false)) {
-            this.mv.visitMethodInsn(INVOKESTATIC, AsmConstants.RUNTIME_PATH, "unpackArgsFunction",
-                    AsmConstants.CLASS_DESC_LEFT
-                            + AsmConstants.USL_FUNCTION_TYPE_DESC
-                            + AsmConstants.CLASS_DESC_SPLIT
-                            + AsmConstants.CLASS_DESC_RIGHT
-                            + AsmConstants.USL_FUNCTION_TYPE_DESC
-                            + AsmConstants.CLASS_DESC_SPLIT);
+            this.mv.visitMethodInsn(INVOKESTATIC, RUNTIME_UTILS, "unpackArgsFunction",
+                    "(Lcom/googlecode/aviator/runtime/type/AviatorFunction;)Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
         }
 
         loadEnv();
@@ -1193,14 +1156,15 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
             this.pushOperand();
         } else {
             this.mv.visitVarInsn(ALOAD, 0);
-            this.mv.visitFieldInsn(GETFIELD, this.className, innerMethodName, AsmConstants.USL_FUNCTION_TYPE_DESC + AsmConstants.CLASS_DESC_SPLIT);
+            this.mv.visitFieldInsn(GETFIELD, this.className, innerMethodName,
+                    "Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
             // Method is used more than once,store it to local for reusing
             if (this.methodTokens.get(outterMethodName) > 1) {
                 this.mv.visitInsn(DUP);
                 int localIndex = getLocalIndex();
                 this.mv.visitVarInsn(ASTORE, localIndex);
                 if (name2Index == null) {
-                    name2Index = new HashMap<>();
+                    name2Index = new HashMap<String, Integer>();
                     this.labelNameIndexMap.put(this.currentLabel, name2Index);
                 }
                 name2Index.put(innerMethodName, localIndex);
@@ -1222,9 +1186,8 @@ public class ASMCodeGenerator extends BaseEvalCodeGenerator {
         loadEnv();
         this.pushOperand();
         this.mv.visitLdcInsn(methodName);
-        this.mv.visitMethodInsn(INVOKESTATIC, AsmConstants.RUNTIME_PATH, "getFunction",
-                "(Ljava/util/Map;Ljava/lang/String;)" +
-                        AsmConstants.USL_FUNCTION_TYPE_DESC + AsmConstants.CLASS_DESC_SPLIT);
+        this.mv.visitMethodInsn(INVOKESTATIC, RUNTIME_UTILS, "getFunction",
+                "(Ljava/util/Map;Ljava/lang/String;)Lcom/googlecode/aviator/runtime/type/AviatorFunction;");
         this.popOperand(2);
         this.pushOperand();
     }

@@ -16,8 +16,6 @@
 package com.googlecode.aviator.runtime.type;
 
 import java.util.Map;
-
-import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.utils.TypeUtils;
 
 
@@ -27,7 +25,7 @@ import com.googlecode.aviator.utils.TypeUtils;
  * @author dennis
  *
  */
-public class AviatorNil extends USLObject {
+public class AviatorNil extends AviatorObject {
   private static final long serialVersionUID = 5030890238879926682L;
   public static final AviatorNil NIL = new AviatorNil();
 
@@ -38,7 +36,7 @@ public class AviatorNil extends USLObject {
 
 
   @Override
-  public USLObject add(final USLObject other, final Map<String, Object> env) {
+  public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case String:
         return new AviatorString("null" + other.getValue(env));
@@ -56,7 +54,7 @@ public class AviatorNil extends USLObject {
 
 
   @Override
-  public int innerCompare(final USLObject other, final Map<String, Object> env) {
+  public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case Nil:
         return 0;

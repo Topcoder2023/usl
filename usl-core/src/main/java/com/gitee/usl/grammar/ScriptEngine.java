@@ -1,7 +1,6 @@
 package com.gitee.usl.grammar;
 
 import cn.hutool.core.lang.Assert;
-import com.gitee.usl.api.annotation.AsmMethod;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.exception.USLException;
 import com.gitee.usl.infra.structure.StringMap;
@@ -13,7 +12,7 @@ import com.googlecode.aviator.code.OptimizeCodeGenerator;
 import com.googlecode.aviator.lexer.token.OperatorType;
 import com.googlecode.aviator.runtime.RuntimeFunctionDelegator;
 import com.googlecode.aviator.runtime.function.system.*;
-import com.gitee.usl.grammar.type.USLFunction;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.utils.CommonUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,13 +46,13 @@ public final class ScriptEngine {
 
     @Setter
     @Description("函数映射")
-    private Function<String, USLFunction> functionMapping;
+    private Function<String, AviatorFunction> functionMapping;
 
     @Description("脚本引擎选项配置集合")
     private volatile Map<Options, Value> options = new IdentityHashMap<>();
 
     @Description("系统函数表")
-    private final StringMap<USLFunction> systemFunctionMap = new StringMap<>();
+    private final StringMap<AviatorFunction> systemFunctionMap = new StringMap<>();
 
     @Setter
     @Getter
@@ -64,7 +63,7 @@ public final class ScriptEngine {
     private final Map<OperatorType, String> aliasOperatorTokens = new IdentityHashMap<>();
 
     @Description("操作符函数表")
-    private final Map<OperatorType, USLFunction> operatorFunctionMap = new IdentityHashMap<>();
+    private final Map<OperatorType, AviatorFunction> operatorFunctionMap = new IdentityHashMap<>();
 
     @Description("脚本引擎实例构造器")
     public ScriptEngine() {
@@ -108,7 +107,7 @@ public final class ScriptEngine {
             if (oldSet.removeAll(newSet)) {
                 // removed functions that feature is disabled.
                 for (Feature feat : oldSet) {
-                    for (USLFunction fn : feat.getFunctions()) {
+                    for (AviatorFunction fn : feat.getFunctions()) {
                         this.removeSystemFunction(fn);
                     }
                 }
@@ -144,7 +143,7 @@ public final class ScriptEngine {
     @Description("禁用脚本引擎语法特性配置")
     public void disableFeature(final Feature feature) {
         this.options.get(Options.FEATURE_SET).featureSet.remove(feature);
-        for (USLFunction fn : feature.getFunctions()) {
+        for (AviatorFunction fn : feature.getFunctions()) {
             this.removeSystemFunction(fn);
         }
         loadFeatureFunctions();
@@ -181,7 +180,7 @@ public final class ScriptEngine {
     }
 
     @Description("添加内置函数")
-    public void addSystemFunction(final USLFunction function) {
+    public void addSystemFunction(final AviatorFunction function) {
         Assert.notNull(function, "函数实例不能为空");
 
         String name = function.getName();
@@ -198,45 +197,44 @@ public final class ScriptEngine {
         log.debug("注册系统内置函数 - [{}]", name);
     }
 
-    @AsmMethod
     @Description("尝试获取函数")
-    public USLFunction getFunction(final String name) {
+    public AviatorFunction getFunction(final String name) {
         return this.getFunction(name, null);
     }
 
     @Description("尝试获取函数")
-    public USLFunction getFunction(final String name, final ScriptKeyword symbolTable) {
+    public AviatorFunction getFunction(final String name, final ScriptKeyword symbolTable) {
         Assert.notNull(functionMapping, "函数加载器尚未初始化");
 
         @Description("从内置函数中尝试获取函数")
-        USLFunction function = this.systemFunctionMap.get(name);
+        AviatorFunction function = this.systemFunctionMap.get(name);
         if (function != null) {
             return function;
         }
 
         @Description("从函数映射中尝试获取函数")
-        USLFunction fromLoader = functionMapping.apply(name);
+        AviatorFunction fromLoader = functionMapping.apply(name);
         if (fromLoader != null) {
             return fromLoader;
         }
 
         @Description("从上下文中尝试获取函数并转为委托函数")
-        USLFunction fromEnv = new RuntimeFunctionDelegator(name, symbolTable, this.functionMissing);
+        AviatorFunction fromEnv = new RuntimeFunctionDelegator(name, symbolTable, this.functionMissing);
         return fromEnv;
     }
 
     @Description("重载操作符函数")
-    public void addOpFunction(final OperatorType opType, final USLFunction function) {
+    public void addOpFunction(final OperatorType opType, final AviatorFunction function) {
         this.operatorFunctionMap.put(opType, function);
     }
 
     @Description("获取操作符函数实现")
-    public USLFunction getOpFunction(final OperatorType opType) {
+    public AviatorFunction getOpFunction(final OperatorType opType) {
         return this.operatorFunctionMap.get(opType);
     }
 
     @Description("移除操作符函数")
-    public USLFunction removeOpFunction(final OperatorType opType) {
+    public AviatorFunction removeOpFunction(final OperatorType opType) {
         return this.operatorFunctionMap.remove(opType);
     }
 
@@ -246,7 +244,7 @@ public final class ScriptEngine {
     }
 
     @Description("移除系统内置函数")
-    public void removeSystemFunction(final USLFunction function) {
+    public void removeSystemFunction(final AviatorFunction function) {
         Assert.notNull(function, "函数实例不能为空");
         this.systemFunctionMap.remove(function.getName());
     }

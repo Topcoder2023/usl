@@ -5,10 +5,10 @@ import com.googlecode.aviator.Options;
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
 import com.googlecode.aviator.runtime.RuntimeUtils;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
-import com.gitee.usl.grammar.type.USLFunction;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.runtime.type.AviatorLong;
 import com.googlecode.aviator.runtime.type.AviatorNil;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.runtime.type.AviatorRuntimeJavaType;
 import com.googlecode.aviator.runtime.type.Range;
 import com.googlecode.aviator.utils.Constants;
@@ -34,11 +34,11 @@ public class ReducerFunction extends AbstractFunction {
   }
 
   @Override
-  public final USLObject call(final Map<String, Object> env, final USLObject arg1,
-                              final USLObject arg2, final USLObject arg3) {
+  public final AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3) {
 
     Object coll = arg1.getValue(env);
-    USLFunction iteratorFn = (USLFunction) arg2;
+    AviatorFunction iteratorFn = (AviatorFunction) arg2;
 
     try {
       return reduce(env, arg2, arg3, coll, iteratorFn);
@@ -47,10 +47,10 @@ public class ReducerFunction extends AbstractFunction {
     }
   }
 
-  private USLObject reduce(final Map<String, Object> env, final USLObject arg2,
-                           final USLObject arg3, Object coll, USLFunction iteratorFn) {
+  private AviatorObject reduce(final Map<String, Object> env, final AviatorObject arg2,
+      final AviatorObject arg3, Object coll, AviatorFunction iteratorFn) {
     int maxLoopCount = RuntimeUtils.getInstance(env).getOptionValue(Options.MAX_LOOP_COUNT).number;
-    USLObject result = AviatorNil.NIL;
+    AviatorObject result = AviatorNil.NIL;
     long c = 0;
 
     if (coll != Range.LOOP) {
@@ -133,7 +133,7 @@ public class ReducerFunction extends AbstractFunction {
       return result;
     }
 
-    USLObject contResult = ((USLFunction) contObj).call(env);
+    AviatorObject contResult = ((AviatorFunction) contObj).call(env);
     if ((contResult instanceof ReducerResult) && ((ReducerResult) contResult).isEmptyState()) {
       // empty continuation, return current result.
       return result;

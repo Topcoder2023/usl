@@ -2,7 +2,7 @@ package com.googlecode.aviator.runtime.function.system;
 
 import java.util.Map;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 
 /**
  *
@@ -27,8 +27,8 @@ public class WithoutMetaFunction extends AbstractFunction {
   }
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2) {
     return arg1.withoutMeta(arg2.getValue(env));
   }
 

@@ -1,8 +1,8 @@
 package com.googlecode.aviator.runtime.function;
 
 import com.googlecode.aviator.exception.CompareNotSupportedException;
-import com.gitee.usl.grammar.type.USLFunction;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.runtime.type.AviatorType;
 import com.googlecode.aviator.utils.Env;
 
@@ -17,13 +17,13 @@ import java.util.Map;
  * @Date 2016-12-09
  *
  */
-public abstract class AbstractVariadicFunction extends USLObject implements USLFunction {
+public abstract class AbstractVariadicFunction extends AviatorObject implements AviatorFunction {
 
 
   private static final long serialVersionUID = -5939898720859638046L;
 
   @Override
-  public USLObject call() throws Exception {
+  public AviatorObject call() throws Exception {
     return this.call(Env.EMPTY_ENV);
   }
 
@@ -50,229 +50,229 @@ public abstract class AbstractVariadicFunction extends USLObject implements USLF
   }
 
   @Override
-  public int innerCompare(final USLObject other, final Map<String, Object> env) {
+  public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
     throw new CompareNotSupportedException("Lambda function can't be compared.");
   }
 
   @Override
-  public USLObject call(final Map<String, Object> env) {
+  public AviatorObject call(final Map<String, Object> env) {
     return variadicCall(env);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1) {
     return variadicCall(env, arg1);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2) {
     return variadicCall(env, arg1, arg2);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3) {
     return variadicCall(env, arg1, arg2, arg3);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4) {
     return variadicCall(env, arg1, arg2, arg3, arg4);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                        final USLObject arg11) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+      final AviatorObject arg11) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                        final USLObject arg11, final USLObject arg12) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+      final AviatorObject arg11, final AviatorObject arg12) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11,
         arg12);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                        final USLObject arg11, final USLObject arg12, final USLObject arg13) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+      final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11,
         arg12, arg13);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                        final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                        final USLObject arg14) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+      final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+      final AviatorObject arg14) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11,
         arg12, arg13, arg14);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                        final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                        final USLObject arg14, final USLObject arg15) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+      final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+      final AviatorObject arg14, final AviatorObject arg15) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11,
         arg12, arg13, arg14, arg15);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                        final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                        final USLObject arg14, final USLObject arg15, final USLObject arg16) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+      final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+      final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11,
         arg12, arg13, arg14, arg15, arg16);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                        final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                        final USLObject arg14, final USLObject arg15, final USLObject arg16,
-                        final USLObject arg17) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+      final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+      final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16,
+      final AviatorObject arg17) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11,
         arg12, arg13, arg14, arg15, arg16, arg17);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                        final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                        final USLObject arg14, final USLObject arg15, final USLObject arg16,
-                        final USLObject arg17, final USLObject arg18) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+      final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+      final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16,
+      final AviatorObject arg17, final AviatorObject arg18) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11,
         arg12, arg13, arg14, arg15, arg16, arg17, arg18);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                        final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                        final USLObject arg14, final USLObject arg15, final USLObject arg16,
-                        final USLObject arg17, final USLObject arg18, final USLObject arg19) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+      final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+      final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16,
+      final AviatorObject arg17, final AviatorObject arg18, final AviatorObject arg19) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11,
         arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                        final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                        final USLObject arg14, final USLObject arg15, final USLObject arg16,
-                        final USLObject arg17, final USLObject arg18, final USLObject arg19,
-                        final USLObject arg20) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+      final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+      final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16,
+      final AviatorObject arg17, final AviatorObject arg18, final AviatorObject arg19,
+      final AviatorObject arg20) {
     return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11,
         arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20);
   }
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                        final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                        final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                        final USLObject arg14, final USLObject arg15, final USLObject arg16,
-                        final USLObject arg17, final USLObject arg18, final USLObject arg19,
-                        final USLObject arg20, final USLObject... args) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+      final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+      final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+      final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16,
+      final AviatorObject arg17, final AviatorObject arg18, final AviatorObject arg19,
+      final AviatorObject arg20, final AviatorObject... args) {
     if (args == null || args.length == 0) {
       return variadicCall(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11,
           arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20);
     } else {
-      USLObject[] allArgs = new USLObject[20 + args.length];
+      AviatorObject[] allArgs = new AviatorObject[20 + args.length];
       allArgs[0] = arg1;
       allArgs[1] = arg2;
       allArgs[2] = arg3;
@@ -307,6 +307,6 @@ public abstract class AbstractVariadicFunction extends USLObject implements USLF
    * @param args
    * @return
    */
-  public abstract USLObject variadicCall(Map<String, Object> env, USLObject... args);
+  public abstract AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args);
 
 }

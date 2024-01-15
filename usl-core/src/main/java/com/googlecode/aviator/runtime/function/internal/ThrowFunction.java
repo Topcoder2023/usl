@@ -3,7 +3,7 @@ package com.googlecode.aviator.runtime.function.internal;
 import java.util.Map;
 import com.googlecode.aviator.exception.StandardError;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Reflector;
 
 /**
@@ -26,7 +26,7 @@ public class ThrowFunction extends AbstractFunction {
   }
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1) {
     Object val = arg1.getValue(env);
     if (val instanceof Throwable) {
       throw Reflector.sneakyThrow((Throwable) val);

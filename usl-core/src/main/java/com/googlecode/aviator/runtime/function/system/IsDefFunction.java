@@ -5,7 +5,7 @@ import com.googlecode.aviator.runtime.RuntimeUtils;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.type.AviatorBoolean;
 import com.googlecode.aviator.runtime.type.AviatorJavaType;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.runtime.type.AviatorType;
 
 /**
@@ -25,7 +25,7 @@ public class IsDefFunction extends AbstractFunction {
   }
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1) {
     if (arg1.getAviatorType() != AviatorType.JavaType) {
       throw new IllegalArgumentException(
           "Invalid argument type for is_def: " + arg1.getAviatorType());

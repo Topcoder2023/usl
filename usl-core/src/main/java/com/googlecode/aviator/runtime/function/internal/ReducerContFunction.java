@@ -3,7 +3,7 @@ package com.googlecode.aviator.runtime.function.internal;
 import java.util.Map;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.type.AviatorNil;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 
 /**
  * Internal reducer-continue function for 'for-loop' structure.
@@ -29,7 +29,7 @@ public class ReducerContFunction extends AbstractFunction {
   }
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1) {
     return ReducerResult.withCont(AviatorNil.NIL);
   }
 

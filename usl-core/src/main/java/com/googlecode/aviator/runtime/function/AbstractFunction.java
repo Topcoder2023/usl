@@ -3,8 +3,8 @@ package com.googlecode.aviator.runtime.function;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.USLExecuteException;
 import com.googlecode.aviator.exception.CompareNotSupportedException;
-import com.gitee.usl.grammar.type.USLFunction;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.runtime.type.AviatorType;
 import com.googlecode.aviator.utils.Env;
 
@@ -13,10 +13,10 @@ import java.util.Map;
 /**
  * @author hongda.li
  */
-public abstract class AbstractFunction extends USLObject implements USLFunction {
+public abstract class AbstractFunction extends AviatorObject implements AviatorFunction {
 
     @Override
-    public USLObject call() throws Exception {
+    public AviatorObject call() throws Exception {
         return this.call(Env.EMPTY_ENV);
     }
 
@@ -25,7 +25,7 @@ public abstract class AbstractFunction extends USLObject implements USLFunction 
         this.call(Env.EMPTY_ENV);
     }
 
-    public USLObject throwArity(final int n) {
+    public AviatorObject throwArity(final int n) {
         throw new USLExecuteException(ResultCode.NOT_MATCH_OF_ARGUMENT_COUNT);
     }
 
@@ -35,13 +35,13 @@ public abstract class AbstractFunction extends USLObject implements USLFunction 
     }
 
     @Override
-    public USLObject call(final Map<String, Object> env) {
+    public AviatorObject call(final Map<String, Object> env) {
         return throwArity(0);
     }
 
 
     @Override
-    public int innerCompare(final USLObject other, final Map<String, Object> env) {
+    public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
         throw new CompareNotSupportedException("Lambda function can't be compared.");
     }
 
@@ -57,204 +57,204 @@ public abstract class AbstractFunction extends USLObject implements USLFunction 
     }
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1) {
         return throwArity(1);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2) {
         return throwArity(2);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3) {
         return throwArity(3);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4) {
         return throwArity(4);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5) {
         return throwArity(5);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6) {
         return throwArity(6);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7) {
         return throwArity(7);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8) {
         return throwArity(8);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9) {
         return throwArity(9);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10) {
         return throwArity(10);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                          final USLObject arg11) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+                              final AviatorObject arg11) {
         return throwArity(11);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                          final USLObject arg11, final USLObject arg12) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+                              final AviatorObject arg11, final AviatorObject arg12) {
         return throwArity(12);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                          final USLObject arg11, final USLObject arg12, final USLObject arg13) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+                              final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13) {
         return throwArity(13);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                          final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                          final USLObject arg14) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+                              final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+                              final AviatorObject arg14) {
         return throwArity(14);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                          final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                          final USLObject arg14, final USLObject arg15) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+                              final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+                              final AviatorObject arg14, final AviatorObject arg15) {
         return throwArity(15);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                          final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                          final USLObject arg14, final USLObject arg15, final USLObject arg16) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+                              final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+                              final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16) {
         return throwArity(16);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                          final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                          final USLObject arg14, final USLObject arg15, final USLObject arg16,
-                          final USLObject arg17) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+                              final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+                              final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16,
+                              final AviatorObject arg17) {
         return throwArity(17);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                          final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                          final USLObject arg14, final USLObject arg15, final USLObject arg16,
-                          final USLObject arg17, final USLObject arg18) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+                              final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+                              final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16,
+                              final AviatorObject arg17, final AviatorObject arg18) {
         return throwArity(18);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                          final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                          final USLObject arg14, final USLObject arg15, final USLObject arg16,
-                          final USLObject arg17, final USLObject arg18, final USLObject arg19) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+                              final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+                              final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16,
+                              final AviatorObject arg17, final AviatorObject arg18, final AviatorObject arg19) {
         return throwArity(19);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                          final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                          final USLObject arg14, final USLObject arg15, final USLObject arg16,
-                          final USLObject arg17, final USLObject arg18, final USLObject arg19,
-                          final USLObject arg20) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+                              final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+                              final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16,
+                              final AviatorObject arg17, final AviatorObject arg18, final AviatorObject arg19,
+                              final AviatorObject arg20) {
         return throwArity(20);
     }
 
 
     @Override
-    public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                          final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                          final USLObject arg5, final USLObject arg6, final USLObject arg7,
-                          final USLObject arg8, final USLObject arg9, final USLObject arg10,
-                          final USLObject arg11, final USLObject arg12, final USLObject arg13,
-                          final USLObject arg14, final USLObject arg15, final USLObject arg16,
-                          final USLObject arg17, final USLObject arg18, final USLObject arg19,
-                          final USLObject arg20, final USLObject... args) {
+    public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+                              final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+                              final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7,
+                              final AviatorObject arg8, final AviatorObject arg9, final AviatorObject arg10,
+                              final AviatorObject arg11, final AviatorObject arg12, final AviatorObject arg13,
+                              final AviatorObject arg14, final AviatorObject arg15, final AviatorObject arg16,
+                              final AviatorObject arg17, final AviatorObject arg18, final AviatorObject arg19,
+                              final AviatorObject arg20, final AviatorObject... args) {
         return throwArity(21);
     }
 

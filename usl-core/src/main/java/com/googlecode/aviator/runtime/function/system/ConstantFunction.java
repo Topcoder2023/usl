@@ -1,7 +1,7 @@
 package com.googlecode.aviator.runtime.function.system;
 
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 
 import java.util.Map;
 
@@ -17,11 +17,11 @@ public class ConstantFunction extends AbstractVariadicFunction {
 
   private static final long serialVersionUID = -2077433391081175967L;
   private final String name;
-  private final USLObject result;
+  private final AviatorObject result;
 
 
 
-  public ConstantFunction(final String name, final USLObject result) {
+  public ConstantFunction(final String name, final AviatorObject result) {
     super();
     this.name = name;
     this.result = result;
@@ -33,7 +33,7 @@ public class ConstantFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public USLObject variadicCall(final Map<String, Object> env, final USLObject... args) {
+  public AviatorObject variadicCall(final Map<String, Object> env, final AviatorObject... args) {
     return this.result;
   }
 

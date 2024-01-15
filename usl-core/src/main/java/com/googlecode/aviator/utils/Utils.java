@@ -1,6 +1,5 @@
 package com.googlecode.aviator.utils;
 
-import com.gitee.usl.grammar.type.USLBigInt;
 import com.googlecode.aviator.runtime.RuntimeUtils;
 import com.googlecode.aviator.runtime.type.*;
 
@@ -76,7 +75,7 @@ public class Utils {
       final Map<String, Object> env) {
     final int expInt = exp.intValue();
     if (base instanceof BigInteger) {
-      return new USLBigInt(((BigInteger) base).pow(expInt));
+      return new AviatorBigInt(((BigInteger) base).pow(expInt));
     } else if (base instanceof BigDecimal) {
       return new AviatorDecimal(((BigDecimal) base).pow(expInt, RuntimeUtils.getMathContext(env)));
     } else {

@@ -4,9 +4,9 @@ import com.gitee.usl.grammar.ScriptEngine;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.runtime.function.LambdaFunction;
 import com.googlecode.aviator.runtime.function.internal.UnpackingArgsFunction;
-import com.gitee.usl.grammar.type.USLFunction;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.runtime.type.AviatorNil;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.runtime.type.Sequence;
 import com.googlecode.aviator.runtime.type.seq.*;
 import com.googlecode.aviator.utils.Env;
@@ -45,14 +45,14 @@ public final class RuntimeUtils {
    * @param fn
    * @return
    */
-  public static final USLFunction unpackArgsFunction(final USLFunction fn) {
+  public static final AviatorFunction unpackArgsFunction(final AviatorFunction fn) {
     if (fn instanceof UnpackingArgsFunction) {
       return fn;
     }
     return new UnpackingArgsFunction(fn);
   }
 
-  public static void resetLambdaContext(USLFunction fn) {
+  public static void resetLambdaContext(AviatorFunction fn) {
     if (fn != null && fn instanceof LambdaFunction) {
       ((LambdaFunction) fn).resetContext();
     }
@@ -101,7 +101,7 @@ public final class RuntimeUtils {
    * @param object
    * @return
    */
-  public static final USLObject assertNotNull(final USLObject object) {
+  public static final AviatorObject assertNotNull(final AviatorObject object) {
     if (object != null) {
       return object;
     }
@@ -121,19 +121,19 @@ public final class RuntimeUtils {
     return getInstance(env).getOptionValue(Options.TRACE_EVAL).bool;
   }
 
-  public static USLFunction getFunction(final Object object, final Map<String, Object> env) {
-    if (object instanceof USLFunction) {
-      return (USLFunction) object;
-    } else if (object instanceof USLObject) {
-      Object value = ((USLObject) object).getValue(env);
-      if (value instanceof USLFunction) {
-        return (USLFunction) value;
+  public static AviatorFunction getFunction(final Object object, final Map<String, Object> env) {
+    if (object instanceof AviatorFunction) {
+      return (AviatorFunction) object;
+    } else if (object instanceof AviatorObject) {
+      Object value = ((AviatorObject) object).getValue(env);
+      if (value instanceof AviatorFunction) {
+        return (AviatorFunction) value;
       }
     }
     throw new ClassCastException("Could not cast object " + object + " into a aviator function.");
   }
 
-  public static USLFunction getFunction(final Map<String, Object> env, final String name) {
+  public static AviatorFunction getFunction(final Map<String, Object> env, final String name) {
     return getInstance(env).getFunction(name);
   }
 

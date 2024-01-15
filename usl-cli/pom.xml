@@ -26,11 +26,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.gitee</groupId>
-            <artifactId>usl-logger</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.jline</groupId>
             <artifactId>jline</artifactId>
         </dependency>

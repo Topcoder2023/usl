@@ -7,7 +7,7 @@ import com.gitee.usl.grammar.asm.Script;
 import com.googlecode.aviator.runtime.FunctionParam;
 import com.googlecode.aviator.runtime.RuntimeUtils;
 import com.googlecode.aviator.runtime.type.AviatorJavaType;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.runtime.type.AviatorRuntimeJavaType;
 import com.googlecode.aviator.runtime.type.AviatorType;
 import com.googlecode.aviator.utils.Env;
@@ -107,7 +107,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public USLObject call(final Map<String, Object> env) {
+  public AviatorObject call(final Map<String, Object> env) {
     try {
       if (this.isVariadic && !this.installed) {
         return variadicCall(env, true);
@@ -121,7 +121,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1) {
     try {
       if (this.isVariadic && !this.installed) {
         return variadicCall(env, true, arg1);
@@ -135,8 +135,8 @@ public final class LambdaFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2) {
     try {
       if (this.isVariadic && !this.installed) {
         return variadicCall(env, true, arg1, arg2);
@@ -151,8 +151,8 @@ public final class LambdaFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3) {
     try {
       if (this.isVariadic && !this.installed) {
         return variadicCall(env, true, arg1, arg2, arg3);
@@ -167,8 +167,8 @@ public final class LambdaFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4) {
     try {
       if (this.isVariadic && !this.installed) {
         return variadicCall(env, true, arg1, arg2, arg3, arg4);
@@ -183,9 +183,9 @@ public final class LambdaFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5) {
     try {
       if (this.isVariadic && !this.installed) {
         return variadicCall(env, true, arg1, arg2, arg3, arg4, arg5);
@@ -201,9 +201,9 @@ public final class LambdaFunction extends AbstractVariadicFunction {
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6) {
     try {
       if (this.isVariadic && !this.installed) {
         return variadicCall(env, true, arg1, arg2, arg3, arg4, arg5, arg6);
@@ -219,9 +219,9 @@ public final class LambdaFunction extends AbstractVariadicFunction {
 
 
   @Override
-  public USLObject call(final Map<String, Object> env, final USLObject arg1,
-                        final USLObject arg2, final USLObject arg3, final USLObject arg4,
-                        final USLObject arg5, final USLObject arg6, final USLObject arg7) {
+  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
+      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4,
+      final AviatorObject arg5, final AviatorObject arg6, final AviatorObject arg7) {
     try {
       if (this.isVariadic && !this.installed) {
         return variadicCall(env, true, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
@@ -237,7 +237,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
 
 
   protected Map<String, Object> newEnv(final Map<String, Object> parentEnv,
-      final USLObject... args) {
+      final AviatorObject... args) {
     Env env = null;
     if (!this.inheritEnv) {
       final Env contextEnv = new Env(parentEnv, this.context);
@@ -256,7 +256,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
 
     for (int i = 0; i < this.params.size(); i++) {
       FunctionParam param = this.params.get(i);
-      final USLObject arg = args[i];
+      final AviatorObject arg = args[i];
       Object value = arg.getValue(parentEnv);
       if (value == null && arg.getAviatorType() == AviatorType.JavaType
           && !parentEnv.containsKey(((AviatorJavaType) arg).getName())) {
@@ -268,8 +268,8 @@ public final class LambdaFunction extends AbstractVariadicFunction {
     return env;
   }
 
-  public USLObject variadicCall(final Map<String, Object> env, final boolean processArgs,
-                                USLObject... args) {
+  public AviatorObject variadicCall(final Map<String, Object> env, final boolean processArgs,
+      AviatorObject... args) {
     if (processArgs) {
       args = DispatchFunction.processVariadicArgs(env, args.length, this, args);
     }
@@ -278,7 +278,7 @@ public final class LambdaFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public USLObject variadicCall(final Map<String, Object> env, final USLObject... args) {
+  public AviatorObject variadicCall(final Map<String, Object> env, final AviatorObject... args) {
     try {
       return this.variadicCall(env, false, args);
     } finally {

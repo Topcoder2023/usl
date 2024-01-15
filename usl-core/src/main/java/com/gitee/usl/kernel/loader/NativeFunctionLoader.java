@@ -9,7 +9,7 @@ import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.api.FunctionLoader;
 import com.google.auto.service.AutoService;
-import com.gitee.usl.grammar.type.USLFunction;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
@@ -24,7 +24,7 @@ public class NativeFunctionLoader extends AbstractFunctionLoader {
 
     @Override
     protected List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner) {
-        USLFunction ifPossible = (USLFunction) ReflectUtil.newInstanceIfPossible(clz);
+        AviatorFunction ifPossible = (AviatorFunction) ReflectUtil.newInstanceIfPossible(clz);
 
         if (ifPossible == null) {
             log.warn("无法实例化指定类 - {}", clz.getName());
@@ -46,13 +46,13 @@ public class NativeFunctionLoader extends AbstractFunctionLoader {
     }
 
     @Override
-    protected USLFunction definition2Func(FunctionDefinition definition) {
+    protected AviatorFunction definition2Func(FunctionDefinition definition) {
         return new NativeFunction(definition, definition.getMethodMeta().getTarget()).createProxy();
     }
 
     @Override
     protected boolean filter(Class<?> clz) {
-        return USLFunction.class.isAssignableFrom(clz)
+        return AviatorFunction.class.isAssignableFrom(clz)
                 && ClassUtil.isNormalClass(clz)
                 && !AnnotatedFunction.class.isAssignableFrom(clz);
     }

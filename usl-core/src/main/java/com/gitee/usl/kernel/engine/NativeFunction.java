@@ -8,8 +8,8 @@ import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.infra.proxy.MethodInterceptor;
 import com.gitee.usl.infra.structure.Plugins;
-import com.gitee.usl.grammar.type.USLFunction;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 
 import java.lang.reflect.Method;
@@ -19,7 +19,7 @@ import java.util.Arrays;
  * @author hongda.li
  */
 @Description("原生接口实现类进行代理的函数")
-public class NativeFunction extends MethodInterceptor<USLFunction> implements FunctionPluggable, Definable {
+public class NativeFunction extends MethodInterceptor<AviatorFunction> implements FunctionPluggable, Definable {
 
     @Description("插件链")
     private final Plugins plugins = new Plugins();
@@ -28,7 +28,7 @@ public class NativeFunction extends MethodInterceptor<USLFunction> implements Fu
     private final FunctionDefinition definition;
 
     public NativeFunction(FunctionDefinition definition, Object target) {
-        super(target, USLFunction.class);
+        super(target, AviatorFunction.class);
         this.definition = definition;
     }
 
@@ -38,7 +38,7 @@ public class NativeFunction extends MethodInterceptor<USLFunction> implements Fu
     }
 
     @Override
-    protected Object intercept(Invocation<USLFunction> invocation, Object proxy) {
+    protected Object intercept(Invocation<AviatorFunction> invocation, Object proxy) {
 
         @Description("原始参数列表")
         Object[] parameters = invocation.args();
@@ -47,9 +47,9 @@ public class NativeFunction extends MethodInterceptor<USLFunction> implements Fu
         Env env = (Env) parameters[0];
 
         @Description("函数实参")
-        USLObject[] args = Arrays.stream(ArrayUtil.sub(parameters, NumberConstant.ONE, parameters.length))
-                .map(USLObject.class::cast)
-                .toArray(USLObject[]::new);
+        AviatorObject[] args = Arrays.stream(ArrayUtil.sub(parameters, NumberConstant.ONE, parameters.length))
+                .map(AviatorObject.class::cast)
+                .toArray(AviatorObject[]::new);
 
         @Description("函数调用会话")
         FunctionSession session = new FunctionSession(env, args, this.definition);

@@ -4,8 +4,8 @@ import com.googlecode.aviator.exception.IllegalArityException;
 import com.googlecode.aviator.lexer.token.OperatorType;
 import com.googlecode.aviator.lexer.token.Variable;
 import com.googlecode.aviator.runtime.RuntimeUtils;
-import com.gitee.usl.grammar.type.USLFunction;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 
 import java.util.Map;
 
@@ -16,20 +16,20 @@ import java.util.Map;
  */
 public class OperationRuntime {
 
-    private static final ThreadLocal<USLObject[]> TWO_ARRGS = new ThreadLocal<USLObject[]>() {
+    private static final ThreadLocal<AviatorObject[]> TWO_ARRGS = new ThreadLocal<AviatorObject[]>() {
 
         @Override
-        protected USLObject[] initialValue() {
-            return new USLObject[2];
+        protected AviatorObject[] initialValue() {
+            return new AviatorObject[2];
         }
 
     };
 
-    private static final ThreadLocal<USLObject[]> ONE_ARG = new ThreadLocal<USLObject[]>() {
+    private static final ThreadLocal<AviatorObject[]> ONE_ARG = new ThreadLocal<AviatorObject[]>() {
 
         @Override
-        protected USLObject[] initialValue() {
-            return new USLObject[1];
+        protected AviatorObject[] initialValue() {
+            return new AviatorObject[1];
         }
 
     };
@@ -41,18 +41,18 @@ public class OperationRuntime {
      * @param opType
      * @return
      */
-    public static USLObject eval(final Map<String, Object> env, final USLObject[] args,
-                                 final OperatorType opType) {
-        USLFunction func = RuntimeUtils.getInstance(env).getOpFunction(opType);
-        USLObject ret = eval0(env, args, opType, func);
+    public static AviatorObject eval(final Map<String, Object> env, final AviatorObject[] args,
+                                     final OperatorType opType) {
+        AviatorFunction func = RuntimeUtils.getInstance(env).getOpFunction(opType);
+        AviatorObject ret = eval0(env, args, opType, func);
         if (RuntimeUtils.isTracedEval(env)) {
             trace(env, opType, ret, args);
         }
         return ret;
     }
 
-    private static USLObject eval0(final Map<String, Object> env, final USLObject[] args,
-                                   final OperatorType opType, final USLFunction func) {
+    private static AviatorObject eval0(final Map<String, Object> env, final AviatorObject[] args,
+                                       final OperatorType opType, final AviatorFunction func) {
         if (func == null) {
             return opType.eval(args, env);
         } else {
@@ -60,8 +60,8 @@ public class OperationRuntime {
         }
     }
 
-    public static USLObject evalOpFunction(final Map<String, Object> env,
-                                           final USLObject[] args, final OperatorType opType, final USLFunction func) {
+    public static AviatorObject evalOpFunction(final Map<String, Object> env,
+                                               final AviatorObject[] args, final OperatorType opType, final AviatorFunction func) {
         switch (opType.getArity()) {
             case 1:
                 return func.call(env, args[0]);
@@ -81,20 +81,20 @@ public class OperationRuntime {
      * @param opType
      * @return
      */
-    public static USLObject eval(final USLObject arg, final Map<String, Object> env,
-                                 final OperatorType opType) {
-        USLFunction func = RuntimeUtils.getInstance(env).getOpFunction(opType);
-        USLObject ret = eval0(arg, env, opType, func);
+    public static AviatorObject eval(final AviatorObject arg, final Map<String, Object> env,
+                                     final OperatorType opType) {
+        AviatorFunction func = RuntimeUtils.getInstance(env).getOpFunction(opType);
+        AviatorObject ret = eval0(arg, env, opType, func);
         if (RuntimeUtils.isTracedEval(env)) {
             trace(env, opType, ret, arg);
         }
         return ret;
     }
 
-    private static USLObject eval0(final USLObject arg, final Map<String, Object> env,
-                                   final OperatorType opType, final USLFunction func) {
+    private static AviatorObject eval0(final AviatorObject arg, final Map<String, Object> env,
+                                       final OperatorType opType, final AviatorFunction func) {
         if (func == null) {
-            USLObject[] args = ONE_ARG.get();
+            AviatorObject[] args = ONE_ARG.get();
             args[0] = arg;
             return opType.eval(args, env);
         } else {
@@ -103,7 +103,7 @@ public class OperationRuntime {
     }
 
     /**
-     * Just like {@link #eval(USLObject, USLObject, Map, OperatorType)}, but with difference
+     * Just like {@link #eval(AviatorObject, AviatorObject, Map, OperatorType)}, but with difference
      * arguments order.
      *
      * @param left
@@ -112,8 +112,8 @@ public class OperationRuntime {
      * @param opType
      * @return
      */
-    public static USLObject eval(final USLObject left, final Map<String, Object> env,
-                                 final USLObject right, final OperatorType opType) {
+    public static AviatorObject eval(final AviatorObject left, final Map<String, Object> env,
+                                     final AviatorObject right, final OperatorType opType) {
         return eval(left, right, env, opType);
     }
 
@@ -126,21 +126,21 @@ public class OperationRuntime {
      * @param opType
      * @return
      */
-    public static USLObject eval(final USLObject left, final USLObject right,
-                                 final Map<String, Object> env, final OperatorType opType) {
+    public static AviatorObject eval(final AviatorObject left, final AviatorObject right,
+                                     final Map<String, Object> env, final OperatorType opType) {
 
-        USLFunction func = RuntimeUtils.getInstance(env).getOpFunction(opType);
-        USLObject ret = eval0(left, right, env, opType, func);
+        AviatorFunction func = RuntimeUtils.getInstance(env).getOpFunction(opType);
+        AviatorObject ret = eval0(left, right, env, opType, func);
         if (RuntimeUtils.isTracedEval(env)) {
             trace(env, opType, ret, left, right);
         }
         return ret;
     }
 
-    private static USLObject eval0(final USLObject left, final USLObject right,
-                                   final Map<String, Object> env, final OperatorType opType, final USLFunction func) {
+    private static AviatorObject eval0(final AviatorObject left, final AviatorObject right,
+                                       final Map<String, Object> env, final OperatorType opType, final AviatorFunction func) {
         if (func == null) {
-            USLObject[] args = TWO_ARRGS.get();
+            AviatorObject[] args = TWO_ARRGS.get();
             args[0] = left;
             args[1] = right;
             return opType.eval(args, env);
@@ -162,7 +162,7 @@ public class OperationRuntime {
     private static final String WHITE_SPACE = " ";
     private static final String TRACE_PREFIX = "         ";
 
-    private static String desc(final USLObject arg, final Map<String, Object> env) {
+    private static String desc(final AviatorObject arg, final Map<String, Object> env) {
         if (arg != null) {
             return arg.desc(env);
         } else {
@@ -171,7 +171,7 @@ public class OperationRuntime {
     }
 
     private static void trace(final Map<String, Object> env, final OperatorType opType,
-                              final USLObject result, final USLObject... args) {
+                              final AviatorObject result, final AviatorObject... args) {
 
         StringBuilder argsDec = new StringBuilder();
         argsDec.append(desc(args[0], env));

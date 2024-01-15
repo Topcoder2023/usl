@@ -1,6 +1,5 @@
 package com.googlecode.aviator.runtime.type;
 
-import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
 import com.googlecode.aviator.utils.ArrayUtils;
 import com.googlecode.aviator.utils.Reflector;
@@ -33,7 +32,7 @@ public class AviatorRuntimeJavaElementType extends AviatorRuntimeJavaType {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  public USLObject setValue(final USLObject value, final Map<String, Object> env) {
+  public AviatorObject setValue(final AviatorObject value, final Map<String, Object> env) {
     Object val = value.getValue(env);
     switch (this.containerType) {
       case Array:

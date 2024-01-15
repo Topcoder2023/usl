@@ -6,7 +6,7 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.api.FunctionLoader;
-import com.gitee.usl.grammar.type.USLFunction;
+import com.googlecode.aviator.runtime.type.AviatorFunction;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public abstract class AbstractFunctionLoader implements FunctionLoader {
 
     @Override
-    public List<USLFunction> load(EngineConfig configuration) {
+    public List<AviatorFunction> load(EngineConfig configuration) {
         USLRunner runner = configuration.getConfiguration().getRunner();
 
         return configuration.getPackageNameList()
@@ -37,7 +37,7 @@ public abstract class AbstractFunctionLoader implements FunctionLoader {
     protected abstract boolean filter(Class<?> clz);
 
     @Description("将函数定义信息转为函数实例")
-    protected abstract USLFunction definition2Func(FunctionDefinition definition);
+    protected abstract AviatorFunction definition2Func(FunctionDefinition definition);
 
     @Description("将指定类转为USL函数定义信息集合")
     protected abstract List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner);

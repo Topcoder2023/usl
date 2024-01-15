@@ -19,7 +19,7 @@ import com.googlecode.aviator.exception.ExpressionRuntimeException;
 import com.googlecode.aviator.exception.IllegalArityException;
 import com.googlecode.aviator.runtime.type.AviatorBoolean;
 import com.googlecode.aviator.runtime.type.AviatorJavaType;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 
 import java.util.Map;
 
@@ -99,7 +99,7 @@ public enum OperatorType {
     this.arity = operandCount;
   }
 
-  public USLObject eval(final USLObject[] args, final Map<String, Object> env) {
+  public AviatorObject eval(final AviatorObject[] args, final Map<String, Object> env) {
     if (args.length < this.arity) {
       throw new IllegalArityException("Expect " + this.arity + " parameters for " + name()
           + ", but have " + args.length + " arguments.");

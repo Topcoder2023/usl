@@ -15,8 +15,6 @@
  **/
 package com.googlecode.aviator.runtime.type;
 
-import com.gitee.usl.grammar.type.USLObject;
-
 import java.util.Map;
 
 
@@ -60,13 +58,13 @@ public class AviatorDouble extends AviatorNumber {
 
 
   @Override
-  public USLObject neg(Map<String, Object> env) {
+  public AviatorObject neg(Map<String, Object> env) {
     return new AviatorDouble(-this.doubleValue);
   }
 
 
   @Override
-  public USLObject innerDiv(Map<String, Object> env, AviatorNumber other) {
+  public AviatorObject innerDiv(Map<String, Object> env, AviatorNumber other) {
     return new AviatorDouble(this.doubleValue / other.doubleValue());
   }
 
@@ -78,13 +76,13 @@ public class AviatorDouble extends AviatorNumber {
 
 
   @Override
-  public USLObject innerMod(Map<String, Object> env, AviatorNumber other) {
+  public AviatorObject innerMod(Map<String, Object> env, AviatorNumber other) {
     return new AviatorDouble(this.doubleValue % other.doubleValue());
   }
 
 
   @Override
-  public USLObject innerMult(Map<String, Object> env, AviatorNumber other) {
+  public AviatorObject innerMult(Map<String, Object> env, AviatorNumber other) {
     return new AviatorDouble(this.doubleValue * other.doubleValue());
   }
 
@@ -112,7 +110,7 @@ public class AviatorDouble extends AviatorNumber {
 
 
   @Override
-  public USLObject innerSub(Map<String, Object> env, AviatorNumber other) {
+  public AviatorObject innerSub(Map<String, Object> env, AviatorNumber other) {
     return new AviatorDouble(this.doubleValue - other.doubleValue());
   }
 }

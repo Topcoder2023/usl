@@ -8,7 +8,7 @@ import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.api.plugin.BeginPlugin;
 import com.gitee.usl.api.plugin.FailurePlugin;
 import com.gitee.usl.api.plugin.SuccessPlugin;
-import com.gitee.usl.grammar.type.USLObject;
+import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class LoggerPlugin implements BeginPlugin, SuccessPlugin, FailurePlugin {
     }
 
     @Description("格式化参数")
-    protected String format(Env env, USLObject[] objects) {
+    protected String format(Env env, AviatorObject[] objects) {
         return Arrays.stream(objects)
                 .map(item -> String.valueOf(item.getValue(env)))
                 .collect(Collectors.joining(CharPool.COMMA + CharSequenceUtil.SPACE));

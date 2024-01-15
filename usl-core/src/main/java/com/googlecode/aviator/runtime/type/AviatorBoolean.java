@@ -16,8 +16,6 @@
 package com.googlecode.aviator.runtime.type;
 
 import java.util.Map;
-
-import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.exception.CompareNotSupportedException;
 import com.googlecode.aviator.utils.TypeUtils;
 
@@ -28,7 +26,7 @@ import com.googlecode.aviator.utils.TypeUtils;
  * @author dennis
  *
  */
-public class AviatorBoolean extends USLObject {
+public class AviatorBoolean extends AviatorObject {
 
   /**
    *
@@ -43,7 +41,7 @@ public class AviatorBoolean extends USLObject {
 
 
   @Override
-  public USLObject not(final Map<String, Object> env) {
+  public AviatorObject not(final Map<String, Object> env) {
     return this.value.booleanValue() ? FALSE : TRUE;
   }
 
@@ -58,7 +56,7 @@ public class AviatorBoolean extends USLObject {
   }
 
   @Override
-  public USLObject add(final USLObject other, final Map<String, Object> env) {
+  public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case String:
         return new AviatorString(this.value.toString() + ((AviatorString) other).getLexeme(env));
@@ -101,7 +99,7 @@ public class AviatorBoolean extends USLObject {
 
 
   @Override
-  public int innerCompare(final USLObject other, final Map<String, Object> env) {
+  public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case Boolean:
         AviatorBoolean otherBoolean = (AviatorBoolean) other;
