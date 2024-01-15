@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import com.googlecode.aviator.runtime.RuntimeUtils;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLFunction;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.runtime.type.AviatorRuntimeJavaType;
 import com.googlecode.aviator.utils.Constants;
 
@@ -21,9 +21,9 @@ public class UnpackingArgsFunction extends AbstractVariadicFunction {
   private static final long serialVersionUID = -7537763640116320630L;
 
 
-  private final AviatorFunction fn;
+  private final USLFunction fn;
 
-  public UnpackingArgsFunction(final AviatorFunction fn) {
+  public UnpackingArgsFunction(final USLFunction fn) {
     super();
     this.fn = fn;
   }
@@ -34,12 +34,12 @@ public class UnpackingArgsFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public AviatorObject variadicCall(final Map<String, Object> env, final AviatorObject... args) {
+  public USLObject variadicCall(final Map<String, Object> env, final USLObject... args) {
     assert (args.length > 0);
 
-    List<AviatorObject> realArgList = new ArrayList<AviatorObject>(args.length + 10);
+    List<USLObject> realArgList = new ArrayList<USLObject>(args.length + 10);
 
-    for (AviatorObject arg : args) {
+    for (USLObject arg : args) {
       if (arg.meta(Constants.UNPACK_ARGS) != null) {
         for (Object obj : RuntimeUtils.seq(arg.getValue(env), env)) {
           realArgList.add(AviatorRuntimeJavaType.valueOf(obj));
@@ -49,7 +49,7 @@ public class UnpackingArgsFunction extends AbstractVariadicFunction {
       }
     }
 
-    AviatorObject[] realArgs = new AviatorObject[realArgList.size()];
+    USLObject[] realArgs = new USLObject[realArgList.size()];
     realArgs = realArgList.toArray(realArgs);
 
     switch (realArgs.length) {
@@ -124,7 +124,7 @@ public class UnpackingArgsFunction extends AbstractVariadicFunction {
             realArgs[17], realArgs[18], realArgs[19]);
       default:
         assert (realArgs.length >= 20);
-        AviatorObject[] remainingArgs = new AviatorObject[realArgs.length - 20];
+        USLObject[] remainingArgs = new USLObject[realArgs.length - 20];
         System.arraycopy(realArgs, 20, remainingArgs, 0, remainingArgs.length);
         return this.fn.call(env, realArgs[0], realArgs[1], realArgs[2], realArgs[3], realArgs[4],
             realArgs[5], realArgs[6], realArgs[7], realArgs[8], realArgs[9], realArgs[10],

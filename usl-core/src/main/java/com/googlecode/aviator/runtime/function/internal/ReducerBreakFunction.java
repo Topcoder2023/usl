@@ -2,7 +2,7 @@ package com.googlecode.aviator.runtime.function.internal;
 
 import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.type.AviatorNil;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 
 import java.util.Map;
 
@@ -29,12 +29,12 @@ public class ReducerBreakFunction extends AbstractFunction {
   }
 
   @Override
-  public AviatorObject call(final Map<String, Object> env) {
+  public USLObject call(final Map<String, Object> env) {
     return ReducerResult.withBreak(AviatorNil.NIL);
   }
 
   @Override
-  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1) {
+  public USLObject call(final Map<String, Object> env, final USLObject arg1) {
     return ReducerResult.withBreak(AviatorNil.NIL);
   }
 }

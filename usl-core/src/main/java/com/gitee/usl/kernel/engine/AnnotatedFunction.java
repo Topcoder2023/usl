@@ -8,7 +8,7 @@ import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.structure.Plugins;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.utils.Env;
 
 import java.util.*;
@@ -36,7 +36,7 @@ public class AnnotatedFunction extends AbstractVariadicFunction implements Funct
     }
 
     @Override
-    public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {
+    public USLObject variadicCall(Map<String, Object> env, USLObject... args) {
 
         @Description("函数实参数量")
         int actualArgsLength = ArrayUtil.length(args);

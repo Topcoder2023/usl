@@ -2,9 +2,9 @@ package com.googlecode.aviator.runtime.function.internal;
 
 import com.googlecode.aviator.runtime.RuntimeUtils;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.type.USLFunction;
 import com.googlecode.aviator.runtime.type.AviatorNil;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.runtime.type.AviatorRuntimeJavaType;
 import com.googlecode.aviator.utils.Reflector;
 
@@ -32,12 +32,12 @@ public class TryCatchFunction extends AbstractFunction {
 
   @SuppressWarnings("unchecked")
   @Override
-  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
-      final AviatorObject arg2, final AviatorObject arg3, final AviatorObject arg4) {
-    AviatorFunction tryBody = (AviatorFunction) arg1;
+  public USLObject call(final Map<String, Object> env, final USLObject arg1,
+                        final USLObject arg2, final USLObject arg3, final USLObject arg4) {
+    USLFunction tryBody = (USLFunction) arg1;
     List<CatchHandler> catchHandlers = (List<CatchHandler>) arg2.getValue(env);
-    AviatorFunction finallyBody = arg3 != AviatorNil.NIL ? (AviatorFunction) arg3 : null;
-    AviatorObject result = null;
+    USLFunction finallyBody = arg3 != AviatorNil.NIL ? (USLFunction) arg3 : null;
+    USLObject result = null;
     try {
       result = tryBody.call(env);
     } catch (Throwable t) {
@@ -45,7 +45,7 @@ public class TryCatchFunction extends AbstractFunction {
       if (catchHandlers != null) {
         for (CatchHandler handler : catchHandlers) {
           if (handler.isMatch(t.getClass())) {
-            AviatorObject ret = handler.getFunc().call(env, AviatorRuntimeJavaType.valueOf(t));
+            USLObject ret = handler.getFunc().call(env, AviatorRuntimeJavaType.valueOf(t));
             result = chooseResult(result, ret);
             handle = true;
             break;
@@ -58,7 +58,7 @@ public class TryCatchFunction extends AbstractFunction {
     } finally {
       try {
         if (finallyBody != null) {
-          AviatorObject ret = finallyBody.call(env);
+          USLObject ret = finallyBody.call(env);
           result = chooseResult(result, ret);
         }
       } finally {
@@ -75,9 +75,9 @@ public class TryCatchFunction extends AbstractFunction {
     if ((val instanceof ReducerResult) && ((ReducerResult) val).isEmptyState()) {
       return result;
     }
-    AviatorFunction continueFn = (AviatorFunction) val;
+    USLFunction continueFn = (USLFunction) val;
     try {
-      AviatorObject contResult = continueFn.call(env);
+      USLObject contResult = continueFn.call(env);
       if ((contResult instanceof ReducerResult) && ((ReducerResult) contResult).isEmptyState()) {
         return result;
       } else {
@@ -88,7 +88,7 @@ public class TryCatchFunction extends AbstractFunction {
     }
   }
 
-  public AviatorObject chooseResult(final AviatorObject result, final AviatorObject ret) {
+  public USLObject chooseResult(final USLObject result, final USLObject ret) {
     if (result instanceof ReducerResult) {
       if (ret instanceof ReducerResult && isNewState(result, ret)) {
         return ret;
@@ -99,11 +99,11 @@ public class TryCatchFunction extends AbstractFunction {
     }
   }
 
-  private boolean isNewState(final AviatorObject result, final AviatorObject ret) {
+  private boolean isNewState(final USLObject result, final USLObject ret) {
     return ((ReducerResult) ret).state.compareTo(((ReducerResult) result).state) >= 0;
   }
 
-  private boolean isReturnResult(final AviatorObject ret) {
+  private boolean isReturnResult(final USLObject ret) {
     return ret instanceof ReducerResult && ((ReducerResult) ret).state == ReducerState.Return;
   }
 

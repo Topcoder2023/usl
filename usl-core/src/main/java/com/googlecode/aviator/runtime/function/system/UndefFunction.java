@@ -3,7 +3,7 @@ package com.googlecode.aviator.runtime.function.system;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorJavaType;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.runtime.type.AviatorType;
 import com.googlecode.aviator.utils.Env;
 
@@ -26,7 +26,7 @@ public class UndefFunction extends AbstractFunction {
   }
 
   @Override
-  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1) {
+  public USLObject call(final Map<String, Object> env, final USLObject arg1) {
     if (arg1.getAviatorType() != AviatorType.JavaType) {
       throw new IllegalArgumentException(
           "Invalid argument type for undef: " + arg1.getAviatorType());

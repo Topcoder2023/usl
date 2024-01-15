@@ -1,7 +1,7 @@
 package com.googlecode.aviator;
 
 import com.googlecode.aviator.runtime.function.internal.*;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.type.USLFunction;
 import com.googlecode.aviator.utils.IdentityHashSet;
 
 import java.util.ArrayList;
@@ -102,16 +102,16 @@ public enum Feature {
   /**
    * Functions to support the feature.
    */
-  private List<AviatorFunction> functions = Collections.emptyList();
+  private List<USLFunction> functions = Collections.emptyList();
 
 
   private Feature() {
 
   }
 
-  private static List<AviatorFunction> asList(final AviatorFunction... args) {
-    List<AviatorFunction> ret = new ArrayList<>(args.length);
-    for (AviatorFunction f : args) {
+  private static List<USLFunction> asList(final USLFunction... args) {
+    List<USLFunction> ret = new ArrayList<>(args.length);
+    for (USLFunction f : args) {
       ret.add(f);
     }
     return ret;
@@ -121,16 +121,16 @@ public enum Feature {
     this.prequires = prequires;
   }
 
-  private Feature(final List<AviatorFunction> funcs) {
+  private Feature(final List<USLFunction> funcs) {
     this.functions = funcs;
   }
 
-  private Feature(final Set<Feature> prequires, final List<AviatorFunction> funcs) {
+  private Feature(final Set<Feature> prequires, final List<USLFunction> funcs) {
     this.prequires = prequires;
     this.functions = funcs;
   }
 
-  public List<AviatorFunction> getFunctions() {
+  public List<USLFunction> getFunctions() {
     return this.functions;
   }
 

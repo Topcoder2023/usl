@@ -5,7 +5,7 @@ import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.engine.FunctionSession;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.utils.Env;
 import org.junit.jupiter.api.Test;
 
@@ -58,7 +58,7 @@ class ParameterBinderPluginTest {
         }
 
         @Function
-        void test5(Env env, FunctionSession session, AviatorObject object) {
+        void test5(Env env, FunctionSession session, USLObject object) {
             System.out.println(session.getDefinition().getName() + object.getValue(env));
         }
     }

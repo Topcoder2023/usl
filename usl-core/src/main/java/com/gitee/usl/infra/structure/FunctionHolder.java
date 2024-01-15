@@ -6,7 +6,7 @@ import com.gitee.usl.api.Overloaded;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.utils.LambdaHelper;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.type.USLFunction;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -24,7 +24,7 @@ public class FunctionHolder {
     private final Map<String, String> aliasMap;
 
     @Description("函数名称映射")
-    private final Map<String, AviatorFunction> container;
+    private final Map<String, USLFunction> container;
 
     public FunctionHolder() {
         this.aliasMap = new HashMap<>(NumberConstant.EIGHT);
@@ -32,10 +32,10 @@ public class FunctionHolder {
     }
 
     @Description("注册函数")
-    public void register(AviatorFunction function) {
+    public void register(USLFunction function) {
         String name = function.getName();
 
-        AviatorFunction found = this.container.get(name);
+        USLFunction found = this.container.get(name);
 
         if (found != null) {
 
@@ -60,7 +60,7 @@ public class FunctionHolder {
     }
 
     @Description("注册函数")
-    public void register(AviatorFunction function, Set<String> alias) {
+    public void register(USLFunction function, Set<String> alias) {
         this.register(function);
 
         if (CollUtil.isEmpty(alias)) {
@@ -77,17 +77,17 @@ public class FunctionHolder {
     }
 
     @Description("遍历函数")
-    public void onVisit(Consumer<AviatorFunction> consumer) {
+    public void onVisit(Consumer<USLFunction> consumer) {
         this.onVisit(LambdaHelper.anyTrue(), consumer);
     }
 
     @Description("遍历指定函数")
-    public void onVisit(Predicate<AviatorFunction> predicate, Consumer<AviatorFunction> consumer) {
+    public void onVisit(Predicate<USLFunction> predicate, Consumer<USLFunction> consumer) {
         this.toList().stream().filter(predicate).forEach(consumer);
     }
 
     @Description("通过函数名称检索函数实例")
-    public AviatorFunction search(String name) {
+    public USLFunction search(String name) {
         final String key;
 
         if (!this.container.containsKey(name)) {
@@ -100,8 +100,8 @@ public class FunctionHolder {
     }
 
     @Description("获取所有函数实例")
-    public List<AviatorFunction> toList() {
-        List<AviatorFunction> functions = new ArrayList<>(this.container.values());
+    public List<USLFunction> toList() {
+        List<USLFunction> functions = new ArrayList<>(this.container.values());
         this.container.values()
                 .stream()
                 .filter(item -> item instanceof Overloaded)

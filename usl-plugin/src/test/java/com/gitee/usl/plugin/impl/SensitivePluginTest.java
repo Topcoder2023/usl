@@ -7,7 +7,7 @@ import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.plugin.annotation.Sensitized;
 import com.gitee.usl.plugin.impl.sensitive.SensitiveType;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.runtime.type.AviatorString;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +42,7 @@ class SensitivePluginTest {
     static class SensitiveFunction extends AbstractVariadicFunction {
 
         @Override
-        public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {
+        public USLObject variadicCall(Map<String, Object> env, USLObject... args) {
             return new AviatorString("测试");
         }
 

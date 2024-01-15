@@ -1,5 +1,7 @@
 package com.googlecode.aviator.runtime.type;
 
+import com.gitee.usl.grammar.type.USLObject;
+
 import java.util.Map;
 
 /**
@@ -30,12 +32,12 @@ public class AviatorStringBuilder extends AviatorString {
 
 
   @Override
-  public AviatorObject deref(final Map<String, Object> env) {
+  public USLObject deref(final Map<String, Object> env) {
     return new AviatorString(getLexeme(env));
   }
 
   @Override
-  public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
+  public USLObject add(final USLObject other, final Map<String, Object> env) {
     if (other.getAviatorType() == AviatorType.Pattern) {
       final AviatorPattern otherPatterh = (AviatorPattern) other;
       this.sb.append(otherPatterh.pattern.pattern());

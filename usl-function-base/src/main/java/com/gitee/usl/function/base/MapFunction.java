@@ -7,8 +7,8 @@ import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.structure.EntryItem;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLFunction;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.utils.Env;
 
 import java.util.*;
@@ -125,7 +125,7 @@ public class MapFunction {
     }
 
     @Function("map_removeIf")
-    public <K, V> EntryItem<K, V> removeIf(Env env, Map<K, V> from, AviatorFunction function) {
+    public <K, V> EntryItem<K, V> removeIf(Env env, Map<K, V> from, USLFunction function) {
         if (CollUtil.isEmpty(from) || function == null) {
             return null;
         }
@@ -179,7 +179,7 @@ public class MapFunction {
     }
 
     @Function("map_foreach")
-    public <K, V> Map<K, V> foreach(Env env, Map<K, V> from, AviatorFunction function) {
+    public <K, V> Map<K, V> foreach(Env env, Map<K, V> from, USLFunction function) {
         if (from != null) {
             from.forEach((k, v) -> function.call(env, wrapReturn(k), wrapReturn(v)));
         }
@@ -187,7 +187,7 @@ public class MapFunction {
     }
 
     @Function("map_filter")
-    public <K, V> Map<K, V> filter(Env env, Map<K, V> from, AviatorFunction function) {
+    public <K, V> Map<K, V> filter(Env env, Map<K, V> from, USLFunction function) {
         if (from == null || function == null) {
             return from;
         }
@@ -197,7 +197,7 @@ public class MapFunction {
     }
 
     @Function("map_filter_key")
-    public <K, V> Map<K, V> filterKey(Env env, Map<K, V> from, AviatorFunction function) {
+    public <K, V> Map<K, V> filterKey(Env env, Map<K, V> from, USLFunction function) {
         if (from == null || function == null) {
             return from;
         }
@@ -205,7 +205,7 @@ public class MapFunction {
     }
 
     @Function("map_filter_value")
-    public <K, V> Map<K, V> filterValue(Env env, Map<K, V> from, AviatorFunction function) {
+    public <K, V> Map<K, V> filterValue(Env env, Map<K, V> from, USLFunction function) {
         if (from == null || function == null) {
             return from;
         }
@@ -213,7 +213,7 @@ public class MapFunction {
     }
 
     @Function("map_toList")
-    public <K, V> List<?> toList(Env env, Map<K, V> from, AviatorFunction function) {
+    public <K, V> List<?> toList(Env env, Map<K, V> from, USLFunction function) {
         if (from == null || function == null) {
             return new ArrayList<>();
         }
@@ -232,10 +232,10 @@ public class MapFunction {
         }
     }
 
-    private <K, V> Map<K, V> filterMap(Env env, Map<K, V> from, java.util.function.Function<EntryItem<K, V>, AviatorObject> mapping) {
+    private <K, V> Map<K, V> filterMap(Env env, Map<K, V> from, java.util.function.Function<EntryItem<K, V>, USLObject> mapping) {
         final Map<K, V> filter = new LinkedHashMap<>(from.size());
         from.forEach((key, value) -> {
-            AviatorObject call = mapping.apply(new EntryItem<>(key, value));
+            USLObject call = mapping.apply(new EntryItem<>(key, value));
             boolean doFilter = getBooleanValue(call, env);
             if (doFilter) {
                 filter.put(key, value);

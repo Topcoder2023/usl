@@ -5,7 +5,7 @@ import com.gitee.usl.api.FunctionLoader;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.engine.Function;
 import com.google.auto.service.AutoService;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.type.USLFunction;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class StringFunctionLoader implements FunctionLoader {
     public static final String STRING_FUNCTION_PREFIX = "string_";
 
     @Override
-    public List<AviatorFunction> load(EngineConfig configuration) {
+    public List<USLFunction> load(EngineConfig configuration) {
         return Function.newBuilder()
                 .runner(configuration.getConfiguration().getRunner())
                 .clazz(CharSequenceUtil.class)

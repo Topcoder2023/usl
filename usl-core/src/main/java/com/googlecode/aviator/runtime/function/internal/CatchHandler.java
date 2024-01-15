@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.googlecode.aviator.runtime.type.AviatorFunction;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLFunction;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.runtime.type.AviatorType;
 import com.googlecode.aviator.utils.Env;
 import com.googlecode.aviator.utils.Reflector;
@@ -13,15 +13,15 @@ import com.googlecode.aviator.utils.Reflector;
 /**
  * @author dennis(killme2008 @ gmail.com)
  */
-public class CatchHandler extends AviatorObject {
+public class CatchHandler extends USLObject {
     /**
      *
      */
     private static final long serialVersionUID = 2718902412145274738L;
-    private final AviatorFunction func;
+    private final USLFunction func;
     private final List<Class<?>> exceptionClasses;
 
-    public CatchHandler(final Env env, final AviatorFunction func,
+    public CatchHandler(final Env env, final USLFunction func,
                         final List<String> exceptionClassNames) {
         super();
         this.func = func;
@@ -35,7 +35,7 @@ public class CatchHandler extends AviatorObject {
         }
     }
 
-    public AviatorFunction getFunc() {
+    public USLFunction getFunc() {
         return this.func;
     }
 
@@ -49,7 +49,7 @@ public class CatchHandler extends AviatorObject {
     }
 
     @Override
-    public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
+    public int innerCompare(final USLObject other, final Map<String, Object> env) {
         throw new UnsupportedOperationException();
     }
 

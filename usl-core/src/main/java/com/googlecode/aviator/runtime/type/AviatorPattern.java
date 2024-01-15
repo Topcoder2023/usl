@@ -15,6 +15,7 @@
  **/
 package com.googlecode.aviator.runtime.type;
 
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.exception.CompareNotSupportedException;
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
@@ -34,7 +35,7 @@ import java.util.regex.Pattern;
  * @author dennis
  *
  */
-public class AviatorPattern extends AviatorObject {
+public class AviatorPattern extends USLObject {
 
 
   private static final long serialVersionUID = -6667072156431636239L;
@@ -59,7 +60,7 @@ public class AviatorPattern extends AviatorObject {
 
 
   @Override
-  public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
+  public USLObject add(final USLObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case String:
         return new AviatorString(this.pattern.pattern() + ((AviatorString) other).getLexeme(env));
@@ -79,7 +80,7 @@ public class AviatorPattern extends AviatorObject {
 
 
   @Override
-  public AviatorObject match(final AviatorObject other, final Map<String, Object> env) {
+  public USLObject match(final USLObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case Nil:
         return AviatorBoolean.FALSE;
@@ -118,7 +119,7 @@ public class AviatorPattern extends AviatorObject {
 
 
   @Override
-  public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
+  public int innerCompare(final USLObject other, final Map<String, Object> env) {
     if (this == other) {
       return 0;
     }

@@ -10,7 +10,7 @@ import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.plugin.api.CacheKeyGenerator;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.utils.Env;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,8 +84,8 @@ public class CacheablePlugin implements BeginPlugin, SuccessPlugin {
                     .filter(arg -> !Env.class.equals(arg.getClass()))
                     .map(obj -> {
                         Object val;
-                        if (obj instanceof AviatorObject && envIfIsNative instanceof Env) {
-                            val = ((AviatorObject) obj).getValue((Env) envIfIsNative);
+                        if (obj instanceof USLObject && envIfIsNative instanceof Env) {
+                            val = ((USLObject) obj).getValue((Env) envIfIsNative);
                         } else {
                             val = obj;
                         }

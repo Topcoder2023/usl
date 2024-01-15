@@ -1,10 +1,11 @@
-package com.googlecode.aviator.runtime.type;
+package com.gitee.usl.grammar.type;
 
 import com.gitee.usl.infra.structure.StringMap;
 import com.googlecode.aviator.Options;
 import com.googlecode.aviator.exception.CompareNotSupportedException;
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
 import com.googlecode.aviator.runtime.RuntimeUtils;
+import com.googlecode.aviator.runtime.type.AviatorType;
 import com.googlecode.aviator.utils.Env;
 import com.googlecode.aviator.utils.Reflector;
 import com.googlecode.aviator.utils.TypeUtils;
@@ -17,11 +18,11 @@ import java.util.Map;
  * @author hongda.li
  */
 @Getter
-public abstract class AviatorObject {
+public abstract class USLObject {
 
     protected StringMap<Object> metadata = new StringMap<>();
 
-    public AviatorObject withMeta(final Object key, final Object value) {
+    public USLObject withMeta(final Object key, final Object value) {
         this.metadata.put(String.valueOf(key), value);
         return this;
     }
@@ -30,20 +31,20 @@ public abstract class AviatorObject {
         return this.metadata.get(String.valueOf(key));
     }
 
-    public AviatorObject withoutMeta(final Object key) {
+    public USLObject withoutMeta(final Object key) {
         this.metadata.remove(String.valueOf(key));
         return this;
     }
 
-    public int compare(final AviatorObject other, final Map<String, Object> env) {
+    public int compare(final USLObject other, final Map<String, Object> env) {
         return compare(other, env, false);
     }
 
-    public int compareEq(final AviatorObject other, final Map<String, Object> env) {
+    public int compareEq(final USLObject other, final Map<String, Object> env) {
         return compare(other, env, true);
     }
 
-    private int compare(final AviatorObject other, final Map<String, Object> env,
+    private int compare(final USLObject other, final Map<String, Object> env,
                         final boolean isEq) {
         if (this == other) {
             return 0;
@@ -63,7 +64,7 @@ public abstract class AviatorObject {
         }
     }
 
-    public abstract int innerCompare(AviatorObject other, Map<String, Object> env);
+    public abstract int innerCompare(USLObject other, Map<String, Object> env);
 
 
     public abstract AviatorType getAviatorType();
@@ -86,26 +87,26 @@ public abstract class AviatorObject {
     }
 
 
-    public AviatorObject match(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject match(final USLObject other, final Map<String, Object> env) {
         throw new ExpressionRuntimeException(desc(env) + " doesn't support match operation '=~'");
     }
 
 
-    public AviatorObject neg(final Map<String, Object> env) {
+    public USLObject neg(final Map<String, Object> env) {
         throw new ExpressionRuntimeException(desc(env) + " doesn't support negative operation '-'");
     }
 
-    public AviatorObject setValue(final AviatorObject value, final Map<String, Object> env) {
+    public USLObject setValue(final USLObject value, final Map<String, Object> env) {
         throw new ExpressionRuntimeException(
                 "Can't assign value " + value.desc(env) + " to " + desc(env));
     }
 
-    public AviatorObject defineValue(final AviatorObject value, final Map<String, Object> env) {
+    public USLObject defineValue(final USLObject value, final Map<String, Object> env) {
         throw new ExpressionRuntimeException(
                 "Can't assign value " + value.desc(env) + " to " + desc(env));
     }
 
-    public AviatorObject not(final Map<String, Object> env) {
+    public USLObject not(final Map<String, Object> env) {
         throw new ExpressionRuntimeException(desc(env) + " doesn't support not operation '!'");
     }
 
@@ -121,74 +122,74 @@ public abstract class AviatorObject {
     public abstract Object getValue(Map<String, Object> env);
 
 
-    public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject add(final USLObject other, final Map<String, Object> env) {
         throw new ExpressionRuntimeException("Could not add " + desc(env) + " with " + other.desc(env));
     }
 
 
-    public AviatorObject bitAnd(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject bitAnd(final USLObject other, final Map<String, Object> env) {
         throw new ExpressionRuntimeException(
                 "Could not bitAnd " + desc(env) + " with " + other.desc(env));
     }
 
 
-    public AviatorObject bitOr(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject bitOr(final USLObject other, final Map<String, Object> env) {
         throw new ExpressionRuntimeException(
                 "Could not bitOr " + desc(env) + " with " + other.desc(env));
     }
 
 
-    public AviatorObject bitXor(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject bitXor(final USLObject other, final Map<String, Object> env) {
         throw new ExpressionRuntimeException(
                 "Could not bitXor " + desc(env) + " with " + other.desc(env));
     }
 
 
-    public AviatorObject shiftRight(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject shiftRight(final USLObject other, final Map<String, Object> env) {
         throw new ExpressionRuntimeException(
                 "Could not shiftRight " + desc(env) + " with " + other.desc(env));
     }
 
 
-    public AviatorObject shiftLeft(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject shiftLeft(final USLObject other, final Map<String, Object> env) {
         throw new ExpressionRuntimeException(
                 "Could not shiftLeft " + desc(env) + " with " + other.desc(env));
     }
 
 
-    public AviatorObject unsignedShiftRight(final AviatorObject other,
-                                            final Map<String, Object> env) {
+    public USLObject unsignedShiftRight(final USLObject other,
+                                        final Map<String, Object> env) {
         throw new ExpressionRuntimeException(
                 "Could not unsignedShiftRight " + desc(env) + " with " + other.desc(env));
     }
 
 
-    public AviatorObject bitNot(final Map<String, Object> env) {
+    public USLObject bitNot(final Map<String, Object> env) {
         throw new ExpressionRuntimeException(desc(env) + " doesn't support not operation '^'");
     }
 
 
-    public AviatorObject sub(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject sub(final USLObject other, final Map<String, Object> env) {
         throw new ExpressionRuntimeException("Could not sub " + desc(env) + " with " + other.desc(env));
     }
 
 
-    public AviatorObject mod(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject mod(final USLObject other, final Map<String, Object> env) {
         throw new ExpressionRuntimeException("Could not mod " + desc(env) + " with " + other.desc(env));
     }
 
 
-    public AviatorObject div(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject div(final USLObject other, final Map<String, Object> env) {
         throw new ExpressionRuntimeException("Could not div " + desc(env) + " with " + other.desc(env));
     }
 
 
-    public AviatorObject mult(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject mult(final USLObject other, final Map<String, Object> env) {
         throw new ExpressionRuntimeException(
                 "Could not mult " + desc(env) + " with " + other.desc(env));
     }
 
-    public AviatorObject exponent(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject exponent(final USLObject other, final Map<String, Object> env) {
         Object base = getValue(env);
         Object exp = other.getValue(env);
 
@@ -225,7 +226,7 @@ public abstract class AviatorObject {
         return (boolean) val;
     }
 
-    public AviatorObject deref(final Map<String, Object> env) {
+    public USLObject deref(final Map<String, Object> env) {
         return this;
     }
 
@@ -236,7 +237,7 @@ public abstract class AviatorObject {
      * @param indexObject
      * @return
      */
-    public AviatorObject getElement(final Map<String, Object> env, final AviatorObject indexObject) {
+    public USLObject getElement(final Map<String, Object> env, final USLObject indexObject) {
         throw new ExpressionRuntimeException(desc(env) + " is not a array");
     }
 }

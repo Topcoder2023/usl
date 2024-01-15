@@ -10,8 +10,8 @@ import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.function.web.domain.HttpServer;
 import com.gitee.usl.infra.structure.Script;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLFunction;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.utils.Env;
 import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
@@ -48,12 +48,12 @@ public class ServerFunction {
     }
 
     @Function("server_filter")
-    public HttpServer filter(Env env, HttpServer server, AviatorFunction function) {
+    public HttpServer filter(Env env, HttpServer server, USLFunction function) {
         server.getServer().addFilter(new Filter() {
             @Override
             public void doFilter(HttpExchange httpExchange, Chain chain) throws IOException {
                 try (HttpServerRequest request = new HttpServerRequest(httpExchange); HttpServerResponse response = new HttpServerResponse(httpExchange)) {
-                    AviatorObject call = function.call(env, wrapReturn(request), wrapReturn(response));
+                    USLObject call = function.call(env, wrapReturn(request), wrapReturn(response));
                     if (FunctionUtils.getBooleanValue(call, env)) {
                         chain.doFilter(httpExchange);
                     }
@@ -75,7 +75,7 @@ public class ServerFunction {
     }
 
     @Function("server_route")
-    public HttpServer route(Env env, HttpServer server, String path, AviatorFunction function) {
+    public HttpServer route(Env env, HttpServer server, String path, USLFunction function) {
         server.getServer().addAction(path, (request, response) -> function.call(env, wrapReturn(request), wrapReturn(response)));
         return server;
     }

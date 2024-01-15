@@ -10,7 +10,7 @@ import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.AttributeMeta;
 import com.gitee.usl.infra.structure.Plugins;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.type.USLFunction;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -177,7 +177,7 @@ public class Function extends AnnotatedFunction {
             return this;
         }
 
-        public List<AviatorFunction> buildAll() {
+        public List<USLFunction> buildAll() {
             // 还有尚未构建的函数
             if (!finished) {
                 this.next();
@@ -185,7 +185,7 @@ public class Function extends AnnotatedFunction {
 
             // 将函数转为标准的 AviatorFunction，便于后续注册
             return this.functionList.stream()
-                    .map(AviatorFunction.class::cast)
+                    .map(USLFunction.class::cast)
                     .collect(Collectors.toList());
         }
 

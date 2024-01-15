@@ -1,15 +1,13 @@
 package com.googlecode.aviator.runtime.function;
 
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.utils.Reflector;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +74,7 @@ public class ClassMethodFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public AviatorObject variadicCall(final Map<String, Object> env, final AviatorObject... args) {
+  public USLObject variadicCall(final Map<String, Object> env, final USLObject... args) {
     Object[] jArgs = null;
 
     Object target = null;

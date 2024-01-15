@@ -6,7 +6,7 @@ import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.plugin.annotation.Retryable;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -41,7 +41,7 @@ class RetryPluginTest {
     static class RetryFunction extends AbstractVariadicFunction {
 
         @Override
-        public AviatorObject variadicCall(Map<String, Object> env, AviatorObject... args) {
+        public USLObject variadicCall(Map<String, Object> env, USLObject... args) {
             throw new NullPointerException("empty");
         }
 

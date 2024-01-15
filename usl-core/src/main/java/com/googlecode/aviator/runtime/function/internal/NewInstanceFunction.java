@@ -2,7 +2,7 @@ package com.googlecode.aviator.runtime.function.internal;
 
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.type.AviatorJavaType;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.runtime.type.AviatorRuntimeJavaType;
 import com.googlecode.aviator.runtime.type.AviatorType;
 import com.googlecode.aviator.utils.Env;
@@ -34,11 +34,11 @@ public class NewInstanceFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public AviatorObject variadicCall(final Map<String, Object> env, final AviatorObject... args) {
+  public USLObject variadicCall(final Map<String, Object> env, final USLObject... args) {
     if (args == null || args.length == 0) {
       throw new IllegalArgumentException("Missing className for new");
     }
-    AviatorObject firstArg = args[0];
+    USLObject firstArg = args[0];
     if (firstArg.getAviatorType() != AviatorType.JavaType) {
       throw new IllegalArgumentException("Invalid class name: " + firstArg.desc(env));
     }

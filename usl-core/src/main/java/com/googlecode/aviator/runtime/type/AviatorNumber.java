@@ -18,6 +18,9 @@ package com.googlecode.aviator.runtime.type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
+
+import com.gitee.usl.grammar.type.USLBigInt;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.exception.CompareNotSupportedException;
 import com.googlecode.aviator.runtime.RuntimeUtils;
 import com.googlecode.aviator.utils.TypeUtils;
@@ -29,7 +32,7 @@ import com.googlecode.aviator.utils.TypeUtils;
  * @author dennis
  *
  */
-public abstract class AviatorNumber extends AviatorObject {
+public abstract class AviatorNumber extends USLObject {
   /**
    *
    */
@@ -76,7 +79,7 @@ public abstract class AviatorNumber extends AviatorObject {
     } else if (TypeUtils.isDouble(value)) {
       return new AviatorDouble(((Number) value).doubleValue());
     } else if (TypeUtils.isBigInt(value)) {
-      return AviatorBigInt.valueOf((BigInteger) value);
+      return USLBigInt.valueOf((BigInteger) value);
     } else if (TypeUtils.isDecimal(value)) {
       return AviatorDecimal.valueOf((BigDecimal) value);
     } else {
@@ -92,7 +95,7 @@ public abstract class AviatorNumber extends AviatorObject {
 
 
   @Override
-  public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
+  public USLObject add(final USLObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case String:
         return new AviatorString(getValue(env).toString() + ((AviatorString) other).getLexeme(env));
@@ -119,7 +122,7 @@ public abstract class AviatorNumber extends AviatorObject {
 
 
   @Override
-  public AviatorObject sub(final AviatorObject other, final Map<String, Object> env) {
+  public USLObject sub(final USLObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case BigInt:
       case Decimal:
@@ -142,7 +145,7 @@ public abstract class AviatorNumber extends AviatorObject {
 
 
   @Override
-  public AviatorObject mod(final AviatorObject other, final Map<String, Object> env) {
+  public USLObject mod(final USLObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case BigInt:
       case Decimal:
@@ -164,7 +167,7 @@ public abstract class AviatorNumber extends AviatorObject {
 
 
   @Override
-  public AviatorObject div(final AviatorObject other, final Map<String, Object> env) {
+  public USLObject div(final USLObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case BigInt:
       case Decimal:
@@ -187,7 +190,7 @@ public abstract class AviatorNumber extends AviatorObject {
 
 
   @Override
-  public AviatorObject mult(final AviatorObject other, final Map<String, Object> env) {
+  public USLObject mult(final USLObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case BigInt:
       case Decimal:
@@ -210,7 +213,7 @@ public abstract class AviatorNumber extends AviatorObject {
 
 
   @Override
-  public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
+  public int innerCompare(final USLObject other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case BigInt:
       case Decimal:
@@ -239,19 +242,19 @@ public abstract class AviatorNumber extends AviatorObject {
   }
 
 
-  public abstract AviatorObject innerSub(Map<String, Object> env, AviatorNumber other);
+  public abstract USLObject innerSub(Map<String, Object> env, AviatorNumber other);
 
 
-  public abstract AviatorObject innerMult(Map<String, Object> env, AviatorNumber other);
+  public abstract USLObject innerMult(Map<String, Object> env, AviatorNumber other);
 
 
-  public abstract AviatorObject innerMod(Map<String, Object> env, AviatorNumber other);
+  public abstract USLObject innerMod(Map<String, Object> env, AviatorNumber other);
 
 
-  public abstract AviatorObject innerDiv(Map<String, Object> env, AviatorNumber other);
+  public abstract USLObject innerDiv(Map<String, Object> env, AviatorNumber other);
 
 
-  public abstract AviatorObject innerAdd(Map<String, Object> env, AviatorNumber other);
+  public abstract USLObject innerAdd(Map<String, Object> env, AviatorNumber other);
 
 
   public abstract int innerCompare(Map<String, Object> env, AviatorNumber other);

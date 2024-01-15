@@ -20,15 +20,14 @@ import java.util.regex.Pattern;
 
 import com.gitee.usl.infra.constant.AsmConstants;
 import com.gitee.usl.grammar.ScriptEngine;
-import com.googlecode.aviator.code.asm.ASMCodeGenerator;
 import com.googlecode.aviator.runtime.FunctionArgument;
 import com.googlecode.aviator.runtime.RuntimeUtils;
 import com.googlecode.aviator.runtime.type.AviatorBoolean;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.type.USLFunction;
 import com.googlecode.aviator.runtime.type.AviatorJavaType;
 import com.googlecode.aviator.runtime.type.AviatorNil;
 import com.googlecode.aviator.runtime.type.AviatorNumber;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.runtime.type.AviatorPattern;
 import com.googlecode.aviator.runtime.type.AviatorRuntimeJavaType;
 import com.googlecode.aviator.runtime.type.AviatorString;
@@ -60,7 +59,7 @@ public class FunctionUtils {
      * @param env
      * @return
      */
-    public static boolean getBooleanValue(final AviatorObject arg,
+    public static boolean getBooleanValue(final USLObject arg,
                                           final Map<String, Object> env) {
         return (boolean) arg.getValue(env);
     }
@@ -72,7 +71,7 @@ public class FunctionUtils {
      * @param env
      * @return
      */
-    public static String getStringValue(final AviatorObject arg,
+    public static String getStringValue(final USLObject arg,
                                         final Map<String, Object> env) {
         String result = null;
 
@@ -92,7 +91,7 @@ public class FunctionUtils {
      * @param env
      * @return
      */
-    public static Object getJavaObject(final AviatorObject arg, final Map<String, Object> env) {
+    public static Object getJavaObject(final USLObject arg, final Map<String, Object> env) {
         if (arg.getAviatorType() != AviatorType.JavaType) {
             throw new ClassCastException(arg.desc(env) + " is not a javaType");
         }
@@ -113,21 +112,21 @@ public class FunctionUtils {
      * @param arity
      * @return
      */
-    public static AviatorFunction getFunction(final AviatorObject arg, final Map<String, Object> env,
-                                              final int arity) {
+    public static USLFunction getFunction(final USLObject arg, final Map<String, Object> env,
+                                          final int arity) {
         if (arg.getAviatorType() != AviatorType.JavaType
                 && arg.getAviatorType() != AviatorType.Lambda) {
             throw new ClassCastException(arg.desc(env) + " is not a function");
         }
         // Runtime type.
         Object val = null;
-        if (arg instanceof AviatorFunction) {
-            return (AviatorFunction) arg;
+        if (arg instanceof USLFunction) {
+            return (USLFunction) arg;
         }
 
         if (arg instanceof AviatorRuntimeJavaType
-                && (val = arg.getValue(env)) instanceof AviatorFunction) {
-            return (AviatorFunction) val;
+                && (val = arg.getValue(env)) instanceof USLFunction) {
+            return (USLFunction) val;
         }
 
         // resolve by name.
@@ -140,9 +139,9 @@ public class FunctionUtils {
                 name = "-neg";
             }
         }
-        AviatorFunction rt = null;
+        USLFunction rt = null;
         if (env != null) {
-            rt = (AviatorFunction) env.get(name);
+            rt = (USLFunction) env.get(name);
         }
         if (rt == null) {
             ScriptEngine instance = RuntimeUtils.getInstance(env);
@@ -159,7 +158,7 @@ public class FunctionUtils {
      * @param env
      * @return
      */
-    public static Number getNumberValue(final AviatorObject arg1,
+    public static Number getNumberValue(final USLObject arg1,
                                         final Map<String, Object> env) {
         return (Number) arg1.getValue(env);
     }
@@ -172,7 +171,7 @@ public class FunctionUtils {
      * @return wrapped aviator object
      * @since 4.2.5
      */
-    public static AviatorObject wrapReturn(final Object ret) {
+    public static USLObject wrapReturn(final Object ret) {
         if (ret == null) {
             return AviatorNil.NIL;
         } else if (ret instanceof Pattern) {
@@ -183,8 +182,8 @@ public class FunctionUtils {
             return new AviatorString(ret.toString());
         } else if (ret instanceof Boolean) {
             return AviatorBoolean.valueOf((boolean) ret);
-        } else if (ret instanceof AviatorObject) {
-            return (AviatorObject) ret;
+        } else if (ret instanceof USLObject) {
+            return (USLObject) ret;
         } else {
             return AviatorRuntimeJavaType.valueOf(ret);
         }

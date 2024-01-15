@@ -15,6 +15,7 @@
  **/
 package com.googlecode.aviator.runtime.type;
 
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.utils.Reflector;
 import com.googlecode.aviator.utils.VarNameGenerator;
 
@@ -46,12 +47,12 @@ public class AviatorRuntimeJavaType extends AviatorJavaType {
   protected Object object;
   protected Callable<Object> callable;
 
-  public static AviatorObject valueOf(final Object object) {
+  public static USLObject valueOf(final Object object) {
     if (object == null) {
       return AviatorNil.NIL;
     }
-    if (object instanceof AviatorObject) {
-      return (AviatorObject) object;
+    if (object instanceof USLObject) {
+      return (USLObject) object;
     }
     return new AviatorRuntimeJavaType(object);
   }

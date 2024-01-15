@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.exception.CompareNotSupportedException;
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
 import com.googlecode.aviator.utils.TypeUtils;
@@ -13,7 +14,7 @@ import com.googlecode.aviator.utils.TypeUtils;
  *
  * @author dennis
  */
-public class AviatorString extends AviatorObject {
+public class AviatorString extends USLObject {
 
     private static final long serialVersionUID = -7430694306919959899L;
     private final String lexeme;
@@ -61,7 +62,7 @@ public class AviatorString extends AviatorObject {
     }
 
     @Override
-    public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
+    public USLObject add(final USLObject other, final Map<String, Object> env) {
         final StringBuilder sb = new StringBuilder(getLexeme(env));
 
         if (other.getAviatorType() != AviatorType.Pattern) {
@@ -94,7 +95,7 @@ public class AviatorString extends AviatorObject {
     }
 
     @Override
-    public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
+    public int innerCompare(final USLObject other, final Map<String, Object> env) {
         final String left = getLexeme(env);
 
         if (other.getAviatorType() == AviatorType.String) {

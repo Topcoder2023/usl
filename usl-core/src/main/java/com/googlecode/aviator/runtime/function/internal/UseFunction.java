@@ -4,7 +4,7 @@ import java.util.Map;
 import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.type.AviatorJavaType;
 import com.googlecode.aviator.runtime.type.AviatorNil;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.runtime.type.AviatorType;
 import com.googlecode.aviator.utils.Constants;
 import com.googlecode.aviator.utils.Env;
@@ -30,7 +30,7 @@ public class UseFunction extends AbstractVariadicFunction {
    * use package.{class1, class2};
    */
   @Override
-  public AviatorObject variadicCall(final Map<String, Object> env, final AviatorObject... args) {
+  public USLObject variadicCall(final Map<String, Object> env, final USLObject... args) {
     if (args.length < 3) {
       throw new IllegalArgumentException(
           "Wrong arguments(" + args.length + ") passed to __use variadicCall");
@@ -65,7 +65,7 @@ public class UseFunction extends AbstractVariadicFunction {
    * use package.class;
    */
   @Override
-  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1) {
+  public USLObject call(final Map<String, Object> env, final USLObject arg1) {
 
     if (arg1.getAviatorType() != AviatorType.JavaType) {
       throw new IllegalArgumentException("Can't use other aviator type except varaible");
@@ -85,8 +85,8 @@ public class UseFunction extends AbstractVariadicFunction {
    * use package.* or use.package.{class};
    */
   @Override
-  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
-      final AviatorObject arg2) {
+  public USLObject call(final Map<String, Object> env, final USLObject arg1,
+                        final USLObject arg2) {
     if (arg1.getAviatorType() != AviatorType.JavaType) {
       throw new IllegalArgumentException("Can't use other aviator type except varaible");
     }

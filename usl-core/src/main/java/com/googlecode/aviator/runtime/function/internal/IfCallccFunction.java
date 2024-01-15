@@ -2,8 +2,8 @@ package com.googlecode.aviator.runtime.function.internal;
 
 import com.googlecode.aviator.runtime.RuntimeUtils;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLFunction;
+import com.gitee.usl.grammar.type.USLObject;
 
 import java.util.Map;
 
@@ -29,8 +29,8 @@ public class IfCallccFunction extends AbstractFunction {
   }
 
   @Override
-  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
-      final AviatorObject arg2) {
+  public USLObject call(final Map<String, Object> env, final USLObject arg1,
+                        final USLObject arg2) {
     if (arg1 instanceof ReducerResult) {
       return arg1;
     } else {
@@ -40,9 +40,9 @@ public class IfCallccFunction extends AbstractFunction {
         return arg1;
       }
 
-      AviatorFunction otherClausesFn = (AviatorFunction) nextClauseVal;
+      USLFunction otherClausesFn = (USLFunction) nextClauseVal;
       try {
-        AviatorObject result = otherClausesFn.call(env);
+        USLObject result = otherClausesFn.call(env);
         // No remaining statements, return the if statement result.
         if ((result instanceof ReducerResult) && ((ReducerResult) result).isEmptyState()) {
           return arg1;

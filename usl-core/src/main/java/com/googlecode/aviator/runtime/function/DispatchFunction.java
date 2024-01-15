@@ -1,7 +1,7 @@
 package com.googlecode.aviator.runtime.function;
 
 import com.googlecode.aviator.exception.FunctionNotFoundException;
-import com.googlecode.aviator.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.type.USLObject;
 import com.googlecode.aviator.runtime.type.AviatorRuntimeJavaType;
 
 import java.util.IdentityHashMap;
@@ -46,7 +46,7 @@ public class DispatchFunction extends AbstractVariadicFunction {
   }
 
   @Override
-  public AviatorObject variadicCall(final Map<String, Object> env, AviatorObject... args) {
+  public USLObject variadicCall(final Map<String, Object> env, USLObject... args) {
     final int arity = args.length;
     LambdaFunction fn = this.functions.get(arity);
 
@@ -132,7 +132,7 @@ public class DispatchFunction extends AbstractVariadicFunction {
             args[17], args[18], args[19]);
       default:
         assert (args.length >= 20);
-        AviatorObject[] remainingArgs = new AviatorObject[args.length - 20];
+        USLObject[] remainingArgs = new USLObject[args.length - 20];
         System.arraycopy(args, 20, remainingArgs, 0, remainingArgs.length);
         return fn.call(env, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],
             args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16],
@@ -141,16 +141,16 @@ public class DispatchFunction extends AbstractVariadicFunction {
 
   }
 
-  static AviatorObject[] processVariadicArgs(final Map<String, Object> env, final int arity,
-      final LambdaFunction fn, AviatorObject[] args) {
+  static USLObject[] processVariadicArgs(final Map<String, Object> env, final int arity,
+                                         final LambdaFunction fn, USLObject[] args) {
     if (arity + 1 == fn.getArity()) {
-      AviatorObject[] newArgs = new AviatorObject[arity + 1];
+      USLObject[] newArgs = new USLObject[arity + 1];
       System.arraycopy(args, 0, newArgs, 0, arity);
       newArgs[arity] = AviatorRuntimeJavaType.valueOf(EMPTY_VAR_ARGS);
 
       args = newArgs;
     } else {
-      AviatorObject[] newArgs = new AviatorObject[fn.getArity()];
+      USLObject[] newArgs = new USLObject[fn.getArity()];
       System.arraycopy(args, 0, newArgs, 0, fn.getArity() - 1);
       Object[] varArgs = new Object[arity - fn.getArity() + 1];
 
