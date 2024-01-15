@@ -1,5 +1,7 @@
 let t = 1 + 5 * 8 / 2;
 
+let s = 100 + 200 > 300 && 400 + 600 < 700;
+
 logger_info(t);
 
 let list = list_of(sw, 'b', 'c', 'd');

@@ -8,6 +8,7 @@ import com.gitee.usl.grammar.runtime.type.AviatorJavaType;
 import com.gitee.usl.grammar.runtime.type.AviatorNil;
 import com.gitee.usl.grammar.runtime.type.AviatorObject;
 import com.gitee.usl.grammar.utils.Env;
+import lombok.Getter;
 
 import java.util.ArrayDeque;
 import java.util.List;
@@ -15,134 +16,106 @@ import java.util.List;
 /**
  * Eval IR context.
  *
- * @author dennis(killme2008@gmail.com)
- *
+ * @author dennis(killme2008 @ gmail.com)
  */
 public class InterpretContext {
-  private final ArrayDeque<AviatorObject> operands = new ArrayDeque<>();
-  private IR pc;
-  private int pcIndex = -1;
-  private IR[] instruments = new IR[0];
-  private final Env env;
-  private final IE expression;
-  private boolean reachEnd;
-  private final boolean trace;
+    private final ArrayDeque<AviatorObject> operands = new ArrayDeque<>();
+    @Getter
+    private IR pc;
+    private int pcIndex = -1;
+    private IR[] instruments = new IR[0];
+    @Getter
+    private final Env env;
+    @Getter
+    private final IE expression;
+    private boolean reachEnd;
+    private final boolean trace;
 
 
-  public InterpretContext(final IE exp, final List<IR> instruments,
-                          final Env env) {
-    this.expression = exp;
-    this.instruments = instruments.toArray(this.instruments);
-    this.env = env;
-    this.trace = RuntimeUtils.isTracedEval(env);
-    next();
-  }
-
-  public AviatorJavaType loadVar(final VariableMeta v) {
-    return this.expression.loadVar(v);
-  }
-
-  public AviatorObject loadConstant(final Token<?> token) {
-    return this.expression.loadConstant(token);
-  }
-
-  public boolean isReachEnd() {
-    return this.reachEnd;
-  }
-
-  public ArrayDeque<AviatorObject> getOperands() {
-    return this.operands;
-  }
-
-  public void clearStack() {
-    this.operands.clear();
-  }
-
-  public void jumpTo(final int tpc) {
-    if (tpc == this.instruments.length) {
-      this.pc = null;
-      this.pcIndex = -1;
-      this.reachEnd = true;
-      return;
-    }
-    this.pcIndex = tpc;
-    this.pc = this.instruments[this.pcIndex];
-  }
-
-  public IE getExpression() {
-    return this.expression;
-  }
-
-  public Env getEnv() {
-    return this.env;
-  }
-
-  public boolean next() {
-    if (this.reachEnd) {
-      return false;
-    }
-    this.pcIndex++;
-    if (this.pcIndex < this.instruments.length) {
-      this.pc = this.instruments[this.pcIndex];
-      return true;
-    }
-    return false;
-  }
-
-  public IR getPc() {
-    return this.pc;
-  }
-
-  public void push(AviatorObject arg) {
-    if (arg == null) {
-      arg = AviatorNil.NIL;
-    }
-    this.operands.push(arg);
-  }
-
-  public AviatorObject peek() {
-    return this.operands.peek();
-  }
-
-  public AviatorObject pop() {
-    return this.operands.pop();
-  }
-
-  public String descOperandsStack() {
-    StringBuilder sb = new StringBuilder("<Stack, [");
-    int i = this.operands.size();
-    for (AviatorObject obj : this.operands) {
-      sb.append(obj.desc(this.env));
-      if (--i > 0) {
-        sb.append(", ");
-      }
-    }
-    sb.append("]>");
-    return sb.toString();
-  }
-
-  /**
-   * Move pc to next and execute it.
-   */
-  public void dispatch() {
-    this.dispatch(true);
-  }
-
-  /**
-   * dispatch next IR execution.
-   *
-   * @param whether to move pc next.
-   */
-  public void dispatch(final boolean next) {
-    if (next && !next()) {
-      return;
+    public InterpretContext(final IE exp, final List<IR> instruments,
+                            final Env env) {
+        this.expression = exp;
+        this.instruments = instruments.toArray(this.instruments);
+        this.env = env;
+        this.trace = RuntimeUtils.isTracedEval(env);
+        next();
     }
 
-    if (this.pc != null) {
-      if (this.trace) {
-        RuntimeUtils.printlnTrace(this.env, "    " + this.pc + "    " + descOperandsStack());
-      }
-      this.pc.eval(this);
+
+    public void clearStack() {
+        this.operands.clear();
     }
-  }
+
+    public void jumpTo(final int tpc) {
+        if (tpc == this.instruments.length) {
+            this.pc = null;
+            this.pcIndex = -1;
+            this.reachEnd = true;
+            return;
+        }
+        this.pcIndex = tpc;
+        this.pc = this.instruments[this.pcIndex];
+    }
+
+    public boolean next() {
+        if (this.reachEnd) {
+            return false;
+        }
+        this.pcIndex++;
+        if (this.pcIndex < this.instruments.length) {
+            this.pc = this.instruments[this.pcIndex];
+            return true;
+        }
+        return false;
+    }
+
+    public void push(AviatorObject arg) {
+        this.push(arg, null);
+    }
+
+    public void push(AviatorObject arg, Token<?> token) {
+        if (arg == null) {
+            arg = AviatorNil.NIL;
+        }
+        arg.setFrom(token);
+        this.operands.push(arg);
+    }
+
+    public AviatorObject peek() {
+        return this.operands.peek();
+    }
+
+    public AviatorObject pop() {
+        return this.operands.pop();
+    }
+
+    public String descOperandsStack() {
+        StringBuilder sb = new StringBuilder("<Stack, [");
+        int i = this.operands.size();
+        for (AviatorObject obj : this.operands) {
+            sb.append(obj.desc(this.env));
+            if (--i > 0) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]>");
+        return sb.toString();
+    }
+
+    /**
+     * Move pc to next and execute it.
+     */
+    public void dispatch() {
+        this.dispatch(true);
+    }
+
+    public void dispatch(final boolean next) {
+        if (next && !next()) {
+            return;
+        }
+
+        if (this.pc != null) {
+            this.pc.eval(this);
+        }
+    }
 }

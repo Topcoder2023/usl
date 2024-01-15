@@ -4,6 +4,7 @@ import java.util.Map;
 
 import cn.hutool.core.text.StrPool;
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.grammar.runtime.function.system.ConstantFunction;
 import com.gitee.usl.grammar.runtime.type.AviatorJavaType;
 import com.gitee.usl.api.FunctionMissing;
@@ -19,6 +20,7 @@ import lombok.Getter;
  * @author hongda.li
  */
 @Description("委托函数")
+@SystemFunction
 public final class RuntimeFunctionDelegator extends AbstractFunction {
 
     @Description("函数名称")

@@ -149,11 +149,6 @@ public class OperationRuntime {
         }
     }
 
-    public static final boolean hasRuntimeContext(final Map<String, Object> env,
-                                                  final OperatorType opType) {
-        return containsOpFunction(env, opType) || RuntimeUtils.isTracedEval(env);
-    }
-
     public static boolean containsOpFunction(final Map<String, Object> env,
                                              final OperatorType opType) {
         return RuntimeUtils.getInstance(env).getOperatorFunctionMap().containsKey(opType);

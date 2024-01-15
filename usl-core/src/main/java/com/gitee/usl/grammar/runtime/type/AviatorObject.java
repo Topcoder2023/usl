@@ -1,5 +1,6 @@
 package com.gitee.usl.grammar.runtime.type;
 
+import com.gitee.usl.grammar.lexer.token.Token;
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
 import com.gitee.usl.grammar.utils.Env;
 import com.gitee.usl.grammar.utils.Reflector;
@@ -10,14 +11,18 @@ import com.gitee.usl.grammar.Options;
 import com.googlecode.aviator.exception.CompareNotSupportedException;
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 
 /**
  * @author hongda.li
  */
+@Setter
 @Getter
 public abstract class AviatorObject {
+
+    private Token<?> from;
 
     protected StringMap<Object> metadata = new StringMap<>();
 

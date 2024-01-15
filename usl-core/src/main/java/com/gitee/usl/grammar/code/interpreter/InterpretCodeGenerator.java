@@ -11,15 +11,12 @@ import com.gitee.usl.infra.exception.USLCompileException;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.grammar.code.BaseEvalCodeGenerator;
 import com.gitee.usl.grammar.code.LambdaGenerator;
-import com.gitee.usl.grammar.code.interpreter.ir.AssertTypeIR.AssertTypes;
 import com.gitee.usl.grammar.lexer.token.OperatorType;
 import com.gitee.usl.grammar.lexer.token.Token;
 import com.gitee.usl.grammar.lexer.token.Token.TokenType;
-import com.gitee.usl.grammar.parser.VariableMeta;
 import com.gitee.usl.grammar.runtime.FunctionArgument;
 import com.gitee.usl.grammar.runtime.FunctionParam;
 import com.gitee.usl.grammar.runtime.LambdaFunctionBootstrap;
-import com.gitee.usl.grammar.runtime.op.OperationRuntime;
 import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 import com.gitee.usl.grammar.utils.Constants;
 import com.gitee.usl.grammar.utils.IdentityHashSet;
@@ -136,7 +133,6 @@ public class InterpretCodeGenerator extends BaseEvalCodeGenerator {
     @Override
     public void onSub(final Token<?> headToken) {
         emit(OperatorIR.SUB);
-
     }
 
     @Override
@@ -156,14 +152,6 @@ public class InterpretCodeGenerator extends BaseEvalCodeGenerator {
 
     @Override
     public void onAndLeft(final Token<?> headToken) {
-        if (!OperationRuntime.containsOpFunction(this.compileEnv, OperatorType.AND)) {
-            emit(new AssertTypeIR(AssertTypes.Bool));
-            Label label = makeLabel();
-            pushLabel0(label);
-            this.instruments
-                    .add(new BranchUnlessIR(label, new SourceInfo(null, headToken.getLineNo())));
-            emit(PopIR.INSTANCE);
-        }
     }
 
     private void emit(IR ir) {
@@ -182,13 +170,7 @@ public class InterpretCodeGenerator extends BaseEvalCodeGenerator {
 
     @Override
     public void onAndRight(final Token<?> headToken) {
-        if (!OperationRuntime.containsOpFunction(this.compileEnv, OperatorType.AND)) {
-            emit(new AssertTypeIR(AssertTypes.Bool));
-            Label label = popLabel0();
-            visitLabel(label);
-        } else {
-            emit(OperatorIR.AND);
-        }
+        emit(OperatorIR.AND);
     }
 
     @Override
@@ -197,13 +179,13 @@ public class InterpretCodeGenerator extends BaseEvalCodeGenerator {
         pushLabel0(label0);
         Label label1 = makeLabel();
         pushLabel1(label1);
-        this.instruments.add(new BranchUnlessIR(label0, new SourceInfo(null, headToken.getLineNo())));
+        this.instruments.add(new BranchUnlessIR(label0));
         emit(PopIR.INSTANCE);
     }
 
     @Override
     public void onTernaryLeft(final Token<?> headToken) {
-        this.instruments.add(new GotoIR(peekLabel1(), new SourceInfo(null, headToken.getLineNo())));
+        this.instruments.add(new GotoIR(peekLabel1()));
         Label label0 = popLabel0();
         visitLabel(label0);
         emit(PopIR.INSTANCE);
@@ -222,24 +204,11 @@ public class InterpretCodeGenerator extends BaseEvalCodeGenerator {
 
     @Override
     public void onJoinLeft(final Token<?> headToken) {
-        if (!OperationRuntime.containsOpFunction(this.compileEnv, OperatorType.AND)) {
-            emit(new AssertTypeIR(AssertTypes.Bool));
-            Label label = makeLabel();
-            pushLabel0(label);
-            this.instruments.add(new BranchIfIR(label, new SourceInfo(null, headToken.getLineNo())));
-            emit(PopIR.INSTANCE);
-        }
     }
 
     @Override
     public void onJoinRight(final Token<?> headToken) {
-        if (!OperationRuntime.containsOpFunction(this.compileEnv, OperatorType.AND)) {
-            emit(new AssertTypeIR(AssertTypes.Bool));
-            Label label = popLabel0();
-            visitLabel(label);
-        } else {
-            emit(OperatorIR.OR);
-        }
+        emit(OperatorIR.OR);
     }
 
     @Override
@@ -302,7 +271,7 @@ public class InterpretCodeGenerator extends BaseEvalCodeGenerator {
             IR ir = it.next();
             if (ir instanceof VisitLabelIR) {
                 it.remove();
-                labelMap.put(((VisitLabelIR) ir).getLabel(), wrapper.get());
+                labelMap.put(((VisitLabelIR) ir).label(), wrapper.get());
             } else {
                 wrapper.increment();
             }
@@ -312,7 +281,7 @@ public class InterpretCodeGenerator extends BaseEvalCodeGenerator {
                 .filter(ir -> ir instanceof JumpIR)
                 .forEach(ir -> ((JumpIR) ir).setPc(labelMap.get(((JumpIR) ir).getLabel())));
 
-        final IE exp = new IE(this.instance, new ArrayList<>(this.variables.values()), this.symbolTable, instruments, unboxObject);
+        final IE exp = new IE(this.instance, this.symbolTable, instruments, unboxObject);
         exp.setLambdaBootstraps(this.lambdaBootstraps);
         exp.setFunctionsArgs(this.functionArguments);
 
@@ -322,15 +291,11 @@ public class InterpretCodeGenerator extends BaseEvalCodeGenerator {
 
     @Override
     public void onConstant(final Token<?> headToken) {
-        if (LOAD_CONSTANTS_TYPE.contains(headToken.getType())) {
-            VariableMeta meta = null;
-
-            if (headToken.getType() == TokenType.Variable) {
-                meta = this.variables.get(headToken.getLexeme());
-            }
-
-            emit(new LoadIR(null, headToken, meta, false));
+        if (!LOAD_CONSTANTS_TYPE.contains(headToken.getType())) {
+            return;
         }
+
+        emit(new LoadIR(headToken));
     }
 
     @Override
@@ -358,8 +323,7 @@ public class InterpretCodeGenerator extends BaseEvalCodeGenerator {
         methodMetaData.funcId = funcId;
 
         emit(new SendIR(methodMetaData.methodName, methodMetaData.parameterCount,
-                methodMetaData.token.getMeta(Constants.UNPACK_ARGS, false), methodMetaData.funcId,
-                new SourceInfo(null, methodMetaData.token.getLineNo())));
+                methodMetaData.token.getMeta(Constants.UNPACK_ARGS, false), methodMetaData.funcId));
     }
 
     @Override

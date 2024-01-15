@@ -21,7 +21,7 @@ public class ES extends BS {
     private USLCompileException exception;
 
     private ES() {
-        super(null, null, null);
+        super(null, null);
     }
 
     public static ES empty() {

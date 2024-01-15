@@ -18,7 +18,6 @@ import java.util.*;
 public abstract class BaseEvalCodeGenerator implements CodeGenerator {
 
     protected final ScriptEngine instance;
-    protected Map<String, VariableMeta> variables = Collections.emptyMap();
     protected LambdaGenerator lambdaGenerator;
     protected final ScriptClassLoader classLoader;
 

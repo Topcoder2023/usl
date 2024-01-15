@@ -2,43 +2,38 @@ package com.gitee.usl.grammar.code.interpreter.ir;
 
 import com.gitee.usl.grammar.code.interpreter.IR;
 import com.gitee.usl.grammar.code.interpreter.InterpretContext;
+import lombok.Getter;
+import lombok.ToString;
 
+/**
+ * @author hongda.li
+ */
+@Getter
+@ToString
 public class GotoIR implements IR, JumpIR {
-  private static final long serialVersionUID = 5095135626036497287L;
-  private int pc;
-  private final Label label;
-  private final SourceInfo sourceInfo;
 
+    private int pc;
 
-  public GotoIR(final Label label, final SourceInfo sourceInfo) {
-    super();
-    this.label = label;
-    this.sourceInfo = sourceInfo;
-  }
+    private final Label label;
 
-  public int getPc() {
-    return this.pc;
-  }
+    public GotoIR(final Label label) {
+        this.label = label;
+    }
 
-  @Override
-  public void setPc(final int pc) {
-    this.pc = pc;
-  }
+    @Override
+    public void setPc(final int pc) {
+        this.pc = pc;
+    }
 
-  @Override
-  public Label getLabel() {
-    return this.label;
-  }
+    @Override
+    public Label getLabel() {
+        return this.label;
+    }
 
-  @Override
-  public void eval(final InterpretContext context) {
-    context.jumpTo(this.pc);
-    context.dispatch(false);
-  }
-
-  @Override
-  public String toString() {
-    return "goto " + this.pc + "  [" + this.label + "]      " + this.sourceInfo;
-  }
+    @Override
+    public void eval(final InterpretContext context) {
+        context.jumpTo(this.pc);
+        context.dispatch(false);
+    }
 
 }

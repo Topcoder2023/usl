@@ -39,9 +39,6 @@ public abstract class BS implements Script, ScriptEnhancer {
     @Description("上下文前后置处理器")
     private final ScriptProcessor envProcessor;
 
-    @Description("变量属性表")
-    private final List<VariableMeta> metaList;
-
     @Description("上下文环境")
     private Env compileEnv;
 
@@ -49,9 +46,7 @@ public abstract class BS implements Script, ScriptEnhancer {
     private List<FunctionArgument> functionsArgs = Collections.emptyList();
 
     public BS(final ScriptEngine instance,
-              final List<VariableMeta> metaList,
               final ScriptKeyword symbolTable) {
-        this.metaList = metaList;
         this.instance = instance;
         this.symbolTable = symbolTable;
         this.envProcessor = Optional.ofNullable(this.instance).map(ScriptEngine::getEnvProcessor).orElse(ScriptProcessor.EMPTY);
