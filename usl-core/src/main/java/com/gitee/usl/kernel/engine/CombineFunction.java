@@ -1,6 +1,5 @@
 package com.gitee.usl.kernel.engine;
 
-
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
@@ -25,7 +24,6 @@ import java.util.stream.IntStream;
  * @author hongda.li
  */
 public class CombineFunction extends AnnotatedFunction {
-    private static final long serialVersionUID = -3041831967451684737L;
     private final String script;
     private final transient USLRunner runner;
     private final transient StringList params;
@@ -65,7 +63,7 @@ public class CombineFunction extends AnnotatedFunction {
 
         Param param = new Param().setCached(true).setScript(this.script).setContext(context);
 
-        Result<?> result = this.runner.run(param);
+        Result result = this.runner.run(param);
         ResultCode resultCode = ResultCode.of(result.getCode());
         Assert.isTrue(ResultCode.SUCCESS == resultCode, () -> new USLExecuteException(resultCode, result.getMessage()));
 

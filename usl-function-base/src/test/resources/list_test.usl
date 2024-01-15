@@ -1,3 +1,7 @@
+let t = 1 + 5 * 8 / 2;
+
+logger_info(t);
+
 let list = list_of(sw, 'b', 'c', 'd');
 
 for (let element in list) {

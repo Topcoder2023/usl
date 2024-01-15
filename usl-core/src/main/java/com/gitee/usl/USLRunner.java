@@ -114,8 +114,7 @@ public class USLRunner {
     }
 
     @Description("执行脚本")
-    @SuppressWarnings("unchecked")
-    public <T> Result<T> run(@Description("脚本参数") Param param) {
+    public Result run(@Description("脚本参数") Param param) {
 
         @Description("缓存实例")
         ExpressionCache cache = configuration.getCacheConfig().getCacheInitializer().getCache();
@@ -154,7 +153,7 @@ public class USLRunner {
         try {
             param.addContext(value.getInitEnv());
             Object result = value.getScript().execute(param.getContext());
-            return Result.success((T) result);
+            return Result.success(result);
         } catch (USLExecuteException uee) {
             log.warn("USL执行出现错误", uee);
             return Result.failure(uee.getResultCode(), uee.getMessage());

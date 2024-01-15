@@ -71,9 +71,6 @@ public class ExpressionParser implements Parser {
     @Description("脚本引擎实例")
     private final ScriptEngine instance;
 
-    @Description("已启用的特性")
-    private final Set<Feature> featureSet;
-
     public Token<?> getPrevToken() {
         return this.prevTokens.peek();
     }
@@ -112,7 +109,6 @@ public class ExpressionParser implements Parser {
         this.instance = instance;
         this.current = this.lexer.scan();
         this.scope = new ScopeInfo(false);
-        this.featureSet = this.instance.getOptionValue(Options.FEATURE_SET).featureSet;
         Assert.notNull(this.current, () -> new USLCompileException(ResultCode.SCRIPT_EMPTY));
 
         this.parsedTokens++;

@@ -46,7 +46,7 @@ public class ScriptRequestHandler implements WebHandler {
 
             USLRunner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
 
-            Result<?> result = runner.run(new Param()
+            Result result = runner.run(new Param()
                     .setCached(false)
                     .setScript(find.getContent()));
 

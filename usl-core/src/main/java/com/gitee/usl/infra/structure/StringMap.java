@@ -35,6 +35,9 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
 
     @Override
     public Object getObj(String key, Object defaultValue) {
+        if (key == null) {
+            return defaultValue;
+        }
         V val = this.get(key);
         if (val == null) {
             return defaultValue;
@@ -60,7 +63,7 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
 
     @Override
     public Integer getInt(String key, Integer defaultValue) {
-        return Convert.toInt(getStr(key), defaultValue);
+        return Convert.toInt(getObj(key), defaultValue);
     }
 
     @Override
@@ -70,7 +73,7 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
 
     @Override
     public Boolean getBool(String key, Boolean defaultValue) {
-        return Convert.toBool(getStr(key), defaultValue);
+        return Convert.toBool(getObj(key), defaultValue);
     }
 
     @Override
@@ -80,7 +83,7 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
 
     @Override
     public Long getLong(String key, Long defaultValue) {
-        return Convert.toLong(getStr(key), defaultValue);
+        return Convert.toLong(getObj(key), defaultValue);
     }
 
     @Override
@@ -109,12 +112,12 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
 
     @Override
     public Float getFloat(String key, Float defaultValue) {
-        return Convert.toFloat(getStr(key), defaultValue);
+        return Convert.toFloat(getObj(key), defaultValue);
     }
 
     @Override
     public Double getDouble(String key, Double defaultValue) throws NumberFormatException {
-        return Convert.toDouble(getStr(key), defaultValue);
+        return Convert.toDouble(getObj(key), defaultValue);
     }
 
     @Override
@@ -124,7 +127,7 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
 
     @Override
     public Short getShort(String key, Short defaultValue) {
-        return Convert.toShort(getStr(key), defaultValue);
+        return Convert.toShort(getObj(key), defaultValue);
     }
 
     @Override
@@ -134,7 +137,7 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
 
     @Override
     public Byte getByte(String key, Byte defaultValue) {
-        return Convert.toByte(getStr(key), defaultValue);
+        return Convert.toByte(getObj(key), defaultValue);
     }
 
     @Override
@@ -144,13 +147,8 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
 
     @Override
     public BigDecimal getBigDecimal(String key, BigDecimal defaultValue) {
-        final String valueStr = getStr(key);
-        if (StrUtil.isBlank(valueStr)) {
-            return defaultValue;
-        }
-
         try {
-            return new BigDecimal(valueStr);
+            return new BigDecimal(String.valueOf(getObj(key)));
         } catch (Exception e) {
             return defaultValue;
         }
@@ -163,13 +161,8 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
 
     @Override
     public BigInteger getBigInteger(String key, BigInteger defaultValue) {
-        final String valueStr = getStr(key);
-        if (StrUtil.isBlank(valueStr)) {
-            return defaultValue;
-        }
-
         try {
-            return new BigInteger(valueStr);
+            return new BigInteger(String.valueOf(getObj(key)));
         } catch (Exception e) {
             return defaultValue;
         }
@@ -182,7 +175,7 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
 
     @Override
     public <E extends Enum<E>> E getEnum(Class<E> clazz, String key, E defaultValue) {
-        return Convert.toEnum(clazz, getStr(key), defaultValue);
+        return Convert.toEnum(clazz, getObj(key), defaultValue);
     }
 
     @Override
@@ -192,7 +185,7 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
 
     @Override
     public Date getDate(String key, Date defaultValue) {
-        return Convert.toDate(getStr(key), defaultValue);
+        return Convert.toDate(getObj(key), defaultValue);
     }
 
     @Override
