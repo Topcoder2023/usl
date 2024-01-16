@@ -24,7 +24,6 @@ import org.smartboot.http.server.HttpResponse;
  *
  * @author hongda.li
  */
-@AutoService(WebHandler.class)
 public class ScriptRequestHandler implements WebHandler {
     private static final String PATH = "/usl/admin/api/script/run";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -46,9 +45,7 @@ public class ScriptRequestHandler implements WebHandler {
 
             USLRunner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
 
-            Result result = runner.run(new Param()
-                    .setCached(false)
-                    .setScript(find.getContent()));
+            Result result = runner.run(new Param(find.getContent()));
 
             logger.debug("脚本计算完成 : {}", result);
 

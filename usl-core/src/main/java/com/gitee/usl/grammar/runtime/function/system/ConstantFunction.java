@@ -1,42 +1,31 @@
 package com.gitee.usl.grammar.runtime.function.system;
 
 import com.gitee.usl.api.annotation.SystemFunction;
-import com.gitee.usl.grammar.runtime.function.AbstractVariadicFunction;
+import com.gitee.usl.grammar.runtime.function.BasicFunction;
 import com.gitee.usl.grammar.runtime.type.AviatorObject;
-
-import java.util.Map;
+import com.gitee.usl.grammar.utils.Env;
 
 /**
- * Constant function to return the argument itself.
- *
- * @author dennis(killme2008@gmail.com)
- * @since 4.2.5
- *
+ * @author hongda.li
  */
 @SystemFunction
-public class ConstantFunction extends AbstractVariadicFunction {
+public class ConstantFunction extends BasicFunction {
+    private final String name;
+    private final AviatorObject result;
 
+    public ConstantFunction(final String name, final AviatorObject result) {
+        this.name = name;
+        this.result = result;
+    }
 
-  private static final long serialVersionUID = -2077433391081175967L;
-  private final String name;
-  private final AviatorObject result;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-
-
-  public ConstantFunction(final String name, final AviatorObject result) {
-    super();
-    this.name = name;
-    this.result = result;
-  }
-
-  @Override
-  public String getName() {
-    return this.name;
-  }
-
-  @Override
-  public AviatorObject variadicCall(final Map<String, Object> env, final AviatorObject... args) {
-    return this.result;
-  }
+    @Override
+    public AviatorObject execute(Env env, AviatorObject[] arguments) {
+        return this.result;
+    }
 
 }

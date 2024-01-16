@@ -5,12 +5,11 @@ import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.function.web.domain.HttpServer;
 import com.gitee.usl.infra.structure.Script;
 import com.gitee.usl.grammar.runtime.function.FunctionUtils;
-import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.Function;
 import com.gitee.usl.grammar.runtime.type.AviatorObject;
 import com.gitee.usl.grammar.utils.Env;
 import com.sun.net.httpserver.Filter;
@@ -30,25 +29,25 @@ public class ServerFunction {
     @Description({"USL-Http响应体变量", "存放当前响应的所有信息"})
     public static final String RESPONSE_NAME = "Usl_Response";
 
-    @Function("server")
+    @com.gitee.usl.api.annotation.Function("server")
     public HttpServer server(USLRunner runner, int port) {
         return new HttpServer(runner, port);
     }
 
-    @Function("server_start")
+    @com.gitee.usl.api.annotation.Function("server_start")
     public HttpServer start(HttpServer server) {
         server.getServer().start();
         return server;
     }
 
-    @Function("server_stop")
+    @com.gitee.usl.api.annotation.Function("server_stop")
     public HttpServer stop(HttpServer server) {
         server.getServer().getRawServer().stop(Integer.MAX_VALUE);
         return server;
     }
 
-    @Function("server_filter")
-    public HttpServer filter(Env env, HttpServer server, AviatorFunction function) {
+    @com.gitee.usl.api.annotation.Function("server_filter")
+    public HttpServer filter(Env env, HttpServer server, Function function) {
         server.getServer().addFilter(new Filter() {
             @Override
             public void doFilter(HttpExchange httpExchange, Chain chain) throws IOException {
@@ -68,19 +67,19 @@ public class ServerFunction {
         return server;
     }
 
-    @Function("server_resource")
+    @com.gitee.usl.api.annotation.Function("server_resource")
     public HttpServer route(Env env, HttpServer server, String path) {
         server.getServer().setRoot(path);
         return server;
     }
 
-    @Function("server_route")
-    public HttpServer route(Env env, HttpServer server, String path, AviatorFunction function) {
+    @com.gitee.usl.api.annotation.Function("server_route")
+    public HttpServer route(Env env, HttpServer server, String path, Function function) {
         server.getServer().addAction(path, (request, response) -> function.call(env, wrapReturn(request), wrapReturn(response)));
         return server;
     }
 
-    @Function("server_route_script")
+    @com.gitee.usl.api.annotation.Function("server_route_script")
     public HttpServer route(Env env, HttpServer server, String path, Script script) {
         server.getServer().addAction(path, (request, response) -> {
             env.put(REQUEST_NAME, request);

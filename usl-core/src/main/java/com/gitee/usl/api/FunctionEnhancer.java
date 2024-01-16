@@ -1,6 +1,6 @@
 package com.gitee.usl.api;
 
-import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.Function;
 
 /**
  * USL 函数增强器
@@ -16,5 +16,5 @@ public interface FunctionEnhancer {
      *
      * @param function 函数实例
      */
-    void enhance(AviatorFunction function);
+    void enhance(Function function);
 }

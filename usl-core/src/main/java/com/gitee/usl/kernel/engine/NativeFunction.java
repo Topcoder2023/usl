@@ -8,7 +8,7 @@ import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.infra.proxy.MethodInterceptor;
 import com.gitee.usl.infra.structure.Plugins;
-import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.Function;
 import com.gitee.usl.grammar.runtime.type.AviatorObject;
 import com.gitee.usl.grammar.utils.Env;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
  * @author hongda.li
  */
 @Description("原生接口实现类进行代理的函数")
-public class NativeFunction extends MethodInterceptor<AviatorFunction> implements FunctionPluggable, Definable {
+public class NativeFunction extends MethodInterceptor<Function> implements FunctionPluggable, Definable {
 
     @Description("插件链")
     private final Plugins plugins = new Plugins();
@@ -28,7 +28,7 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction> implement
     private final FunctionDefinition definition;
 
     public NativeFunction(FunctionDefinition definition, Object target) {
-        super(target, AviatorFunction.class);
+        super(target, Function.class);
         this.definition = definition;
     }
 
@@ -38,7 +38,7 @@ public class NativeFunction extends MethodInterceptor<AviatorFunction> implement
     }
 
     @Override
-    protected Object intercept(Invocation<AviatorFunction> invocation, Object proxy) {
+    protected Object intercept(Invocation<Function> invocation, Object proxy) {
 
         @Description("原始参数列表")
         Object[] parameters = invocation.args();

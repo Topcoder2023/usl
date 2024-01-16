@@ -24,6 +24,6 @@ class ServerFunctionTest {
 
     @Test
     void serverTest() {
-        assertDoesNotThrow(() -> runner.run(new Param().setScript("server(10001)")));
+        assertDoesNotThrow(() -> runner.run(new Param("server(10001)")));
     }
 }

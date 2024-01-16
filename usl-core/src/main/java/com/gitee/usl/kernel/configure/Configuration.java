@@ -22,10 +22,10 @@ public final class Configuration {
     @Description("自定义扩展配置类")
     private final StringMap<Object> customConfig = new StringMap<>();
 
-    @Description("缓存配置类")
-    private final CompilerConfig cacheConfig = new CompilerConfig(this);
-
     @Description("脚本引擎配置类")
     private final EngineConfig engineConfig = new EngineConfig(this);
+
+    @Description("缓存配置类")
+    private final CompilerConfig compilerConfig = new CompilerConfig(this);
 
 }

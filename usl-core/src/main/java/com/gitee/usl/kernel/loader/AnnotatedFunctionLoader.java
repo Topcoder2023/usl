@@ -6,13 +6,12 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
-import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.Function;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
@@ -38,9 +37,9 @@ public class AnnotatedFunctionLoader extends AbstractFunctionLoader {
             return Collections.emptyList();
         }
 
-        return Stream.of(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, Function.class)))
+        return Stream.of(ReflectUtil.getMethods(clz, method -> AnnotationUtil.hasAnnotation(method, com.gitee.usl.api.annotation.Function.class)))
                 .map(method -> {
-                    String[] accept = AnnotationUtil.getAnnotationValue(method, Function.class);
+                    String[] accept = AnnotationUtil.getAnnotationValue(method, com.gitee.usl.api.annotation.Function.class);
 
                     MethodMeta<?> methodMeta = new MethodMeta<>(ifPossible, clz, method);
 
@@ -57,7 +56,7 @@ public class AnnotatedFunctionLoader extends AbstractFunctionLoader {
     }
 
     @Override
-    protected AviatorFunction definition2Func(FunctionDefinition definition) {
+    protected Function definition2Func(FunctionDefinition definition) {
         return new AnnotatedFunction(definition);
     }
 

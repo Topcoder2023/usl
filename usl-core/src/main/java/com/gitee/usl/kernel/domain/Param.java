@@ -32,6 +32,10 @@ public class Param {
         this(true, script);
     }
 
+    public Param self() {
+        return new Param(this.cached, this.script);
+    }
+
     public Param(boolean cached, String script) {
         this.script = script;
         this.cached = cached;

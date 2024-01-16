@@ -2,6 +2,8 @@ package com.gitee.usl.grammar.utils;
 
 import com.gitee.usl.grammar.lexer.token.Token;
 import com.gitee.usl.grammar.lexer.token.Variable;
+import com.gitee.usl.grammar.runtime.function.internal.*;
+import com.gitee.usl.grammar.runtime.function.system.WithMetaFunction;
 
 import java.util.regex.Pattern;
 
@@ -11,12 +13,12 @@ import java.util.regex.Pattern;
 public class Constants {
     public static final String REDUCER_EMPTY_VAR = "__reducer_empty";
     public static final Variable ReducerEmptyVal = new Variable(REDUCER_EMPTY_VAR, 0, -1);
-    public static final Variable IfReturnFn = new Variable("__if_callcc", 0, -1);
-    public static final Token<?> ReducerBreakFn = new Variable("__reducer_break", 0, -1);
-    public static final Token<?> ReducerContFn = new Variable("__reducer_cont", 0, -1);
-    public static final Token<?> ReducerReturnFn = new Variable("__reducer_return", 0, -1);
-    public static final Variable ReducerFn = new Variable("__reducer_callcc", 0, -1);
-    public static final Variable WithMetaFn = new Variable("with_meta", 0, -1);
+    public static final Variable IfReturnFn = new Variable(IfCallccFunction.NAME, 0, -1);
+    public static final Token<?> ReducerBreakFn = new Variable(ReducerBreakFunction.NAME, 0, -1);
+    public static final Token<?> ReducerContFn = new Variable(ReducerContFunction.NAME, 0, -1);
+    public static final Token<?> ReducerReturnFn = new Variable(ReducerReturnFunction.NAME, 0, -1);
+    public static final Variable ReducerFn = new Variable(ReducerFunction.NAME, 0, -1);
+    public static final Variable WithMetaFn = new Variable(WithMetaFunction.NAME, 0, -1);
     public static final String PARAMS_META = "params";
     public static final String SCOPE_META = "newLexicalScope";
     public static final String INHERIT_ENV_META = "inheritEnv";

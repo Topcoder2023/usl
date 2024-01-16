@@ -1,7 +1,6 @@
 package com.gitee.usl.grammar.runtime.function;
 
 import com.gitee.usl.api.annotation.SystemFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorRuntimeJavaType;
 import com.gitee.usl.grammar.utils.Env;
 import com.googlecode.aviator.exception.FunctionNotFoundException;
 import com.gitee.usl.grammar.runtime.type.AviatorObject;
@@ -11,16 +10,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Dispatch function by argument arity.
- *
- * @author dennis(killme2008 @ gmail.com)
+ * @author hongda.li
  */
 @SystemFunction
-public class DispatchFunction extends AbstractVariadicFunction implements BasicCall {
-
-    private static final Object[] EMPTY_VAR_ARGS = new Object[0];
-
-    private static final long serialVersionUID = 5993768652338524385L;
+public class DispatchFunction extends BasicFunction {
 
     private final IdentityHashMap<Integer, LambdaFunction> functions = new IdentityHashMap<>();
 
@@ -34,22 +27,18 @@ public class DispatchFunction extends AbstractVariadicFunction implements BasicC
     }
 
     @Override
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
     public void install(final LambdaFunction fn) {
-        if (fn.isVariadic()) {
-            this.variadicFunctions.put(fn.getArity(), fn);
-        } else {
-            this.functions.put(fn.getArity(), fn);
-        }
+        this.functions.put(fn.getArity(), fn);
         fn.setInstalled(true);
     }
 
     @Override
-    public AviatorObject variadicCall(final Map<String, Object> env, AviatorObject... args) {
-        final int arity = args.length;
+    public AviatorObject execute(final Env env, AviatorObject[] arguments) {
+        final int arity = arguments.length;
         LambdaFunction fn = this.functions.get(arity);
 
         if (fn == null) {
@@ -70,35 +59,7 @@ public class DispatchFunction extends AbstractVariadicFunction implements BasicC
         }
         assert (arity + 1 >= arity);
 
-        if (fn.isVariadic()) {
-            args = processVariadicArgs(env, arity, fn, args);
-        }
-
-        return basicCall(fn, args, arity, (Env) env);
-    }
-
-    static AviatorObject[] processVariadicArgs(final Map<String, Object> env, final int arity,
-                                               final LambdaFunction fn, AviatorObject[] args) {
-        if (arity + 1 == fn.getArity()) {
-            AviatorObject[] newArgs = new AviatorObject[arity + 1];
-            System.arraycopy(args, 0, newArgs, 0, arity);
-            newArgs[arity] = AviatorRuntimeJavaType.valueOf(EMPTY_VAR_ARGS);
-
-            args = newArgs;
-        } else {
-            AviatorObject[] newArgs = new AviatorObject[fn.getArity()];
-            System.arraycopy(args, 0, newArgs, 0, fn.getArity() - 1);
-            Object[] varArgs = new Object[arity - fn.getArity() + 1];
-
-            for (int i = 0; i < varArgs.length; i++) {
-                varArgs[i] = args[fn.getArity() - 1 + i].getValue(env);
-            }
-
-            newArgs[fn.getArity() - 1] = AviatorRuntimeJavaType.valueOf(varArgs);
-
-            args = newArgs;
-        }
-        return args;
+        return fn.execute(env, arguments);
     }
 
 }

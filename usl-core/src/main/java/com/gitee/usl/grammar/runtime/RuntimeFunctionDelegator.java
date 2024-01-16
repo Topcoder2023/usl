@@ -5,13 +5,14 @@ import java.util.Map;
 import cn.hutool.core.text.StrPool;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.SystemFunction;
+import com.gitee.usl.grammar.runtime.function.BasicFunction;
 import com.gitee.usl.grammar.runtime.function.system.ConstantFunction;
 import com.gitee.usl.grammar.runtime.type.AviatorJavaType;
 import com.gitee.usl.api.FunctionMissing;
+import com.gitee.usl.grammar.utils.Env;
 import com.googlecode.aviator.exception.FunctionNotFoundException;
 import com.gitee.usl.grammar.ScriptKeyword;
-import com.gitee.usl.grammar.runtime.function.AbstractFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.Function;
 import com.gitee.usl.grammar.runtime.type.AviatorObject;
 import com.gitee.usl.grammar.utils.Constants;
 import lombok.Getter;
@@ -21,7 +22,7 @@ import lombok.Getter;
  */
 @Description("委托函数")
 @SystemFunction
-public final class RuntimeFunctionDelegator extends AbstractFunction {
+public final class RuntimeFunctionDelegator extends BasicFunction {
 
     @Description("函数名称")
     private final String name;
@@ -50,11 +51,11 @@ public final class RuntimeFunctionDelegator extends AbstractFunction {
         this.containsDot = this.name.contains(StrPool.DOT);
     }
 
-    private AviatorFunction getFunc(final Map<String, Object> env, final AviatorObject... args) {
+    private Function getFunc(final Map<String, Object> env, final AviatorObject... args) {
         if (this.containsDot && this.subNames == null) {
             this.subNames = Constants.SPLIT_PAT.split(this.name);
         }
-        AviatorFunction func = this.tryGetFuncFromEnv(env);
+        Function func = this.tryGetFuncFromEnv(env);
         if (func != null) {
             return func;
         }
@@ -64,358 +65,27 @@ public final class RuntimeFunctionDelegator extends AbstractFunction {
         throw new FunctionNotFoundException("Function not found: " + this.name);
     }
 
-    private AviatorFunction tryGetFuncFromEnv(final Map<String, Object> env) {
+    private Function tryGetFuncFromEnv(final Map<String, Object> env) {
         Object val = AviatorJavaType.getValueFromEnv(this.name, this.containsDot, this.subNames, env, false, true);
-        if (val instanceof AviatorFunction) {
-            return (AviatorFunction) val;
+        if (val instanceof Function) {
+            return (Function) val;
         }
         return null;
     }
 
     @Override
-    public String getName() {
+    public String name() {
         return this.name;
+    }
+
+    @Override
+    public AviatorObject execute(Env env, AviatorObject... arguments) {
+        return getFunc(env, arguments).execute(env, arguments);
     }
 
     @Override
     public Object getValue(final Map<String, Object> env) {
         return this.tryGetFuncFromEnv(env);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env) {
-        return getFunc(env).call(env);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1) {
-        return getFunc(env, arg1)
-                .call(env, arg1);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2) {
-        return getFunc(env, arg1, arg2)
-                .call(env, arg1, arg2);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3) {
-        return getFunc(env, arg1, arg2, arg3)
-                .call(env, arg1, arg2, arg3);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4) {
-        return getFunc(env, arg1, arg2, arg3, arg4)
-                .call(env, arg1, arg2, arg3, arg4);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5)
-                .call(env, arg1, arg2, arg3, arg4, arg5);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9,
-                              final AviatorObject arg10) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9,
-                              final AviatorObject arg10,
-                              final AviatorObject arg11) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9,
-                              final AviatorObject arg10,
-                              final AviatorObject arg11,
-                              final AviatorObject arg12) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9,
-                              final AviatorObject arg10,
-                              final AviatorObject arg11,
-                              final AviatorObject arg12,
-                              final AviatorObject arg13) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12,
-                arg13).call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12,
-                arg13);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9,
-                              final AviatorObject arg10,
-                              final AviatorObject arg11,
-                              final AviatorObject arg12,
-                              final AviatorObject arg13,
-                              final AviatorObject arg14) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9,
-                              final AviatorObject arg10,
-                              final AviatorObject arg11,
-                              final AviatorObject arg12,
-                              final AviatorObject arg13,
-                              final AviatorObject arg14,
-                              final AviatorObject arg15) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9,
-                              final AviatorObject arg10,
-                              final AviatorObject arg11,
-                              final AviatorObject arg12,
-                              final AviatorObject arg13,
-                              final AviatorObject arg14,
-                              final AviatorObject arg15,
-                              final AviatorObject arg16) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9,
-                              final AviatorObject arg10,
-                              final AviatorObject arg11,
-                              final AviatorObject arg12,
-                              final AviatorObject arg13,
-                              final AviatorObject arg14,
-                              final AviatorObject arg15,
-                              final AviatorObject arg16,
-                              final AviatorObject arg17) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9,
-                              final AviatorObject arg10,
-                              final AviatorObject arg11,
-                              final AviatorObject arg12,
-                              final AviatorObject arg13,
-                              final AviatorObject arg14,
-                              final AviatorObject arg15,
-                              final AviatorObject arg16,
-                              final AviatorObject arg17,
-                              final AviatorObject arg18) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9,
-                              final AviatorObject arg10,
-                              final AviatorObject arg11,
-                              final AviatorObject arg12,
-                              final AviatorObject arg13,
-                              final AviatorObject arg14,
-                              final AviatorObject arg15,
-                              final AviatorObject arg16,
-                              final AviatorObject arg17,
-                              final AviatorObject arg18,
-                              final AviatorObject arg19) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19);
-    }
-
-    @Override
-    public AviatorObject call(final Map<String, Object> env,
-                              final AviatorObject arg1,
-                              final AviatorObject arg2,
-                              final AviatorObject arg3,
-                              final AviatorObject arg4,
-                              final AviatorObject arg5,
-                              final AviatorObject arg6,
-                              final AviatorObject arg7,
-                              final AviatorObject arg8,
-                              final AviatorObject arg9,
-                              final AviatorObject arg10,
-                              final AviatorObject arg11,
-                              final AviatorObject arg12,
-                              final AviatorObject arg13,
-                              final AviatorObject arg14,
-                              final AviatorObject arg15,
-                              final AviatorObject arg16,
-                              final AviatorObject arg17,
-                              final AviatorObject arg18,
-                              final AviatorObject arg19,
-                              final AviatorObject arg20) {
-        return getFunc(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20)
-                .call(env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20);
     }
 
 }

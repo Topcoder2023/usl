@@ -49,7 +49,7 @@ public class BasicScriptCompiler implements Initializer, ScriptCompiler {
     @Override
     public void doInit(Configuration configuration) {
         EngineConfig engineConfig = configuration.getEngineConfig();
-        CompilerConfig storageConfig = configuration.getCacheConfig();
+        CompilerConfig storageConfig = configuration.getCompilerConfig();
 
         this.definable = engineConfig.getVarInitializer();
         this.functionHolder = engineConfig.getFunctionHolder();
@@ -62,9 +62,11 @@ public class BasicScriptCompiler implements Initializer, ScriptCompiler {
     @Override
     public void compile(Param param) {
         String key = DigestUtil.sha256Hex(param.getScript());
-        Param value = cache.get(key, (Func0<Param>) () -> param.setCompiled(this.compile(param.getScript())));
+        log.debug("新增缓存 - [{}]", key);
+        Param value = cache.get(key, (Func0<Param>) () -> param.self().setCompiled(this.compile(param.getScript())));
         if (!param.isCached()) {
             cache.remove(key);
+            log.debug("剔除缓存 - [{}]", key);
         }
 
         BS compiled = (BS) value.getCompiled();
@@ -89,6 +91,7 @@ public class BasicScriptCompiler implements Initializer, ScriptCompiler {
         if (CharSequenceUtil.isBlank(script)) {
             return ES.empty().setException(new USLCompileException(ResultCode.SCRIPT_EMPTY));
         } else {
+            log.debug("开始编译脚本\n{}", script);
             Generator generator = new IRGenerator(scriptEngine);
             GrammarLexer grammarLexer = new GrammarLexer(scriptEngine, script);
             return (BS) new ExpressionParser(scriptEngine, grammarLexer, generator).parse();

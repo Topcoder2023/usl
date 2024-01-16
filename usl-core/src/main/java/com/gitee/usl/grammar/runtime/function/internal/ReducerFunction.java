@@ -4,144 +4,133 @@ import java.util.Map;
 
 import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
+import com.gitee.usl.grammar.runtime.function.BasicFunction;
 import com.gitee.usl.grammar.runtime.type.AviatorLong;
 import com.gitee.usl.grammar.runtime.type.AviatorRuntimeJavaType;
 import com.gitee.usl.grammar.runtime.type.Range;
 import com.gitee.usl.grammar.Options;
+import com.gitee.usl.grammar.utils.Env;
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
-import com.gitee.usl.grammar.runtime.function.AbstractFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.Function;
 import com.gitee.usl.grammar.runtime.type.AviatorNil;
 import com.gitee.usl.grammar.runtime.type.AviatorObject;
 import com.gitee.usl.grammar.utils.Constants;
 
 /**
- * Internal reducer-callcc function for 'for-loop' structure.
- *
- * @since 5.0.0
- * @author dennis(killme2008@gmail.com)
- *
+ * @author hongda.li
  */
 @SystemFunction
-public class ReducerFunction extends AbstractFunction {
+public class ReducerFunction extends BasicFunction {
 
-  private static final long serialVersionUID = -6117602709327741955L;
+    public static final String NAME = "__reducer_callcc";
 
-  private ReducerFunction() {}
-
-  public static final ReducerFunction INSTANCE = new ReducerFunction();
-
-  @Override
-  public String getName() {
-    return "__reducer_callcc";
-  }
-
-  @Override
-  public final AviatorObject call(final Map<String, Object> env, final AviatorObject arg1,
-      final AviatorObject arg2, final AviatorObject arg3) {
-
-    Object coll = arg1.getValue(env);
-    AviatorFunction iteratorFn = (AviatorFunction) arg2;
-
-    try {
-      return reduce(env, arg2, arg3, coll, iteratorFn);
-    } finally {
-      RuntimeUtils.resetLambdaContext(iteratorFn);
+    @Override
+    public String name() {
+        return NAME;
     }
-  }
 
-  private AviatorObject reduce(final Map<String, Object> env, final AviatorObject arg2,
-      final AviatorObject arg3, Object coll, AviatorFunction iteratorFn) {
-    int maxLoopCount = RuntimeUtils.getInstance(env).getOptionValue(Options.MAX_LOOP_COUNT).number;
-    AviatorObject result = AviatorNil.NIL;
-    long c = 0;
+    @Override
+    public AviatorObject execute(Env env, AviatorObject[] arguments) {
+        Object coll = arguments[0].getValue(env);
+        Function iteratorFn = (Function) arguments[1];
 
-    if (coll != Range.LOOP) {
-      long arities = (long) arg2.meta(Constants.ARITIES_META);
-      long index = 0;
-      boolean unboxEntry =
-          arities == 2 && coll != null && Map.class.isAssignableFrom(coll.getClass());
-      // for..in loop
-      for (Object obj : RuntimeUtils.seq(coll, env)) {
-        if (arities == 1) {
-          result = iteratorFn.call(env, AviatorRuntimeJavaType.valueOf(obj));
+        try {
+            return reduce(env, arguments[1], arguments[2], coll, iteratorFn);
+        } finally {
+            RuntimeUtils.resetLambdaContext(iteratorFn);
+        }
+    }
+
+    private AviatorObject reduce(final Env env, final AviatorObject arg2,
+                                 final AviatorObject arg3, Object coll, Function iteratorFn) {
+        int maxLoopCount = RuntimeUtils.getInstance(env).getOptionValue(Options.MAX_LOOP_COUNT).number;
+        AviatorObject result = AviatorNil.NIL;
+        long c = 0;
+
+        if (coll != Range.LOOP) {
+            long arities = (long) arg2.meta(Constants.ARITIES_META);
+            long index = 0;
+            boolean unboxEntry =
+                    arities == 2 && coll != null && Map.class.isAssignableFrom(coll.getClass());
+
+            for (Object obj : RuntimeUtils.seq(coll, env)) {
+                if (arities == 1) {
+                    result = iteratorFn.execute(env, new AviatorObject[]{AviatorRuntimeJavaType.valueOf(obj)});
+                } else {
+                    if (unboxEntry) {
+                        Map.Entry<?, ?> entry = (Map.Entry<?, ?>) obj;
+                        result = iteratorFn.execute(env, new AviatorObject[]{AviatorRuntimeJavaType.valueOf(entry.getKey()),
+                                AviatorRuntimeJavaType.valueOf(entry.getValue())});
+                    } else {
+                        result = iteratorFn.execute(env, new AviatorObject[]{AviatorLong.valueOf(index++),
+                                AviatorRuntimeJavaType.valueOf(obj)});
+                    }
+                }
+                if (!(result instanceof ReducerResult midResult)) {
+                    continue;
+                }
+
+                boolean breakOut = false;
+                result = midResult.obj;
+
+                if (midResult.state == ReducerState.Empty) {
+                    continue;
+                }
+                switch (midResult.state) {
+                    case Break:
+                        breakOut = true;
+                        break;
+                    case Return:
+                        return midResult;
+                    default:
+                        break;
+                }
+                if (breakOut) {
+                    break;
+                }
+            }
         } else {
-          if (unboxEntry) {
-            Map.Entry<?, ?> entry = (Map.Entry<?, ?>) obj;
-            result = iteratorFn.call(env, AviatorRuntimeJavaType.valueOf(entry.getKey()),
-                AviatorRuntimeJavaType.valueOf(entry.getValue()));
-          } else {
-            result = iteratorFn.call(env, AviatorLong.valueOf(index++),
-                AviatorRuntimeJavaType.valueOf(obj));
-          }
-        }
-        if (!(result instanceof ReducerResult)) {
-          continue;
+            // while statement
+            while (true) {
+                if (maxLoopCount > 0 && ++c > maxLoopCount) {
+                    throw new ExpressionRuntimeException("Overflow max loop count: " + maxLoopCount);
+                }
+                result = iteratorFn.execute(env, new AviatorObject[]{});
+                if (!(result instanceof ReducerResult midResult)) {
+                    continue;
+                }
+                boolean breakOut = false;
+                result = midResult.obj;
+
+                if (midResult.state == ReducerState.Empty) {
+                    continue;
+                }
+                switch (midResult.state) {
+                    case Break:
+                        breakOut = true;
+                        break;
+                    case Return:
+                        return midResult;
+                    default:
+                        break;
+                }
+                if (breakOut) {
+                    break;
+                }
+            }
         }
 
-        boolean breakOut = false;
-        ReducerResult midResult = (ReducerResult) result;
-        result = midResult.obj;
+        Object contObj = arg3.getValue(env);
+        if ((contObj instanceof ReducerResult) && ((ReducerResult) contObj).isEmptyState()) {
+            return result;
+        }
 
-        if (midResult.state == ReducerState.Empty) {
-          continue;
+        AviatorObject contResult = ((Function) contObj).execute(env, new AviatorObject[]{});
+        if ((contResult instanceof ReducerResult) && ((ReducerResult) contResult).isEmptyState()) {
+            // empty continuation, return current result.
+            return result;
+        } else {
+            return contResult;
         }
-        switch (midResult.state) {
-          case Break:
-            breakOut = true;
-            break;
-          case Return:
-            return midResult;
-          default:
-            break;
-        }
-        if (breakOut) {
-          break;
-        }
-      }
-    } else {
-      // while statement
-      while (true) {
-        if (maxLoopCount > 0 && ++c > maxLoopCount) {
-          throw new ExpressionRuntimeException("Overflow max loop count: " + maxLoopCount);
-        }
-        result = iteratorFn.call(env);
-        if (!(result instanceof ReducerResult)) {
-          continue;
-        }
-        boolean breakOut = false;
-        ReducerResult midResult = (ReducerResult) result;
-        result = midResult.obj;
-
-        if (midResult.state == ReducerState.Empty) {
-          continue;
-        }
-        switch (midResult.state) {
-          case Break:
-            breakOut = true;
-            break;
-          case Return:
-            return midResult;
-          default:
-            break;
-        }
-        if (breakOut) {
-          break;
-        }
-      }
     }
-
-    Object contObj = arg3.getValue(env);
-    if ((contObj instanceof ReducerResult) && ((ReducerResult) contObj).isEmptyState()) {
-      return result;
-    }
-
-    AviatorObject contResult = ((AviatorFunction) contObj).call(env);
-    if ((contResult instanceof ReducerResult) && ((ReducerResult) contResult).isEmptyState()) {
-      // empty continuation, return current result.
-      return result;
-    } else {
-      return contResult;
-    }
-  }
 }

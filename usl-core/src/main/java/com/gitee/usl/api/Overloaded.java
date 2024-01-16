@@ -1,7 +1,7 @@
 package com.gitee.usl.api;
 
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.Function;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * @author hongda.li
  */
 @Description("可重载函数接口")
-public interface Overloaded<T extends AviatorFunction> extends Definable {
+public interface Overloaded<T extends Function> extends Definable {
 
     @Description("获取所有重载实现")
     List<T> allOverloadImpl();

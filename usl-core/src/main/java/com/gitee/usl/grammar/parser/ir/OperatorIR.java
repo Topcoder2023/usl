@@ -5,7 +5,7 @@ import com.gitee.usl.grammar.parser.IR;
 import com.gitee.usl.grammar.parser.InterpretContext;
 import com.gitee.usl.grammar.lexer.token.OperatorType;
 import com.gitee.usl.grammar.runtime.op.OperationRuntime;
-import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.Function;
 import com.gitee.usl.grammar.runtime.type.AviatorObject;
 import lombok.Getter;
 
@@ -18,7 +18,7 @@ public class OperatorIR implements IR {
     @Getter
     private final OperatorType op;
 
-    private AviatorFunction fn;
+    private Function fn;
 
 
     public static final OperatorIR ADD = OperatorIR.valueOf(OperatorType.ADD);
@@ -80,7 +80,7 @@ public class OperatorIR implements IR {
         return new OperatorIR(op);
     }
 
-    public OperatorIR(final OperatorType op, final AviatorFunction func) {
+    public OperatorIR(final OperatorType op, final Function func) {
         this.fn = func;
         this.op = op;
     }

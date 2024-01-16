@@ -68,7 +68,9 @@ public abstract class AviatorObject {
         }
     }
 
-    public abstract int innerCompare(AviatorObject other, Map<String, Object> env);
+    public int innerCompare(AviatorObject other, Map<String, Object> env) {
+        throw new UnsupportedOperationException();
+    }
 
 
     public abstract AviatorType getAviatorType();

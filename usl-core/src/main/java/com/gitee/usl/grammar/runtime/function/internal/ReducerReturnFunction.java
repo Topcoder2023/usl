@@ -1,36 +1,27 @@
 package com.gitee.usl.grammar.runtime.function.internal;
 
-import java.util.Map;
-
 import com.gitee.usl.api.annotation.SystemFunction;
-import com.gitee.usl.grammar.runtime.function.AbstractFunction;
+import com.gitee.usl.grammar.runtime.function.BasicFunction;
 import com.gitee.usl.grammar.runtime.type.AviatorObject;
 import com.gitee.usl.grammar.runtime.type.AviatorRuntimeJavaType;
+import com.gitee.usl.grammar.utils.Env;
 
 /**
- * Internal reducer-return function for 'for-loop' structure.
- *
- * @since 5.0.0
- * @author dennis(killme2008@gmail.com)
- *
+ * @author hongda.li
  */
 @SystemFunction
-public class ReducerReturnFunction extends AbstractFunction {
+public class ReducerReturnFunction extends BasicFunction {
 
-  private ReducerReturnFunction() {}
+    public static final String NAME = "__reducer_return";
 
-  public static final ReducerReturnFunction INSTANCE = new ReducerReturnFunction();
+    @Override
+    public String name() {
+        return NAME;
+    }
 
+    @Override
+    public AviatorObject execute(Env env, AviatorObject[] arguments) {
+        return ReducerResult.withReturn(AviatorRuntimeJavaType.valueOf(arguments[0].getValue(env)));
+    }
 
-  private static final long serialVersionUID = -7242229684085361882L;
-
-  @Override
-  public String getName() {
-    return "__reducer_return";
-  }
-
-  @Override
-  public AviatorObject call(final Map<String, Object> env, final AviatorObject arg1) {
-    return ReducerResult.withReturn(AviatorRuntimeJavaType.valueOf(arg1.getValue(env)));
-  }
 }

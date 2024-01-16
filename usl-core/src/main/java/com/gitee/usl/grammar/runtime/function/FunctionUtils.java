@@ -23,7 +23,7 @@ import com.gitee.usl.infra.constant.AsmConstants;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.runtime.FunctionArgument;
 import com.gitee.usl.grammar.runtime.type.AviatorBoolean;
-import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.Function;
 import com.gitee.usl.grammar.runtime.type.AviatorJavaType;
 import com.gitee.usl.grammar.runtime.type.AviatorNil;
 import com.gitee.usl.grammar.runtime.type.AviatorNumber;
@@ -112,21 +112,21 @@ public class FunctionUtils {
      * @param arity
      * @return
      */
-    public static AviatorFunction getFunction(final AviatorObject arg, final Map<String, Object> env,
-                                              final int arity) {
+    public static Function getFunction(final AviatorObject arg, final Map<String, Object> env,
+                                       final int arity) {
         if (arg.getAviatorType() != AviatorType.JavaType
                 && arg.getAviatorType() != AviatorType.Lambda) {
             throw new ClassCastException(arg.desc(env) + " is not a function");
         }
         // Runtime type.
         Object val = null;
-        if (arg instanceof AviatorFunction) {
-            return (AviatorFunction) arg;
+        if (arg instanceof Function) {
+            return (Function) arg;
         }
 
         if (arg instanceof AviatorRuntimeJavaType
-                && (val = arg.getValue(env)) instanceof AviatorFunction) {
-            return (AviatorFunction) val;
+                && (val = arg.getValue(env)) instanceof Function) {
+            return (Function) val;
         }
 
         // resolve by name.
@@ -139,9 +139,9 @@ public class FunctionUtils {
                 name = "-neg";
             }
         }
-        AviatorFunction rt = null;
+        Function rt = null;
         if (env != null) {
-            rt = (AviatorFunction) env.get(name);
+            rt = (Function) env.get(name);
         }
         if (rt == null) {
             ScriptEngine instance = RuntimeUtils.getInstance(env);

@@ -13,7 +13,7 @@ import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
-import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.Function;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -99,7 +99,7 @@ public class USLRunner {
     @Description("执行脚本")
     public Result run(@Description("脚本参数") Param param) {
 
-        configuration.getCacheConfig().getScriptCompiler().compile(param);
+        configuration.getCompilerConfig().getScriptCompiler().compile(param);
 
         if (param.getCompiled() instanceof ES es) {
             throw es.getException();
@@ -124,7 +124,7 @@ public class USLRunner {
     }
 
     @Description("返回所有可用的函数实例")
-    public List<AviatorFunction> functions() {
+    public List<Function> functions() {
         return Optional.ofNullable(this.configuration)
                 .map(Configuration::getEngineConfig)
                 .map(EngineConfig::getFunctionHolder)

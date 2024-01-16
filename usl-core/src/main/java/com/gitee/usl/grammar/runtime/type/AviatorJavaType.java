@@ -40,7 +40,6 @@ import java.util.regex.Pattern;
  * Aviator variable
  *
  * @author dennis
- *
  */
 public class AviatorJavaType extends AviatorObject {
     protected String name;
@@ -393,12 +392,13 @@ public class AviatorJavaType extends AviatorObject {
                 // and the new branch.
                 newFn.install(((LambdaFunction) v));
                 v = newFn;
-            } else if (existsFn == null && ((LambdaFunction) v).isVariadic()) {
-                // cast variadic function to overload function
-                DispatchFunction newFn = new DispatchFunction(this.name);
-                newFn.install(((LambdaFunction) v));
-                v = newFn;
             }
+//            else if (existsFn == null && ((LambdaFunction) v).isVariadic()) {
+//                // cast variadic function to overload function
+//                DispatchFunction newFn = new DispatchFunction(this.name);
+//                newFn.install(((LambdaFunction) v));
+//                v = newFn;
+//            }
         }
 
         ((Env) env).override(this.name, v);

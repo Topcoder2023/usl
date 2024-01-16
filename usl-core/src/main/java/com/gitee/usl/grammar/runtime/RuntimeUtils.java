@@ -5,7 +5,7 @@ import com.gitee.usl.grammar.runtime.function.LambdaFunction;
 import com.gitee.usl.grammar.runtime.type.seq.*;
 import com.gitee.usl.grammar.Options;
 import com.gitee.usl.grammar.runtime.function.internal.UnpackingArgsFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type.Function;
 import com.gitee.usl.grammar.runtime.type.AviatorNil;
 import com.gitee.usl.grammar.runtime.type.AviatorObject;
 import com.gitee.usl.grammar.runtime.type.Sequence;
@@ -46,14 +46,14 @@ public final class RuntimeUtils {
    * @param fn
    * @return
    */
-  public static final AviatorFunction unpackArgsFunction(final AviatorFunction fn) {
+  public static final Function unpackArgsFunction(final Function fn) {
     if (fn instanceof UnpackingArgsFunction) {
       return fn;
     }
     return new UnpackingArgsFunction(fn);
   }
 
-  public static void resetLambdaContext(AviatorFunction fn) {
+  public static void resetLambdaContext(Function fn) {
     if (fn != null && fn instanceof LambdaFunction) {
       ((LambdaFunction) fn).resetContext();
     }
@@ -122,19 +122,19 @@ public final class RuntimeUtils {
     return getInstance(env).getOptionValue(Options.TRACE_EVAL).bool;
   }
 
-  public static AviatorFunction getFunction(final Object object, final Map<String, Object> env) {
-    if (object instanceof AviatorFunction) {
-      return (AviatorFunction) object;
+  public static Function getFunction(final Object object, final Map<String, Object> env) {
+    if (object instanceof Function) {
+      return (Function) object;
     } else if (object instanceof AviatorObject) {
       Object value = ((AviatorObject) object).getValue(env);
-      if (value instanceof AviatorFunction) {
-        return (AviatorFunction) value;
+      if (value instanceof Function) {
+        return (Function) value;
       }
     }
     throw new ClassCastException("Could not cast object " + object + " into a aviator function.");
   }
 
-  public static AviatorFunction getFunction(final Map<String, Object> env, final String name) {
+  public static Function getFunction(final Map<String, Object> env, final String name) {
     return getInstance(env).getFunction(name);
   }
 
