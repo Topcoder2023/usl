@@ -24,66 +24,66 @@ import java.util.Map;
  * @author dennis
  *
  */
-public class AviatorDouble extends AviatorNumber {
+public class _Double extends _Number {
 
 
 
   private static final long serialVersionUID = 829573884607069307L;
 
 
-  public AviatorDouble(double d) {
+  public _Double(double d) {
     super(d);
   }
 
 
-  AviatorDouble(Number number) {
+  _Double(Number number) {
     super(number);
   }
 
 
-  public static AviatorDouble valueOf(double value) {
-    return new AviatorDouble(value);
+  public static _Double valueOf(double value) {
+    return new _Double(value);
   }
 
 
-  public static AviatorDouble valueOf(Double value) {
+  public static _Double valueOf(Double value) {
     return valueOf(value.doubleValue());
   }
 
 
   @Override
-  public int innerCompare(Map<String, Object> env, AviatorNumber other) {
+  public int innerCompare(Map<String, Object> env, _Number other) {
     return Double.compare(this.doubleValue, other.doubleValue());
   }
 
 
   @Override
-  public AviatorObject neg(Map<String, Object> env) {
-    return new AviatorDouble(-this.doubleValue);
+  public _Object neg(Map<String, Object> env) {
+    return new _Double(-this.doubleValue);
   }
 
 
   @Override
-  public AviatorObject innerDiv(Map<String, Object> env, AviatorNumber other) {
-    return new AviatorDouble(this.doubleValue / other.doubleValue());
+  public _Object innerDiv(Map<String, Object> env, _Number other) {
+    return new _Double(this.doubleValue / other.doubleValue());
   }
 
 
   @Override
-  public AviatorNumber innerAdd(Map<String, Object> env, AviatorNumber other) {
-    return new AviatorDouble(this.doubleValue + other.doubleValue());
+  public _Number innerAdd(Map<String, Object> env, _Number other) {
+    return new _Double(this.doubleValue + other.doubleValue());
   }
 
 
   @Override
-  public AviatorObject innerMod(Map<String, Object> env, AviatorNumber other) {
-    return new AviatorDouble(this.doubleValue % other.doubleValue());
+  public _Object innerMod(Map<String, Object> env, _Number other) {
+    return new _Double(this.doubleValue % other.doubleValue());
   }
 
 
   @Override
-  public AviatorObject innerMult(Map<String, Object> env, AviatorNumber other) {
-    return new AviatorDouble(this.doubleValue * other.doubleValue());
+  public _Object innerMult(Map<String, Object> env, _Number other) {
+    return new _Double(this.doubleValue * other.doubleValue());
   }
 
   @Override
@@ -104,13 +104,13 @@ public class AviatorDouble extends AviatorNumber {
 
 
   @Override
-  public AviatorType getAviatorType() {
-    return AviatorType.Double;
+  public _Type getAviatorType() {
+    return _Type.Double;
   }
 
 
   @Override
-  public AviatorObject innerSub(Map<String, Object> env, AviatorNumber other) {
-    return new AviatorDouble(this.doubleValue - other.doubleValue());
+  public _Object innerSub(Map<String, Object> env, _Number other) {
+    return new _Double(this.doubleValue - other.doubleValue());
   }
 }

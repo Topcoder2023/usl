@@ -5,7 +5,7 @@ import com.gitee.usl.grammar.runtime.function.BasicFunction;
 import com.gitee.usl.grammar.utils.Env;
 import com.gitee.usl.grammar.lexer.token.OperatorType;
 import com.gitee.usl.grammar.runtime.op.OperationRuntime;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Object;
 import lombok.Getter;
 
 /**
@@ -27,9 +27,9 @@ public class BinaryFunction extends BasicFunction {
     }
 
     @Override
-    public AviatorObject execute(Env env, AviatorObject[] arguments) {
-        AviatorObject left = arguments[0];
-        AviatorObject right = arguments.length == 1 ? null : arguments[1];
+    public _Object execute(Env env, _Object[] arguments) {
+        _Object left = arguments[0];
+        _Object right = arguments.length == 1 ? null : arguments[1];
         return OperationRuntime.eval(left, right, env, this.opType);
     }
 

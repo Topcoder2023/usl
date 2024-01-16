@@ -3,14 +3,14 @@ package com.gitee.usl.function.web;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.function.web.domain.HttpServer;
 import com.gitee.usl.infra.structure.Script;
 import com.gitee.usl.grammar.runtime.function.FunctionUtils;
-import com.gitee.usl.grammar.runtime.type.Function;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Env;
 import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
@@ -30,7 +30,7 @@ public class ServerFunction {
     public static final String RESPONSE_NAME = "Usl_Response";
 
     @com.gitee.usl.api.annotation.Function("server")
-    public HttpServer server(USLRunner runner, int port) {
+    public HttpServer server(Runner runner, int port) {
         return new HttpServer(runner, port);
     }
 
@@ -47,12 +47,12 @@ public class ServerFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("server_filter")
-    public HttpServer filter(Env env, HttpServer server, Function function) {
+    public HttpServer filter(Env env, HttpServer server, _Function function) {
         server.getServer().addFilter(new Filter() {
             @Override
             public void doFilter(HttpExchange httpExchange, Chain chain) throws IOException {
                 try (HttpServerRequest request = new HttpServerRequest(httpExchange); HttpServerResponse response = new HttpServerResponse(httpExchange)) {
-                    AviatorObject call = function.call(env, wrapReturn(request), wrapReturn(response));
+                    _Object call = function.execute(env, wrapReturn(request), wrapReturn(response));
                     if (FunctionUtils.getBooleanValue(call, env)) {
                         chain.doFilter(httpExchange);
                     }
@@ -74,8 +74,8 @@ public class ServerFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("server_route")
-    public HttpServer route(Env env, HttpServer server, String path, Function function) {
-        server.getServer().addAction(path, (request, response) -> function.call(env, wrapReturn(request), wrapReturn(response)));
+    public HttpServer route(Env env, HttpServer server, String path, _Function function) {
+        server.getServer().addAction(path, (request, response) -> function.execute(env, wrapReturn(request), wrapReturn(response)));
         return server;
     }
 

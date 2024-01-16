@@ -13,20 +13,20 @@ import java.util.*;
  * @author dennis(killme2008@gmail.com)
  * @since 5.0.0
  */
-public final class Range extends AviatorObject implements Sequence<Number> {
+public final class _Range extends _Object implements Sequence<Number> {
 
 
   private static final long serialVersionUID = 1463899968843425932L;
-  private static final AviatorLong ZERO = AviatorLong.valueOf(0L);
-  public static final Range LOOP = new Range(ZERO, ZERO, ZERO);
+  private static final _Long ZERO = _Long.valueOf(0L);
+  public static final _Range LOOP = new _Range(ZERO, ZERO, ZERO);
 
   static {
     LOOP.isLoop = true;
   }
 
-  private final AviatorNumber step;
-  private final AviatorNumber start;
-  private final AviatorNumber end;
+  private final _Number step;
+  private final _Number start;
+  private final _Number end;
   final boolean forward;
   private boolean isLoop;
 
@@ -34,12 +34,12 @@ public final class Range extends AviatorObject implements Sequence<Number> {
     return this.isLoop;
   }
 
-  public Range(final AviatorNumber start, final AviatorNumber end, final AviatorNumber step) {
+  public _Range(final _Number start, final _Number end, final _Number step) {
     super();
     this.start = start;
     this.end = end;
     this.step = step;
-    this.forward = Range.this.step.compare(ZERO, Env.EMPTY_ENV) >= 0;
+    this.forward = _Range.this.step.compare(ZERO, Env.EMPTY_ENV) >= 0;
     this.isLoop = false;
   }
 
@@ -51,15 +51,15 @@ public final class Range extends AviatorObject implements Sequence<Number> {
 
 
   @Override
-  public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
+  public int innerCompare(final _Object other, final Map<String, Object> env) {
     throw new CompareNotSupportedException();
   }
 
 
 
   @Override
-  public AviatorType getAviatorType() {
-    return AviatorType.Range;
+  public _Type getAviatorType() {
+    return _Type.Range;
   }
 
 
@@ -71,11 +71,11 @@ public final class Range extends AviatorObject implements Sequence<Number> {
 
 
 
-  public AviatorNumber first() {
+  public _Number first() {
     return this.start;
   }
 
-  public AviatorNumber last() {
+  public _Number last() {
     return this.end;
   }
 
@@ -132,14 +132,14 @@ public final class Range extends AviatorObject implements Sequence<Number> {
   @Override
   public Iterator<Number> iterator() {
     return new Iterator<Number>() {
-      AviatorNumber current = Range.this.start;
+      _Number current = _Range.this.start;
 
       @Override
       public boolean hasNext() {
-        if (Range.this.forward) {
-          return this.current.compare(Range.this.end, Env.EMPTY_ENV) < 0;
+        if (_Range.this.forward) {
+          return this.current.compare(_Range.this.end, Env.EMPTY_ENV) < 0;
         } else {
-          return this.current.compare(Range.this.end, Env.EMPTY_ENV) > 0;
+          return this.current.compare(_Range.this.end, Env.EMPTY_ENV) > 0;
         }
       }
 
@@ -153,8 +153,8 @@ public final class Range extends AviatorObject implements Sequence<Number> {
         if (!hasNext()) {
           throw new NoSuchElementException();
         }
-        AviatorNumber result = this.current;
-        this.current = (AviatorNumber) this.current.add(Range.this.step, Env.EMPTY_ENV);
+        _Number result = this.current;
+        this.current = (_Number) this.current.add(_Range.this.step, Env.EMPTY_ENV);
         return (Number) result.getValue(Env.EMPTY_ENV);
       }
 

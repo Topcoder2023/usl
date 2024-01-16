@@ -26,7 +26,7 @@ import com.gitee.usl.grammar.utils.TypeUtils;
  * @author dennis
  *
  */
-public class AviatorBoolean extends AviatorObject {
+public class _Bool extends _Object {
 
   /**
    *
@@ -35,13 +35,13 @@ public class AviatorBoolean extends AviatorObject {
 
   Boolean value;
 
-  public static final AviatorBoolean TRUE = new AviatorBoolean(Boolean.TRUE);
+  public static final _Bool TRUE = new _Bool(Boolean.TRUE);
 
-  public static final AviatorBoolean FALSE = new AviatorBoolean(Boolean.FALSE);
+  public static final _Bool FALSE = new _Bool(Boolean.FALSE);
 
 
   @Override
-  public AviatorObject not(final Map<String, Object> env) {
+  public _Object not(final Map<String, Object> env) {
     return this.value.booleanValue() ? FALSE : TRUE;
   }
 
@@ -56,15 +56,15 @@ public class AviatorBoolean extends AviatorObject {
   }
 
   @Override
-  public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
+  public _Object add(final _Object other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case String:
-        return new AviatorString(this.value.toString() + ((AviatorString) other).getLexeme(env));
+        return new _String(this.value.toString() + ((_String) other).getLexeme(env));
       case JavaType:
-        AviatorJavaType javaType = (AviatorJavaType) other;
+        _JavaType javaType = (_JavaType) other;
         final Object otherJavaValue = javaType.getValue(env);
         if (TypeUtils.isString(otherJavaValue)) {
-          return new AviatorString(this.value.toString() + otherJavaValue.toString());
+          return new _String(this.value.toString() + otherJavaValue.toString());
         } else {
           return super.add(other, env);
         }
@@ -76,8 +76,8 @@ public class AviatorBoolean extends AviatorObject {
 
 
   @Override
-  public AviatorType getAviatorType() {
-    return AviatorType.Boolean;
+  public _Type getAviatorType() {
+    return _Type.Boolean;
   }
 
 
@@ -87,25 +87,25 @@ public class AviatorBoolean extends AviatorObject {
   }
 
 
-  private AviatorBoolean(final Boolean value) {
+  private _Bool(final Boolean value) {
     super();
     this.value = value;
   }
 
 
-  public static AviatorBoolean valueOf(final boolean b) {
-    return b ? AviatorBoolean.TRUE : AviatorBoolean.FALSE;
+  public static _Bool valueOf(final boolean b) {
+    return b ? _Bool.TRUE : _Bool.FALSE;
   }
 
 
   @Override
-  public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
+  public int innerCompare(final _Object other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case Boolean:
-        AviatorBoolean otherBoolean = (AviatorBoolean) other;
+        _Bool otherBoolean = (_Bool) other;
         return this.value.compareTo(otherBoolean.value);
       case JavaType:
-        AviatorJavaType javaType = (AviatorJavaType) other;
+        _JavaType javaType = (_JavaType) other;
         final Object otherValue = javaType.getValue(env);
         if (otherValue == null) {
           return 1;

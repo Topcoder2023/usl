@@ -5,15 +5,15 @@ import java.util.Map;
 import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
 import com.gitee.usl.grammar.runtime.function.BasicFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorLong;
-import com.gitee.usl.grammar.runtime.type.AviatorRuntimeJavaType;
-import com.gitee.usl.grammar.runtime.type.Range;
+import com.gitee.usl.grammar.runtime.type._Long;
+import com.gitee.usl.grammar.runtime.type._RuntimeJavaType;
+import com.gitee.usl.grammar.runtime.type._Range;
 import com.gitee.usl.grammar.Options;
 import com.gitee.usl.grammar.utils.Env;
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
-import com.gitee.usl.grammar.runtime.type.Function;
-import com.gitee.usl.grammar.runtime.type.AviatorNil;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.grammar.runtime.type._Null;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Constants;
 
 /**
@@ -30,9 +30,9 @@ public class ReducerFunction extends BasicFunction {
     }
 
     @Override
-    public AviatorObject execute(Env env, AviatorObject[] arguments) {
+    public _Object execute(Env env, _Object[] arguments) {
         Object coll = arguments[0].getValue(env);
-        Function iteratorFn = (Function) arguments[1];
+        _Function iteratorFn = (_Function) arguments[1];
 
         try {
             return reduce(env, arguments[1], arguments[2], coll, iteratorFn);
@@ -41,13 +41,13 @@ public class ReducerFunction extends BasicFunction {
         }
     }
 
-    private AviatorObject reduce(final Env env, final AviatorObject arg2,
-                                 final AviatorObject arg3, Object coll, Function iteratorFn) {
+    private _Object reduce(final Env env, final _Object arg2,
+                           final _Object arg3, Object coll, _Function iteratorFn) {
         int maxLoopCount = RuntimeUtils.getInstance(env).getOptionValue(Options.MAX_LOOP_COUNT).number;
-        AviatorObject result = AviatorNil.NIL;
+        _Object result = _Null.NIL;
         long c = 0;
 
-        if (coll != Range.LOOP) {
+        if (coll != _Range.LOOP) {
             long arities = (long) arg2.meta(Constants.ARITIES_META);
             long index = 0;
             boolean unboxEntry =
@@ -55,15 +55,15 @@ public class ReducerFunction extends BasicFunction {
 
             for (Object obj : RuntimeUtils.seq(coll, env)) {
                 if (arities == 1) {
-                    result = iteratorFn.execute(env, new AviatorObject[]{AviatorRuntimeJavaType.valueOf(obj)});
+                    result = iteratorFn.execute(env, new _Object[]{_RuntimeJavaType.valueOf(obj)});
                 } else {
                     if (unboxEntry) {
                         Map.Entry<?, ?> entry = (Map.Entry<?, ?>) obj;
-                        result = iteratorFn.execute(env, new AviatorObject[]{AviatorRuntimeJavaType.valueOf(entry.getKey()),
-                                AviatorRuntimeJavaType.valueOf(entry.getValue())});
+                        result = iteratorFn.execute(env, new _Object[]{_RuntimeJavaType.valueOf(entry.getKey()),
+                                _RuntimeJavaType.valueOf(entry.getValue())});
                     } else {
-                        result = iteratorFn.execute(env, new AviatorObject[]{AviatorLong.valueOf(index++),
-                                AviatorRuntimeJavaType.valueOf(obj)});
+                        result = iteratorFn.execute(env, new _Object[]{_Long.valueOf(index++),
+                                _RuntimeJavaType.valueOf(obj)});
                     }
                 }
                 if (!(result instanceof ReducerResult midResult)) {
@@ -95,7 +95,7 @@ public class ReducerFunction extends BasicFunction {
                 if (maxLoopCount > 0 && ++c > maxLoopCount) {
                     throw new ExpressionRuntimeException("Overflow max loop count: " + maxLoopCount);
                 }
-                result = iteratorFn.execute(env, new AviatorObject[]{});
+                result = iteratorFn.execute(env, new _Object[]{});
                 if (!(result instanceof ReducerResult midResult)) {
                     continue;
                 }
@@ -125,7 +125,7 @@ public class ReducerFunction extends BasicFunction {
             return result;
         }
 
-        AviatorObject contResult = ((Function) contObj).execute(env, new AviatorObject[]{});
+        _Object contResult = ((_Function) contObj).execute(env, new _Object[]{});
         if ((contResult instanceof ReducerResult) && ((ReducerResult) contResult).isEmptyState()) {
             // empty continuation, return current result.
             return result;

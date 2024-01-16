@@ -1,6 +1,6 @@
 package com.gitee.usl.function.base;
 
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.domain.ResourceParam;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,13 +10,13 @@ import org.junit.jupiter.api.Test;
  * @author hongda.li
  */
 class BaseFunctionTest {
-    static USLRunner runner;
+    static Runner runner;
     static ResourceParam param;
 
     @BeforeAll
     static void before() {
-        Configuration configuration = USLRunner.defaultConfiguration();
-        runner = new USLRunner(configuration);
+        Configuration configuration = Runner.defaultConfiguration();
+        runner = new Runner(configuration);
         runner.start();
 
         param = new ResourceParam("list_test.usl");

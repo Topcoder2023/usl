@@ -17,9 +17,9 @@ package com.gitee.usl.grammar.lexer.token;
 
 import com.googlecode.aviator.exception.ExpressionRuntimeException;
 import com.googlecode.aviator.exception.IllegalArityException;
-import com.gitee.usl.grammar.runtime.type.AviatorBoolean;
-import com.gitee.usl.grammar.runtime.type.AviatorJavaType;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Bool;
+import com.gitee.usl.grammar.runtime.type._JavaType;
+import com.gitee.usl.grammar.runtime.type._Object;
 
 import java.util.Map;
 
@@ -99,7 +99,7 @@ public enum OperatorType {
     this.arity = operandCount;
   }
 
-  public AviatorObject eval(final AviatorObject[] args, final Map<String, Object> env) {
+  public _Object eval(final _Object[] args, final Map<String, Object> env) {
     if (args.length < this.arity) {
       throw new IllegalArityException("Expect " + this.arity + " parameters for " + name()
           + ", but have " + args.length + " arguments.");
@@ -112,13 +112,13 @@ public enum OperatorType {
       case MOD:
         return args[0].mod(args[1], env);
       case DEFINE:
-        if (!(args[0] instanceof AviatorJavaType)) {
+        if (!(args[0] instanceof _JavaType)) {
           throw new IllegalArgumentException(args[0].desc(env) + " can't be as a left value.");
         }
         args[0].defineValue(args[1], env);
         return args[1];
       case ASSIGNMENT:
-        if (!(args[0] instanceof AviatorJavaType)) {
+        if (!(args[0] instanceof _JavaType)) {
           throw new ExpressionRuntimeException(
               args[0].desc(env) + " can't be a left value for assignment.");
         }
@@ -132,22 +132,22 @@ public enum OperatorType {
         return args[0].exponent(args[1], env);
       case EQ:
         int result = args[0].compareEq(args[1], env);
-        return AviatorBoolean.valueOf(result == 0);
+        return _Bool.valueOf(result == 0);
       case NEQ:
         result = args[0].compareEq(args[1], env);
-        return AviatorBoolean.valueOf(result != 0);
+        return _Bool.valueOf(result != 0);
       case LT:
         result = args[0].compare(args[1], env);
-        return AviatorBoolean.valueOf(result < 0);
+        return _Bool.valueOf(result < 0);
       case LE:
         result = args[0].compare(args[1], env);
-        return AviatorBoolean.valueOf(result <= 0);
+        return _Bool.valueOf(result <= 0);
       case GT:
         result = args[0].compare(args[1], env);
-        return AviatorBoolean.valueOf(result > 0);
+        return _Bool.valueOf(result > 0);
       case GE:
         result = args[0].compare(args[1], env);
-        return AviatorBoolean.valueOf(result >= 0);
+        return _Bool.valueOf(result >= 0);
       case NOT:
         return args[0].not(env);
       case NEG:
@@ -156,16 +156,16 @@ public enum OperatorType {
         // swap arguments
         return args[1].match(args[0], env);
       case AND:
-        return (args[0].booleanValue(env) && args[1].booleanValue(env)) ? AviatorBoolean.TRUE
-            : AviatorBoolean.FALSE;
+        return (args[0].booleanValue(env) && args[1].booleanValue(env)) ? _Bool.TRUE
+            : _Bool.FALSE;
       case OR:
-        return (args[0].booleanValue(env) || args[1].booleanValue(env)) ? AviatorBoolean.TRUE
-            : AviatorBoolean.FALSE;
+        return (args[0].booleanValue(env) || args[1].booleanValue(env)) ? _Bool.TRUE
+            : _Bool.FALSE;
       case FUNC:
         // TODO
         break;
       case INDEX:
-        return ((AviatorJavaType) args[0]).getElement(env, args[1]);
+        return ((_JavaType) args[0]).getElement(env, args[1]);
       case TERNARY:
         return args[0].booleanValue(env) ? args[1] : args[2];
       case BIT_OR:

@@ -5,8 +5,8 @@ import com.gitee.usl.grammar.parser.IR;
 import com.gitee.usl.grammar.parser.InterpretContext;
 import com.gitee.usl.grammar.lexer.token.OperatorType;
 import com.gitee.usl.grammar.runtime.op.OperationRuntime;
-import com.gitee.usl.grammar.runtime.type.Function;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.grammar.runtime.type._Object;
 import lombok.Getter;
 
 /**
@@ -18,7 +18,7 @@ public class OperatorIR implements IR {
     @Getter
     private final OperatorType op;
 
-    private Function fn;
+    private _Function fn;
 
 
     public static final OperatorIR ADD = OperatorIR.valueOf(OperatorType.ADD);
@@ -80,7 +80,7 @@ public class OperatorIR implements IR {
         return new OperatorIR(op);
     }
 
-    public OperatorIR(final OperatorType op, final Function func) {
+    public OperatorIR(final OperatorType op, final _Function func) {
         this.fn = func;
         this.op = op;
     }
@@ -93,12 +93,12 @@ public class OperatorIR implements IR {
     public void eval(final InterpretContext context) {
         int arity = this.op.getArity();
 
-        AviatorObject[] args = new AviatorObject[arity];
+        _Object[] args = new _Object[arity];
         for (int i = args.length - 1; i >= 0; i--) {
             args[i] = context.pop();
         }
 
-        AviatorObject result;
+        _Object result;
         if (this.fn == null) {
             result = this.op.eval(args, context.getEnv());
         } else {

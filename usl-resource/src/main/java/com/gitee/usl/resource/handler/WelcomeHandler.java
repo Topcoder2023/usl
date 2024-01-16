@@ -2,7 +2,7 @@ package com.gitee.usl.resource.handler;
 
 import cn.hutool.core.date.BetweenFormatter;
 import cn.hutool.core.date.DateUtil;
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.infra.constant.StringConstant;
@@ -10,7 +10,6 @@ import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.resource.ScriptSearcher;
 import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.api.WebHandler;
-import com.google.auto.service.AutoService;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
 
@@ -19,7 +18,6 @@ import java.util.Date;
 /**
  * @author hongda.li
  */
-@AutoService(WebHandler.class)
 public class WelcomeHandler implements WebHandler {
     private static final String PATH = "/usl/admin/api/welcome";
     private static final String HELP_DOC_URL = "https://gitee.com/yixi-dlmu/usl/blob/master/README.md";
@@ -33,7 +31,7 @@ public class WelcomeHandler implements WebHandler {
 
     @Override
     public void doHandle(HttpRequest request, HttpResponse response) {
-        USLRunner runner = RUNNER_THREAD_LOCAL.get();
+        Runner runner = RUNNER_THREAD_LOCAL.get();
 
         Info info = this.getInfoCache(runner);
 
@@ -43,7 +41,7 @@ public class WelcomeHandler implements WebHandler {
         this.writeToJson(Returns.success(info));
     }
 
-    private Info getInfoCache(USLRunner runner) {
+    private Info getInfoCache(Runner runner) {
         if (infoCache != null) {
             return infoCache;
         }

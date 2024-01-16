@@ -8,17 +8,17 @@ import java.util.Map;
  * @author boyan(boyan@antfin.com)
  *
  */
-public class AviatorStringBuilder extends AviatorString {
+public class _StringBuilder extends _String {
 
   private static final long serialVersionUID = 1958289382573221857L;
   private final StringBuilder sb;
 
-  public AviatorStringBuilder(final StringBuilder sb) {
+  public _StringBuilder(final StringBuilder sb) {
     super(null);
     this.sb = sb;
   }
 
-  public AviatorStringBuilder(final String lexeme) {
+  public _StringBuilder(final String lexeme) {
     super(null);
     this.sb = new StringBuilder(lexeme);
   }
@@ -30,18 +30,18 @@ public class AviatorStringBuilder extends AviatorString {
 
 
   @Override
-  public AviatorObject self(final Map<String, Object> env) {
-    return new AviatorString(getLexeme(env));
+  public _Object self(final Map<String, Object> env) {
+    return new _String(getLexeme(env));
   }
 
   @Override
-  public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
-    if (other.getAviatorType() == AviatorType.Pattern) {
-      final AviatorPattern otherPatterh = (AviatorPattern) other;
+  public _Object add(final _Object other, final Map<String, Object> env) {
+    if (other.getAviatorType() == _Type.Pattern) {
+      final _Pattern otherPatterh = (_Pattern) other;
       this.sb.append(otherPatterh.pattern.pattern());
     } else {
       this.sb.append(other.getValue(env));
     }
-    return new AviatorStringBuilder(this.sb);
+    return new _StringBuilder(this.sb);
   }
 }

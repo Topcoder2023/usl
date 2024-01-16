@@ -5,7 +5,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.FunctionMissing;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Object;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -33,7 +33,7 @@ public class MethodInvokerOnMissing implements FunctionMissing {
     private static final String REGEX = "\\.";
 
     @Override
-    public AviatorObject onFunctionMissing(String name, Map<String, Object> env, AviatorObject... arguments) {
+    public _Object onFunctionMissing(String name, Map<String, Object> env, _Object... arguments) {
 
         if (functionMissing == null) {
             functionMissing = DEFAULT;

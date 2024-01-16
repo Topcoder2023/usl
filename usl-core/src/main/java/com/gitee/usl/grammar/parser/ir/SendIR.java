@@ -4,8 +4,8 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.grammar.parser.IR;
 import com.gitee.usl.grammar.parser.InterpretContext;
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
-import com.gitee.usl.grammar.runtime.type.Function;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.infra.structure.wrapper.ObjectWrapper;
 
@@ -19,20 +19,20 @@ public record SendIR(String name, int arity, boolean unpackArgs, int funcId) imp
         @Description("参数的数量")
         IntWrapper wrapper = new IntWrapper(this.arity);
 
-        ObjectWrapper<Function> fn = new ObjectWrapper<>();
+        ObjectWrapper<_Function> fn = new ObjectWrapper<>();
 
         if (this.name != null) {
             fn.set(RuntimeUtils.getFunction(context.getEnv(), this.name));
         }
 
-        AviatorObject[] args = new AviatorObject[this.arity];
+        _Object[] args = new _Object[this.arity];
 
         while (wrapper.decrementAndGet() >= 0) {
             args[wrapper.get()] = context.pop();
         }
 
         if (this.name == null) {
-            fn.set((Function) context.pop());
+            fn.set((_Function) context.pop());
         }
 
         if (this.unpackArgs) {

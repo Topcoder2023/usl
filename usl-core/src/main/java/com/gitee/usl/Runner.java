@@ -13,7 +13,7 @@ import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
-import com.gitee.usl.grammar.runtime.type.Function;
+import com.gitee.usl.grammar.runtime.type._Function;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,14 +27,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @Getter
 @Description("USL-Runner通用脚本语言执行器")
-@SuppressWarnings("AlibabaClassNamingShouldBeCamel")
-public class USLRunner {
+public class Runner {
 
     @Description("USL-Runner默认实例的数量，每默认实例化一个 USL-Runner 时，都会对此变量自增")
     private static final AtomicInteger NUMBER = new AtomicInteger(NumberConstant.ONE);
 
     @Description("USL-Runner实例全局缓存")
-    private static final Map<String, USLRunner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.EIGHT);
+    private static final Map<String, Runner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.EIGHT);
 
     @Description("USL-Runner的名称，每一个执行器的名称应该唯一")
     private final String name;
@@ -46,23 +45,23 @@ public class USLRunner {
     private final Configuration configuration;
 
     @Description("根据默认配置构造USL-Runner执行器")
-    public USLRunner() {
+    public Runner() {
         this(defaultConfiguration());
     }
 
     @Description("根据指定名称构造USL-Runner执行器")
-    public USLRunner(@Description("执行器名称") String name) {
+    public Runner(@Description("执行器名称") String name) {
         this(name, defaultConfiguration());
     }
 
     @Description("根据指定配置构造USL-Runner执行器")
-    public USLRunner(@Description("执行器配置") Configuration configuration) {
+    public Runner(@Description("执行器配置") Configuration configuration) {
         this(StringConstant.USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement(), configuration);
     }
 
     @Description("根据指定名称和指定配置构造USL-Runner执行器")
-    public USLRunner(@Description("执行器名称") String name,
-                     @Description("执行器配置") Configuration configuration) {
+    public Runner(@Description("执行器名称") String name,
+                  @Description("执行器配置") Configuration configuration) {
         this.name = name;
         this.startTime = new Date();
         this.configuration = configuration;
@@ -120,11 +119,11 @@ public class USLRunner {
 
     @Description("获取新的默认配置")
     public static Configuration defaultConfiguration() {
-        return new Configuration().getEngineConfig().scan(USLRunner.class).getConfiguration();
+        return new Configuration().getEngineConfig().scan(Runner.class).getConfiguration();
     }
 
     @Description("返回所有可用的函数实例")
-    public List<Function> functions() {
+    public List<_Function> functions() {
         return Optional.ofNullable(this.configuration)
                 .map(Configuration::getEngineConfig)
                 .map(EngineConfig::getFunctionHolder)
@@ -133,7 +132,7 @@ public class USLRunner {
     }
 
     @Description("根据USL-Runner执行器名称获取实例")
-    public static USLRunner findRunnerByName(String name) {
+    public static Runner findRunnerByName(String name) {
         if (name == null) {
             return null;
         }
@@ -154,7 +153,7 @@ public class USLRunner {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", USLRunner.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", Runner.class.getSimpleName() + "[", "]")
                 .add(name)
                 .toString();
     }

@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
 import com.gitee.usl.grammar.runtime.function.ClassMethodFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorJavaType;
+import com.gitee.usl.grammar.runtime.type._JavaType;
 import com.gitee.usl.grammar.Feature;
 import com.googlecode.aviator.exception.NoSuchPropertyException;
 
@@ -763,7 +763,7 @@ public class Reflector {
                                          final int offset, final int len) {
         int max = Math.min(offset + len, names.length);
         for (int i = offset; i < max; i++) {
-            String rName = AviatorJavaType.reserveName(names[i]);
+            String rName = _JavaType.reserveName(names[i]);
             rName = rName != null ? rName : names[i];
             int arrayIndex = -1;
             String keyIndex = null;
@@ -821,7 +821,7 @@ public class Reflector {
                     if (target.innerEnv != null) {
                         val = target.innerEnv.get(rName);
                         if (val == null && i == 0 && env instanceof Env) {
-                            val = AviatorJavaType.tryResolveAsClass(env, rName);
+                            val = _JavaType.tryResolveAsClass(env, rName);
                         }
                     } else {
                         val = fastGetProperty(target.targetObject, rName, PropertyType.Getter);

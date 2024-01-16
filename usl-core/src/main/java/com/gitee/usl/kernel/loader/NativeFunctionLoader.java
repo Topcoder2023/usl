@@ -3,13 +3,13 @@ package com.gitee.usl.kernel.loader;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
-import com.gitee.usl.grammar.runtime.type.Function;
+import com.gitee.usl.grammar.runtime.type._Function;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
@@ -22,8 +22,8 @@ import java.util.List;
 public class NativeFunctionLoader extends AbstractFunctionLoader {
 
     @Override
-    protected List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner) {
-        Function ifPossible = (Function) ReflectUtil.newInstanceIfPossible(clz);
+    protected List<FunctionDefinition> class2Definition(Class<?> clz, Runner runner) {
+        _Function ifPossible = (_Function) ReflectUtil.newInstanceIfPossible(clz);
 
         if (ifPossible == null) {
             log.warn("无法实例化指定类 - {}", clz.getName());
@@ -45,13 +45,13 @@ public class NativeFunctionLoader extends AbstractFunctionLoader {
     }
 
     @Override
-    protected Function definition2Func(FunctionDefinition definition) {
-        return new NativeFunction(definition, definition.getMethodMeta().getTarget()).createProxy();
+    protected _Function definition2Func(FunctionDefinition definition) {
+        return new NativeFunction(definition, definition.getMethodMeta().target()).createProxy();
     }
 
     @Override
     protected boolean filter(Class<?> clz) {
-        return Function.class.isAssignableFrom(clz)
+        return _Function.class.isAssignableFrom(clz)
                 && ClassUtil.isNormalClass(clz)
                 && !AnnotatedFunction.class.isAssignableFrom(clz)
                 && !AnnotationUtil.hasAnnotation(clz, SystemFunction.class);

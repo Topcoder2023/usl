@@ -34,20 +34,20 @@ import java.util.regex.Pattern;
  * @author dennis
  *
  */
-public class AviatorPattern extends AviatorObject {
+public class _Pattern extends _Object {
 
 
   private static final long serialVersionUID = -6667072156431636239L;
   final Pattern pattern;
 
 
-  public AviatorPattern(final String expression) {
+  public _Pattern(final String expression) {
     super();
     this.pattern = Pattern.compile(expression);
   }
 
 
-  public AviatorPattern(final Pattern pattern) {
+  public _Pattern(final Pattern pattern) {
     super();
     this.pattern = pattern;
   }
@@ -59,15 +59,15 @@ public class AviatorPattern extends AviatorObject {
 
 
   @Override
-  public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
+  public _Object add(final _Object other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case String:
-        return new AviatorString(this.pattern.pattern() + ((AviatorString) other).getLexeme(env));
+        return new _String(this.pattern.pattern() + ((_String) other).getLexeme(env));
       case JavaType:
-        AviatorJavaType javaType = (AviatorJavaType) other;
+        _JavaType javaType = (_JavaType) other;
         final Object otherValue = javaType.getValue(env);
         if (TypeUtils.isString(otherValue)) {
-          return new AviatorString(this.pattern.pattern() + otherValue.toString());
+          return new _String(this.pattern.pattern() + otherValue.toString());
         } else {
           return super.add(other, env);
         }
@@ -79,12 +79,12 @@ public class AviatorPattern extends AviatorObject {
 
 
   @Override
-  public AviatorObject match(final AviatorObject other, final Map<String, Object> env) {
+  public _Object match(final _Object other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case Nil:
-        return AviatorBoolean.FALSE;
+        return _Bool.FALSE;
       case String:
-        AviatorString aviatorString = (AviatorString) other;
+        _String aviatorString = (_String) other;
         Matcher m = this.pattern.matcher(aviatorString.getLexeme(env));
         if (m.matches()) {
           boolean captureGroups = RuntimeUtils.getInstance(env)
@@ -95,18 +95,18 @@ public class AviatorPattern extends AviatorObject {
               ((Env) env).override("$" + i, m.group(i));
             }
           }
-          return AviatorBoolean.TRUE;
+          return _Bool.TRUE;
         } else {
-          return AviatorBoolean.FALSE;
+          return _Bool.FALSE;
         }
       case JavaType:
-        AviatorJavaType javaType = (AviatorJavaType) other;
+        _JavaType javaType = (_JavaType) other;
         final Object javaValue = javaType.getValue(env);
         if (javaValue == null) {
-          return AviatorBoolean.FALSE;
+          return _Bool.FALSE;
         }
         if (TypeUtils.isString(javaValue)) {
-          return match(new AviatorString(String.valueOf(javaValue)), env);
+          return match(new _String(String.valueOf(javaValue)), env);
         } else {
           throw new ExpressionRuntimeException(desc(env) + " could not match " + other.desc(env));
         }
@@ -118,13 +118,13 @@ public class AviatorPattern extends AviatorObject {
 
 
   @Override
-  public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
+  public int innerCompare(final _Object other, final Map<String, Object> env) {
     if (this == other) {
       return 0;
     }
     switch (other.getAviatorType()) {
       case Pattern:
-        return this.pattern.pattern().compareTo(((AviatorPattern) other).pattern.pattern());
+        return this.pattern.pattern().compareTo(((_Pattern) other).pattern.pattern());
       case JavaType:
         if (other.getValue(env) == null) {
           return 1;
@@ -141,8 +141,8 @@ public class AviatorPattern extends AviatorObject {
 
 
   @Override
-  public AviatorType getAviatorType() {
-    return AviatorType.Pattern;
+  public _Type getAviatorType() {
+    return _Type.Pattern;
   }
 
 

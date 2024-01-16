@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-public class AviatorRuntimeJavaElementType extends AviatorRuntimeJavaType {
+public class _RuntimeJavaElementType extends _RuntimeJavaType {
 
 
   private static final long serialVersionUID = -955529214730255727L;
@@ -21,8 +21,8 @@ public class AviatorRuntimeJavaElementType extends AviatorRuntimeJavaType {
     List, Array, Map
   }
 
-  public AviatorRuntimeJavaElementType(final ContainerType containerType, final Object container,
-      final Object index, final Callable<Object> callable) {
+  public _RuntimeJavaElementType(final ContainerType containerType, final Object container,
+                                 final Object index, final Callable<Object> callable) {
     super(null);
     setCallable(callable);
     this.container = container;
@@ -32,7 +32,7 @@ public class AviatorRuntimeJavaElementType extends AviatorRuntimeJavaType {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  public AviatorObject setValue(final AviatorObject value, final Map<String, Object> env) {
+  public _Object setValue(final _Object value, final Map<String, Object> env) {
     Object val = value.getValue(env);
     switch (this.containerType) {
       case Array:
@@ -48,6 +48,6 @@ public class AviatorRuntimeJavaElementType extends AviatorRuntimeJavaType {
       default:
         throw new ExpressionRuntimeException("Unknown container type: " + this.containerType);
     }
-    return AviatorRuntimeJavaType.valueOf(val);
+    return _RuntimeJavaType.valueOf(val);
   }
 }

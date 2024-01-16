@@ -2,9 +2,8 @@ package com.gitee.usl.resource.api;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
-import cn.zhxu.data.TypeRef;
-import cn.zhxu.xjson.JsonKit;
-import com.gitee.usl.USLRunner;
+import cn.hutool.json.JSONUtil;
+import com.gitee.usl.Runner;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.exception.USLException;
 import com.gitee.usl.infra.exception.USLExecuteException;
@@ -25,7 +24,7 @@ import java.util.List;
 public interface WebHelper {
     ThreadLocal<HttpRequest> REQUEST_THREAD_LOCAL = new ThreadLocal<>();
     ThreadLocal<HttpResponse> RESPONSE_THREAD_LOCAL = new ThreadLocal<>();
-    ThreadLocal<USLRunner> RUNNER_THREAD_LOCAL = new ThreadLocal<>();
+    ThreadLocal<Runner> RUNNER_THREAD_LOCAL = new ThreadLocal<>();
 
     /**
      * 清空所有的线程变量
@@ -56,7 +55,7 @@ public interface WebHelper {
         HttpResponse response = RESPONSE_THREAD_LOCAL.get();
         try {
             response.setContentType(HeaderValueEnum.APPLICATION_JSON.getName() + StringConstant.CONTENT_TYPE_SUFFIX);
-            response.write(JsonKit.toJson(result).getBytes(StandardCharsets.UTF_8));
+            response.write(JSONUtil.toJsonStr(result).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new USLExecuteException(e);
         }
@@ -108,22 +107,7 @@ public interface WebHelper {
      */
     default <T> List<T> parseToArray(Class<T> type) {
         try {
-            return JsonKit.toArray(IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8)).toList(type);
-        } catch (IOException e) {
-            throw new USLException(e);
-        }
-    }
-
-    /**
-     * 请求解析为复杂对象
-     *
-     * @param typeReference 复杂类型
-     * @param <T>           泛型
-     * @return 转换结果
-     */
-    default <T> T parseToObj(TypeRef<T> typeReference) {
-        try {
-            return JsonKit.toBean(typeReference, IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8));
+            return JSONUtil.toList(IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8), type);
         } catch (IOException e) {
             throw new USLException(e);
         }
@@ -138,7 +122,7 @@ public interface WebHelper {
      */
     default <T> T parseToObj(Class<T> type) {
         try {
-            return JsonKit.toBean(type, IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8));
+            return JSONUtil.toBean(IoUtil.read(REQUEST_THREAD_LOCAL.get().getInputStream(), StandardCharsets.UTF_8), type);
         } catch (IOException e) {
             throw new USLException(e);
         }

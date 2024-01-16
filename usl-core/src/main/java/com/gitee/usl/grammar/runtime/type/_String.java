@@ -13,7 +13,7 @@ import com.gitee.usl.grammar.utils.TypeUtils;
  *
  * @author dennis
  */
-public class AviatorString extends AviatorObject {
+public class _String extends _Object {
 
     private static final long serialVersionUID = -7430694306919959899L;
     private final String lexeme;
@@ -32,8 +32,8 @@ public class AviatorString extends AviatorObject {
     }
 
     @Override
-    public AviatorType getAviatorType() {
-        return AviatorType.String;
+    public _Type getAviatorType() {
+        return _Type.String;
     }
 
     @Override
@@ -41,18 +41,18 @@ public class AviatorString extends AviatorObject {
         return getLexeme(env);
     }
 
-    public AviatorString(final String lexeme) {
+    public _String(final String lexeme) {
         this(lexeme, false);
     }
 
-    public AviatorString(final String lexeme, final boolean isLiteral) {
+    public _String(final String lexeme, final boolean isLiteral) {
         super();
         this.lexeme = lexeme;
         this.isLiteral = isLiteral;
     }
 
-    public AviatorString(final String lexeme, final boolean isLiteral, final boolean hasInterpolation,
-                         final int lineNo) {
+    public _String(final String lexeme, final boolean isLiteral, final boolean hasInterpolation,
+                   final int lineNo) {
         super();
         this.lexeme = lexeme;
         this.isLiteral = isLiteral;
@@ -61,16 +61,16 @@ public class AviatorString extends AviatorObject {
     }
 
     @Override
-    public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
+    public _Object add(final _Object other, final Map<String, Object> env) {
         final StringBuilder sb = new StringBuilder(getLexeme(env));
 
-        if (other.getAviatorType() != AviatorType.Pattern) {
+        if (other.getAviatorType() != _Type.Pattern) {
             sb.append(other.getValue(env));
         } else {
-            final AviatorPattern otherPatterh = (AviatorPattern) other;
+            final _Pattern otherPatterh = (_Pattern) other;
             sb.append(otherPatterh.pattern.pattern());
         }
-        return new AviatorStringBuilder(sb);
+        return new _StringBuilder(sb);
     }
 
     private static final ThreadLocal<SimpleDateFormat> DATE_FORMATTER =
@@ -94,11 +94,11 @@ public class AviatorString extends AviatorObject {
     }
 
     @Override
-    public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
+    public int innerCompare(final _Object other, final Map<String, Object> env) {
         final String left = getLexeme(env);
 
-        if (other.getAviatorType() == AviatorType.String) {
-            final AviatorString otherString = (AviatorString) other;
+        if (other.getAviatorType() == _Type.String) {
+            final _String otherString = (_String) other;
             final String right = otherString.getLexeme(env);
             if (left != null && right != null) {
                 return left.compareTo(right);
@@ -113,7 +113,7 @@ public class AviatorString extends AviatorObject {
 
         switch (other.getAviatorType()) {
             case JavaType:
-                final AviatorJavaType javaType = (AviatorJavaType) other;
+                final _JavaType javaType = (_JavaType) other;
                 final Object otherJavaValue = javaType.getValue(env);
                 if (left == null && otherJavaValue == null) {
                     return 0;

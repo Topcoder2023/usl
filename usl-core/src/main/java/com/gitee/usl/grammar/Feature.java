@@ -2,7 +2,7 @@ package com.gitee.usl.grammar;
 
 import cn.hutool.core.lang.Singleton;
 import com.gitee.usl.grammar.runtime.function.internal.*;
-import com.gitee.usl.grammar.runtime.type.Function;
+import com.gitee.usl.grammar.runtime.type._Function;
 import com.gitee.usl.grammar.utils.IdentityHashSet;
 
 import java.util.ArrayList;
@@ -105,16 +105,16 @@ public enum Feature {
     /**
      * Functions to support the feature.
      */
-    private List<Function> functions = Collections.emptyList();
+    private List<_Function> functions = Collections.emptyList();
 
 
     private Feature() {
 
     }
 
-    private static List<Function> asList(final Function... args) {
-        List<Function> ret = new ArrayList<>(args.length);
-        for (Function f : args) {
+    private static List<_Function> asList(final _Function... args) {
+        List<_Function> ret = new ArrayList<>(args.length);
+        for (_Function f : args) {
             ret.add(f);
         }
         return ret;
@@ -124,16 +124,16 @@ public enum Feature {
         this.prequires = prequires;
     }
 
-    private Feature(final List<Function> funcs) {
+    private Feature(final List<_Function> funcs) {
         this.functions = funcs;
     }
 
-    private Feature(final Set<Feature> prequires, final List<Function> funcs) {
+    private Feature(final Set<Feature> prequires, final List<_Function> funcs) {
         this.prequires = prequires;
         this.functions = funcs;
     }
 
-    public List<Function> getFunctions() {
+    public List<_Function> getFunctions() {
         return this.functions;
     }
 

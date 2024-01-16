@@ -14,8 +14,8 @@ import java.lang.reflect.Proxy;
 @Description("动态代理接口")
 public abstract class MethodInterceptor<E> implements InvocationHandler {
 
-    @Description("Aviator函数默认方法名")
-    protected static final String METHOD_NAME = "call";
+    @Description("函数默认方法名")
+    protected static final String METHOD_NAME = "execute";
 
     @Description("被代理的目标对象")
     private final Object target;

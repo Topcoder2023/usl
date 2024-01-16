@@ -8,7 +8,7 @@ import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.infra.structure.Plugins;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.grammar.runtime.function.FunctionUtils;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Object;
 
 import java.util.Optional;
 
@@ -39,7 +39,7 @@ public interface FunctionPluggable {
      * @param session 本次函数调用会话
      * @return 最终返回值
      */
-    default AviatorObject withPlugin(final FunctionSession session) {
+    default _Object withPlugin(final FunctionSession session) {
         try {
             // 执行前置回调插件
             this.plugins().execute(BeginPlugin.class, plugin -> plugin.onBegin(session));

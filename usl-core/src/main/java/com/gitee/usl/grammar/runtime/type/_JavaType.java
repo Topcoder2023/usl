@@ -23,7 +23,7 @@ import com.gitee.usl.grammar.ScriptKeyword;
 import com.gitee.usl.grammar.runtime.RuntimeFunctionDelegator;
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
 import com.gitee.usl.grammar.runtime.function.DispatchFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorRuntimeJavaElementType.ContainerType;
+import com.gitee.usl.grammar.runtime.type._RuntimeJavaElementType.ContainerType;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
  *
  * @author dennis
  */
-public class AviatorJavaType extends AviatorObject {
+public class _JavaType extends _Object {
     protected String name;
     private boolean containsDot;
     private String[] subNames;
@@ -59,19 +59,19 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorType getAviatorType() {
-        return AviatorType.JavaType;
+    public _Type getAviatorType() {
+        return _Type.JavaType;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public AviatorJavaType(final String name) {
+    public _JavaType(final String name) {
         this(name, null);
     }
 
-    public AviatorJavaType(final String name, final ScriptKeyword symbolTable) {
+    public _JavaType(final String name, final ScriptKeyword symbolTable) {
         super();
         init(name, symbolTable);
     }
@@ -121,12 +121,12 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject self(final Map<String, Object> env) {
-        return AviatorRuntimeJavaType.valueOf(getValue(env));
+    public _Object self(final Map<String, Object> env) {
+        return _RuntimeJavaType.valueOf(getValue(env));
     }
 
     @Override
-    public AviatorObject div(final AviatorObject other, final Map<String, Object> env) {
+    public _Object div(final _Object other, final Map<String, Object> env) {
         final Object value = getValue(env);
         switch (other.getAviatorType()) {
             case BigInt:
@@ -134,14 +134,14 @@ public class AviatorJavaType extends AviatorObject {
             case Long:
             case Double:
                 if (value instanceof Number) {
-                    AviatorNumber aviatorNumber = AviatorNumber.valueOf(value);
+                    _Number aviatorNumber = _Number.valueOf(value);
                     return aviatorNumber.div(other, env);
                 } else {
                     return super.div(other, env);
                 }
             case JavaType:
                 if (value instanceof Number) {
-                    AviatorNumber thisAviatorNumber = AviatorNumber.valueOf(value);
+                    _Number thisAviatorNumber = _Number.valueOf(value);
                     return thisAviatorNumber.div(other, env);
                 } else {
                     return super.div(other, env);
@@ -152,17 +152,17 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject match(final AviatorObject other, final Map<String, Object> env) {
+    public _Object match(final _Object other, final Map<String, Object> env) {
         Object val = getValue(env);
         if (val instanceof Pattern) {
-            return new AviatorPattern((Pattern) val).match(other, env);
+            return new _Pattern((Pattern) val).match(other, env);
         } else {
             return super.match(other, env);
         }
     }
 
     @Override
-    public AviatorObject bitAnd(final AviatorObject other, final Map<String, Object> env) {
+    public _Object bitAnd(final _Object other, final Map<String, Object> env) {
         final Object value = getValue(env);
         switch (other.getAviatorType()) {
             case BigInt:
@@ -170,14 +170,14 @@ public class AviatorJavaType extends AviatorObject {
             case Long:
             case Double:
                 if (value instanceof Number) {
-                    AviatorNumber aviatorNumber = AviatorNumber.valueOf(value);
+                    _Number aviatorNumber = _Number.valueOf(value);
                     return aviatorNumber.bitAnd(other, env);
                 } else {
                     return super.bitAnd(other, env);
                 }
             case JavaType:
                 if (value instanceof Number) {
-                    AviatorNumber thisAviatorNumber = AviatorNumber.valueOf(value);
+                    _Number thisAviatorNumber = _Number.valueOf(value);
                     return thisAviatorNumber.bitAnd(other, env);
                 } else {
                     return super.bitAnd(other, env);
@@ -188,17 +188,17 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject bitNot(final Map<String, Object> env) {
+    public _Object bitNot(final Map<String, Object> env) {
         final Object value = getValue(env);
         if (value instanceof Number) {
-            return AviatorNumber.valueOf(value).bitNot(env);
+            return _Number.valueOf(value).bitNot(env);
         } else {
             return super.bitNot(env);
         }
     }
 
     @Override
-    public AviatorObject bitOr(final AviatorObject other, final Map<String, Object> env) {
+    public _Object bitOr(final _Object other, final Map<String, Object> env) {
         final Object value = getValue(env);
         switch (other.getAviatorType()) {
             case BigInt:
@@ -206,14 +206,14 @@ public class AviatorJavaType extends AviatorObject {
             case Long:
             case Double:
                 if (value instanceof Number) {
-                    AviatorNumber aviatorNumber = AviatorNumber.valueOf(value);
+                    _Number aviatorNumber = _Number.valueOf(value);
                     return aviatorNumber.bitOr(other, env);
                 } else {
                     return super.bitOr(other, env);
                 }
             case JavaType:
                 if (value instanceof Number) {
-                    AviatorNumber thisAviatorNumber = AviatorNumber.valueOf(value);
+                    _Number thisAviatorNumber = _Number.valueOf(value);
                     return thisAviatorNumber.bitOr(other, env);
                 } else {
                     return super.bitOr(other, env);
@@ -224,7 +224,7 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject bitXor(final AviatorObject other, final Map<String, Object> env) {
+    public _Object bitXor(final _Object other, final Map<String, Object> env) {
         final Object value = getValue(env);
         switch (other.getAviatorType()) {
             case BigInt:
@@ -232,14 +232,14 @@ public class AviatorJavaType extends AviatorObject {
             case Long:
             case Double:
                 if (value instanceof Number) {
-                    AviatorNumber aviatorNumber = AviatorNumber.valueOf(value);
+                    _Number aviatorNumber = _Number.valueOf(value);
                     return aviatorNumber.bitXor(other, env);
                 } else {
                     return super.bitXor(other, env);
                 }
             case JavaType:
                 if (value instanceof Number) {
-                    AviatorNumber thisAviatorNumber = AviatorNumber.valueOf(value);
+                    _Number thisAviatorNumber = _Number.valueOf(value);
                     return thisAviatorNumber.bitXor(other, env);
                 } else {
                     return super.bitXor(other, env);
@@ -250,7 +250,7 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject shiftLeft(final AviatorObject other, final Map<String, Object> env) {
+    public _Object shiftLeft(final _Object other, final Map<String, Object> env) {
         final Object value = getValue(env);
         switch (other.getAviatorType()) {
             case BigInt:
@@ -258,14 +258,14 @@ public class AviatorJavaType extends AviatorObject {
             case Long:
             case Double:
                 if (value instanceof Number) {
-                    AviatorNumber aviatorNumber = AviatorNumber.valueOf(value);
+                    _Number aviatorNumber = _Number.valueOf(value);
                     return aviatorNumber.shiftLeft(other, env);
                 } else {
                     return super.shiftLeft(other, env);
                 }
             case JavaType:
                 if (value instanceof Number) {
-                    AviatorNumber thisAviatorNumber = AviatorNumber.valueOf(value);
+                    _Number thisAviatorNumber = _Number.valueOf(value);
                     return thisAviatorNumber.shiftLeft(other, env);
                 } else {
                     return super.shiftLeft(other, env);
@@ -276,7 +276,7 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject shiftRight(final AviatorObject other, final Map<String, Object> env) {
+    public _Object shiftRight(final _Object other, final Map<String, Object> env) {
         final Object value = getValue(env);
         switch (other.getAviatorType()) {
             case BigInt:
@@ -284,14 +284,14 @@ public class AviatorJavaType extends AviatorObject {
             case Long:
             case Double:
                 if (value instanceof Number) {
-                    AviatorNumber aviatorNumber = AviatorNumber.valueOf(value);
+                    _Number aviatorNumber = _Number.valueOf(value);
                     return aviatorNumber.shiftRight(other, env);
                 } else {
                     return super.shiftRight(other, env);
                 }
             case JavaType:
                 if (value instanceof Number) {
-                    AviatorNumber thisAviatorNumber = AviatorNumber.valueOf(value);
+                    _Number thisAviatorNumber = _Number.valueOf(value);
                     return thisAviatorNumber.shiftRight(other, env);
                 } else {
                     return super.shiftRight(other, env);
@@ -302,8 +302,8 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject unsignedShiftRight(final AviatorObject other,
-                                            final Map<String, Object> env) {
+    public _Object unsignedShiftRight(final _Object other,
+                                      final Map<String, Object> env) {
         final Object value = getValue(env);
         switch (other.getAviatorType()) {
             case BigInt:
@@ -311,14 +311,14 @@ public class AviatorJavaType extends AviatorObject {
             case Long:
             case Double:
                 if (value instanceof Number) {
-                    AviatorNumber aviatorNumber = AviatorNumber.valueOf(value);
+                    _Number aviatorNumber = _Number.valueOf(value);
                     return aviatorNumber.unsignedShiftRight(other, env);
                 } else {
                     return super.unsignedShiftRight(other, env);
                 }
             case JavaType:
                 if (value instanceof Number) {
-                    AviatorNumber thisAviatorNumber = AviatorNumber.valueOf(value);
+                    _Number thisAviatorNumber = _Number.valueOf(value);
                     return thisAviatorNumber.unsignedShiftRight(other, env);
                 } else {
                     return super.unsignedShiftRight(other, env);
@@ -368,7 +368,7 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject defineValue(final AviatorObject value, final Map<String, Object> env) {
+    public _Object defineValue(final _Object value, final Map<String, Object> env) {
         if (this.containsDot) {
             return setProperty(value, env);
         }
@@ -383,7 +383,7 @@ public class AviatorJavaType extends AviatorObject {
             if (existsFn instanceof DispatchFunction) {
                 // It's already an overload function, install the new branch.
                 ((DispatchFunction) existsFn).install((LambdaFunction) v);
-                return AviatorRuntimeJavaType.valueOf(existsFn);
+                return _RuntimeJavaType.valueOf(existsFn);
             } else if (existsFn instanceof LambdaFunction) {
                 // cast it to an overload function
                 DispatchFunction newFn = new DispatchFunction(this.name);
@@ -402,29 +402,29 @@ public class AviatorJavaType extends AviatorObject {
         }
 
         ((Env) env).override(this.name, v);
-        return AviatorRuntimeJavaType.valueOf(v);
+        return _RuntimeJavaType.valueOf(v);
     }
 
-    private Object getAssignedValue(final AviatorObject value, final Map<String, Object> env) {
+    private Object getAssignedValue(final _Object value, final Map<String, Object> env) {
         Object v = value.getValue(env);
-        if (v instanceof AviatorObject) {
-            v = ((AviatorObject) v).self(env);
+        if (v instanceof _Object) {
+            v = ((_Object) v).self(env);
         }
         return v;
     }
 
     @Override
-    public AviatorObject setValue(final AviatorObject value, final Map<String, Object> env) {
+    public _Object setValue(final _Object value, final Map<String, Object> env) {
         if (this.containsDot) {
             return setProperty(value, env);
         }
 
         Object v = getAssignedValue(value, env);
         env.put(this.name, v);
-        return AviatorRuntimeJavaType.valueOf(v);
+        return _RuntimeJavaType.valueOf(v);
     }
 
-    private AviatorObject setProperty(final AviatorObject value, final Map<String, Object> env) {
+    private _Object setProperty(final _Object value, final Map<String, Object> env) {
         if (RuntimeUtils.getInstance(env).getOptionValue(Options.ENABLE_PROPERTY_SYNTAX_SUGAR).bool) {
             Object v = value.getValue(env);
             try {
@@ -435,7 +435,7 @@ public class AviatorJavaType extends AviatorObject {
                 }
                 throw Reflector.sneakyThrow(t);
             }
-            return AviatorRuntimeJavaType.valueOf(v);
+            return _RuntimeJavaType.valueOf(v);
         } else {
             throw new ExpressionRuntimeException("Can't assign value to " + this.name
                     + ", Options.ENABLE_PROPERTY_SYNTAX_SUGAR is disabled.");
@@ -474,7 +474,7 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject mod(final AviatorObject other, final Map<String, Object> env) {
+    public _Object mod(final _Object other, final Map<String, Object> env) {
         final Object value = getValue(env);
         switch (other.getAviatorType()) {
             case BigInt:
@@ -482,14 +482,14 @@ public class AviatorJavaType extends AviatorObject {
             case Long:
             case Double:
                 if (value instanceof Number) {
-                    AviatorNumber aviatorNumber = AviatorNumber.valueOf(value);
+                    _Number aviatorNumber = _Number.valueOf(value);
                     return aviatorNumber.mod(other, env);
                 } else {
                     return super.mod(other, env);
                 }
             case JavaType:
                 if (value instanceof Number) {
-                    AviatorNumber thisAviatorNumber = AviatorNumber.valueOf(value);
+                    _Number thisAviatorNumber = _Number.valueOf(value);
                     return thisAviatorNumber.mod(other, env);
                 } else {
                     return super.mod(other, env);
@@ -500,7 +500,7 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject sub(final AviatorObject other, final Map<String, Object> env) {
+    public _Object sub(final _Object other, final Map<String, Object> env) {
         final Object value = getValue(env);
         switch (other.getAviatorType()) {
             case BigInt:
@@ -508,14 +508,14 @@ public class AviatorJavaType extends AviatorObject {
             case Long:
             case Double:
                 if (value instanceof Number) {
-                    AviatorNumber aviatorNumber = AviatorNumber.valueOf(value);
+                    _Number aviatorNumber = _Number.valueOf(value);
                     return aviatorNumber.sub(other, env);
                 } else {
                     return super.sub(other, env);
                 }
             case JavaType:
                 if (value instanceof Number) {
-                    AviatorNumber thisAviatorNumber = AviatorNumber.valueOf(value);
+                    _Number thisAviatorNumber = _Number.valueOf(value);
                     return thisAviatorNumber.sub(other, env);
                 } else {
                     return super.sub(other, env);
@@ -527,7 +527,7 @@ public class AviatorJavaType extends AviatorObject {
 
     @Override
     @SuppressWarnings("unchecked")
-    public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
+    public int innerCompare(final _Object other, final Map<String, Object> env) {
         if (this == other) {
             return 0;
         }
@@ -536,33 +536,33 @@ public class AviatorJavaType extends AviatorObject {
             case Decimal:
             case Long:
             case Double:
-                AviatorNumber aviatorNumber = (AviatorNumber) other;
+                _Number aviatorNumber = (_Number) other;
                 return -aviatorNumber.innerCompare(this, env);
             case String:
-                AviatorString aviatorString = (AviatorString) other;
+                _String aviatorString = (_String) other;
                 return -aviatorString.innerCompare(this, env);
             case Boolean:
-                AviatorBoolean aviatorBoolean = (AviatorBoolean) other;
+                _Bool aviatorBoolean = (_Bool) other;
                 return -aviatorBoolean.innerCompare(this, env);
             case JavaType:
 
-                AviatorJavaType otherJavaType = (AviatorJavaType) other;
+                _JavaType otherJavaType = (_JavaType) other;
                 final Object thisValue = getValue(env);
                 final Object otherValue = otherJavaType.getValue(env);
                 if (thisValue == null) {
-                    return AviatorNil.NIL.innerCompare(other, env);
+                    return _Null.NIL.innerCompare(other, env);
                 }
                 if (thisValue.equals(otherValue)) {
                     return 0;
                 } else {
                     if (thisValue instanceof Number) {
-                        AviatorNumber thisAviatorNumber = AviatorNumber.valueOf(thisValue);
+                        _Number thisAviatorNumber = _Number.valueOf(thisValue);
                         return thisAviatorNumber.innerCompare(other, env);
                     } else if (TypeUtils.isString(thisValue)) {
-                        AviatorString thisAviatorString = new AviatorString(String.valueOf(thisValue));
+                        _String thisAviatorString = new _String(String.valueOf(thisValue));
                         return thisAviatorString.innerCompare(other, env);
                     } else if (thisValue instanceof Boolean) {
-                        AviatorBoolean thisAviatorBoolean = AviatorBoolean.valueOf((Boolean) thisValue);
+                        _Bool thisAviatorBoolean = _Bool.valueOf((Boolean) thisValue);
                         return thisAviatorBoolean.innerCompare(other, env);
                     } else if (thisValue instanceof Date && otherValue instanceof String) {
                         // This is date,other is string
@@ -601,7 +601,7 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject mult(final AviatorObject other, final Map<String, Object> env) {
+    public _Object mult(final _Object other, final Map<String, Object> env) {
         final Object value = getValue(env);
         switch (other.getAviatorType()) {
             case BigInt:
@@ -609,14 +609,14 @@ public class AviatorJavaType extends AviatorObject {
             case Long:
             case Double:
                 if (value instanceof Number) {
-                    AviatorNumber aviatorNumber = AviatorNumber.valueOf(value);
+                    _Number aviatorNumber = _Number.valueOf(value);
                     return aviatorNumber.mult(other, env);
                 } else {
                     return super.mult(other, env);
                 }
             case JavaType:
                 if (value instanceof Number) {
-                    AviatorNumber thisAviatorNumber = AviatorNumber.valueOf(value);
+                    _Number thisAviatorNumber = _Number.valueOf(value);
                     return thisAviatorNumber.mult(other, env);
                 } else {
                     return super.mult(other, env);
@@ -627,20 +627,20 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject neg(final Map<String, Object> env) {
+    public _Object neg(final Map<String, Object> env) {
         final Object value = getValue(env);
         if (value instanceof Number) {
-            return AviatorNumber.valueOf(value).neg(env);
+            return _Number.valueOf(value).neg(env);
         } else {
             return super.neg(env);
         }
     }
 
     @Override
-    public AviatorObject not(final Map<String, Object> env) {
+    public _Object not(final Map<String, Object> env) {
         final Object value = getValue(env);
         if (value instanceof Boolean) {
-            return AviatorBoolean.valueOf((Boolean) value).not(env);
+            return _Bool.valueOf((Boolean) value).not(env);
         } else {
             return super.not(env);
         }
@@ -654,13 +654,13 @@ public class AviatorJavaType extends AviatorObject {
      * @return
      */
     @Override
-    public AviatorObject getElement(final Map<String, Object> env, final AviatorObject indexObject) {
+    public _Object getElement(final Map<String, Object> env, final _Object indexObject) {
         final Object thisValue = getValue(env);
         final Object indexValue = indexObject.getValue(env);
 
         if (thisValue.getClass().isArray()) {
             final int index = ((Number) indexValue).intValue();
-            return new AviatorRuntimeJavaElementType(ContainerType.Array, thisValue, index,
+            return new _RuntimeJavaElementType(ContainerType.Array, thisValue, index,
                     new Callable<Object>() {
                         @Override
                         public Object call() throws Exception {
@@ -669,7 +669,7 @@ public class AviatorJavaType extends AviatorObject {
                     });
         } else if (thisValue instanceof List) {
             final int index = ((Number) indexValue).intValue();
-            return new AviatorRuntimeJavaElementType(ContainerType.List, thisValue, index,
+            return new _RuntimeJavaElementType(ContainerType.List, thisValue, index,
                     new Callable<Object>() {
 
                         @Override
@@ -679,7 +679,7 @@ public class AviatorJavaType extends AviatorObject {
 
                     });
         } else if (thisValue instanceof Map) {
-            return new AviatorRuntimeJavaElementType(ContainerType.Map, thisValue, indexValue,
+            return new _RuntimeJavaElementType(ContainerType.Map, thisValue, indexValue,
                     new Callable<Object>() {
 
                         @Override
@@ -695,19 +695,19 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
+    public _Object add(final _Object other, final Map<String, Object> env) {
         final Object value = getValue(env);
         Object otherValue;
         if (value instanceof Number) {
-            AviatorNumber aviatorNumber = AviatorNumber.valueOf(value);
+            _Number aviatorNumber = _Number.valueOf(value);
             return aviatorNumber.add(other, env);
         } else if (TypeUtils.isString(value)) {
-            AviatorString aviatorString = new AviatorString(String.valueOf(value));
+            _String aviatorString = new _String(String.valueOf(value));
             return aviatorString.add(other, env);
         } else if (value instanceof Boolean) {
-            return AviatorBoolean.valueOf((Boolean) value).add(other, env);
+            return _Bool.valueOf((Boolean) value).add(other, env);
         } else if (value == null && (otherValue = other.getValue(env)) instanceof CharSequence) {
-            return new AviatorString("null" + otherValue);
+            return new _String("null" + otherValue);
         } else {
             return super.add(other, env);
         }

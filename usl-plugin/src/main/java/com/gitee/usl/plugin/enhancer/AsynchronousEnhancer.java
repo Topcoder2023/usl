@@ -2,7 +2,6 @@ package com.gitee.usl.plugin.enhancer;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.lang.Singleton;
-import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
@@ -19,7 +18,7 @@ public class AsynchronousEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        Async async = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().getMethod(), Async.class);
+        Async async = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().method(), Async.class);
         if (async == null) {
             return;
         }
@@ -30,7 +29,7 @@ public class AsynchronousEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        Async async = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().getTargetType(), Async.class);
+        Async async = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().targetType(), Async.class);
         if (async == null) {
             return;
         }

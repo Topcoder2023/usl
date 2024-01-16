@@ -5,7 +5,7 @@ import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
@@ -92,7 +92,7 @@ public class LibraryGenerator {
         for (Parameter parameter : parameters) {
             Class<?> paramType = parameter.getType();
 
-            if (Arrays.asList(USLRunner.class,
+            if (Arrays.asList(Runner.class,
                     Env.class,
                     FunctionSession.class).contains(paramType)) {
                 boolWrapper.set(true);
@@ -142,7 +142,7 @@ public class LibraryGenerator {
         private final Set<String> functionSet = new HashSet<>(NumberConstant.COMMON_SIZE);
 
         public LibraryGeneratorBuilder all() {
-            return this.packageName(USLRunner.class);
+            return this.packageName(Runner.class);
         }
 
         public LibraryGeneratorBuilder output(String path) {

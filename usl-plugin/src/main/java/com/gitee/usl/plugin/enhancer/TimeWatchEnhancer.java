@@ -19,7 +19,7 @@ public class TimeWatchEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        TimeWatchable watchable = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().getMethod(), TimeWatchable.class);
+        TimeWatchable watchable = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().method(), TimeWatchable.class);
         if (watchable == null) {
             return;
         }
@@ -29,7 +29,7 @@ public class TimeWatchEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        TimeWatchable watchable = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().getTargetType(), TimeWatchable.class);
+        TimeWatchable watchable = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().targetType(), TimeWatchable.class);
         if (watchable == null) {
             return;
         }

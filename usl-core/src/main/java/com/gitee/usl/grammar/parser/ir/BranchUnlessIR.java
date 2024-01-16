@@ -2,7 +2,7 @@ package com.gitee.usl.grammar.parser.ir;
 
 import com.gitee.usl.grammar.parser.IR;
 import com.gitee.usl.grammar.parser.InterpretContext;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Object;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -30,7 +30,7 @@ public class BranchUnlessIR implements IR, JumpIR {
 
     @Override
     public void eval(final InterpretContext context) {
-        AviatorObject top = context.peek();
+        _Object top = context.peek();
         if (!top.booleanValue(context.getEnv())) {
             context.jumpTo(this.pc);
             context.dispatch(false);

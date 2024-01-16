@@ -22,7 +22,7 @@ public class RetryableEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        Retryable retryable = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().getMethod(), Retryable.class);
+        Retryable retryable = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().method(), Retryable.class);
         if (retryable == null) {
             return;
         }
@@ -33,7 +33,7 @@ public class RetryableEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        Retryable retryable = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().getTargetType(), Retryable.class);
+        Retryable retryable = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().targetType(), Retryable.class);
         if (retryable == null) {
             return;
         }

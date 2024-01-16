@@ -8,7 +8,7 @@ import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.structure.Plugins;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.grammar.runtime.function.BasicFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Env;
 
 import java.util.*;
@@ -33,7 +33,7 @@ public class AnnotatedFunction extends BasicFunction implements FunctionPluggabl
     }
 
     @Override
-    public AviatorObject execute(Env env, AviatorObject[] arguments) {
+    public _Object execute(Env env, _Object[] arguments) {
 
         @Description("函数实参数量")
         int actualArgsLength = ArrayUtil.length(arguments);

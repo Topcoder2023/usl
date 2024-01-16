@@ -6,7 +6,7 @@ import com.gitee.usl.api.Overloaded;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.utils.LambdaHelper;
-import com.gitee.usl.grammar.runtime.type.Function;
+import com.gitee.usl.grammar.runtime.type._Function;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -24,7 +24,7 @@ public class FunctionHolder {
     private final Map<String, String> aliasMap;
 
     @Description("函数名称映射")
-    private final Map<String, Function> container;
+    private final Map<String, _Function> container;
 
     public FunctionHolder() {
         this.aliasMap = new HashMap<>(NumberConstant.EIGHT);
@@ -32,10 +32,10 @@ public class FunctionHolder {
     }
 
     @Description("注册函数")
-    public void register(Function function) {
+    public void register(_Function function) {
         String name = function.name();
 
-        Function found = this.container.get(name);
+        _Function found = this.container.get(name);
 
         if (found != null) {
 
@@ -60,7 +60,7 @@ public class FunctionHolder {
     }
 
     @Description("注册函数")
-    public void register(Function function, Set<String> alias) {
+    public void register(_Function function, Set<String> alias) {
         this.register(function);
 
         if (CollUtil.isEmpty(alias)) {
@@ -77,17 +77,17 @@ public class FunctionHolder {
     }
 
     @Description("遍历函数")
-    public void onVisit(Consumer<Function> consumer) {
+    public void onVisit(Consumer<_Function> consumer) {
         this.onVisit(LambdaHelper.anyTrue(), consumer);
     }
 
     @Description("遍历指定函数")
-    public void onVisit(Predicate<Function> predicate, Consumer<Function> consumer) {
+    public void onVisit(Predicate<_Function> predicate, Consumer<_Function> consumer) {
         this.toList().stream().filter(predicate).forEach(consumer);
     }
 
     @Description("通过函数名称检索函数实例")
-    public Function search(String name) {
+    public _Function search(String name) {
         final String key;
 
         if (!this.container.containsKey(name)) {
@@ -100,8 +100,8 @@ public class FunctionHolder {
     }
 
     @Description("获取所有函数实例")
-    public List<Function> toList() {
-        List<Function> functions = new ArrayList<>(this.container.values());
+    public List<_Function> toList() {
+        List<_Function> functions = new ArrayList<>(this.container.values());
         this.container.values()
                 .stream()
                 .filter(item -> item instanceof Overloaded)

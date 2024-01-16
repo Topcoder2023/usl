@@ -28,34 +28,34 @@ public record LoadIR(Token<?> token) implements IR {
                 Number number = ((NumberToken) this.token).getNumber();
 
                 if (TypeUtils.isBigInt(number)) {
-                    context.push(AviatorBigInt.valueOf(this.token.getLexeme()), this.token);
+                    context.push(_BigInt.valueOf(this.token.getLexeme()), this.token);
                 } else if (TypeUtils.isDecimal(number)) {
-                    context.push(AviatorDecimal.valueOf(context.getEnv(), this.token.getLexeme()), this.token);
+                    context.push(_Decimal.valueOf(context.getEnv(), this.token.getLexeme()), this.token);
                 } else if (TypeUtils.isDouble(number)) {
-                    context.push(AviatorDouble.valueOf(number.doubleValue()), this.token);
+                    context.push(_Double.valueOf(number.doubleValue()), this.token);
                 } else {
-                    context.push(AviatorLong.valueOf(number.longValue()), this.token);
+                    context.push(_Long.valueOf(number.longValue()), this.token);
                 }
                 break;
             case String:
-                context.push(new AviatorString((String) this.token.getValue(null),
+                context.push(new _String((String) this.token.getValue(null),
                                 true,
                                 this.token.getMeta(Constants.INTER_META, true),
                                 this.token.getLineNo()),
                         this.token);
                 break;
             case Pattern:
-                context.push(new AviatorPattern((String) this.token.getValue(null)), this.token);
+                context.push(new _Pattern((String) this.token.getValue(null)), this.token);
                 break;
             case Variable:
                 if (this.token == Variable.TRUE) {
-                    context.push(AviatorBoolean.TRUE, this.token);
+                    context.push(_Bool.TRUE, this.token);
                 } else if (this.token == Variable.FALSE) {
-                    context.push(AviatorBoolean.FALSE, this.token);
+                    context.push(_Bool.FALSE, this.token);
                 } else if (this.token == Variable.NIL) {
-                    context.push(AviatorNil.NIL, this.token);
+                    context.push(_Null.NIL, this.token);
                 } else {
-                    AviatorJavaType var = new AviatorJavaType(this.token.getLexeme());
+                    _JavaType var = new _JavaType(this.token.getLexeme());
                     context.push(var, this.token);
                 }
                 break;

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author hongda.li
  */
-public enum AviatorType implements Serializable {
+public enum _Type implements Serializable {
     Long,
     Double,
     String,

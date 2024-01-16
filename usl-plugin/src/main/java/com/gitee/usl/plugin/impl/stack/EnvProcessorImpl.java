@@ -2,24 +2,17 @@ package com.gitee.usl.plugin.impl.stack;
 
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.kernel.engine.FunctionSession;
-import com.gitee.usl.grammar.ScriptProcessor;
+import com.gitee.usl.api.ScriptProcessor;
 import com.gitee.usl.grammar.script.Script;
 import com.gitee.usl.grammar.utils.Env;
-import lombok.Getter;
-import lombok.ToString;
 
 import java.util.Map;
 
 /**
  * @author hongda.li
  */
-@Getter
-@ToString
 @Description("上下文环境处理器")
-public class EnvProcessorImpl implements ScriptProcessor {
-
-    @Description("USL执行器的名称")
-    private final String runnerName;
+public record EnvProcessorImpl(@Description("USL执行器的名称") String runnerName) implements ScriptProcessor {
 
     public EnvProcessorImpl(String runnerName) {
         this.runnerName = runnerName;

@@ -2,8 +2,8 @@ package com.gitee.usl.grammar.runtime.function.internal;
 
 import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.grammar.runtime.function.BasicFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorNil;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Null;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Env;
 
 /**
@@ -20,8 +20,8 @@ public class ReducerBreakFunction extends BasicFunction {
     }
 
     @Override
-    public AviatorObject execute(Env env, AviatorObject[] arguments) {
-        return ReducerResult.withBreak(AviatorNil.NIL);
+    public _Object execute(Env env, _Object[] arguments) {
+        return ReducerResult.withBreak(_Null.NIL);
     }
 
 }

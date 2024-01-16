@@ -16,14 +16,14 @@ public class LoggerPluginEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        if (AnnotationUtil.hasAnnotation(af.definition().getMethodMeta().getMethod(), EnableLogger.class)) {
+        if (AnnotationUtil.hasAnnotation(af.definition().getMethodMeta().method(), EnableLogger.class)) {
             af.plugins().install(Singleton.get(LoggerPlugin.class));
         }
     }
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        if (AnnotationUtil.hasAnnotation(nf.definition().getMethodMeta().getTargetType(), EnableLogger.class)) {
+        if (AnnotationUtil.hasAnnotation(nf.definition().getMethodMeta().targetType(), EnableLogger.class)) {
             nf.plugins().install(Singleton.get(LoggerPlugin.class));
         }
     }

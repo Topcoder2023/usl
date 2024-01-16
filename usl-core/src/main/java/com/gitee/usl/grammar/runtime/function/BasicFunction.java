@@ -1,20 +1,19 @@
 package com.gitee.usl.grammar.runtime.function;
 
-import com.gitee.usl.grammar.runtime.type.AviatorType;
-import com.gitee.usl.grammar.utils.Env;
-import com.gitee.usl.grammar.runtime.type.Function;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Type;
+import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.grammar.runtime.type._Object;
 
 import java.util.Map;
 
 /**
  * @author hongda.li
  */
-public abstract class BasicFunction extends AviatorObject implements Function {
+public abstract class BasicFunction extends _Object implements _Function {
 
     @Override
-    public AviatorType getAviatorType() {
-        return AviatorType.Lambda;
+    public _Type getAviatorType() {
+        return _Type.Lambda;
     }
 
     @Override

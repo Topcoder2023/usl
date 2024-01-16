@@ -6,8 +6,8 @@ import cn.hutool.core.comparator.CompareUtil;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.grammar.runtime.function.FunctionUtils;
-import com.gitee.usl.grammar.runtime.type.Function;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Env;
 
 import java.util.*;
@@ -92,12 +92,12 @@ public class ListFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("list_removeIf")
-    public <T> List<T> removeIf(Env env, List<T> from, Function function) {
+    public <T> List<T> removeIf(Env env, List<T> from, _Function function) {
         if (from == null || function == null) {
             return from;
         }
         return CollUtil.removeWithAddIf(from, element -> {
-            AviatorObject result = function.execute(env, FunctionUtils.wrapReturn(element));
+            _Object result = function.execute(env, FunctionUtils.wrapReturn(element));
             return FunctionUtils.getBooleanValue(result, env);
         });
     }
@@ -141,23 +141,23 @@ public class ListFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("list_sortBy")
-    public <T> List<T> sortBy(Env env, List<T> from, Function function) {
+    public <T> List<T> sortBy(Env env, List<T> from, _Function function) {
         return resortBy(env, from, function, false);
     }
 
     @com.gitee.usl.api.annotation.Function("list_resortBy")
-    public <T> List<T> resortBy(Env env, List<T> from, Function function) {
+    public <T> List<T> resortBy(Env env, List<T> from, _Function function) {
         return resortBy(env, from, function, true);
     }
 
-    private <T> List<T> resortBy(Env env, List<T> from, Function function, boolean reverse) {
+    private <T> List<T> resortBy(Env env, List<T> from, _Function function, boolean reverse) {
         if (from == null) {
             return new ArrayList<>();
         }
 
         List<T> sorted = new ArrayList<>(from);
         sorted.sort((o1, o2) -> {
-            AviatorObject result = function.execute(env,
+            _Object result = function.execute(env,
                     FunctionUtils.wrapReturn(reverse ? o2 : o1),
                     FunctionUtils.wrapReturn(reverse ? o1 : o2));
             return FunctionUtils.getNumberValue(result, env).intValue();
@@ -171,13 +171,13 @@ public class ListFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("list_filter")
-    public <T> List<T> filter(Env env, List<T> from, Function function) {
+    public <T> List<T> filter(Env env, List<T> from, _Function function) {
         if (from == null || function == null) {
             return from;
         }
         return from.stream()
                 .filter(element -> {
-                    AviatorObject result = function.execute(env, FunctionUtils.wrapReturn(element));
+                    _Object result = function.execute(env, FunctionUtils.wrapReturn(element));
                     return FunctionUtils.getBooleanValue(result, env);
                 })
                 .collect(Collectors.toList());
@@ -239,31 +239,31 @@ public class ListFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("list_allMatch")
-    public <T> boolean allMatch(Env env, List<T> from, Function function) {
+    public <T> boolean allMatch(Env env, List<T> from, _Function function) {
         return CollUtil.allMatch(from, element -> FunctionUtils.getBooleanValue(function.execute(env, FunctionUtils.wrapReturn(element)), env));
     }
 
     @com.gitee.usl.api.annotation.Function("list_anyMatch")
-    public <T> boolean anyMatch(Env env, List<T> from, Function function) {
+    public <T> boolean anyMatch(Env env, List<T> from, _Function function) {
         return CollUtil.anyMatch(from, element -> FunctionUtils.getBooleanValue(function.execute(env, FunctionUtils.wrapReturn(element)), env));
     }
 
     @com.gitee.usl.api.annotation.Function("list_toMap")
-    public <T> Map<?, ?> toMap(Env env, List<T> from, Function keyMapping, Function valueMapping) {
+    public <T> Map<?, ?> toMap(Env env, List<T> from, _Function keyMapping, _Function valueMapping) {
         if (from == null || keyMapping == null || valueMapping == null) {
             return new LinkedHashMap<>(NumberConstant.EIGHT);
         }
         Map<Object, Object> result = new LinkedHashMap<>(from.size());
         for (T element : from) {
-            AviatorObject key = keyMapping.execute(env, FunctionUtils.wrapReturn(element));
-            AviatorObject value = valueMapping.execute(env, FunctionUtils.wrapReturn(element));
+            _Object key = keyMapping.execute(env, FunctionUtils.wrapReturn(element));
+            _Object value = valueMapping.execute(env, FunctionUtils.wrapReturn(element));
             result.put(key.getValue(env), value.getValue(env));
         }
         return result;
     }
 
     @com.gitee.usl.api.annotation.Function("list_foreach")
-    public <T> List<T> foreach(Env env, List<T> from, Function function) {
+    public <T> List<T> foreach(Env env, List<T> from, _Function function) {
         if (from != null) {
             from.forEach(element -> function.execute(env, FunctionUtils.wrapReturn(element)));
         }
@@ -271,7 +271,7 @@ public class ListFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("list_convert")
-    public <T> List<?> convert(Env env, List<T> from, Function function) {
+    public <T> List<?> convert(Env env, List<T> from, _Function function) {
         List<?> result;
         if (from != null && function != null) {
             result = from.stream()
@@ -284,7 +284,7 @@ public class ListFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("list_group")
-    public <E> Map<?, List<E>> group(Env env, List<E> from, Function function) {
+    public <E> Map<?, List<E>> group(Env env, List<E> from, _Function function) {
         if (from == null || function == null) {
             return new LinkedHashMap<>(NumberConstant.EIGHT);
         }

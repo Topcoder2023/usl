@@ -1,7 +1,7 @@
 package com.gitee.usl.all;
 
 import cn.hutool.core.util.ArrayUtil;
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.infra.enums.InteractiveMode;
 import com.gitee.usl.kernel.configure.Configuration;
 
@@ -10,7 +10,7 @@ import com.gitee.usl.kernel.configure.Configuration;
  */
 public class Application {
     public static void main(String[] args) {
-        final USLRunner runner = new USLRunner(Application.globalConfig());
+        final Runner runner = new Runner(Application.globalConfig());
 
         if (ArrayUtil.isEmpty(args)) {
             runner.start();
@@ -20,6 +20,6 @@ public class Application {
     }
 
     public static Configuration globalConfig() {
-        return USLRunner.defaultConfiguration();
+        return Runner.defaultConfiguration();
     }
 }

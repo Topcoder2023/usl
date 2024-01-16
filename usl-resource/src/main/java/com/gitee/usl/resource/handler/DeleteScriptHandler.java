@@ -1,7 +1,7 @@
 package com.gitee.usl.resource.handler;
 
 import cn.hutool.core.io.FileUtil;
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.resource.ScriptSearcher;
 import com.gitee.usl.resource.api.WebHandler;
 import com.gitee.usl.resource.api.WebHelper;
@@ -30,7 +30,7 @@ public class DeleteScriptHandler implements WebHandler {
     public void doHandle(HttpRequest request, HttpResponse response) {
         List<ScriptInfo> scriptInfo = this.parseToArray(ScriptInfo.class);
 
-        USLRunner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
+        Runner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
 
         for (ScriptInfo info : scriptInfo) {
             File file = new File(ScriptSearcher.buildScriptPath(runner, info));

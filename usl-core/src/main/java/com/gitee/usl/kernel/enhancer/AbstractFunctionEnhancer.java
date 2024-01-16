@@ -4,7 +4,7 @@ import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
-import com.gitee.usl.grammar.runtime.type.Function;
+import com.gitee.usl.grammar.runtime.type._Function;
 
 import java.lang.reflect.Proxy;
 
@@ -14,7 +14,7 @@ import java.lang.reflect.Proxy;
 @Description("使用模板模式构建函数增强逻辑")
 public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
     @Override
-    public void enhance(Function function) {
+    public void enhance(_Function function) {
 
         @Description("代理类标识")
         boolean isProxy = Proxy.isProxyClass(function.getClass());
@@ -29,7 +29,7 @@ public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
     }
 
     @Description("增强普通函数")
-    protected void enhanceFunction(Function func) {
+    protected void enhanceFunction(_Function func) {
     }
 
     @Description("增强代理函数")

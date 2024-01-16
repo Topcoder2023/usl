@@ -1,7 +1,7 @@
 package com.gitee.usl.api;
 
 import com.gitee.usl.kernel.configure.EngineConfig;
-import com.gitee.usl.grammar.runtime.type.Function;
+import com.gitee.usl.grammar.runtime.type._Function;
 
 import java.util.List;
 
@@ -16,5 +16,5 @@ public interface FunctionLoader {
      * @param configuration 脚本引擎配置
      * @return 函数定义信息集合
      */
-    List<Function> load(EngineConfig configuration);
+    List<_Function> load(EngineConfig configuration);
 }

@@ -1,6 +1,6 @@
 package com.gitee.usl.function;
 
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.kernel.domain.ResourceParam;
 
 /**
@@ -8,7 +8,7 @@ import com.gitee.usl.kernel.domain.ResourceParam;
  */
 class Test {
     public static void main(String[] args) {
-        USLRunner runner = new USLRunner();
+        Runner runner = new Runner();
         runner.start();
 
         System.out.println(runner.run(new ResourceParam("desktop.js")));

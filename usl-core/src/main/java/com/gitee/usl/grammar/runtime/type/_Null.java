@@ -25,25 +25,25 @@ import com.gitee.usl.grammar.utils.TypeUtils;
  * @author dennis
  *
  */
-public class AviatorNil extends AviatorObject {
+public class _Null extends _Object {
   private static final long serialVersionUID = 5030890238879926682L;
-  public static final AviatorNil NIL = new AviatorNil();
+  public static final _Null NIL = new _Null();
 
 
-  private AviatorNil() {
+  private _Null() {
 
   }
 
 
   @Override
-  public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
+  public _Object add(final _Object other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case String:
-        return new AviatorString("null" + other.getValue(env));
+        return new _String("null" + other.getValue(env));
       case JavaType:
         final Object otherValue = other.getValue(env);
         if (TypeUtils.isString(otherValue)) {
-          return new AviatorString("null" + otherValue);
+          return new _String("null" + otherValue);
         } else {
           return super.add(other, env);
         }
@@ -54,7 +54,7 @@ public class AviatorNil extends AviatorObject {
 
 
   @Override
-  public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
+  public int innerCompare(final _Object other, final Map<String, Object> env) {
     switch (other.getAviatorType()) {
       case Nil:
         return 0;
@@ -69,8 +69,8 @@ public class AviatorNil extends AviatorObject {
 
 
   @Override
-  public AviatorType getAviatorType() {
-    return AviatorType.Nil;
+  public _Type getAviatorType() {
+    return _Type.Nil;
   }
 
 

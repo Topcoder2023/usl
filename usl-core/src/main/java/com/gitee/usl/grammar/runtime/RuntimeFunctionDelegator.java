@@ -7,13 +7,13 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.grammar.runtime.function.BasicFunction;
 import com.gitee.usl.grammar.runtime.function.system.ConstantFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorJavaType;
+import com.gitee.usl.grammar.runtime.type._JavaType;
 import com.gitee.usl.api.FunctionMissing;
 import com.gitee.usl.grammar.utils.Env;
 import com.googlecode.aviator.exception.FunctionNotFoundException;
 import com.gitee.usl.grammar.ScriptKeyword;
-import com.gitee.usl.grammar.runtime.type.Function;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Constants;
 import lombok.Getter;
 
@@ -51,11 +51,11 @@ public final class RuntimeFunctionDelegator extends BasicFunction {
         this.containsDot = this.name.contains(StrPool.DOT);
     }
 
-    private Function getFunc(final Map<String, Object> env, final AviatorObject... args) {
+    private _Function getFunc(final Map<String, Object> env, final _Object... args) {
         if (this.containsDot && this.subNames == null) {
             this.subNames = Constants.SPLIT_PAT.split(this.name);
         }
-        Function func = this.tryGetFuncFromEnv(env);
+        _Function func = this.tryGetFuncFromEnv(env);
         if (func != null) {
             return func;
         }
@@ -65,10 +65,10 @@ public final class RuntimeFunctionDelegator extends BasicFunction {
         throw new FunctionNotFoundException("Function not found: " + this.name);
     }
 
-    private Function tryGetFuncFromEnv(final Map<String, Object> env) {
-        Object val = AviatorJavaType.getValueFromEnv(this.name, this.containsDot, this.subNames, env, false, true);
-        if (val instanceof Function) {
-            return (Function) val;
+    private _Function tryGetFuncFromEnv(final Map<String, Object> env) {
+        Object val = _JavaType.getValueFromEnv(this.name, this.containsDot, this.subNames, env, false, true);
+        if (val instanceof _Function) {
+            return (_Function) val;
         }
         return null;
     }
@@ -79,7 +79,7 @@ public final class RuntimeFunctionDelegator extends BasicFunction {
     }
 
     @Override
-    public AviatorObject execute(Env env, AviatorObject... arguments) {
+    public _Object execute(Env env, _Object... arguments) {
         return getFunc(env, arguments).execute(env, arguments);
     }
 

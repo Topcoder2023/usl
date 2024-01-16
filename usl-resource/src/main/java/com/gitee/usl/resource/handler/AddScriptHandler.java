@@ -3,10 +3,8 @@ package com.gitee.usl.resource.handler;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.text.StrPool;
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.infra.constant.ModuleConstant;
-import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.resource.ScriptSearcher;
 import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.api.WebHandler;
@@ -41,7 +39,7 @@ public class AddScriptHandler implements WebHandler {
             scriptInfo.setBelongs(ModuleConstant.DEFAULT);
         }
 
-        USLRunner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
+        Runner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
         File file = new File(ScriptSearcher.buildScriptPath(runner, scriptInfo));
         FileWriter writer = new FileWriter(file);
 

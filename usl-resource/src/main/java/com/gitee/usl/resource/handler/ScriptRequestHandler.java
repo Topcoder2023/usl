@@ -1,6 +1,6 @@
 package com.gitee.usl.resource.handler;
 
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
 import com.gitee.usl.resource.ScriptSearcher;
@@ -8,7 +8,6 @@ import com.gitee.usl.resource.api.WebHandler;
 import com.gitee.usl.resource.api.WebHelper;
 import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.entity.ScriptInfo;
-import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartboot.http.server.HttpRequest;
@@ -43,7 +42,7 @@ public class ScriptRequestHandler implements WebHandler {
                 logger.debug("收到脚本请求 : {}", scriptInfo.getScriptName());
             }
 
-            USLRunner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
+            Runner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
 
             Result result = runner.run(new Param(find.getContent()));
 

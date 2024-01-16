@@ -3,7 +3,7 @@ package com.gitee.usl.plugin.impl.sensitive;
 import cn.hutool.core.lang.Singleton;
 import com.gitee.usl.api.plugin.SuccessPlugin;
 import com.gitee.usl.kernel.engine.FunctionSession;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Object;
 
 import java.util.Optional;
 
@@ -22,8 +22,8 @@ public class SensitivePlugin implements SuccessPlugin {
     @Override
     public void onSuccess(FunctionSession session) {
         Object original;
-        if (session.getResult() instanceof AviatorObject) {
-            original = ((AviatorObject) session.getResult()).getValue(session.getEnv());
+        if (session.getResult() instanceof _Object) {
+            original = ((_Object) session.getResult()).getValue(session.getEnv());
         } else {
             original = session.getResult();
         }

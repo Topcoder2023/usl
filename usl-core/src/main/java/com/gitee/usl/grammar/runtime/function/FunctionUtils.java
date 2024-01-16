@@ -22,16 +22,16 @@ import com.gitee.usl.grammar.runtime.RuntimeUtils;
 import com.gitee.usl.infra.constant.AsmConstants;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.runtime.FunctionArgument;
-import com.gitee.usl.grammar.runtime.type.AviatorBoolean;
-import com.gitee.usl.grammar.runtime.type.Function;
-import com.gitee.usl.grammar.runtime.type.AviatorJavaType;
-import com.gitee.usl.grammar.runtime.type.AviatorNil;
-import com.gitee.usl.grammar.runtime.type.AviatorNumber;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
-import com.gitee.usl.grammar.runtime.type.AviatorPattern;
-import com.gitee.usl.grammar.runtime.type.AviatorRuntimeJavaType;
-import com.gitee.usl.grammar.runtime.type.AviatorString;
-import com.gitee.usl.grammar.runtime.type.AviatorType;
+import com.gitee.usl.grammar.runtime.type._Bool;
+import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.grammar.runtime.type._JavaType;
+import com.gitee.usl.grammar.runtime.type._Null;
+import com.gitee.usl.grammar.runtime.type._Number;
+import com.gitee.usl.grammar.runtime.type._Object;
+import com.gitee.usl.grammar.runtime.type._Pattern;
+import com.gitee.usl.grammar.runtime.type._RuntimeJavaType;
+import com.gitee.usl.grammar.runtime.type._String;
+import com.gitee.usl.grammar.runtime.type._Type;
 
 
 /**
@@ -59,7 +59,7 @@ public class FunctionUtils {
      * @param env
      * @return
      */
-    public static boolean getBooleanValue(final AviatorObject arg,
+    public static boolean getBooleanValue(final _Object arg,
                                           final Map<String, Object> env) {
         return (boolean) arg.getValue(env);
     }
@@ -71,7 +71,7 @@ public class FunctionUtils {
      * @param env
      * @return
      */
-    public static String getStringValue(final AviatorObject arg,
+    public static String getStringValue(final _Object arg,
                                         final Map<String, Object> env) {
         String result = null;
 
@@ -91,11 +91,11 @@ public class FunctionUtils {
      * @param env
      * @return
      */
-    public static Object getJavaObject(final AviatorObject arg, final Map<String, Object> env) {
-        if (arg.getAviatorType() != AviatorType.JavaType) {
+    public static Object getJavaObject(final _Object arg, final Map<String, Object> env) {
+        if (arg.getAviatorType() != _Type.JavaType) {
             throw new ClassCastException(arg.desc(env) + " is not a javaType");
         }
-        return ((AviatorJavaType) arg).getValue(env);
+        return ((_JavaType) arg).getValue(env);
     }
 
 
@@ -112,26 +112,26 @@ public class FunctionUtils {
      * @param arity
      * @return
      */
-    public static Function getFunction(final AviatorObject arg, final Map<String, Object> env,
-                                       final int arity) {
-        if (arg.getAviatorType() != AviatorType.JavaType
-                && arg.getAviatorType() != AviatorType.Lambda) {
+    public static _Function getFunction(final _Object arg, final Map<String, Object> env,
+                                        final int arity) {
+        if (arg.getAviatorType() != _Type.JavaType
+                && arg.getAviatorType() != _Type.Lambda) {
             throw new ClassCastException(arg.desc(env) + " is not a function");
         }
         // Runtime type.
         Object val = null;
-        if (arg instanceof Function) {
-            return (Function) arg;
+        if (arg instanceof _Function) {
+            return (_Function) arg;
         }
 
-        if (arg instanceof AviatorRuntimeJavaType
-                && (val = arg.getValue(env)) instanceof Function) {
-            return (Function) val;
+        if (arg instanceof _RuntimeJavaType
+                && (val = arg.getValue(env)) instanceof _Function) {
+            return (_Function) val;
         }
 
         // resolve by name.
         // special processing for "-" operator
-        String name = ((AviatorJavaType) arg).getName();
+        String name = ((_JavaType) arg).getName();
         if (name.equals("-")) {
             if (arity == 2) {
                 name = "-sub";
@@ -139,9 +139,9 @@ public class FunctionUtils {
                 name = "-neg";
             }
         }
-        Function rt = null;
+        _Function rt = null;
         if (env != null) {
-            rt = (Function) env.get(name);
+            rt = (_Function) env.get(name);
         }
         if (rt == null) {
             ScriptEngine instance = RuntimeUtils.getInstance(env);
@@ -158,7 +158,7 @@ public class FunctionUtils {
      * @param env
      * @return
      */
-    public static Number getNumberValue(final AviatorObject arg1,
+    public static Number getNumberValue(final _Object arg1,
                                         final Map<String, Object> env) {
         return (Number) arg1.getValue(env);
     }
@@ -171,21 +171,21 @@ public class FunctionUtils {
      * @return wrapped aviator object
      * @since 4.2.5
      */
-    public static AviatorObject wrapReturn(final Object ret) {
+    public static _Object wrapReturn(final Object ret) {
         if (ret == null) {
-            return AviatorNil.NIL;
+            return _Null.NIL;
         } else if (ret instanceof Pattern) {
-            return new AviatorPattern((Pattern) ret);
+            return new _Pattern((Pattern) ret);
         } else if (ret instanceof Number) {
-            return AviatorNumber.valueOf(ret);
+            return _Number.valueOf(ret);
         } else if (ret instanceof CharSequence || ret instanceof Character) {
-            return new AviatorString(ret.toString());
+            return new _String(ret.toString());
         } else if (ret instanceof Boolean) {
-            return AviatorBoolean.valueOf((boolean) ret);
-        } else if (ret instanceof AviatorObject) {
-            return (AviatorObject) ret;
+            return _Bool.valueOf((boolean) ret);
+        } else if (ret instanceof _Object) {
+            return (_Object) ret;
         } else {
-            return AviatorRuntimeJavaType.valueOf(ret);
+            return _RuntimeJavaType.valueOf(ret);
         }
     }
 

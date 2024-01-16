@@ -14,7 +14,7 @@ import com.gitee.usl.plugin.impl.sensitive.SensitivePlugin;
 public class SensitiveEnhancer extends AbstractFunctionEnhancer {
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        Sensitized sensitized = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().getMethod(), Sensitized.class);
+        Sensitized sensitized = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().method(), Sensitized.class);
         if (sensitized == null) {
             return;
         }
@@ -25,7 +25,7 @@ public class SensitiveEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        Sensitized sensitized = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().getTargetType(), Sensitized.class);
+        Sensitized sensitized = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().targetType(), Sensitized.class);
         if (sensitized == null) {
             return;
         }

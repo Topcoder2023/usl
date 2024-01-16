@@ -3,8 +3,8 @@ package com.gitee.usl.resource;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.ArrayUtil;
-import cn.zhxu.xjson.JsonKit;
-import com.gitee.usl.USLRunner;
+import cn.hutool.json.JSONUtil;
+import com.gitee.usl.Runner;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.api.WebInteractive;
 import com.gitee.usl.infra.constant.StringConstant;
@@ -15,7 +15,6 @@ import com.gitee.usl.resource.api.WebHandler;
 import com.gitee.usl.resource.api.WebHelper;
 import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.filter.SecurityFilter;
-import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartboot.http.common.enums.HeaderValueEnum;
@@ -43,7 +42,6 @@ import java.util.stream.Stream;
  * @author hongda.li
  */
 @Order(Integer.MAX_VALUE)
-@AutoService(WebInteractive.class)
 public class WebInteractiveImpl extends HttpServerHandler implements WebInteractive {
     private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
     private final String host;
@@ -62,7 +60,7 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
     }
 
     @Override
-    public void open(USLRunner runner) {
+    public void open(Runner runner) {
         bootstrap.configuration()
                 .host(host)
                 .bannerEnabled(false)
@@ -116,7 +114,7 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
                     handler.doHandle(request, response);
                 } catch (Exception e) {
                     response.setContentType(HeaderValueEnum.APPLICATION_JSON.getName() + StringConstant.CONTENT_TYPE_SUFFIX);
-                    response.write(JsonKit.toJson(Returns.failure(e.getMessage())).getBytes(StandardCharsets.UTF_8));
+                    response.write(JSONUtil.toJsonStr(Returns.failure(e.getMessage())).getBytes(StandardCharsets.UTF_8));
                 } finally {
                     WebHelper.remove();
                 }

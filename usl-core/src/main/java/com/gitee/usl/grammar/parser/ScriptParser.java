@@ -38,8 +38,8 @@ import static com.gitee.usl.infra.enums.ResultCode.*;
 /**
  * @author hongda.li
  */
-@Description("表达式解析器")
-public class ExpressionParser implements Parser {
+@Description("脚本解析器")
+public class ScriptParser implements Parser {
 
     @Description("CG次数")
     private int getCGTimes;
@@ -98,9 +98,9 @@ public class ExpressionParser implements Parser {
         this.scope = info;
     }
 
-    public ExpressionParser(final ScriptEngine instance,
-                            final GrammarLexer lexer,
-                            final Generator codeGenerator) {
+    public ScriptParser(final ScriptEngine instance,
+                        final GrammarLexer lexer,
+                        final Generator codeGenerator) {
         this.lexer = lexer;
         this.instance = instance;
         this.current = this.lexer.scan();

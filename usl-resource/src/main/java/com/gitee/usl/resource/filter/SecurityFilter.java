@@ -1,12 +1,11 @@
 package com.gitee.usl.resource.filter;
 
 import cn.hutool.crypto.symmetric.AES;
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.resource.api.FilterRoute;
 import com.gitee.usl.resource.api.WebFilter;
 import com.gitee.usl.resource.api.WebHelper;
 import com.gitee.usl.resource.entity.Returns;
-import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartboot.http.common.Cookie;
@@ -26,7 +25,6 @@ import java.util.stream.Stream;
  * @author hongda.li
  */
 @FilterRoute({"/usl/admin/page/**", "/usl/admin/api/**"})
-@AutoService(WebFilter.class)
 public class SecurityFilter implements WebFilter {
     public static final String LOGIN_PAGE = "/usl/public/login";
     private static final String TOKEN_NAME = "access_token";
@@ -57,7 +55,7 @@ public class SecurityFilter implements WebFilter {
             return false;
         }
 
-        USLRunner runner = USLRunner.findRunnerByName(runnerName);
+        Runner runner = Runner.findRunnerByName(runnerName);
         if (runner == null) {
             logger.warn("无效的USL实例名称 - {}", runnerName);
             this.handleException(isPage);

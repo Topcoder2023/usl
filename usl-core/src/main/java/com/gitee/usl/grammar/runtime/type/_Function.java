@@ -5,10 +5,10 @@ import com.gitee.usl.grammar.utils.Env;
 /**
  * @author hongda.li
  */
-public interface Function {
+public interface _Function {
 
     String name();
 
-    AviatorObject execute(Env env, AviatorObject... arguments);
+    _Object execute(Env env, _Object... arguments);
 
 }

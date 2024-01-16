@@ -3,7 +3,7 @@ package com.gitee.usl.grammar.runtime.function;
 import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.grammar.utils.Env;
 import com.googlecode.aviator.exception.FunctionNotFoundException;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Object;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class DispatchFunction extends BasicFunction {
     }
 
     @Override
-    public AviatorObject execute(final Env env, AviatorObject[] arguments) {
+    public _Object execute(final Env env, _Object[] arguments) {
         final int arity = arguments.length;
         LambdaFunction fn = this.functions.get(arity);
 

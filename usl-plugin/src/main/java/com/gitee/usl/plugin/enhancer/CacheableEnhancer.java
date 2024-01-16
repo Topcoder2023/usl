@@ -19,7 +19,7 @@ public class CacheableEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
-        Cacheable cacheable = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().getMethod(), Cacheable.class);
+        Cacheable cacheable = AnnotationUtil.getAnnotation(af.definition().getMethodMeta().method(), Cacheable.class);
         if (cacheable == null) {
             return;
         }
@@ -29,7 +29,7 @@ public class CacheableEnhancer extends AbstractFunctionEnhancer {
 
     @Override
     protected void enhanceNativeFunction(NativeFunction nf) {
-        Cacheable cacheable = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().getTargetType(), Cacheable.class);
+        Cacheable cacheable = AnnotationUtil.getAnnotation(nf.definition().getMethodMeta().targetType(), Cacheable.class);
         if (cacheable == null) {
             return;
         }

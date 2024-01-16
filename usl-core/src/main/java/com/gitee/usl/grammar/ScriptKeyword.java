@@ -71,17 +71,8 @@ public class ScriptKeyword {
         return RESERVED.containsKey(name);
     }
 
-    public static boolean isReservedKeyword(final Variable v) {
-        return isReservedKeyword(v.getLexeme());
-    }
-
     public boolean isReserved(final String name) {
         return isReservedKeyword(name) || this.table.containsKey(name);
-    }
-
-    public static Variable tryReserveKeyword(final Variable var) {
-        Variable reserve = RESERVED.get(var.getLexeme());
-        return reserve != null ? reserve : var;
     }
 
     public Variable getVariable(final String name) {

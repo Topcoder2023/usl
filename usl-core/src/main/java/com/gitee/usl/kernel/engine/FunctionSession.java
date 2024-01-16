@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.engine;
 
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.proxy.Invocation;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Env;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -30,7 +30,7 @@ public final class FunctionSession {
     private Invocation<?> invocation;
 
     @Description("函数参数")
-    private final AviatorObject[] objects;
+    private final _Object[] objects;
 
     @Description("函数定义信息")
     private final FunctionDefinition definition;
@@ -38,7 +38,7 @@ public final class FunctionSession {
     @Description("实际的处理逻辑")
     private Function<FunctionSession, Object> handler;
 
-    public FunctionSession(Env env, AviatorObject[] objects, FunctionDefinition definition) {
+    public FunctionSession(Env env, _Object[] objects, FunctionDefinition definition) {
         this.env = env;
         this.objects = objects;
         this.definition = definition;

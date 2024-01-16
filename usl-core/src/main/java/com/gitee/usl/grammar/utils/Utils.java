@@ -71,19 +71,19 @@ public class Utils {
     return buf.toString();
   }
 
-  public static AviatorNumber exponent(final Number base, final Number exp,
-                                       final Map<String, Object> env) {
+  public static _Number exponent(final Number base, final Number exp,
+                                 final Map<String, Object> env) {
     final int expInt = exp.intValue();
     if (base instanceof BigInteger) {
-      return new AviatorBigInt(((BigInteger) base).pow(expInt));
+      return new _BigInt(((BigInteger) base).pow(expInt));
     } else if (base instanceof BigDecimal) {
-      return new AviatorDecimal(((BigDecimal) base).pow(expInt, RuntimeUtils.getMathContext(env)));
+      return new _Decimal(((BigDecimal) base).pow(expInt, RuntimeUtils.getMathContext(env)));
     } else {
       final double ret = Math.pow(base.doubleValue(), exp.doubleValue());
       if (TypeUtils.isDouble(base) || TypeUtils.isDouble(exp) || exp.doubleValue() < 0) {
-        return new AviatorDouble(ret);
+        return new _Double(ret);
       } else {
-        return AviatorLong.valueOf((long) ret);
+        return _Long.valueOf((long) ret);
       }
     }
   }

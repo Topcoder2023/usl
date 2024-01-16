@@ -3,8 +3,8 @@ package com.gitee.usl.grammar.parser;
 import com.gitee.usl.grammar.script.IE;
 import com.gitee.usl.grammar.lexer.token.Token;
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
-import com.gitee.usl.grammar.runtime.type.AviatorNil;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Null;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Env;
 import lombok.Getter;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * @author dennis(killme2008 @ gmail.com)
  */
 public class InterpretContext {
-    private final ArrayDeque<AviatorObject> operands = new ArrayDeque<>();
+    private final ArrayDeque<_Object> operands = new ArrayDeque<>();
     @Getter
     private IR pc;
     private int pcIndex = -1;
@@ -67,30 +67,30 @@ public class InterpretContext {
         return false;
     }
 
-    public void push(AviatorObject arg) {
+    public void push(_Object arg) {
         this.push(arg, null);
     }
 
-    public void push(AviatorObject arg, Token<?> token) {
+    public void push(_Object arg, Token<?> token) {
         if (arg == null) {
-            arg = AviatorNil.NIL;
+            arg = _Null.NIL;
         }
         arg.setFrom(token);
         this.operands.push(arg);
     }
 
-    public AviatorObject peek() {
+    public _Object peek() {
         return this.operands.peek();
     }
 
-    public AviatorObject pop() {
+    public _Object pop() {
         return this.operands.pop();
     }
 
     public String descOperandsStack() {
         StringBuilder sb = new StringBuilder("<Stack, [");
         int i = this.operands.size();
-        for (AviatorObject obj : this.operands) {
+        for (_Object obj : this.operands) {
             sb.append(obj.desc(this.env));
             if (--i > 0) {
                 sb.append(", ");

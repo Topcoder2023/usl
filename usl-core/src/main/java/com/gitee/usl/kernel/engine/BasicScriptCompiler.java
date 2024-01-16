@@ -12,7 +12,7 @@ import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.lexer.GrammarLexer;
 import com.gitee.usl.grammar.parser.Generator;
-import com.gitee.usl.grammar.parser.ExpressionParser;
+import com.gitee.usl.grammar.parser.ScriptParser;
 import com.gitee.usl.grammar.parser.IRGenerator;
 import com.gitee.usl.grammar.script.BS;
 import com.gitee.usl.grammar.script.ES;
@@ -94,7 +94,7 @@ public class BasicScriptCompiler implements Initializer, ScriptCompiler {
             log.debug("开始编译脚本\n{}", script);
             Generator generator = new IRGenerator(scriptEngine);
             GrammarLexer grammarLexer = new GrammarLexer(scriptEngine, script);
-            return (BS) new ExpressionParser(scriptEngine, grammarLexer, generator).parse();
+            return (BS) new ScriptParser(scriptEngine, grammarLexer, generator).parse();
         }
     }
 

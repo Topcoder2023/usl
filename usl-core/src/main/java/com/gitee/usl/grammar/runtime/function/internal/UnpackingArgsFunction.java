@@ -6,9 +6,9 @@ import java.util.List;
 import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
 import com.gitee.usl.grammar.runtime.function.BasicFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorRuntimeJavaType;
-import com.gitee.usl.grammar.runtime.type.Function;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._RuntimeJavaType;
+import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Constants;
 import com.gitee.usl.grammar.utils.Env;
 
@@ -18,9 +18,9 @@ import com.gitee.usl.grammar.utils.Env;
 @SystemFunction
 public class UnpackingArgsFunction extends BasicFunction {
 
-    private final Function fn;
+    private final _Function fn;
 
-    public UnpackingArgsFunction(final Function fn) {
+    public UnpackingArgsFunction(final _Function fn) {
         this.fn = fn;
     }
 
@@ -30,20 +30,20 @@ public class UnpackingArgsFunction extends BasicFunction {
     }
 
     @Override
-    public AviatorObject execute(Env env, AviatorObject... arguments) {
-        List<AviatorObject> realArgList = new ArrayList<>(arguments.length + 10);
+    public _Object execute(Env env, _Object... arguments) {
+        List<_Object> realArgList = new ArrayList<>(arguments.length + 10);
 
-        for (AviatorObject arg : arguments) {
+        for (_Object arg : arguments) {
             if (arg.meta(Constants.UNPACK_ARGS) != null) {
                 for (Object obj : RuntimeUtils.seq(arg.getValue(env), env)) {
-                    realArgList.add(AviatorRuntimeJavaType.valueOf(obj));
+                    realArgList.add(_RuntimeJavaType.valueOf(obj));
                 }
             } else {
                 realArgList.add(arg);
             }
         }
 
-        AviatorObject[] realArgs = new AviatorObject[realArgList.size()];
+        _Object[] realArgs = new _Object[realArgList.size()];
         realArgs = realArgList.toArray(realArgs);
 
         return fn.execute(env, realArgs);

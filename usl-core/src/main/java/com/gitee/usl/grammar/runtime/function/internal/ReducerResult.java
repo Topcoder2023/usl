@@ -1,10 +1,10 @@
 package com.gitee.usl.grammar.runtime.function.internal;
 
 import com.gitee.usl.api.annotation.SystemFunction;
-import com.gitee.usl.grammar.runtime.type.AviatorRuntimeJavaType;
-import com.gitee.usl.grammar.runtime.type.AviatorType;
+import com.gitee.usl.grammar.runtime.type._RuntimeJavaType;
+import com.gitee.usl.grammar.runtime.type._Type;
 import com.gitee.usl.grammar.utils.Env;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Object;
 
 import java.util.Map;
 
@@ -12,31 +12,31 @@ import java.util.Map;
  * @author hongda.li
  */
 @SystemFunction
-public class ReducerResult extends AviatorRuntimeJavaType {
+public class ReducerResult extends _RuntimeJavaType {
     public final ReducerState state;
-    public AviatorObject obj;
+    public _Object obj;
 
     public boolean isEmptyState() {
         return this.state == ReducerState.Empty;
     }
 
-    public static ReducerResult withEmpty(final AviatorObject obj) {
+    public static ReducerResult withEmpty(final _Object obj) {
         return new ReducerResult(ReducerState.Empty, obj);
     }
 
-    public static ReducerResult withCont(final AviatorObject obj) {
+    public static ReducerResult withCont(final _Object obj) {
         return new ReducerResult(ReducerState.Cont, obj);
     }
 
-    public static ReducerResult withBreak(final AviatorObject obj) {
+    public static ReducerResult withBreak(final _Object obj) {
         return new ReducerResult(ReducerState.Break, obj);
     }
 
-    public static ReducerResult withReturn(final AviatorObject obj) {
+    public static ReducerResult withReturn(final _Object obj) {
         return new ReducerResult(ReducerState.Return, obj);
     }
 
-    private ReducerResult(final ReducerState state, final AviatorObject obj) {
+    private ReducerResult(final ReducerState state, final _Object obj) {
         super(obj);
         this.state = state;
         this.obj = obj;
@@ -44,18 +44,18 @@ public class ReducerResult extends AviatorRuntimeJavaType {
     }
 
     @Override
-    public AviatorObject self(final Map<String, Object> env) {
+    public _Object self(final Map<String, Object> env) {
         this.obj = this.obj.self(env);
         return this;
     }
 
     @Override
-    public int innerCompare(final AviatorObject other, final Map<String, Object> env) {
+    public int innerCompare(final _Object other, final Map<String, Object> env) {
         return this.obj.innerCompare(other, env);
     }
 
     @Override
-    public AviatorType getAviatorType() {
+    public _Type getAviatorType() {
         return this.obj.getAviatorType();
     }
 
@@ -88,22 +88,22 @@ public class ReducerResult extends AviatorRuntimeJavaType {
     }
 
     @Override
-    public AviatorObject match(final AviatorObject other, final Map<String, Object> env) {
+    public _Object match(final _Object other, final Map<String, Object> env) {
         return this.obj.match(other, env);
     }
 
     @Override
-    public AviatorObject neg(final Map<String, Object> env) {
+    public _Object neg(final Map<String, Object> env) {
         return this.obj.neg(env);
     }
 
     @Override
-    public AviatorObject setValue(final AviatorObject value, final Map<String, Object> env) {
+    public _Object setValue(final _Object value, final Map<String, Object> env) {
         return this.obj.setValue(value, env);
     }
 
     @Override
-    public AviatorObject not(final Map<String, Object> env) {
+    public _Object not(final Map<String, Object> env) {
         return this.obj.not(env);
     }
 
@@ -113,27 +113,27 @@ public class ReducerResult extends AviatorRuntimeJavaType {
     }
 
     @Override
-    public AviatorObject add(final AviatorObject other, final Map<String, Object> env) {
+    public _Object add(final _Object other, final Map<String, Object> env) {
         return this.obj.add(other, env);
     }
 
     @Override
-    public AviatorObject bitAnd(final AviatorObject other, final Map<String, Object> env) {
+    public _Object bitAnd(final _Object other, final Map<String, Object> env) {
         return this.obj.bitAnd(other, env);
     }
 
     @Override
-    public AviatorObject bitOr(final AviatorObject other, final Map<String, Object> env) {
+    public _Object bitOr(final _Object other, final Map<String, Object> env) {
         return this.obj.bitOr(other, env);
     }
 
     @Override
-    public AviatorObject bitXor(final AviatorObject other, final Map<String, Object> env) {
+    public _Object bitXor(final _Object other, final Map<String, Object> env) {
         return this.obj.bitXor(other, env);
     }
 
     @Override
-    public AviatorObject shiftRight(final AviatorObject other, final Map<String, Object> env) {
+    public _Object shiftRight(final _Object other, final Map<String, Object> env) {
         return this.obj.shiftRight(other, env);
     }
 
@@ -143,38 +143,38 @@ public class ReducerResult extends AviatorRuntimeJavaType {
     }
 
     @Override
-    public AviatorObject shiftLeft(final AviatorObject other, final Map<String, Object> env) {
+    public _Object shiftLeft(final _Object other, final Map<String, Object> env) {
         return this.obj.shiftLeft(other, env);
     }
 
     @Override
-    public AviatorObject unsignedShiftRight(final AviatorObject other,
-                                            final Map<String, Object> env) {
+    public _Object unsignedShiftRight(final _Object other,
+                                      final Map<String, Object> env) {
         return this.obj.unsignedShiftRight(other, env);
     }
 
     @Override
-    public AviatorObject bitNot(final Map<String, Object> env) {
+    public _Object bitNot(final Map<String, Object> env) {
         return this.obj.bitNot(env);
     }
 
     @Override
-    public AviatorObject sub(final AviatorObject other, final Map<String, Object> env) {
+    public _Object sub(final _Object other, final Map<String, Object> env) {
         return this.obj.sub(other, env);
     }
 
     @Override
-    public AviatorObject mod(final AviatorObject other, final Map<String, Object> env) {
+    public _Object mod(final _Object other, final Map<String, Object> env) {
         return this.obj.mod(other, env);
     }
 
     @Override
-    public AviatorObject div(final AviatorObject other, final Map<String, Object> env) {
+    public _Object div(final _Object other, final Map<String, Object> env) {
         return this.obj.div(other, env);
     }
 
     @Override
-    public AviatorObject mult(final AviatorObject other, final Map<String, Object> env) {
+    public _Object mult(final _Object other, final Map<String, Object> env) {
         return this.obj.mult(other, env);
     }
 
@@ -194,7 +194,7 @@ public class ReducerResult extends AviatorRuntimeJavaType {
     }
 
     @Override
-    public AviatorObject getElement(final Map<String, Object> env, final AviatorObject indexObject) {
+    public _Object getElement(final Map<String, Object> env, final _Object indexObject) {
         return this.obj.getElement(env, indexObject);
     }
 

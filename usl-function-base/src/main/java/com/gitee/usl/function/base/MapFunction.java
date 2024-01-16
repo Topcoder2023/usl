@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.structure.EntryItem;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.grammar.runtime.type.Function;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Env;
 
 import java.util.*;
@@ -122,7 +122,7 @@ public class MapFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("map_removeIf")
-    public <K, V> EntryItem<K, V> removeIf(Env env, Map<K, V> from, Function function) {
+    public <K, V> EntryItem<K, V> removeIf(Env env, Map<K, V> from, _Function function) {
         if (CollUtil.isEmpty(from) || function == null) {
             return null;
         }
@@ -176,7 +176,7 @@ public class MapFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("map_foreach")
-    public <K, V> Map<K, V> foreach(Env env, Map<K, V> from, Function function) {
+    public <K, V> Map<K, V> foreach(Env env, Map<K, V> from, _Function function) {
         if (from != null) {
             from.forEach((k, v) -> function.execute(env, wrapReturn(k), wrapReturn(v)));
         }
@@ -184,7 +184,7 @@ public class MapFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("map_filter")
-    public <K, V> Map<K, V> filter(Env env, Map<K, V> from, Function function) {
+    public <K, V> Map<K, V> filter(Env env, Map<K, V> from, _Function function) {
         if (from == null || function == null) {
             return from;
         }
@@ -194,7 +194,7 @@ public class MapFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("map_filter_key")
-    public <K, V> Map<K, V> filterKey(Env env, Map<K, V> from, Function function) {
+    public <K, V> Map<K, V> filterKey(Env env, Map<K, V> from, _Function function) {
         if (from == null || function == null) {
             return from;
         }
@@ -202,7 +202,7 @@ public class MapFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("map_filter_value")
-    public <K, V> Map<K, V> filterValue(Env env, Map<K, V> from, Function function) {
+    public <K, V> Map<K, V> filterValue(Env env, Map<K, V> from, _Function function) {
         if (from == null || function == null) {
             return from;
         }
@@ -210,7 +210,7 @@ public class MapFunction {
     }
 
     @com.gitee.usl.api.annotation.Function("map_toList")
-    public <K, V> List<?> toList(Env env, Map<K, V> from, Function function) {
+    public <K, V> List<?> toList(Env env, Map<K, V> from, _Function function) {
         if (from == null || function == null) {
             return new ArrayList<>();
         }
@@ -220,10 +220,10 @@ public class MapFunction {
                 .collect(Collectors.toList());
     }
 
-    private <K, V> Map<K, V> filterMap(Env env, Map<K, V> from, java.util.function.Function<EntryItem<K, V>, AviatorObject> mapping) {
+    private <K, V> Map<K, V> filterMap(Env env, Map<K, V> from, java.util.function.Function<EntryItem<K, V>, _Object> mapping) {
         final Map<K, V> filter = new LinkedHashMap<>(from.size());
         from.forEach((key, value) -> {
-            AviatorObject call = mapping.apply(new EntryItem<>(key, value));
+            _Object call = mapping.apply(new EntryItem<>(key, value));
             boolean doFilter = getBooleanValue(call, env);
             if (doFilter) {
                 filter.put(key, value);

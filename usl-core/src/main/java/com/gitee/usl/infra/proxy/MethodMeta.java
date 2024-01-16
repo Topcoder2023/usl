@@ -17,20 +17,10 @@ import java.util.stream.Collectors;
 /**
  * @author hongda.li
  */
-@Getter
-@ToString
-@AllArgsConstructor
 @Description("方法元属性")
-public final class MethodMeta<E> {
-
-    @Description("调用实例")
-    private final Object target;
-
-    @Description("调用实例类型")
-    private final Class<E> targetType;
-
-    @Description("调用实例方法")
-    private final Method method;
+public record MethodMeta<E>(@Description("调用实例") Object target,
+                            @Description("调用实例类型") Class<E> targetType,
+                            @Description("调用实例方法") Method method) {
 
     public boolean isNoArgs() {
         return method != null && method.getParameterCount() == 0;

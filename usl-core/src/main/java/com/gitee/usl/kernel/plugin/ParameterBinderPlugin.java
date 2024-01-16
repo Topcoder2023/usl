@@ -1,14 +1,14 @@
 package com.gitee.usl.kernel.plugin;
 
 import cn.hutool.core.convert.Convert;
-import com.gitee.usl.USLRunner;
+import com.gitee.usl.Runner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.infra.structure.wrapper.ParameterWrapper;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.api.plugin.BeginPlugin;
-import com.gitee.usl.grammar.runtime.type.AviatorObject;
+import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Env;
 
 import java.lang.reflect.Array;
@@ -39,7 +39,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
         IntWrapper additionalCount = new IntWrapper();
 
         @Description("实参列表")
-        AviatorObject[] actualArgs = session.getObjects();
+        _Object[] actualArgs = session.getObjects();
 
         @Description("形参列表")
         List<ParameterWrapper> expectArgs = methodMeta.getParameterWrapperList();
@@ -57,7 +57,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
                           @Description("额外参数数量") IntWrapper additionalCount,
                           @Description("上下文环境") Env env,
                           @Description("函数调用会话") FunctionSession session,
-                          @Description("实参列表") AviatorObject[] actualArgs) {
+                          @Description("实参列表") _Object[] actualArgs) {
         @Description("形参索引")
         int index = expectArg.getIndex();
 
@@ -75,7 +75,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
             return env;
         }
 
-        if (USLRunner.class.equals(type)) {
+        if (Runner.class.equals(type)) {
             additionalCount.increment();
             return session.getDefinition().getRunner();
         }
@@ -91,7 +91,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
             return null;
         }
 
-        if (AviatorObject.class.isAssignableFrom(type)) {
+        if (_Object.class.isAssignableFrom(type)) {
             return actualArgs[index - additionalCount.get()];
         }
 
@@ -109,7 +109,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
             IntWrapper loop = new IntWrapper(index - additionalCount.get());
 
             while (loop.get() < actualArgs.length) {
-                Array.set(array, loop.get() - index + additionalCount.get(), AviatorObject.class.isAssignableFrom(elementType)
+                Array.set(array, loop.get() - index + additionalCount.get(), _Object.class.isAssignableFrom(elementType)
                         ? actualArgs[loop.get()]
                         : Convert.convert(elementType, actualArgs[loop.get()].getValue(env)));
                 loop.increment();

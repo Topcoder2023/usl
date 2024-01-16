@@ -2,7 +2,6 @@ package com.gitee.usl.grammar.utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -12,8 +11,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.gitee.usl.grammar.ScriptEngine;
-import com.gitee.usl.grammar.runtime.type.AviatorNil;
-import com.gitee.usl.grammar.runtime.type.Range;
+import com.gitee.usl.grammar.runtime.type._Null;
+import com.gitee.usl.grammar.runtime.type._Range;
 import com.gitee.usl.grammar.script.Script;
 import com.gitee.usl.grammar.Feature;
 import com.gitee.usl.grammar.runtime.function.FunctionUtils;
@@ -290,9 +289,9 @@ public class Env extends StringMap<Object> {
             new IdentityHashMap<String, GetValueTask>();
 
     static {
-        INTERNAL_VARIABLES.put(Constants.REDUCER_LOOP_VAR, new TargetObjectTask(Range.LOOP));
+        INTERNAL_VARIABLES.put(Constants.REDUCER_LOOP_VAR, new TargetObjectTask(_Range.LOOP));
         INTERNAL_VARIABLES.put(Constants.REDUCER_EMPTY_VAR,
-                new TargetObjectTask(ReducerResult.withEmpty(AviatorNil.NIL)));
+                new TargetObjectTask(ReducerResult.withEmpty(_Null.NIL)));
         INTERNAL_VARIABLES.put(Constants.ENV_VAR, new GetValueTask() {
 
             @Override
