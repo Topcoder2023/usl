@@ -2,7 +2,7 @@ package com.gitee.usl.kernel.configure;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ClassUtil;
-import com.gitee.usl.api.VariableInitializer;
+import com.gitee.usl.api.VariableDefinable;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.structure.FunctionHolder;
@@ -34,7 +34,7 @@ public class EngineConfig {
     private FunctionMissing functionMissing;
 
     @Description("变量初始化器")
-    private VariableInitializer varInitializer;
+    private VariableDefinable varInitializer;
 
     @Description("USL配置类")
     private final Configuration configuration;

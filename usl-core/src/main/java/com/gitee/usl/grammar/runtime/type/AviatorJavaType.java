@@ -122,7 +122,7 @@ public class AviatorJavaType extends AviatorObject {
     }
 
     @Override
-    public AviatorObject deref(final Map<String, Object> env) {
+    public AviatorObject self(final Map<String, Object> env) {
         return AviatorRuntimeJavaType.valueOf(getValue(env));
     }
 
@@ -408,7 +408,7 @@ public class AviatorJavaType extends AviatorObject {
     private Object getAssignedValue(final AviatorObject value, final Map<String, Object> env) {
         Object v = value.getValue(env);
         if (v instanceof AviatorObject) {
-            v = ((AviatorObject) v).deref(env);
+            v = ((AviatorObject) v).self(env);
         }
         return v;
     }

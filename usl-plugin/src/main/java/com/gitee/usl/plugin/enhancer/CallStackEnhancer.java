@@ -1,17 +1,14 @@
 package com.gitee.usl.plugin.enhancer;
 
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.enhancer.AbstractFunctionEnhancer;
 import com.gitee.usl.plugin.impl.stack.CallStackPlugin;
-import com.google.auto.service.AutoService;
 
 /**
  * @author hongda.li
  */
-@AutoService(FunctionEnhancer.class)
 public class CallStackEnhancer extends AbstractFunctionEnhancer {
 
     @Override

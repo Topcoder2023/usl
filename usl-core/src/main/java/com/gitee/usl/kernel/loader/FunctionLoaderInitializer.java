@@ -9,7 +9,6 @@ import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.api.FunctionLoader;
-import com.google.auto.service.AutoService;
 
 import java.util.List;
 import java.util.Set;
@@ -19,7 +18,6 @@ import java.util.Set;
  */
 @Description("函数定义信息提供器管理者")
 @Order(FunctionLoaderInitializer.USL_FUNC_PROVIDER_ORDER)
-@AutoService(Initializer.class)
 public class FunctionLoaderInitializer implements Initializer {
 
     @Description("函数提供者管理器的优先级")

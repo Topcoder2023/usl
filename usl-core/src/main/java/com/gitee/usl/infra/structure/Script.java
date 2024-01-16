@@ -51,7 +51,7 @@ public class Script {
         }
 
         try {
-            this.result = runner.run(new Param().setScript(content).setContext(env)).getData();
+            this.result = runner.run(new Param(content).addContext(env)).getData();
         } catch (Exception e) {
             this.result = null;
         }

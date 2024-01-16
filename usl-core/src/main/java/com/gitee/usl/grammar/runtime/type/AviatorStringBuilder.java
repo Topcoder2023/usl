@@ -30,7 +30,7 @@ public class AviatorStringBuilder extends AviatorString {
 
 
   @Override
-  public AviatorObject deref(final Map<String, Object> env) {
+  public AviatorObject self(final Map<String, Object> env) {
     return new AviatorString(getLexeme(env));
   }
 

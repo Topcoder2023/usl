@@ -1,6 +1,6 @@
 package com.gitee.usl.function.base;
 
-import cn.zhxu.xjson.JsonKit;
+import cn.hutool.json.JSONUtil;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 
@@ -16,18 +16,19 @@ public class JsonFunction {
 
     @Function("json_toJson")
     public String toJson(Object obj) {
-        return JsonKit.toJson(obj);
+        return JSONUtil.toJsonStr(obj);
     }
 
     @Function("json_toList")
     @SuppressWarnings("rawtypes")
     public List<Map> toList(String json) {
-        return JsonKit.toList(Map.class, json);
+        return JSONUtil.toList(json, Map.class);
     }
 
     @Function("json_toMap")
     @SuppressWarnings("rawtypes")
     public Map toMap(String json) {
-        return JsonKit.toBean(Map.class, json);
+        return JSONUtil.toBean(json, Map.class);
     }
+
 }

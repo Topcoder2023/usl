@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.comparator.CompareUtil;
 import cn.hutool.core.text.StrPool;
-import cn.zhxu.xjson.JsonKit;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.constant.NumberConstant;
@@ -294,12 +293,4 @@ public class ListFunction {
         return from.stream().collect(Collectors.groupingBy(element -> function.call(env, FunctionUtils.wrapReturn(element)).getValue(env)));
     }
 
-    @Function("list_toJson")
-    public String toStr(List<?> from) {
-        if (from == null) {
-            return StrPool.BRACKET_START + StrPool.BRACKET_END;
-        } else {
-            return JsonKit.toJson(from);
-        }
-    }
 }

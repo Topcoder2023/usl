@@ -230,8 +230,12 @@ public abstract class AviatorObject {
         return (boolean) val;
     }
 
-    public AviatorObject deref(final Map<String, Object> env) {
+    public AviatorObject self(final Map<String, Object> env) {
         return this;
+    }
+
+    public Object self(final Map<String, Object> env, boolean unbox) {
+        return unbox ? this.getValue(env) : self(env);
     }
 
     /**

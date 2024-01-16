@@ -23,15 +23,9 @@ public final class Configuration {
     private final StringMap<Object> customConfig = new StringMap<>();
 
     @Description("缓存配置类")
-    private final CacheConfig cacheConfig = new CacheConfig(this);
-
-    @Description("编译队列配置类")
-    private final QueueConfig queueConfig = new QueueConfig(this);
+    private final CompilerConfig cacheConfig = new CompilerConfig(this);
 
     @Description("脚本引擎配置类")
     private final EngineConfig engineConfig = new EngineConfig(this);
-
-    @Description("线程池配置类")
-    private final ExecutorConfig executorConfig = new ExecutorConfig(this);
 
 }

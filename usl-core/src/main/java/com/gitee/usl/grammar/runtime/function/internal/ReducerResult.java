@@ -49,8 +49,8 @@ public class ReducerResult extends AviatorRuntimeJavaType {
   }
 
   @Override
-  public AviatorObject deref(final Map<String, Object> env) {
-    this.obj = this.obj.deref(env);
+  public AviatorObject self(final Map<String, Object> env) {
+    this.obj = this.obj.self(env);
     return this;
   }
 

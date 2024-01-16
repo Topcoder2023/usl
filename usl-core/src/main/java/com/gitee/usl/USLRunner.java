@@ -1,12 +1,6 @@
 package com.gitee.usl;
 
-import cn.hutool.core.thread.ThreadUtil;
-import cn.hutool.crypto.digest.DigestUtil;
-import com.gitee.usl.api.Initializer;
-import com.gitee.usl.api.Shutdown;
-import com.gitee.usl.api.Interactive;
-import com.gitee.usl.api.CliInteractive;
-import com.gitee.usl.api.WebInteractive;
+import com.gitee.usl.api.*;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.grammar.script.ES;
 import com.gitee.usl.infra.constant.NumberConstant;
@@ -14,10 +8,7 @@ import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
 import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.infra.structure.FunctionHolder;
-import com.gitee.usl.infra.structure.wrapper.ObjectWrapper;
 import com.gitee.usl.infra.utils.ServiceSearcher;
-import com.gitee.usl.kernel.cache.CacheValue;
-import com.gitee.usl.kernel.cache.ExpressionCache;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.configure.Configuration;
 import com.gitee.usl.kernel.domain.Param;
@@ -28,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -39,9 +29,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Description("USL-Runner通用脚本语言执行器")
 @SuppressWarnings("AlibabaClassNamingShouldBeCamel")
 public class USLRunner {
-
-    @Description("在JVM关闭前的回调函数")
-    private static List<Shutdown> shutdowns;
 
     @Description("USL-Runner默认实例的数量，每默认实例化一个 USL-Runner 时，都会对此变量自增")
     private static final AtomicInteger NUMBER = new AtomicInteger(NumberConstant.ONE);
@@ -57,10 +44,6 @@ public class USLRunner {
 
     @Description("USL-Runner的配置选项，支持为每一个执行器设置单独的配置")
     private final Configuration configuration;
-
-    static {
-        bindShutdownHook();
-    }
 
     @Description("根据默认配置构造USL-Runner执行器")
     public USLRunner() {
@@ -116,44 +99,14 @@ public class USLRunner {
     @Description("执行脚本")
     public Result run(@Description("脚本参数") Param param) {
 
-        @Description("缓存实例")
-        ExpressionCache cache = configuration.getCacheConfig().getCacheInitializer().getCache();
+        configuration.getCacheConfig().getScriptCompiler().compile(param);
 
-        @Description("脚本内容")
-        String content = param.getScript();
-
-        @Description("表达式缓存键")
-        String key = DigestUtil.sha256Hex(content);
-
-        @Description("表达式编译值")
-        ObjectWrapper<CacheValue> wrapper = new ObjectWrapper<>(cache.select(key));
-
-        if (wrapper.isEmpty()) {
-            configuration.getQueueConfig()
-                    .getQueueInitializer()
-                    .getProducer()
-                    .produce(content, configuration);
-
-            while (wrapper.isEmpty()) {
-                ThreadUtil.sleep(NumberConstant.ONE, TimeUnit.NANOSECONDS);
-                wrapper.set(cache.select(key));
-            }
-
-            if (!param.isCached()) {
-                cache.remove(key);
-            }
-        }
-
-        CacheValue value = wrapper.get();
-
-        if (value.getScript() instanceof ES) {
-            throw ((ES) value.getScript()).getException();
+        if (param.getCompiled() instanceof ES es) {
+            throw es.getException();
         }
 
         try {
-            param.addContext(value.getInitEnv());
-            Object result = value.getScript().execute(param.getContext());
-            return Result.success(result);
+            return Result.success(param.getCompiled().execute(param.getContext()));
         } catch (USLExecuteException uee) {
             log.warn("USL执行出现错误", uee);
             return Result.failure(uee.getResultCode(), uee.getMessage());
@@ -197,18 +150,6 @@ public class USLRunner {
         };
 
         Optional.ofNullable(interactive).ifPresent(item -> item.open(this));
-    }
-
-    @Description("绑定JVM生命周期钩子，在关闭JVM之前执行关闭回调函数")
-    private static void bindShutdownHook() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            shutdowns = ServiceSearcher.searchAll(Shutdown.class);
-            ENGINE_CONTEXT.values().forEach(runner -> {
-                log.info("{} - 开始销毁执行器", runner.name);
-                shutdowns.forEach(shutdown -> shutdown.close(runner.configuration));
-                log.info("{} - 执行器销毁完成", runner.name);
-            });
-        }));
     }
 
     @Override

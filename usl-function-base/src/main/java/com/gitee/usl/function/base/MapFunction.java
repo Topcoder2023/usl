@@ -1,8 +1,6 @@
 package com.gitee.usl.function.base;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.text.StrPool;
-import cn.zhxu.xjson.JsonKit;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.structure.EntryItem;
@@ -221,15 +219,6 @@ public class MapFunction {
                 .stream()
                 .map(entry -> function.call(env, wrapReturn(entry.getKey()), wrapReturn(entry.getValue())).getValue(env))
                 .collect(Collectors.toList());
-    }
-
-    @Function("map_toJson")
-    public <K, V> String toStr(Map<K, V> from) {
-        if (from == null) {
-            return StrPool.EMPTY_JSON;
-        } else {
-            return JsonKit.toJson(from);
-        }
     }
 
     private <K, V> Map<K, V> filterMap(Env env, Map<K, V> from, java.util.function.Function<EntryItem<K, V>, AviatorObject> mapping) {

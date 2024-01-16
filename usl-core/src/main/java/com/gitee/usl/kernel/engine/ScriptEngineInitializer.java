@@ -6,7 +6,6 @@ import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.infra.utils.MethodInvokerOnMissing;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.configure.Configuration;
-import com.google.auto.service.AutoService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
         "Count–Min Sketch —— 编译缓存计数算法",
         "Non-blocking Synchronization —— 无锁化编程"})
 @Getter
-@AutoService(Initializer.class)
 public final class ScriptEngineInitializer implements Initializer {
 
     @Description("脚本引擎实例")

@@ -36,8 +36,6 @@ public class Variable extends AbstractToken<Object> {
     public static final Variable TRUE = new Variable("true", 0, -1) {
 
 
-        private static final long serialVersionUID = 4935383811479451467L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return true;
@@ -51,8 +49,6 @@ public class Variable extends AbstractToken<Object> {
     public static final Variable FALSE = new Variable("false", 0, -1) {
 
 
-        private static final long serialVersionUID = -5580561244268123057L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return false;
@@ -65,8 +61,6 @@ public class Variable extends AbstractToken<Object> {
      */
     public static final Variable NIL = new Variable("nil", 0, -1) {
 
-
-        private static final long serialVersionUID = 5405079118962650113L;
 
         @Override
         public Object getValue(final Map<String, Object> env) {
@@ -82,8 +76,6 @@ public class Variable extends AbstractToken<Object> {
     public static final Variable LAMBDA = new Variable("lambda", 0, -1) {
 
 
-        private static final long serialVersionUID = 5239852591646934183L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return this;
@@ -97,8 +89,6 @@ public class Variable extends AbstractToken<Object> {
     public static final Variable END = new Variable("end", 0, -1) {
 
 
-        private static final long serialVersionUID = 1381194991295087667L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return this;
@@ -111,9 +101,6 @@ public class Variable extends AbstractToken<Object> {
      */
     public static final Variable IF = new Variable("if", 0, -1) {
 
-
-        private static final long serialVersionUID = 371294588236388238L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return this;
@@ -125,9 +112,6 @@ public class Variable extends AbstractToken<Object> {
      * else keyword
      */
     public static final Variable ELSE = new Variable("else", 0, -1) {
-
-
-        private static final long serialVersionUID = -8680881360673170940L;
 
         @Override
         public Object getValue(final Map<String, Object> env) {
@@ -142,9 +126,6 @@ public class Variable extends AbstractToken<Object> {
      */
     public static final Variable FOR = new Variable("for", 0, -1) {
 
-
-        private static final long serialVersionUID = -8264017729568522971L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return this;
@@ -156,9 +137,6 @@ public class Variable extends AbstractToken<Object> {
      * in keyword
      */
     public static final Variable IN = new Variable("in", 0, -1) {
-
-
-        private static final long serialVersionUID = -4622016350260111762L;
 
         @Override
         public Object getValue(final Map<String, Object> env) {
@@ -172,9 +150,6 @@ public class Variable extends AbstractToken<Object> {
      */
     public static final Variable RETURN = new Variable("return", 0, -1) {
 
-
-        private static final long serialVersionUID = 720528094830222144L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return this;
@@ -186,9 +161,6 @@ public class Variable extends AbstractToken<Object> {
      * return keyword
      */
     public static final Variable BREAK = new Variable("break", 0, -1) {
-
-
-        private static final long serialVersionUID = -3811349935845126666L;
 
         @Override
         public Object getValue(final Map<String, Object> env) {
@@ -202,9 +174,6 @@ public class Variable extends AbstractToken<Object> {
      */
     public static final Variable CONTINUE = new Variable("continue", 0, -1) {
 
-
-        private static final long serialVersionUID = -97078099593768562L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return this;
@@ -216,9 +185,6 @@ public class Variable extends AbstractToken<Object> {
      * let keyword
      */
     public static final Variable LET = new Variable("let", 0, -1) {
-
-
-        private static final long serialVersionUID = 8947676572495899744L;
 
         @Override
         public Object getValue(final Map<String, Object> env) {
@@ -232,9 +198,6 @@ public class Variable extends AbstractToken<Object> {
      */
     public static final Variable WHILE = new Variable("while", 0, -1) {
 
-
-        private static final long serialVersionUID = -7452208104495691948L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return this;
@@ -246,9 +209,6 @@ public class Variable extends AbstractToken<Object> {
      * fn keyword
      */
     public static final Variable FN = new Variable("fn", 0, -1) {
-
-
-        private static final long serialVersionUID = 1310362304034338211L;
 
         @Override
         public Object getValue(final Map<String, Object> env) {
@@ -262,9 +222,6 @@ public class Variable extends AbstractToken<Object> {
      */
     public static final Variable ELSIF = new Variable("elsif", 0, -1) {
 
-
-        private static final long serialVersionUID = 9179033352817183568L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return this;
@@ -277,8 +234,6 @@ public class Variable extends AbstractToken<Object> {
      */
     public static final Variable TRY = new Variable("try", 0, -1) {
 
-        private static final long serialVersionUID = -5941442994484723465L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return this;
@@ -287,8 +242,6 @@ public class Variable extends AbstractToken<Object> {
     };
 
     public static final Variable CATCH = new Variable("catch", 0, -1) {
-
-        private static final long serialVersionUID = 5648899950149965053L;
 
         @Override
         public Object getValue(final Map<String, Object> env) {
@@ -299,8 +252,6 @@ public class Variable extends AbstractToken<Object> {
 
     public static final Variable FINALLY = new Variable("finally", 0, -1) {
 
-        private static final long serialVersionUID = 4620910964773812463L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return this;
@@ -309,8 +260,6 @@ public class Variable extends AbstractToken<Object> {
     };
 
     public static final Variable THROW = new Variable("throw", 0, -1) {
-
-        private static final long serialVersionUID = 113057346952612067L;
 
         @Override
         public Object getValue(final Map<String, Object> env) {
@@ -322,8 +271,6 @@ public class Variable extends AbstractToken<Object> {
 
     public static final Variable NEW = new Variable("new", 0, -1) {
 
-        private static final long serialVersionUID = 113057346952612067L;
-
         @Override
         public Object getValue(final Map<String, Object> env) {
             return this;
@@ -333,8 +280,6 @@ public class Variable extends AbstractToken<Object> {
 
 
     public static final Variable USE = new Variable("use", 0, -1) {
-
-        private static final long serialVersionUID = 113057346952612067L;
 
         @Override
         public Object getValue(final Map<String, Object> env) {

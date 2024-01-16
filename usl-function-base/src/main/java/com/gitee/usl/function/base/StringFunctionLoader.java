@@ -4,7 +4,6 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.api.FunctionLoader;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.engine.Function;
-import com.google.auto.service.AutoService;
 import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
 /**
  * @author hongda.li
  */
-@AutoService(FunctionLoader.class)
 public class StringFunctionLoader implements FunctionLoader {
     /**
      * 字符串类函数的统一前缀

@@ -1,21 +1,19 @@
 /**
  * Copyright (C) 2010 dennis zhuang (killme2008@gmail.com)
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation; either version
  * 2.1 of the License, or (at your option) any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License along with this program;
  * if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
  **/
 package com.gitee.usl.grammar.lexer.token;
 
-import java.io.Serializable;
 import java.util.Map;
 
 
@@ -26,30 +24,30 @@ import java.util.Map;
  *
  * @param <T>
  */
-public interface Token<T> extends Serializable {
-  enum TokenType {
-    String, Variable, Number, Char, Operator, Pattern, Delegate
-  }
+public interface Token<T> {
+    enum TokenType {
+        String, Variable, Number, Char, Operator, Pattern, Delegate
+    }
 
-  Token<T> withMeta(String name, Object v);
+    Token<T> withMeta(String name, Object v);
 
-  Map<String, Object> getMetaMap();
+    Map<String, Object> getMetaMap();
 
-  <V> V getMeta(final String name, final V defaultVal);
+    <V> V getMeta(final String name, final V defaultVal);
 
-  <V> V getMeta(final String name);
+    <V> V getMeta(final String name);
 
-  T getValue(Map<String, Object> env);
+    T getValue(Map<String, Object> env);
 
-  TokenType getType();
-
-
-  String getLexeme();
+    TokenType getType();
 
 
-  int getStartIndex();
+    String getLexeme();
 
-  int getEndIndex();
 
-  int getLineNo();
+    int getStartIndex();
+
+    int getEndIndex();
+
+    int getLineNo();
 }

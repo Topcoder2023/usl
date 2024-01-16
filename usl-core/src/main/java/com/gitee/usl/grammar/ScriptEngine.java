@@ -7,8 +7,6 @@ import com.gitee.usl.grammar.runtime.function.system.*;
 import com.gitee.usl.infra.exception.USLException;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.grammar.Options.Value;
-import com.gitee.usl.grammar.code.CodeGenerator;
-import com.gitee.usl.grammar.code.interpreter.InterpretCodeGenerator;
 import com.gitee.usl.grammar.lexer.token.OperatorType;
 import com.gitee.usl.grammar.runtime.RuntimeFunctionDelegator;
 import com.gitee.usl.grammar.runtime.type.AviatorFunction;
@@ -242,16 +240,6 @@ public final class ScriptEngine {
     public void removeSystemFunction(final AviatorFunction function) {
         Assert.notNull(function, "函数实例不能为空");
         this.systemFunctionMap.remove(function.getName());
-    }
-
-    @Description("构建一个运行期间优先的字节码生成器")
-    public CodeGenerator codeGenerator() {
-        return this.codeGenerator(this.classLoader);
-    }
-
-    @Description("构建一个运行期间优先的字节码生成器")
-    public CodeGenerator codeGenerator(final ScriptClassLoader classLoader) {
-        return new InterpretCodeGenerator(this, classLoader);
     }
 
 }

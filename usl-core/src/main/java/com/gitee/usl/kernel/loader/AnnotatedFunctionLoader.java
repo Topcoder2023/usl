@@ -12,8 +12,6 @@ import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
-import com.gitee.usl.api.FunctionLoader;
-import com.google.auto.service.AutoService;
 import com.gitee.usl.grammar.runtime.type.AviatorFunction;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +25,6 @@ import java.util.stream.Stream;
  */
 @Slf4j
 @Description("基于注解的函数加载器")
-@AutoService(FunctionLoader.class)
 public class AnnotatedFunctionLoader extends AbstractFunctionLoader {
 
     @Override

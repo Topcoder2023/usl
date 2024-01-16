@@ -7,7 +7,7 @@ import java.util.List;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.grammar.lexer.ExpressionLexer;
+import com.gitee.usl.grammar.lexer.GrammarLexer;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.USLCompileException;
 import com.gitee.usl.infra.structure.AwaitVariable;
@@ -17,7 +17,6 @@ import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.script.Script;
 import com.gitee.usl.grammar.Feature;
 import com.gitee.usl.grammar.Options;
-import com.gitee.usl.grammar.code.CodeGenerator;
 import com.googlecode.aviator.exception.ExpressionSyntaxErrorException;
 import com.gitee.usl.grammar.ScriptKeyword;
 import com.gitee.usl.grammar.lexer.token.CharToken;
@@ -46,7 +45,7 @@ public class ExpressionParser implements Parser {
     private int getCGTimes;
 
     @Description("词法分析器")
-    private final ExpressionLexer lexer;
+    private final GrammarLexer lexer;
 
     @Getter
     @Description("当前的Token")
@@ -56,7 +55,7 @@ public class ExpressionParser implements Parser {
     private final ArrayDeque<Token<?>> prevTokens = new ArrayDeque<>();
 
     @Description("字节码生成器")
-    private CodeGenerator codeGenerator;
+    private Generator codeGenerator;
 
     @Description("嵌套作用域")
     private ScopeInfo scope;
@@ -73,7 +72,7 @@ public class ExpressionParser implements Parser {
     }
 
     @Override
-    public CodeGenerator getCodeGenerator() {
+    public Generator getCodeGenerator() {
         return this.codeGenerator;
     }
 
@@ -83,7 +82,7 @@ public class ExpressionParser implements Parser {
     }
 
     @Override
-    public void setCodeGenerator(final CodeGenerator codeGenerator) {
+    public void setCodeGenerator(final Generator codeGenerator) {
         this.codeGenerator = codeGenerator;
     }
 
@@ -100,8 +99,8 @@ public class ExpressionParser implements Parser {
     }
 
     public ExpressionParser(final ScriptEngine instance,
-                            final ExpressionLexer lexer,
-                            final CodeGenerator codeGenerator) {
+                            final GrammarLexer lexer,
+                            final Generator codeGenerator) {
         this.lexer = lexer;
         this.instance = instance;
         this.current = this.lexer.scan();
@@ -132,7 +131,7 @@ public class ExpressionParser implements Parser {
      */
     public void returnStatement() {
         move(true);
-        CodeGenerator cg = getCodeGeneratorWithTimes();
+        Generator cg = getCodeGeneratorWithTimes();
         cg.onTernaryEnd(this.current);
         if (expectChar(';')) {
             // 'return;' => 'return nil;'
@@ -184,7 +183,7 @@ public class ExpressionParser implements Parser {
 
         if (expectChar('?')) {
             move(true);
-            CodeGenerator cg = getCodeGeneratorWithTimes();
+            Generator cg = getCodeGeneratorWithTimes();
             cg.onTernaryBoolean(opToken);
             if (!ternary()) {
                 reportSyntaxError("invalid token for ternary operator");
@@ -225,7 +224,7 @@ public class ExpressionParser implements Parser {
                 if (alias != null) {
                     if (opToken != null && opToken.getType() == Token.TokenType.Variable
                             && opToken.getLexeme().equals(alias)) {
-                        CodeGenerator cg = getCodeGeneratorWithTimes();
+                        Generator cg = getCodeGeneratorWithTimes();
                         cg.onJoinLeft(opToken);
                         move(true);
                         and();
@@ -308,7 +307,7 @@ public class ExpressionParser implements Parser {
             Token<?> opToken = this.current;
 
             if (expectChar('&')) {
-                CodeGenerator cg = getCodeGeneratorWithTimes();
+                Generator cg = getCodeGeneratorWithTimes();
                 cg.onAndLeft(opToken);
                 move(true);
                 if (expectChar('&')) {
@@ -324,7 +323,7 @@ public class ExpressionParser implements Parser {
                 if (alias != null) {
                     if (opToken != null && opToken.getType() == Token.TokenType.Variable
                             && opToken.getLexeme().equals(alias)) {
-                        CodeGenerator cg = getCodeGeneratorWithTimes();
+                        Generator cg = getCodeGeneratorWithTimes();
                         cg.onAndLeft(opToken);
                         move(true);
                         bitOr();
@@ -1874,7 +1873,7 @@ public class ExpressionParser implements Parser {
                                   final boolean ifBodyHasReturn) {
         if (isWhile) {
             // Call __reducer_break(nil)
-            final CodeGenerator cg = getCodeGeneratorWithTimes();
+            final Generator cg = getCodeGeneratorWithTimes();
             cg.onMethodName(Constants.ReducerBreakFn);
             cg.onConstant(Variable.NIL);
             cg.onMethodParameter(this.current);
@@ -1923,7 +1922,7 @@ public class ExpressionParser implements Parser {
     }
 
     private boolean withoutElse() {
-        final CodeGenerator cg = getCodeGeneratorWithTimes();
+        final Generator cg = getCodeGeneratorWithTimes();
         cg.onConstant(Variable.NIL);
         cg.onTernaryRight(this.current);
         return false;
@@ -2002,7 +2001,7 @@ public class ExpressionParser implements Parser {
         }
     }
 
-    private CodeGenerator getCodeGeneratorWithTimes() {
+    private Generator getCodeGeneratorWithTimes() {
         this.getCGTimes++;
         return this.codeGenerator;
     }

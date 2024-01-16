@@ -1,6 +1,5 @@
 package com.gitee.usl.logger;
 
-import com.google.auto.service.AutoService;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.IMarkerFactory;
 import org.slf4j.helpers.BasicMarkerFactory;
@@ -16,7 +15,6 @@ import org.slf4j.spi.SLF4JServiceProvider;
  *
  * @author hongda.li
  */
-@AutoService(SLF4JServiceProvider.class)
 public class UslServiceProvider implements SLF4JServiceProvider {
     /**
      * USL 日志服务提供者所需的 SLF4J 的最低版本

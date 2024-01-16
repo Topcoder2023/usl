@@ -1,6 +1,7 @@
 package com.gitee.usl.kernel.domain;
 
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.grammar.script.Script;
 import com.gitee.usl.infra.structure.StringMap;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,24 +16,25 @@ import java.util.Map;
 @Description("USL 参数结构")
 public class Param {
 
-    @Description("是否缓存表达式")
-    private boolean cached;
-
     @Description("脚本内容")
-    private String script;
+    private final String script;
+
+    @Description("是否缓存表达式")
+    private final boolean cached;
 
     @Description("上下文变量")
-    private StringMap<Object> context;
+    private final StringMap<Object> context = new StringMap<>();
 
-    public Param() {
-        this.cached = true;
-        this.context = new StringMap<>();
-    }
+    @Description("表达式编译值")
+    private Script compiled;
 
     public Param(String script) {
+        this(true, script);
+    }
+
+    public Param(boolean cached, String script) {
         this.script = script;
-        this.cached = true;
-        this.context = new StringMap<>();
+        this.cached = cached;
     }
 
     public Param addContext(String name, Object value) {
@@ -41,14 +43,7 @@ public class Param {
     }
 
     public Param addContext(Map<String, Object> other) {
-        if (other != null) {
-            this.context.putAll(other);
-        }
-        return this;
-    }
-
-    public Param setContext(Map<String, Object> map) {
-        this.context = new StringMap<>(map);
+        this.context.putAll(other);
         return this;
     }
 

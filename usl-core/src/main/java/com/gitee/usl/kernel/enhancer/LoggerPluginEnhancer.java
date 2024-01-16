@@ -6,15 +6,12 @@ import com.gitee.usl.api.annotation.EnableLogger;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
-import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.kernel.plugin.LoggerPlugin;
-import com.google.auto.service.AutoService;
 
 /**
  * @author hongda.li
  */
 @Order(Integer.MAX_VALUE - 10)
-@AutoService(FunctionEnhancer.class)
 public class LoggerPluginEnhancer extends AbstractFunctionEnhancer {
 
     @Override

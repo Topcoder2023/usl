@@ -3,7 +3,6 @@ package com.gitee.usl.plugin.enhancer;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.util.ClassUtil;
-import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
@@ -12,7 +11,6 @@ import com.gitee.usl.plugin.annotation.Retryable;
 import com.gitee.usl.plugin.api.RetryBuilderFactory;
 import com.gitee.usl.plugin.impl.RetryPlugin;
 import com.github.rholder.retry.*;
-import com.google.auto.service.AutoService;
 
 import java.util.Optional;
 
@@ -20,7 +18,6 @@ import java.util.Optional;
  * @author hongda.li
  */
 @Order(Integer.MAX_VALUE)
-@AutoService(FunctionEnhancer.class)
 public class RetryableEnhancer extends AbstractFunctionEnhancer {
 
     @Override

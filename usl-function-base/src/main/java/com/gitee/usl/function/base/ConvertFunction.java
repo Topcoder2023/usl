@@ -1,7 +1,7 @@
 package com.gitee.usl.function.base;
 
 import cn.hutool.core.convert.Convert;
-import cn.zhxu.xjson.JsonKit;
+import cn.hutool.json.JSONUtil;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 
@@ -47,6 +47,6 @@ public class ConvertFunction {
 
     @Function("to_json")
     public String toJson(Object obj) {
-        return JsonKit.toJson(obj);
+        return JSONUtil.toJsonStr(obj);
     }
 }

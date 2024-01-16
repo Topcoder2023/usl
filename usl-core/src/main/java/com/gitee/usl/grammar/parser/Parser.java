@@ -2,7 +2,6 @@ package com.gitee.usl.grammar.parser;
 
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.grammar.script.Script;
-import com.gitee.usl.grammar.code.CodeGenerator;
 import com.gitee.usl.grammar.ScriptKeyword;
 
 /**
@@ -15,9 +14,9 @@ public interface Parser {
 
     ScriptKeyword getSymbolTable();
 
-    CodeGenerator getCodeGenerator();
+    Generator getCodeGenerator();
 
-    void setCodeGenerator(CodeGenerator codeGenerator);
+    void setCodeGenerator(Generator codeGenerator);
 
     ScopeInfo enterScope(boolean inForLoop);
 
