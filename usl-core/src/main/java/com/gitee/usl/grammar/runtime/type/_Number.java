@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import java.util.Map;
 
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
-import com.googlecode.aviator.exception.CompareNotSupportedException;
+import com.gitee.usl.grammar.exception.CompareNotSupportedException;
 import com.gitee.usl.grammar.utils.TypeUtils;
 
 /**

@@ -53,7 +53,7 @@ public record LoadIR(Token<?> token) implements IR {
                 } else if (this.token == Variable.FALSE) {
                     context.push(_Bool.FALSE, this.token);
                 } else if (this.token == Variable.NIL) {
-                    context.push(_Null.NIL, this.token);
+                    context.push(new _Null(), this.token);
                 } else {
                     _JavaType var = new _JavaType(this.token.getLexeme());
                     context.push(var, this.token);

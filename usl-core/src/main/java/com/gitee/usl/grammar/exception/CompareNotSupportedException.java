@@ -1,4 +1,4 @@
-package com.googlecode.aviator.exception;
+package com.gitee.usl.grammar.exception;
 
 public class CompareNotSupportedException extends ExpressionRuntimeException {
   private static final long serialVersionUID = 1371807011356390059L;

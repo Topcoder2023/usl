@@ -1,6 +1,6 @@
 package com.gitee.usl.grammar.runtime.type;
 
-import com.googlecode.aviator.exception.ExpressionRuntimeException;
+import com.gitee.usl.grammar.exception.ExpressionRuntimeException;
 import com.gitee.usl.grammar.utils.ArrayUtils;
 import com.gitee.usl.grammar.utils.Reflector;
 

@@ -33,7 +33,7 @@ import com.gitee.usl.grammar.runtime.RuntimeUtils;
 import com.gitee.usl.grammar.runtime.function.ClassMethodFunction;
 import com.gitee.usl.grammar.runtime.type._JavaType;
 import com.gitee.usl.grammar.Feature;
-import com.googlecode.aviator.exception.NoSuchPropertyException;
+import com.gitee.usl.grammar.exception.NoSuchPropertyException;
 
 /**
  * Some code is copied from

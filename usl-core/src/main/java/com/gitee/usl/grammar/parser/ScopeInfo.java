@@ -1,6 +1,6 @@
 package com.gitee.usl.grammar.parser;
 
-import com.googlecode.aviator.exception.ExpressionSyntaxErrorException;
+import com.gitee.usl.grammar.exception.ExpressionSyntaxErrorException;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

@@ -2,7 +2,7 @@ package com.gitee.usl.grammar.runtime.function;
 
 import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.grammar.utils.Env;
-import com.googlecode.aviator.exception.FunctionNotFoundException;
+import com.gitee.usl.grammar.exception.FunctionNotFoundException;
 import com.gitee.usl.grammar.runtime.type._Object;
 
 import java.util.IdentityHashMap;

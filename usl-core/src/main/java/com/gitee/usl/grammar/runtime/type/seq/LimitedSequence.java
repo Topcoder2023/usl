@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import com.gitee.usl.grammar.runtime.type.Collector;
 import com.gitee.usl.grammar.runtime.type.Sequence;
-import com.googlecode.aviator.exception.ExpressionRuntimeException;
+import com.gitee.usl.grammar.exception.ExpressionRuntimeException;
 
 public class LimitedSequence<T> extends AbstractSequence<T> {
 

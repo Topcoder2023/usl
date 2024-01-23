@@ -20,7 +20,8 @@ public class WithMetaFunction extends BasicFunction {
 
     @Override
     public _Object execute(Env env, _Object[] arguments) {
-        return arguments[0].withMeta(arguments[1].getValue(env), arguments[2].getValue(env));
+        arguments[0].getMetadata().putAny(arguments[1].getValue(env), arguments[2].getValue(env));
+        return arguments[0];
     }
 
 }

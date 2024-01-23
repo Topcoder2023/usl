@@ -10,7 +10,7 @@ import com.gitee.usl.grammar.runtime.type._RuntimeJavaType;
 import com.gitee.usl.grammar.runtime.type._Range;
 import com.gitee.usl.grammar.Options;
 import com.gitee.usl.grammar.utils.Env;
-import com.googlecode.aviator.exception.ExpressionRuntimeException;
+import com.gitee.usl.grammar.exception.ExpressionRuntimeException;
 import com.gitee.usl.grammar.runtime.type._Function;
 import com.gitee.usl.grammar.runtime.type._Null;
 import com.gitee.usl.grammar.runtime.type._Object;
@@ -55,15 +55,15 @@ public class ReducerFunction extends BasicFunction {
 
             for (Object obj : RuntimeUtils.seq(coll, env)) {
                 if (arities == 1) {
-                    result = iteratorFn.execute(env, new _Object[]{_RuntimeJavaType.valueOf(obj)});
+                    result = iteratorFn.execute(env, _RuntimeJavaType.valueOf(obj));
                 } else {
                     if (unboxEntry) {
                         Map.Entry<?, ?> entry = (Map.Entry<?, ?>) obj;
-                        result = iteratorFn.execute(env, new _Object[]{_RuntimeJavaType.valueOf(entry.getKey()),
-                                _RuntimeJavaType.valueOf(entry.getValue())});
+                        result = iteratorFn.execute(env, _RuntimeJavaType.valueOf(entry.getKey()),
+                                _RuntimeJavaType.valueOf(entry.getValue()));
                     } else {
-                        result = iteratorFn.execute(env, new _Object[]{_Long.valueOf(index++),
-                                _RuntimeJavaType.valueOf(obj)});
+                        result = iteratorFn.execute(env, _Long.valueOf(index++),
+                                _RuntimeJavaType.valueOf(obj));
                     }
                 }
                 if (!(result instanceof ReducerResult midResult)) {

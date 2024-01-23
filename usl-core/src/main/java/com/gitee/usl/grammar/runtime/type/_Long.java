@@ -1,8 +1,8 @@
 package com.gitee.usl.grammar.runtime.type;
 
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
-import com.googlecode.aviator.exception.CompareNotSupportedException;
-import com.googlecode.aviator.exception.ExpressionRuntimeException;
+import com.gitee.usl.grammar.exception.CompareNotSupportedException;
+import com.gitee.usl.grammar.exception.ExpressionRuntimeException;
 import com.gitee.usl.grammar.utils.TypeUtils;
 
 import java.util.Map;

@@ -8,10 +8,11 @@ import com.gitee.usl.grammar.utils.TypeUtils;
 import com.gitee.usl.grammar.utils.Utils;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.grammar.Options;
-import com.googlecode.aviator.exception.CompareNotSupportedException;
-import com.googlecode.aviator.exception.ExpressionRuntimeException;
+import com.gitee.usl.grammar.exception.CompareNotSupportedException;
+import com.gitee.usl.grammar.exception.ExpressionRuntimeException;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Map;
 
@@ -20,24 +21,15 @@ import java.util.Map;
  */
 @Setter
 @Getter
+@Accessors(chain = true)
 public abstract class _Object {
 
     private Token<?> from;
 
     protected StringMap<Object> metadata = new StringMap<>();
 
-    public _Object withMeta(final Object key, final Object value) {
-        this.metadata.put(String.valueOf(key), value);
-        return this;
-    }
-
     public Object meta(final Object key) {
         return this.metadata.get(String.valueOf(key));
-    }
-
-    public _Object withoutMeta(final Object key) {
-        this.metadata.remove(String.valueOf(key));
-        return this;
     }
 
     public int compare(final _Object other, final Map<String, Object> env) {

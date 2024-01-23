@@ -10,7 +10,7 @@ import com.gitee.usl.grammar.runtime.function.system.ConstantFunction;
 import com.gitee.usl.grammar.runtime.type._JavaType;
 import com.gitee.usl.api.FunctionMissing;
 import com.gitee.usl.grammar.utils.Env;
-import com.googlecode.aviator.exception.FunctionNotFoundException;
+import com.gitee.usl.grammar.exception.FunctionNotFoundException;
 import com.gitee.usl.grammar.ScriptKeyword;
 import com.gitee.usl.grammar.runtime.type._Function;
 import com.gitee.usl.grammar.runtime.type._Object;

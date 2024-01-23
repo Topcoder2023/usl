@@ -17,7 +17,7 @@ import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.script.Script;
 import com.gitee.usl.grammar.Feature;
 import com.gitee.usl.grammar.Options;
-import com.googlecode.aviator.exception.ExpressionSyntaxErrorException;
+import com.gitee.usl.grammar.exception.ExpressionSyntaxErrorException;
 import com.gitee.usl.grammar.ScriptKeyword;
 import com.gitee.usl.grammar.lexer.token.CharToken;
 import com.gitee.usl.grammar.lexer.token.DelegateToken;

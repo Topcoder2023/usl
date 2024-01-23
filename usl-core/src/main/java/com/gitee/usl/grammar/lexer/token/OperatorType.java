@@ -15,8 +15,8 @@
  **/
 package com.gitee.usl.grammar.lexer.token;
 
-import com.googlecode.aviator.exception.ExpressionRuntimeException;
-import com.googlecode.aviator.exception.IllegalArityException;
+import com.gitee.usl.grammar.exception.ExpressionRuntimeException;
+import com.gitee.usl.grammar.exception.IllegalArityException;
 import com.gitee.usl.grammar.runtime.type._Bool;
 import com.gitee.usl.grammar.runtime.type._JavaType;
 import com.gitee.usl.grammar.runtime.type._Object;

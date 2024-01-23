@@ -2,7 +2,7 @@ package com.gitee.usl.grammar.runtime.op;
 
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
 import com.gitee.usl.grammar.utils.Env;
-import com.googlecode.aviator.exception.IllegalArityException;
+import com.gitee.usl.grammar.exception.IllegalArityException;
 import com.gitee.usl.grammar.lexer.token.OperatorType;
 import com.gitee.usl.grammar.lexer.token.Variable;
 import com.gitee.usl.grammar.runtime.type._Function;
