@@ -1,6 +1,7 @@
 package com.gitee.usl.function.base;
 
 import cn.hutool.core.collection.CollUtil;
+import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.structure.EntryItem;
 import com.gitee.usl.infra.constant.NumberConstant;
@@ -20,39 +21,39 @@ import static com.gitee.usl.grammar.runtime.function.FunctionUtils.wrapReturn;
 @SuppressWarnings("unused")
 @FunctionGroup
 public class MapFunction {
-    @com.gitee.usl.api.annotation.Function("map")
+    @Function("map")
     public Map<Object, Object> map() {
         return new LinkedHashMap<>(NumberConstant.EIGHT);
     }
 
-    @com.gitee.usl.api.annotation.Function("map_of")
+    @Function("map_of")
     public <K, V> Map<K, V> of(K key, V value) {
         Map<K, V> from = new LinkedHashMap<>(NumberConstant.EIGHT);
         from.put(key, value);
         return from;
     }
 
-    @com.gitee.usl.api.annotation.Function("map_size")
+    @Function("map_size")
     public <K, V> int size(Map<K, V> from) {
         return from == null ? 0 : from.size();
     }
 
-    @com.gitee.usl.api.annotation.Function("map_isEmpty")
+    @Function("map_isEmpty")
     public <K, V> boolean isEmpty(Map<K, V> from) {
         return CollUtil.isEmpty(from);
     }
 
-    @com.gitee.usl.api.annotation.Function("map_containsKey")
+    @Function("map_containsKey")
     public <K, V> boolean containsKey(Map<K, V> from, K key) {
         return !CollUtil.isEmpty(from) && key != null && from.containsKey(key);
     }
 
-    @com.gitee.usl.api.annotation.Function("map_containsValue")
+    @Function("map_containsValue")
     public <K, V> boolean containsValue(Map<K, V> from, V value) {
         return !CollUtil.isEmpty(from) && value != null && from.containsValue(value);
     }
 
-    @com.gitee.usl.api.annotation.Function("map_get")
+    @Function("map_get")
     public <K, V> V get(Map<K, V> from, K key) {
         if (CollUtil.isEmpty(from) || key == null) {
             return null;
@@ -60,7 +61,7 @@ public class MapFunction {
         return from.get(key);
     }
 
-    @com.gitee.usl.api.annotation.Function("map_getOrDefault")
+    @Function("map_getOrDefault")
     public <K, V> V getOrDefault(Map<K, V> from, K key, V defaultValue) {
         if (CollUtil.isEmpty(from) || key == null) {
             return defaultValue;
@@ -68,7 +69,7 @@ public class MapFunction {
         return Optional.ofNullable(from.get(key)).orElse(defaultValue);
     }
 
-    @com.gitee.usl.api.annotation.Function("map_put")
+    @Function("map_put")
     public <K, V> V put(Map<K, V> from, K key, V value) {
         if (from == null || key == null) {
             return null;
@@ -77,7 +78,7 @@ public class MapFunction {
         return value;
     }
 
-    @com.gitee.usl.api.annotation.Function("map_putIfAbsent")
+    @Function("map_putIfAbsent")
     public <K, V> V putIfAbsent(Map<K, V> from, K key, V value) {
         if (from == null || key == null) {
             return null;
@@ -86,7 +87,7 @@ public class MapFunction {
         return value;
     }
 
-    @com.gitee.usl.api.annotation.Function("map_putIfPresent")
+    @Function("map_putIfPresent")
     public <K, V> V putIfPresent(Map<K, V> from, K key, V value) {
         if (from == null || key == null) {
             return null;
@@ -95,7 +96,7 @@ public class MapFunction {
         return value;
     }
 
-    @com.gitee.usl.api.annotation.Function("map_putAll")
+    @Function("map_putAll")
     public <K, V> Map<K, V> putAll(Map<K, V> from, Map<K, V> target) {
         if (from == null || CollUtil.isEmpty(target)) {
             return from;
@@ -104,7 +105,7 @@ public class MapFunction {
         return from;
     }
 
-    @com.gitee.usl.api.annotation.Function("map_replace")
+    @Function("map_replace")
     public <K, V> V replace(Map<K, V> from, K key, V oldValue, V newValue) {
         if (from == null || key == null) {
             return null;
@@ -113,7 +114,7 @@ public class MapFunction {
         return newValue;
     }
 
-    @com.gitee.usl.api.annotation.Function("map_remove")
+    @Function("map_remove")
     public <K, V> V remove(Map<K, V> from, K key) {
         if (CollUtil.isEmpty(from) || key == null) {
             return null;
@@ -121,7 +122,7 @@ public class MapFunction {
         return from.remove(key);
     }
 
-    @com.gitee.usl.api.annotation.Function("map_removeIf")
+    @Function("map_removeIf")
     public <K, V> EntryItem<K, V> removeIf(Env env, Map<K, V> from, _Function function) {
         if (CollUtil.isEmpty(from) || function == null) {
             return null;
@@ -140,7 +141,7 @@ public class MapFunction {
         return item;
     }
 
-    @com.gitee.usl.api.annotation.Function("map_clear")
+    @Function("map_clear")
     public <K, V> Map<K, V> clear(Map<K, V> from) {
         if (from != null) {
             from.clear();
@@ -148,7 +149,7 @@ public class MapFunction {
         return from;
     }
 
-    @com.gitee.usl.api.annotation.Function("map_keySet")
+    @Function("map_keySet")
     public <K, V> List<K> keySet(Map<K, V> from) {
         if (from != null) {
             return new ArrayList<>(from.keySet());
@@ -156,7 +157,7 @@ public class MapFunction {
         return Collections.emptyList();
     }
 
-    @com.gitee.usl.api.annotation.Function("map_values")
+    @Function("map_values")
     public <K, V> List<V> values(Map<K, V> from) {
         if (from != null) {
             return new ArrayList<>(from.values());
@@ -164,7 +165,7 @@ public class MapFunction {
         return Collections.emptyList();
     }
 
-    @com.gitee.usl.api.annotation.Function("map_entrySet")
+    @Function("map_entrySet")
     public <K, V> List<EntryItem<K, V>> entrySet(Map<K, V> from) {
         if (from != null) {
             return from.entrySet()
@@ -175,7 +176,7 @@ public class MapFunction {
         return Collections.emptyList();
     }
 
-    @com.gitee.usl.api.annotation.Function("map_foreach")
+    @Function("map_foreach")
     public <K, V> Map<K, V> foreach(Env env, Map<K, V> from, _Function function) {
         if (from != null) {
             from.forEach((k, v) -> function.execute(env, wrapReturn(k), wrapReturn(v)));
@@ -183,7 +184,7 @@ public class MapFunction {
         return from;
     }
 
-    @com.gitee.usl.api.annotation.Function("map_filter")
+    @Function("map_filter")
     public <K, V> Map<K, V> filter(Env env, Map<K, V> from, _Function function) {
         if (from == null || function == null) {
             return from;
@@ -193,7 +194,7 @@ public class MapFunction {
                 wrapReturn(entry.getValue())));
     }
 
-    @com.gitee.usl.api.annotation.Function("map_filter_key")
+    @Function("map_filter_key")
     public <K, V> Map<K, V> filterKey(Env env, Map<K, V> from, _Function function) {
         if (from == null || function == null) {
             return from;
@@ -201,7 +202,7 @@ public class MapFunction {
         return this.filterMap(env, from, entry -> function.execute(env, wrapReturn(entry.getKey())));
     }
 
-    @com.gitee.usl.api.annotation.Function("map_filter_value")
+    @Function("map_filter_value")
     public <K, V> Map<K, V> filterValue(Env env, Map<K, V> from, _Function function) {
         if (from == null || function == null) {
             return from;
@@ -209,7 +210,7 @@ public class MapFunction {
         return this.filterMap(env, from, entry -> function.execute(env, wrapReturn(entry.getValue())));
     }
 
-    @com.gitee.usl.api.annotation.Function("map_toList")
+    @Function("map_toList")
     public <K, V> List<?> toList(Env env, Map<K, V> from, _Function function) {
         if (from == null || function == null) {
             return new ArrayList<>();

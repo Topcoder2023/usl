@@ -3,6 +3,7 @@ package com.gitee.usl.function.base;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.comparator.CompareUtil;
+import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.grammar.runtime.function.FunctionUtils;
@@ -22,18 +23,18 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 @FunctionGroup
 public class ListFunction {
-    @com.gitee.usl.api.annotation.Function("list")
+    @Function("list")
     public final List<?> list() {
         return new ArrayList<>();
     }
 
     @SafeVarargs
-    @com.gitee.usl.api.annotation.Function("list_of")
+    @Function("list_of")
     public final <T> List<T> of(T... elements) {
         return ListUtil.toList(elements);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_from")
+    @Function("list_from")
     public <T> List<T> from(List<T> source) {
         if (source == null) {
             return new ArrayList<>();
@@ -42,12 +43,12 @@ public class ListFunction {
         }
     }
 
-    @com.gitee.usl.api.annotation.Function("list_get")
+    @Function("list_get")
     public Object get(List<?> from, int index) {
         return from == null || index < 0 || index >= from.size() ? null : from.get(index);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_set")
+    @Function("list_set")
     public <T> T set(List<T> from, int index, T element) {
         if (from == null || index < 0 || index >= from.size()) {
             return null;
@@ -56,7 +57,7 @@ public class ListFunction {
         return element;
     }
 
-    @com.gitee.usl.api.annotation.Function("list_add")
+    @Function("list_add")
     public <T> T add(List<T> from, T element) {
         if (from != null) {
             from.add(element);
@@ -64,12 +65,12 @@ public class ListFunction {
         return element;
     }
 
-    @com.gitee.usl.api.annotation.Function("list_size")
+    @Function("list_size")
     public <T> int size(List<T> from) {
         return from == null ? 0 : from.size();
     }
 
-    @com.gitee.usl.api.annotation.Function("list_addAll")
+    @Function("list_addAll")
     public <T> List<T> addAll(List<T> from, List<T> elements) {
         if (CollUtil.isNotEmpty(elements)) {
             from.addAll(elements);
@@ -77,7 +78,7 @@ public class ListFunction {
         return from;
     }
 
-    @com.gitee.usl.api.annotation.Function("list_addTo")
+    @Function("list_addTo")
     public <T> T addTo(List<T> from, int index, T element) {
         if (from == null || index < 0 || index >= from.size()) {
             return null;
@@ -86,12 +87,12 @@ public class ListFunction {
         return element;
     }
 
-    @com.gitee.usl.api.annotation.Function("list_remove")
+    @Function("list_remove")
     public <T> T remove(List<T> from, int index) {
         return from == null || index < 0 || index > from.size() - 1 ? null : from.remove(index);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_removeIf")
+    @Function("list_removeIf")
     public <T> List<T> removeIf(Env env, List<T> from, _Function function) {
         if (from == null || function == null) {
             return from;
@@ -102,7 +103,7 @@ public class ListFunction {
         });
     }
 
-    @com.gitee.usl.api.annotation.Function("list_clear")
+    @Function("list_clear")
     public <T> List<T> clear(List<T> from) {
         if (from != null) {
             from.clear();
@@ -110,22 +111,22 @@ public class ListFunction {
         return from;
     }
 
-    @com.gitee.usl.api.annotation.Function("list_indexOf")
+    @Function("list_indexOf")
     public <T> int indexOf(List<T> from, T element) {
         return from == null || element == null ? -1 : from.indexOf(element);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_lastIndexOf")
+    @Function("list_lastIndexOf")
     public <T> int lastIndexOf(List<T> from, T element) {
         return from == null || element == null ? -1 : from.lastIndexOf(element);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_sort")
+    @Function("list_sort")
     public <T extends Comparable<? super T>> List<T> sort(List<T> from) {
         return sort(from, false);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_resort")
+    @Function("list_resort")
     public <T extends Comparable<? super T>> List<T> resort(List<T> from) {
         return sort(from, true);
     }
@@ -140,12 +141,12 @@ public class ListFunction {
         return sorted;
     }
 
-    @com.gitee.usl.api.annotation.Function("list_sortBy")
+    @Function("list_sortBy")
     public <T> List<T> sortBy(Env env, List<T> from, _Function function) {
         return resortBy(env, from, function, false);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_resortBy")
+    @Function("list_resortBy")
     public <T> List<T> resortBy(Env env, List<T> from, _Function function) {
         return resortBy(env, from, function, true);
     }
@@ -165,12 +166,12 @@ public class ListFunction {
         return sorted;
     }
 
-    @com.gitee.usl.api.annotation.Function("list_sub")
+    @Function("list_sub")
     public <T> List<T> sub(List<T> from, int start, int end) {
         return CollUtil.sub(from, start, end);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_filter")
+    @Function("list_filter")
     public <T> List<T> filter(Env env, List<T> from, _Function function) {
         if (from == null || function == null) {
             return from;
@@ -183,72 +184,72 @@ public class ListFunction {
                 .collect(Collectors.toList());
     }
 
-    @com.gitee.usl.api.annotation.Function("list_union")
+    @Function("list_union")
     public <T> List<T> union(List<T> from, List<T> to) {
         return new ArrayList<>(CollUtil.union(from, to));
     }
 
-    @com.gitee.usl.api.annotation.Function("list_unionAll")
+    @Function("list_unionAll")
     public <T> List<T> unionAll(List<T> from, List<T> to) {
         return new ArrayList<>(CollUtil.unionAll(from, to));
     }
 
-    @com.gitee.usl.api.annotation.Function("list_unionDistinct")
+    @Function("list_unionDistinct")
     public <T> List<T> unionDistinct(List<T> from, List<T> to) {
         return new ArrayList<>(CollUtil.unionDistinct(from, to));
     }
 
-    @com.gitee.usl.api.annotation.Function("list_intersection")
+    @Function("list_intersection")
     public <T> List<T> intersection(List<T> from, List<T> to) {
         return new ArrayList<>(CollUtil.intersection(from, to));
     }
 
-    @com.gitee.usl.api.annotation.Function("list_intersectionDistinct")
+    @Function("list_intersectionDistinct")
     public <T> List<T> intersectionDistinct(List<T> from, List<T> to) {
         return new ArrayList<>(CollUtil.intersectionDistinct(from, to));
     }
 
-    @com.gitee.usl.api.annotation.Function("list_disjunction")
+    @Function("list_disjunction")
     public <T> List<T> disjunction(List<T> from, List<T> to) {
         return new ArrayList<>(CollUtil.disjunction(from, to));
     }
 
-    @com.gitee.usl.api.annotation.Function("list_containsAny")
+    @Function("list_containsAny")
     public <T> boolean containsAny(List<T> from, List<T> to) {
         return CollUtil.containsAny(from, to);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_containsAll")
+    @Function("list_containsAll")
     public <T> boolean containsAll(List<T> from, List<T> to) {
         return CollUtil.containsAll(from, to);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_contains")
+    @Function("list_contains")
     public <T> boolean contains(List<T> from, T element) {
         return CollUtil.contains(from, element);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_distinct")
+    @Function("list_distinct")
     public <T> List<T> distinct(List<T> from) {
         return CollUtil.distinct(from);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_join")
+    @Function("list_join")
     public <T> String join(List<T> from, String symbol) {
         return CollUtil.join(from, symbol);
     }
 
-    @com.gitee.usl.api.annotation.Function("list_allMatch")
+    @Function("list_allMatch")
     public <T> boolean allMatch(Env env, List<T> from, _Function function) {
         return CollUtil.allMatch(from, element -> FunctionUtils.getBooleanValue(function.execute(env, FunctionUtils.wrapReturn(element)), env));
     }
 
-    @com.gitee.usl.api.annotation.Function("list_anyMatch")
+    @Function("list_anyMatch")
     public <T> boolean anyMatch(Env env, List<T> from, _Function function) {
         return CollUtil.anyMatch(from, element -> FunctionUtils.getBooleanValue(function.execute(env, FunctionUtils.wrapReturn(element)), env));
     }
 
-    @com.gitee.usl.api.annotation.Function("list_toMap")
+    @Function("list_toMap")
     public <T> Map<?, ?> toMap(Env env, List<T> from, _Function keyMapping, _Function valueMapping) {
         if (from == null || keyMapping == null || valueMapping == null) {
             return new LinkedHashMap<>(NumberConstant.EIGHT);
@@ -262,7 +263,7 @@ public class ListFunction {
         return result;
     }
 
-    @com.gitee.usl.api.annotation.Function("list_foreach")
+    @Function("list_foreach")
     public <T> List<T> foreach(Env env, List<T> from, _Function function) {
         if (from != null) {
             from.forEach(element -> function.execute(env, FunctionUtils.wrapReturn(element)));
@@ -270,7 +271,7 @@ public class ListFunction {
         return from;
     }
 
-    @com.gitee.usl.api.annotation.Function("list_convert")
+    @Function("list_convert")
     public <T> List<?> convert(Env env, List<T> from, _Function function) {
         List<?> result;
         if (from != null && function != null) {
@@ -283,7 +284,7 @@ public class ListFunction {
         return result;
     }
 
-    @com.gitee.usl.api.annotation.Function("list_group")
+    @Function("list_group")
     public <E> Map<?, List<E>> group(Env env, List<E> from, _Function function) {
         if (from == null || function == null) {
             return new LinkedHashMap<>(NumberConstant.EIGHT);
