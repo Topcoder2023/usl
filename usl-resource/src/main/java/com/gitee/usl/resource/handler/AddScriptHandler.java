@@ -3,14 +3,13 @@ package com.gitee.usl.resource.handler;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.text.CharSequenceUtil;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.ModuleConstant;
 import com.gitee.usl.resource.ScriptSearcher;
 import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.api.WebHandler;
 import com.gitee.usl.resource.api.WebHelper;
 import com.gitee.usl.resource.entity.ScriptInfo;
-import com.google.auto.service.AutoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartboot.http.server.HttpRequest;
@@ -21,7 +20,6 @@ import java.io.File;
 /**
  * @author hongda.li
  */
-@AutoService(WebHandler.class)
 public class AddScriptHandler implements WebHandler {
     private static final String PATH = "/usl/admin/api/add-script";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -39,7 +37,7 @@ public class AddScriptHandler implements WebHandler {
             scriptInfo.setBelongs(ModuleConstant.DEFAULT);
         }
 
-        Runner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
+        USLRunner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
         File file = new File(ScriptSearcher.buildScriptPath(runner, scriptInfo));
         FileWriter writer = new FileWriter(file);
 

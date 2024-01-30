@@ -1,7 +1,7 @@
 package com.gitee.usl.kernel.plugin;
 
 import cn.hutool.core.convert.Convert;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
@@ -75,7 +75,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
             return env;
         }
 
-        if (Runner.class.equals(type)) {
+        if (USLRunner.class.equals(type)) {
             additionalCount.increment();
             return session.getDefinition().getRunner();
         }

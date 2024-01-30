@@ -1,7 +1,7 @@
 package com.gitee.usl.kernel.loader;
 
 import cn.hutool.core.util.ClassUtil;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
@@ -18,7 +18,7 @@ public abstract class AbstractFunctionLoader implements FunctionLoader {
 
     @Override
     public List<_Function> load(EngineConfig configuration) {
-        Runner runner = configuration.getConfiguration().getRunner();
+        USLRunner runner = configuration.getConfiguration().getRunner();
 
         return configuration.getPackageNameList()
                 .stream()
@@ -40,6 +40,6 @@ public abstract class AbstractFunctionLoader implements FunctionLoader {
     protected abstract _Function definition2Func(FunctionDefinition definition);
 
     @Description("将指定类转为USL函数定义信息集合")
-    protected abstract List<FunctionDefinition> class2Definition(Class<?> clz, Runner runner);
+    protected abstract List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner);
 
 }

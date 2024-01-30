@@ -3,7 +3,7 @@ package com.gitee.usl.kernel.loader;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
@@ -22,7 +22,7 @@ import java.util.List;
 public class NativeFunctionLoader extends AbstractFunctionLoader {
 
     @Override
-    protected List<FunctionDefinition> class2Definition(Class<?> clz, Runner runner) {
+    protected List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner) {
         _Function ifPossible = (_Function) ReflectUtil.newInstanceIfPossible(clz);
 
         if (ifPossible == null) {

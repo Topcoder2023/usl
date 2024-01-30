@@ -1,6 +1,6 @@
 package com.gitee.usl.resource.handler;
 
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
 import com.gitee.usl.resource.ScriptSearcher;
@@ -42,7 +42,7 @@ public class ScriptRequestHandler implements WebHandler {
                 logger.debug("收到脚本请求 : {}", scriptInfo.getScriptName());
             }
 
-            Runner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
+            USLRunner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
 
             Result result = runner.run(new Param(find.getContent()));
 

@@ -1,6 +1,6 @@
 package com.gitee.usl.function.base;
 
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.structure.Script;
@@ -13,7 +13,7 @@ import com.gitee.usl.grammar.utils.Env;
 @FunctionGroup
 public class ScriptFunction {
     @Function("script")
-    public Script script(Runner runner, String path) {
+    public Script script(USLRunner runner, String path) {
         return new Script(runner, path);
     }
 

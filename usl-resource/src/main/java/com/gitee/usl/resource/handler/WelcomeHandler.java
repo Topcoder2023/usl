@@ -2,7 +2,7 @@ package com.gitee.usl.resource.handler;
 
 import cn.hutool.core.date.BetweenFormatter;
 import cn.hutool.core.date.DateUtil;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.api.Initializer;
 import com.gitee.usl.infra.constant.StringConstant;
@@ -31,7 +31,7 @@ public class WelcomeHandler implements WebHandler {
 
     @Override
     public void doHandle(HttpRequest request, HttpResponse response) {
-        Runner runner = RUNNER_THREAD_LOCAL.get();
+        USLRunner runner = RUNNER_THREAD_LOCAL.get();
 
         Info info = this.getInfoCache(runner);
 
@@ -41,7 +41,7 @@ public class WelcomeHandler implements WebHandler {
         this.writeToJson(Returns.success(info));
     }
 
-    private Info getInfoCache(Runner runner) {
+    private Info getInfoCache(USLRunner runner) {
         if (infoCache != null) {
             return infoCache;
         }

@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.text.StrPool;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.grammar.utils.Env;
@@ -28,9 +28,9 @@ public class Script {
     private final String content;
 
     @Getter
-    private final Runner runner;
+    private final USLRunner runner;
 
-    public Script(Runner runner, String path) {
+    public Script(USLRunner runner, String path) {
         this.runner = runner;
         File file = new File(runner.configuration().getEngineConfig().getScriptPath()
                 + runner.getName()

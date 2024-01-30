@@ -5,7 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.text.StrPool;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.resource.api.WebHelper;
 import com.gitee.usl.resource.entity.ScriptInfo;
@@ -58,7 +58,7 @@ public class ScriptSearcher {
     }
 
     public static List<File> findAll() {
-        Runner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
+        USLRunner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
         String directory = runner.configuration()
                 .getEngineConfig()
                 .getScriptPath()
@@ -69,7 +69,7 @@ public class ScriptSearcher {
                 .collect(Collectors.toList());
     }
 
-    public static String buildScriptPath(Runner runner, ScriptInfo scriptInfo) {
+    public static String buildScriptPath(USLRunner runner, ScriptInfo scriptInfo) {
         return runner.configuration()
                 .getEngineConfig()
                 .getScriptPath()

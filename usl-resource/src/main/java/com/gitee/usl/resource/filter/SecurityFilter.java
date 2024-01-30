@@ -1,7 +1,7 @@
 package com.gitee.usl.resource.filter;
 
 import cn.hutool.crypto.symmetric.AES;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.resource.api.FilterRoute;
 import com.gitee.usl.resource.api.WebFilter;
 import com.gitee.usl.resource.api.WebHelper;
@@ -55,7 +55,7 @@ public class SecurityFilter implements WebFilter {
             return false;
         }
 
-        Runner runner = Runner.findRunnerByName(runnerName);
+        USLRunner runner = USLRunner.findRunnerByName(runnerName);
         if (runner == null) {
             logger.warn("无效的USL实例名称 - {}", runnerName);
             this.handleException(isPage);

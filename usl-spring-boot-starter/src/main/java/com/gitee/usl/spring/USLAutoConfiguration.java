@@ -1,6 +1,6 @@
 package com.gitee.usl.spring;
 
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +15,8 @@ public class USLAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public Runner runner() {
-        return new Runner();
+    public USLRunner runner() {
+        return new USLRunner();
     }
 
     @Bean
@@ -27,7 +27,7 @@ public class USLAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public USLRunnerStarter runnerStarter(List<Runner> runnerList) {
+    public USLRunnerStarter runnerStarter(List<USLRunner> runnerList) {
         return new USLRunnerStarter(runnerList);
     }
 }

@@ -3,7 +3,7 @@ package com.gitee.usl.resource.api;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONUtil;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.exception.USLException;
 import com.gitee.usl.infra.exception.USLExecuteException;
@@ -24,7 +24,7 @@ import java.util.List;
 public interface WebHelper {
     ThreadLocal<HttpRequest> REQUEST_THREAD_LOCAL = new ThreadLocal<>();
     ThreadLocal<HttpResponse> RESPONSE_THREAD_LOCAL = new ThreadLocal<>();
-    ThreadLocal<Runner> RUNNER_THREAD_LOCAL = new ThreadLocal<>();
+    ThreadLocal<USLRunner> RUNNER_THREAD_LOCAL = new ThreadLocal<>();
 
     /**
      * 清空所有的线程变量

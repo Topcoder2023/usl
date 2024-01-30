@@ -2,7 +2,7 @@ package com.gitee.usl.function.web.domain;
 
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.http.server.SimpleServer;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 
 import java.util.StringJoiner;
 
@@ -10,12 +10,12 @@ import java.util.StringJoiner;
  * @author hongda.li
  */
 public class HttpServer {
-    private final Runner runner;
+    private final USLRunner runner;
     private final String host;
     private final int port;
     private final SimpleServer server;
 
-    public HttpServer(Runner runner, int port) {
+    public HttpServer(USLRunner runner, int port) {
         this.runner = runner;
         this.host = NetUtil.getLocalhostStr();
         this.port = port;
@@ -31,7 +31,7 @@ public class HttpServer {
         return port;
     }
 
-    public Runner getRunner() {
+    public USLRunner getRunner() {
         return runner;
     }
 

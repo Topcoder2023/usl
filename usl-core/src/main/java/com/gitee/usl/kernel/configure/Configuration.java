@@ -1,6 +1,6 @@
 package com.gitee.usl.kernel.configure;
 
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.structure.StringMap;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 public final class Configuration {
 
     @Description("当前配置对应的USL实例")
-    private Runner runner;
+    private USLRunner runner;
 
     @Description("自定义扩展配置类")
     private final StringMap<Object> customConfig = new StringMap<>();

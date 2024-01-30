@@ -2,6 +2,8 @@ let t = 1 + 5 * 8 / 2;
 
 let s = 100 + 200 > 300 && 400 + 600 < 700;
 
+let a = 1 + x;
+
 logger_info(t);
 
 let list = list_of(sw, 'b', 'c', 'd');
@@ -21,4 +23,6 @@ let mf = function matchFilter(ch) {
 let allMatch = list_allMatch(list, mf);
 
 logger_info(allMatch);
+
+await a;
 

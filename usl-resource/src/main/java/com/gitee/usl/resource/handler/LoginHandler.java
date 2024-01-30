@@ -1,7 +1,7 @@
 package com.gitee.usl.resource.handler;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.api.WebHandler;
@@ -26,7 +26,7 @@ public class LoginHandler implements WebHandler {
     public void doHandle(HttpRequest request, HttpResponse response) {
         String runnerName = this.getParam(StringConstant.RUNNER_NAME, String.class);
 
-        Runner runner = Runner.findRunnerByName(runnerName);
+        USLRunner runner = USLRunner.findRunnerByName(runnerName);
         if (runner == null) {
             this.writeToJson(Returns.failure("USL实例不存在"));
             return;

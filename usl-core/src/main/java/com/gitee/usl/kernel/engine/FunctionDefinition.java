@@ -1,6 +1,6 @@
 package com.gitee.usl.kernel.engine;
 
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.proxy.MethodMeta;
@@ -24,7 +24,7 @@ public class FunctionDefinition {
     private final String name;
 
     @Description("USL执行器")
-    private final Runner runner;
+    private final USLRunner runner;
 
     @Description("方法元数据")
     private MethodMeta<?> methodMeta;
@@ -35,12 +35,12 @@ public class FunctionDefinition {
     @Description("函数元数据")
     private final AttributeMeta attribute = new AttributeMeta();
 
-    public FunctionDefinition(String name, Runner runner) {
+    public FunctionDefinition(String name, USLRunner runner) {
         this.name = name;
         this.runner = runner;
     }
 
-    public FunctionDefinition(String name, Runner runner, MethodMeta<?> methodMeta) {
+    public FunctionDefinition(String name, USLRunner runner, MethodMeta<?> methodMeta) {
         this.name = name;
         this.runner = runner;
         this.methodMeta = methodMeta;

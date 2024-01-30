@@ -1,6 +1,6 @@
 package com.gitee.usl.plugin.impl.stack;
 
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.plugin.FinallyPlugin;
 import com.gitee.usl.kernel.engine.FunctionSession;
@@ -13,9 +13,9 @@ import com.gitee.usl.grammar.ScriptEngine;
 public class CallStackPlugin implements FinallyPlugin {
 
     @Description("USL执行器")
-    private final Runner runner;
+    private final USLRunner runner;
 
-    public CallStackPlugin(Runner runner) {
+    public CallStackPlugin(USLRunner runner) {
         this.runner = runner;
 
         @Description("Aviator引擎实例")

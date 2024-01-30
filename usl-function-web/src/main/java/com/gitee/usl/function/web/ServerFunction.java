@@ -3,7 +3,7 @@ package com.gitee.usl.function.web;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.function.web.domain.HttpServer;
@@ -30,7 +30,7 @@ public class ServerFunction {
     public static final String RESPONSE_NAME = "Usl_Response";
 
     @com.gitee.usl.api.annotation.Function("server")
-    public HttpServer server(Runner runner, int port) {
+    public HttpServer server(USLRunner runner, int port) {
         return new HttpServer(runner, port);
     }
 

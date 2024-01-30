@@ -4,7 +4,7 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 public class AnnotatedFunctionLoader extends AbstractFunctionLoader {
 
     @Override
-    protected List<FunctionDefinition> class2Definition(Class<?> clz, Runner runner) {
+    protected List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner) {
         Object ifPossible = ReflectUtil.newInstanceIfPossible(clz);
 
         if (ifPossible == null) {

@@ -4,7 +4,7 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.json.JSONUtil;
-import com.gitee.usl.Runner;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.api.WebInteractive;
 import com.gitee.usl.infra.constant.StringConstant;
@@ -60,7 +60,7 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
     }
 
     @Override
-    public void open(Runner runner) {
+    public void open(USLRunner runner) {
         bootstrap.configuration()
                 .host(host)
                 .bannerEnabled(false)
