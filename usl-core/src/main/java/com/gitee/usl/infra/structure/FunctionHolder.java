@@ -1,6 +1,5 @@
 package com.gitee.usl.infra.structure;
 
-import cn.hutool.core.collection.CollUtil;
 import com.gitee.usl.api.Definable;
 import com.gitee.usl.api.Overloaded;
 import com.gitee.usl.api.annotation.Description;
@@ -31,15 +30,18 @@ public class FunctionHolder {
         this.container = new HashMap<>(NumberConstant.COMMON_SIZE);
     }
 
-    @Description("注册函数")
+    /**
+     * 注册函数
+     *
+     * @param function 函数实例
+     */
     public void register(_Function function) {
         String name = function.name();
 
         _Function found = this.container.get(name);
 
         if (found != null) {
-
-            @Description("函数重载")
+            // 函数重载标识
             boolean overload = found instanceof Overloaded
                     && function instanceof Overloaded
                     && ((Definable) found).definition().getArgsLength()
@@ -49,7 +51,7 @@ public class FunctionHolder {
                 ((Overloaded<?>) found).addOverloadImpl((Overloaded<?>) function);
                 log.debug("函数重载 - [{}]", name);
             } else {
-                log.warn("函数已被注册 - [{}]", name);
+                log.warn("重复注册 - [{}]", name);
             }
 
             return;
@@ -57,23 +59,17 @@ public class FunctionHolder {
 
         log.debug("注册函数 - [{}]", name);
         this.container.put(name, function);
-    }
 
-    @Description("注册函数")
-    public void register(_Function function, Set<String> alias) {
-        this.register(function);
-
-        if (CollUtil.isEmpty(alias)) {
-            return;
+        if (function instanceof Definable definable) {
+            definable.definition()
+                    .getAlias()
+                    .stream()
+                    .filter(item -> !Objects.equals(item, name))
+                    .forEach(aliasName -> {
+                        this.aliasMap.put(aliasName, name);
+                        log.debug("函数别名 - [{} ==> {}]", name, aliasName);
+                    });
         }
-
-        String actualName = function.name();
-
-        alias.stream().filter(item -> !Objects.equals(item, actualName))
-                .forEach(aliasName -> {
-                    this.aliasMap.put(aliasName, actualName);
-                    log.debug("函数别名 - [{} - {}]", actualName, aliasName);
-                });
     }
 
     @Description("遍历函数")

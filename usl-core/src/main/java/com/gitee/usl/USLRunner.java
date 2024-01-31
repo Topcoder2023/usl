@@ -8,6 +8,8 @@ import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
 import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.infra.structure.FunctionHolder;
+import com.gitee.usl.infra.structure.StringMap;
+import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.engine.USLConfiguration;
 import com.gitee.usl.kernel.domain.Param;
@@ -17,15 +19,14 @@ import com.gitee.usl.kernel.enhancer.LoggerPluginEnhancer;
 import com.gitee.usl.kernel.enhancer.ParameterBinderEnhancer;
 import com.gitee.usl.kernel.loader.AnnotatedFunctionLoader;
 import com.gitee.usl.kernel.loader.NativeFunctionLoader;
+import com.gitee.usl.kernel.loader.SystemFunctionLoader;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * USL-Runner通用脚本语言执行器
+ * USL-Runner 通用脚本语言执行器
  *
  * @author hongda.li
  */
@@ -36,12 +37,12 @@ public class USLRunner {
     /**
      * USL-Runner 默认实例的数量，每默认实例化一个 USL-Runner 时，都会对此变量自增
      */
-    private static final AtomicInteger NUMBER = new AtomicInteger(NumberConstant.ONE);
+    private static final IntWrapper NUMBER = new IntWrapper(NumberConstant.ONE);
 
     /**
      * USL-Runner 实例全局缓存
      */
-    private static final Map<String, USLRunner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.FOUR);
+    private static final StringMap<USLRunner> ENGINE_CONTEXT = new StringMap<>(NumberConstant.FOUR);
 
     /**
      * USL-Runner 的名称，每一个执行器的名称应该唯一
@@ -170,6 +171,7 @@ public class USLRunner {
                 .scan(USLRunner.class)
                 .enhancer(new LoggerPluginEnhancer())
                 .enhancer(new ParameterBinderEnhancer())
+                .loader(new SystemFunctionLoader())
                 .loader(new NativeFunctionLoader())
                 .loader(new AnnotatedFunctionLoader());
     }

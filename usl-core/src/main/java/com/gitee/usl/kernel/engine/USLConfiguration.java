@@ -21,7 +21,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * USL 配置类
@@ -50,15 +49,40 @@ public final class USLConfiguration extends StringMap<Object> {
     private Integer size;
 
     /**
+     * 是否开启 If
+     */
+    private Boolean enableIf;
+
+    /**
+     * 是否开启循环
+     */
+    private Boolean enableLoop;
+
+    /**
      * 是否开启调试
      */
-    private Boolean debug;
+    private Boolean enableDebug;
+
+    /**
+     * 是否开启 Return
+     */
+    private Boolean enableReturn;
+
+    /**
+     * 是否开启赋值
+     */
+    private Boolean enableAssign;
+
+    /**
+     * 是否开启匿名函数
+     */
+    private Boolean enableLambda;
 
     /**
      * 是否开启对象方法调用
      * 启用后可通过 <对象名>.<方法名> 快速调用
      */
-    private Boolean methodInvoke;
+    private Boolean enableMethodInvoke;
 
     /**
      * 缓存的失效时间
@@ -151,56 +175,44 @@ public final class USLConfiguration extends StringMap<Object> {
      * 刷新配置
      */
     public void refresh() {
-        log.debug("=========================" + this.runner.getName() + "=========================");
-        log.debug("|| 执行器配置初始化");
+        this.refreshed = Boolean.FALSE;
 
         this.size = ObjectUtil.defaultIfNull(this.size, 2 << 10);
-        log.debug("|| 脚本最大缓存容量 - {}", this.size);
+        log.debug("脚本最大缓存容量 - {}", this.size);
 
         this.expired = ObjectUtil.defaultIfNull(this.expired, Duration.ofHours(1L));
-        log.debug("|| 脚本缓存失效时间 - {}", this.expired);
+        log.debug("脚本缓存失效时间 - {}", this.expired);
 
-        this.debug = ObjectUtil.defaultIfNull(this.debug, Boolean.FALSE);
-        log.debug("|| 是否开启调试模式 - {}", this.debug);
+        this.enableDebug = ObjectUtil.defaultIfNull(this.enableDebug, Boolean.FALSE);
+        log.debug("是否开启调试模式 - {}", this.enableDebug);
 
-        this.methodInvoke = ObjectUtil.defaultIfNull(this.methodInvoke, Boolean.TRUE);
-        log.debug("|| 是否开启方法访问 - {}", this.methodInvoke);
+        this.enableMethodInvoke = ObjectUtil.defaultIfNull(this.enableMethodInvoke, Boolean.TRUE);
+        log.debug("是否开启方法访问 - {}", this.enableMethodInvoke);
 
-        this.functionMissing = ObjectUtil.defaultIfNull(this.functionMissing, new MethodInvokerOnMissing(this.methodInvoke));
-        log.debug("|| 函数兜底器实现类 - {}", this.functionMissing.getClass().getName());
+        this.functionMissing = ObjectUtil.defaultIfNull(this.functionMissing, new MethodInvokerOnMissing(this.enableMethodInvoke));
+        log.debug("函数兜底器实现类 - {}", this.functionMissing.getClass().getName());
 
         this.definable = ObjectUtil.defaultIfNull(this.definable, new DefaultVariableDefinable());
-        log.debug("|| 变量定义器实现类 - {}", this.definable.getClass().getName());
+        log.debug("变量定义器实现类 - {}", this.definable.getClass().getName());
 
         this.exceptionHandler = ObjectUtil.defaultIfNull(this.exceptionHandler, new DefaultExceptionHandler());
-        log.debug("|| 异常处理器实现类 - {}", this.exceptionHandler.getClass().getName());
+        log.debug("异常处理器实现类 - {}", this.exceptionHandler.getClass().getName());
 
-        this.packageNameList.forEach(name -> log.debug("|| 函数库扫描包路径 - {}", name));
+        this.packageNameList.forEach(name -> log.debug("函数库扫描包路径 - {}", name));
 
-        this.loaderList.forEach(loader -> log.debug("|| 函数加载器实现类 - {}", loader.getClass().getName()));
+        this.loaderList.forEach(loader -> log.debug("函数加载器实现类 - {}", loader.getClass().getName()));
 
-        this.enhancers.forEach(enhancer -> log.debug("|| 函数增强器实现类 - {}", enhancer.getClass().getName()));
+        this.enhancers.forEach(enhancer -> log.debug("函数增强器实现类 - {}", enhancer.getClass().getName()));
 
         this.engine = new ScriptEngine(this);
 
         this.compiler = ObjectUtil.defaultIfNull(this.compiler, new DefaultScriptCompiler(this));
-        log.debug("|| 脚本编译器实现类 - {}", this.compiler.getClass().getName());
-
-        log.debug("|| 配置初始化已完成");
-        log.debug("==============================================================");
-
-        engine.loadSystemFunctions();
-        engine.loadFeatureFunctions();
+        log.debug("脚本编译器实现类 - {}", this.compiler.getClass().getName());
 
         // 根据函数加载器依次加载函数库
-        loaderList.forEach(provider -> provider.load(this).forEach(function -> {
-            if (function instanceof Definable) {
-                Set<String> alias = ((Definable) function).definition().getAlias();
-                functionHolder.register(function, alias);
-            } else {
-                functionHolder.register(function);
-            }
-        }));
+        loaderList.stream()
+                .flatMap(provider -> provider.load(this).stream())
+                .forEach(functionHolder::register);
 
         // 函数库全部加载完成后，由函数增强器列表依次增强函数
         functionHolder.onVisit(function -> enhancers.forEach(enhancer -> enhancer.enhance(function)));

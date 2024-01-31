@@ -1,14 +1,11 @@
 package com.gitee.usl.grammar;
 
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.Singleton;
 import com.gitee.usl.api.ExceptionHandler;
 import com.gitee.usl.api.FunctionMissing;
 import com.gitee.usl.api.ScriptProcessor;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.grammar.runtime.function.system.*;
 import com.gitee.usl.infra.exception.USLException;
-import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.grammar.Options.Value;
 import com.gitee.usl.grammar.lexer.token.OperatorType;
 import com.gitee.usl.grammar.runtime.RuntimeFunctionDelegator;
@@ -50,9 +47,6 @@ public final class ScriptEngine {
 
     @Description("脚本引擎选项配置集合")
     private volatile Map<Options, Value> options = new IdentityHashMap<>();
-
-    @Description("系统函数表")
-    private final StringMap<_Function> systemFunctionMap = new StringMap<>();
 
     @Getter
     @Description("自定义异常处理器")
@@ -99,23 +93,7 @@ public final class ScriptEngine {
         }
         Map<Options, Value> newOpts = new IdentityHashMap<>(this.options);
         newOpts.put(opt, opt.intoValue(val));
-        if (opt == Options.FEATURE_SET) {
-            Set<Feature> oldSet = new HashSet<>(getFeatures());
-            @SuppressWarnings("unchecked")
-            Set<Feature> newSet = (Set<Feature>) val;
-            if (oldSet.removeAll(newSet)) {
-                // removed functions that feature is disabled.
-                for (Feature feat : oldSet) {
-                    for (_Function fn : feat.getFunctions()) {
-                        this.removeSystemFunction(fn);
-                    }
-                }
-            }
-        }
         this.options = newOpts;
-        if (opt == Options.FEATURE_SET) {
-            loadFeatureFunctions();
-        }
     }
 
     @Description("获取脚本引擎配置选项")
@@ -139,51 +117,6 @@ public final class ScriptEngine {
         Assert.isTrue(enabled, () -> new USLException("脚本引擎特性未启用 - [{}]", feature));
     }
 
-    @Description("加载系统内置函数表")
-    public void loadSystemFunctions() {
-        addSystemFunction(new BinaryFunction(OperatorType.ADD));
-        addSystemFunction(new BinaryFunction(OperatorType.Exponent));
-        addSystemFunction(new BinaryFunction(OperatorType.SUB));
-        addSystemFunction(new BinaryFunction(OperatorType.MULT));
-        addSystemFunction(new BinaryFunction(OperatorType.DIV));
-        addSystemFunction(new BinaryFunction(OperatorType.MOD));
-        addSystemFunction(new BinaryFunction(OperatorType.NEG));
-        addSystemFunction(new BinaryFunction(OperatorType.NOT));
-        addSystemFunction(new BinaryFunction(OperatorType.BIT_AND));
-        addSystemFunction(new BinaryFunction(OperatorType.BIT_OR));
-        addSystemFunction(new BinaryFunction(OperatorType.BIT_XOR));
-        addSystemFunction(new BinaryFunction(OperatorType.BIT_NOT));
-        addSystemFunction(Singleton.get(WithMetaFunction.class));
-    }
-
-    @Description("添加特性绑定函数")
-    public void loadFeatureFunctions() {
-        this.options.get(Options.FEATURE_SET).featureSet
-                .stream()
-                .map(Feature::getFunctions)
-                .flatMap(Collection::stream)
-                .filter(fn -> !existsSystemFunction(fn.name()))
-                .forEach(this::addSystemFunction);
-    }
-
-    @Description("添加内置函数")
-    public void addSystemFunction(final _Function function) {
-        Assert.notNull(function, "函数实例不能为空");
-
-        String name = function.name();
-
-        if (ScriptKeyword.isReservedKeyword(name)) {
-            throw new USLException("函数名称与保留关键字冲突 - {}", name);
-        }
-
-        if (this.systemFunctionMap.containsKey(name)) {
-            throw new USLException("已存在相同名称的函数 - {}", name);
-        }
-
-        this.systemFunctionMap.put(name, function);
-        log.debug("注册系统内置函数 - [{}]", name);
-    }
-
     @Description("尝试获取函数")
     public _Function getFunction(final String name) {
         return this.getFunction(name, null);
@@ -191,23 +124,7 @@ public final class ScriptEngine {
 
     @Description("尝试获取函数")
     public _Function getFunction(final String name, final ScriptKeyword symbolTable) {
-        Assert.notNull(functionMapping, "函数加载器尚未初始化");
-
-        @Description("从内置函数中尝试获取函数")
-        _Function function = this.systemFunctionMap.get(name);
-        if (function != null) {
-            return function;
-        }
-
-        @Description("从函数映射中尝试获取函数")
-        _Function fromLoader = functionMapping.apply(name);
-        if (fromLoader != null) {
-            return fromLoader;
-        }
-
-        @Description("从上下文中尝试获取函数并转为委托函数")
-        _Function fromEnv = new RuntimeFunctionDelegator(name, symbolTable, this.functionMissing);
-        return fromEnv;
+        return Optional.ofNullable(functionMapping.apply(name)).orElse(new RuntimeFunctionDelegator(name, symbolTable, this.functionMissing));
     }
 
     @Description("重载操作符函数")
@@ -223,17 +140,6 @@ public final class ScriptEngine {
     @Description("移除操作符函数")
     public _Function removeOpFunction(final OperatorType opType) {
         return this.operatorFunctionMap.remove(opType);
-    }
-
-    @Description("判断系统内置函数是否存在")
-    public boolean existsSystemFunction(final String name) {
-        return this.systemFunctionMap.containsKey(name);
-    }
-
-    @Description("移除系统内置函数")
-    public void removeSystemFunction(final _Function function) {
-        Assert.notNull(function, "函数实例不能为空");
-        this.systemFunctionMap.remove(function.name());
     }
 
 }

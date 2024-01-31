@@ -654,7 +654,7 @@ public class ScriptParser implements Parser {
             if (lexeme.equals("-")) {
                 lexeme = "-sub";
             }
-            return this.instance.existsSystemFunction(lexeme);
+            return this.instance.getFunctionMapping().apply(lexeme) != null;
         } else {
             back();
             return false;
@@ -1195,7 +1195,7 @@ public class ScriptParser implements Parser {
         if (ScriptKeyword.isReservedKeyword(fnName)) {
             reportSyntaxError("The function name `" + fnName + "` is a reserved keyword");
         }
-        if (warnOnExists && this.instance.getSystemFunctionMap().containsKey(fnName)) {
+        if (warnOnExists && this.instance.getFunctionMapping().apply(fnName) != null) {
             System.out.println("[Aviator WARN] The function '" + fnName
                     + "' is already exists, but is replaced with new one.");
         }
