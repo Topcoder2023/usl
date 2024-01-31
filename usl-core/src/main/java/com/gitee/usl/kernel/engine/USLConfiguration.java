@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.*;
 import com.gitee.usl.api.impl.DefaultExceptionHandler;
+import com.gitee.usl.api.impl.DefaultScriptCompiler;
 import com.gitee.usl.api.impl.DefaultVariableDefinable;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.infra.structure.FunctionHolder;
@@ -32,6 +33,10 @@ import java.util.Set;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 public final class USLConfiguration extends StringMap<Object> {
+    /**
+     * 是否已经刷新过配置
+     */
+    private Boolean refreshed;
 
     /**
      * 当前配置对应的实例
@@ -178,7 +183,7 @@ public final class USLConfiguration extends StringMap<Object> {
 
         this.engine = new ScriptEngine(this);
 
-        this.compiler = ObjectUtil.defaultIfNull(this.compiler, new BasicScriptCompiler(this));
+        this.compiler = ObjectUtil.defaultIfNull(this.compiler, new DefaultScriptCompiler(this));
         log.debug("|| 脚本编译器实现类 - {}", this.compiler.getClass().getName());
 
         log.debug("|| 配置初始化已完成");
@@ -199,6 +204,9 @@ public final class USLConfiguration extends StringMap<Object> {
 
         // 函数库全部加载完成后，由函数增强器列表依次增强函数
         functionHolder.onVisit(function -> enhancers.forEach(enhancer -> enhancer.enhance(function)));
+
+        // 重置刷新标记
+        this.refreshed = Boolean.TRUE;
     }
 
 }

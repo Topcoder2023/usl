@@ -60,8 +60,8 @@ public class ScriptSearcher {
     public static List<File> findAll() {
         USLRunner runner = WebHelper.RUNNER_THREAD_LOCAL.get();
         String directory = runner.configuration()
-                .getEngineConfig()
-                .getScriptPath()
+             //   .getEngineConfig()
+               // .getScriptPath()
                 + runner.getName();
         FileUtil.mkdir(directory);
         return Arrays.stream(FileUtil.ls(directory))
@@ -71,8 +71,8 @@ public class ScriptSearcher {
 
     public static String buildScriptPath(USLRunner runner, ScriptInfo scriptInfo) {
         return runner.configuration()
-                .getEngineConfig()
-                .getScriptPath()
+              //  .getEngineConfig()
+             //   .getScriptPath()
                 + runner.getName()
                 + StrPool.SLASH
                 + scriptInfo.buildName()

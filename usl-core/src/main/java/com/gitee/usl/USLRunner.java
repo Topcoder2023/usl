@@ -1,5 +1,6 @@
 package com.gitee.usl;
 
+import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.*;
 import com.gitee.usl.grammar.script.ES;
 import com.gitee.usl.infra.constant.NumberConstant;
@@ -50,7 +51,7 @@ public class USLRunner {
     /**
      * USL-Runner 实例启动时间
      */
-    private final Date startTime;
+    private Long timestamp;
 
     /**
      * USL-Runner 的配置选项，支持为每一个执行器设置单独的配置
@@ -90,7 +91,6 @@ public class USLRunner {
      */
     public USLRunner(String name, USLConfiguration configuration) {
         this.name = name;
-        this.startTime = new Date();
         this.configuration = configuration;
         this.configuration.setRunner(this);
     }
@@ -112,13 +112,14 @@ public class USLRunner {
             return;
         }
 
-        long start = System.currentTimeMillis();
+        log.info("{} - 启动中...", name);
+        ENGINE_CONTEXT.put(name, this);
+
+        this.timestamp = System.currentTimeMillis();
 
         try {
-            log.info("{} - 启动中...", name);
-            ENGINE_CONTEXT.put(name, this);
             this.configuration.refresh();
-            log.info("{} - 启动成功，共耗时[{}]毫秒", name, (System.currentTimeMillis() - start));
+            log.info("{} - 启动成功，共耗时[{}]毫秒", this.name, (System.currentTimeMillis() - this.timestamp));
         } catch (Exception e) {
             ENGINE_CONTEXT.keySet().removeIf(name -> Objects.equals(name, this.name));
             throw e;
@@ -134,8 +135,9 @@ public class USLRunner {
      * @return 执行结果
      */
     public Result run(Param param) {
+        Assert.isTrue(this.configuration.getRefreshed(), name + "尚未初始化");
 
-        configuration.getCompiler().compile(param);
+        this.configuration.getCompiler().compile(param);
 
         if (param.getCompiled() instanceof ES es) {
             throw es.getException();

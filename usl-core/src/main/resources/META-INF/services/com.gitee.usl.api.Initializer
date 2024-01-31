@@ -1,4 +1,0 @@
-com.gitee.usl.kernel.engine.BasicScriptCompiler
-com.gitee.usl.kernel.engine.ScriptEngineInitializer
-com.gitee.usl.kernel.enhancer.FunctionEnhancerInitializer
-com.gitee.usl.kernel.loader.FunctionLoaderInitializer

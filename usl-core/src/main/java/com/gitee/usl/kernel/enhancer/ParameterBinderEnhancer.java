@@ -2,14 +2,12 @@ package com.gitee.usl.kernel.enhancer;
 
 import cn.hutool.core.lang.Singleton;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.plugin.ParameterBinderPlugin;
 
 /**
  * @author hongda.li
  */
-@Order(ParameterBinderEnhancer.PARAM_BINDER_ORDER)
 public class ParameterBinderEnhancer extends AbstractFunctionEnhancer {
 
     @Description("参数绑定插件生效的优先级")

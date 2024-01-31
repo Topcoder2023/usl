@@ -1,4 +1,4 @@
-package com.gitee.usl.kernel.engine;
+package com.gitee.usl.api.impl;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.impl.LRUCache;
@@ -7,7 +7,6 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.gitee.usl.api.ScriptCompiler;
 import com.gitee.usl.api.VariableDefinable;
-import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.lexer.GrammarLexer;
 import com.gitee.usl.grammar.parser.Generator;
@@ -19,6 +18,7 @@ import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.USLCompileException;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.kernel.domain.Param;
+import com.gitee.usl.kernel.engine.USLConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -26,13 +26,14 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Optional;
 
 /**
+ * 默认的脚本编译器
+ *
  * @author hongda.li
  */
 @Slf4j
 @Setter
 @Getter
-@Order(Integer.MAX_VALUE - 10)
-public class BasicScriptCompiler implements ScriptCompiler {
+public class DefaultScriptCompiler implements ScriptCompiler {
 
     private final ScriptEngine engine;
 
@@ -42,7 +43,7 @@ public class BasicScriptCompiler implements ScriptCompiler {
 
     private final FunctionHolder functionHolder;
 
-    public BasicScriptCompiler(USLConfiguration configuration) {
+    public DefaultScriptCompiler(USLConfiguration configuration) {
         this.engine = configuration.getEngine();
         this.definable = configuration.getDefinable();
         this.functionHolder = configuration.getFunctionHolder();
@@ -54,7 +55,9 @@ public class BasicScriptCompiler implements ScriptCompiler {
     public void compile(Param param) {
         String key = DigestUtil.sha256Hex(param.getScript());
         log.debug("新增缓存 - [{}]", key);
+
         Param value = cache.get(key, (Func0<Param>) () -> param.self().setCompiled(this.compile(param.getScript())));
+
         if (!param.isCached()) {
             cache.remove(key);
             log.debug("剔除缓存 - [{}]", key);
@@ -62,7 +65,8 @@ public class BasicScriptCompiler implements ScriptCompiler {
 
         BS compiled = (BS) value.getCompiled();
         param.setCompiled(compiled);
-        if (compiled == null || compiled instanceof ES || definable == null) {
+
+        if (compiled == null || compiled instanceof ES || this.definable == null) {
             return;
         }
 
