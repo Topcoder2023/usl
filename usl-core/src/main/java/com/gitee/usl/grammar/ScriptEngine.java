@@ -14,6 +14,7 @@ import com.gitee.usl.grammar.lexer.token.OperatorType;
 import com.gitee.usl.grammar.runtime.RuntimeFunctionDelegator;
 import com.gitee.usl.grammar.runtime.type._Function;
 import com.gitee.usl.grammar.utils.CommonUtils;
+import com.gitee.usl.kernel.engine.USLConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,14 @@ import java.util.*;
 import java.util.function.Function;
 
 /**
+ * SHA256 —— 唯一缓存键生成,
+ * SpinLock —— 异步加载编译结果,
+ * W-TinyLFU —— 缓存淘汰算法,
+ * Token-Bucket —— 令牌桶限流组件,
+ * Timing-Wheel —— 时间轮任务调度,
+ * Count–Min Sketch —— 编译缓存计数算法,
+ * Non-blocking Synchronization —— 无锁化编程
+ *
  * @author hongda.li
  */
 @Slf4j
@@ -33,16 +42,11 @@ public final class ScriptEngine {
     @Description("前置后置处理器")
     private ScriptProcessor envProcessor;
 
-    @Setter
     @Description("函数兜底机制")
-    private FunctionMissing functionMissing;
+    private final FunctionMissing functionMissing;
 
-    @Description("自定义类加载器")
-    private final ScriptClassLoader classLoader;
-
-    @Setter
     @Description("函数映射")
-    private Function<String, _Function> functionMapping;
+    private final Function<String, _Function> functionMapping;
 
     @Description("脚本引擎选项配置集合")
     private volatile Map<Options, Value> options = new IdentityHashMap<>();
@@ -50,10 +54,9 @@ public final class ScriptEngine {
     @Description("系统函数表")
     private final StringMap<_Function> systemFunctionMap = new StringMap<>();
 
-    @Setter
     @Getter
     @Description("自定义异常处理器")
-    private ExceptionHandler exceptionHandler;
+    private final ExceptionHandler exceptionHandler;
 
     @Description("操作符别名映射关系")
     private final Map<OperatorType, String> aliasOperatorTokens = new IdentityHashMap<>();
@@ -62,14 +65,16 @@ public final class ScriptEngine {
     private final Map<OperatorType, _Function> operatorFunctionMap = new IdentityHashMap<>();
 
     @Description("脚本引擎实例构造器")
-    public ScriptEngine() {
+    public ScriptEngine(USLConfiguration configuration) {
+        this.functionMapping = name -> configuration.getFunctionHolder().search(name);
+        this.functionMissing = configuration.getFunctionMissing();
+        this.exceptionHandler = configuration.getExceptionHandler();
         for (Options opt : Options.values()) {
             this.options.put(opt, opt.getDefaultValueObject());
         }
         setOption(Options.EVAL_MODE, EvalMode.ASM);
         loadFeatureFunctions();
         loadSystemFunctions();
-        this.classLoader = new ScriptClassLoader(this.getClass().getClassLoader());
     }
 
     @Description("为操作符函数建立别名")

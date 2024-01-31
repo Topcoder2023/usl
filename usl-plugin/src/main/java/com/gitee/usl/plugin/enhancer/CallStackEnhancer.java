@@ -16,9 +16,7 @@ public class CallStackEnhancer extends AbstractFunctionEnhancer {
 
         USLRunner runner = nf.definition().getRunner();
 
-        if (Boolean.TRUE.equals(runner.getConfiguration()
-                .getEngineConfig()
-                .getEnableDebug())) {
+        if (Boolean.TRUE.equals(runner.getConfiguration().getDebug())) {
             nf.plugins().install(new CallStackPlugin(runner));
         }
     }
@@ -28,9 +26,7 @@ public class CallStackEnhancer extends AbstractFunctionEnhancer {
 
         USLRunner runner = af.definition().getRunner();
 
-        if (Boolean.TRUE.equals(runner.getConfiguration()
-                .getEngineConfig()
-                .getEnableDebug())) {
+        if (Boolean.TRUE.equals(runner.getConfiguration().getDebug())) {
             af.plugins().install(new CallStackPlugin(runner));
         }
     }

@@ -4,7 +4,6 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.getter.BasicTypeGetter;
 import cn.hutool.core.getter.OptBasicTypeGetter;
 import cn.hutool.core.util.StrUtil;
-import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 
 import java.math.BigDecimal;
@@ -16,9 +15,10 @@ import java.util.Map;
 import static cn.hutool.core.map.MapUtil.DEFAULT_LOAD_FACTOR;
 
 /**
+ * String类型作为唯一键的 Map，并扩展多种快速转换返回值方法
+ *
  * @author hongda.li
  */
-@Description("String类型作为唯一键的Map结构，并扩展多种快速转换返回值方法")
 public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeGetter<String>, OptBasicTypeGetter<String> {
     public StringMap() {
         this(NumberConstant.COMMON_SIZE);
@@ -29,12 +29,13 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
     }
 
     public StringMap(Map<String, V> otherMap) {
-        super((int) (otherMap.size() / DEFAULT_LOAD_FACTOR) + 1);
+        this((int) (otherMap.size() / DEFAULT_LOAD_FACTOR) + 1);
         this.putAll(otherMap);
     }
 
     public V putAny(Object key, V value) {
-        return this.put(String.valueOf(key), value);
+        this.put(String.valueOf(key), value);
+        return value;
     }
 
     @Override

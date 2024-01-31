@@ -3,7 +3,7 @@ package com.gitee.usl.all;
 import cn.hutool.core.util.ArrayUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.enums.InteractiveMode;
-import com.gitee.usl.kernel.configure.Configuration;
+import com.gitee.usl.kernel.engine.USLConfiguration;
 
 /**
  * @author hongda.li
@@ -19,7 +19,7 @@ public class Application {
         }
     }
 
-    public static Configuration globalConfig() {
+    public static USLConfiguration globalConfig() {
         return USLRunner.defaultConfiguration();
     }
 }

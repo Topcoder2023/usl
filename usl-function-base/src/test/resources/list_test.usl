@@ -14,8 +14,6 @@ for (let element in list) {
 
 let resort = list_resort(list);
 
-logger_info('逆排序后 - {}', to_json(resort));
-
 let mf = function matchFilter(ch) {
     return ch === 'a' || ch === 'b' || ch === 'c' || ch === 'd';
 };

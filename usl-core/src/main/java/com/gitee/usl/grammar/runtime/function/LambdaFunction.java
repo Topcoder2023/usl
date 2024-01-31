@@ -3,6 +3,7 @@ package com.gitee.usl.grammar.runtime.function;
 import java.util.List;
 import java.util.Map;
 
+import cn.hutool.core.collection.CollUtil;
 import com.gitee.usl.api.annotation.SystemFunction;
 import com.gitee.usl.grammar.runtime.type._RuntimeJavaType;
 import com.gitee.usl.grammar.script.BS;
@@ -79,15 +80,11 @@ public final class LambdaFunction extends BasicFunction {
 
     private Map<String, Object> newEnv(final Map<String, Object> parentEnv,
                                        final _Object... args) {
-        Env env;
-        if (!this.inheritEnv) {
-            final Env contextEnv = new Env(parentEnv, this.context);
-            contextEnv.configure(this.context.getInstance(), this.expression);
-            env = new Env(contextEnv);
-            env.configure(this.context.getInstance(), this.expression);
-        } else {
-            env = (Env) parentEnv;
+        Env env = new Env(parentEnv);
+        if (CollUtil.isNotEmpty(this.context)) {
+            env.putAll(this.context);
         }
+        env.configure(this.context.getInstance(), this.expression);
 
         if (args.length != this.params.size()) {
             throw new IllegalArgumentException("Wrong number of args(" + args.length + ") passed to "

@@ -1,6 +1,8 @@
 package com.gitee.usl.resource.filter;
 
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.symmetric.AES;
+import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.resource.api.FilterRoute;
 import com.gitee.usl.resource.api.WebFilter;
@@ -12,6 +14,7 @@ import org.smartboot.http.common.Cookie;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -28,7 +31,7 @@ import java.util.stream.Stream;
 public class SecurityFilter implements WebFilter {
     public static final String LOGIN_PAGE = "/usl/public/login";
     private static final String TOKEN_NAME = "access_token";
-    private static AES aes;
+    private static AES aes = new AES(SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue(), "".getBytes(StandardCharsets.UTF_8)));
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override

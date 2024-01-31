@@ -3,10 +3,10 @@ package com.gitee.usl.kernel.loader;
 import cn.hutool.core.util.ClassUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.kernel.configure.EngineConfig;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.api.FunctionLoader;
 import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.kernel.engine.USLConfiguration;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 public abstract class AbstractFunctionLoader implements FunctionLoader {
 
     @Override
-    public List<_Function> load(EngineConfig configuration) {
-        USLRunner runner = configuration.getConfiguration().getRunner();
+    public List<_Function> load(USLConfiguration configuration) {
+        USLRunner runner = configuration.getRunner();
 
         return configuration.getPackageNameList()
                 .stream()

@@ -1,11 +1,10 @@
 package com.gitee.usl.kernel.engine;
 
 import cn.hutool.cache.Cache;
-import cn.hutool.cache.CacheUtil;
+import cn.hutool.cache.impl.LRUCache;
 import cn.hutool.core.lang.func.Func0;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import com.gitee.usl.api.Initializer;
 import com.gitee.usl.api.ScriptCompiler;
 import com.gitee.usl.api.VariableDefinable;
 import com.gitee.usl.api.annotation.Order;
@@ -19,9 +18,6 @@ import com.gitee.usl.grammar.script.ES;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.USLCompileException;
 import com.gitee.usl.infra.structure.FunctionHolder;
-import com.gitee.usl.kernel.configure.Configuration;
-import com.gitee.usl.kernel.configure.EngineConfig;
-import com.gitee.usl.kernel.configure.CompilerConfig;
 import com.gitee.usl.kernel.domain.Param;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,27 +32,22 @@ import java.util.Optional;
 @Setter
 @Getter
 @Order(Integer.MAX_VALUE - 10)
-public class BasicScriptCompiler implements Initializer, ScriptCompiler {
+public class BasicScriptCompiler implements ScriptCompiler {
 
-    private ScriptEngine scriptEngine;
+    private final ScriptEngine engine;
 
-    private Cache<String, Param> cache;
+    private final Cache<String, Param> cache;
 
-    private VariableDefinable definable;
+    private final VariableDefinable definable;
 
-    private FunctionHolder functionHolder;
+    private final FunctionHolder functionHolder;
 
-    @Override
-    public void doInit(Configuration configuration) {
-        EngineConfig engineConfig = configuration.getEngineConfig();
-        CompilerConfig storageConfig = configuration.getCompilerConfig();
-
-        this.definable = engineConfig.getVarInitializer();
-        this.functionHolder = engineConfig.getFunctionHolder();
-        this.scriptEngine = engineConfig.getEngineInitializer().getInstance();
-        this.cache = CacheUtil.newLRUCache(storageConfig.getSize(), storageConfig.getDuration().toMillis());
-
-        storageConfig.setScriptCompiler(this);
+    public BasicScriptCompiler(USLConfiguration configuration) {
+        this.engine = configuration.getEngine();
+        this.definable = configuration.getDefinable();
+        this.functionHolder = configuration.getFunctionHolder();
+        this.cache = new LRUCache<>(configuration.getSize(), configuration.getExpired().toMillis());
+        this.cache.setListener((key, param) -> log.debug("剔除缓存 - [{}]", key));
     }
 
     @Override
@@ -92,9 +83,9 @@ public class BasicScriptCompiler implements Initializer, ScriptCompiler {
             return ES.empty().setException(new USLCompileException(ResultCode.SCRIPT_EMPTY));
         } else {
             log.debug("开始编译脚本\n{}", script);
-            Generator generator = new IRGenerator(scriptEngine);
-            GrammarLexer grammarLexer = new GrammarLexer(scriptEngine, script);
-            return (BS) new ScriptParser(scriptEngine, grammarLexer, generator).parse();
+            Generator generator = new IRGenerator(engine);
+            GrammarLexer grammarLexer = new GrammarLexer(engine, script);
+            return (BS) new ScriptParser(engine, grammarLexer, generator).parse();
         }
     }
 

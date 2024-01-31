@@ -32,7 +32,7 @@ public class Script {
 
     public Script(USLRunner runner, String path) {
         this.runner = runner;
-        File file = new File(runner.configuration().getEngineConfig().getScriptPath()
+        File file = new File(FileUtil.getTmpDir()
                 + runner.getName()
                 + StrPool.SLASH
                 + CharSequenceUtil.addSuffixIfNot(path, StrPool.DOT + StringConstant.SCRIPT_SUFFIX));

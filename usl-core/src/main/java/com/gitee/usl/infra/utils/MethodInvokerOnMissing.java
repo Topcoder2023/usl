@@ -7,6 +7,7 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.FunctionMissing;
 import com.gitee.usl.grammar.runtime.type._Object;
 import lombok.Data;
+import lombok.Getter;
 import lombok.experimental.Accessors;
 
 import java.lang.reflect.Method;
@@ -14,30 +15,34 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
+ * 此类作为FunctionMissing接口的默认实现,
+ * 在启用了方法调用配置的前提上,会解析<变量名.方法名()>，并通过反射传入参数并获取其返回值
+ *
  * @author hongda.li
  */
-@Data
-@Accessors(chain = true)
-@Description({"此类作为FunctionMissing接口的默认实现",
-        "在启用了方法调用配置的前提上",
-        "会解析<变量名.方法名()>，并通过反射传入参数并获取其返回值"})
+@Getter
 public class MethodInvokerOnMissing implements FunctionMissing {
 
     @Description("是否启用")
-    private boolean enabled;
+    private final boolean enabled;
 
     @Description("自定义机制")
-    private FunctionMissing functionMissing;
+    private final FunctionMissing functionMissing;
 
     @Description("方法调用标识")
     private static final String REGEX = "\\.";
 
+    public MethodInvokerOnMissing(boolean enabled) {
+        this(enabled, DEFAULT);
+    }
+
+    public MethodInvokerOnMissing(boolean enabled, FunctionMissing functionMissing) {
+        this.enabled = enabled;
+        this.functionMissing = functionMissing;
+    }
+
     @Override
     public _Object onFunctionMissing(String name, Map<String, Object> env, _Object... arguments) {
-
-        if (functionMissing == null) {
-            functionMissing = DEFAULT;
-        }
 
         if (!enabled) {
             return functionMissing.onFunctionMissing(name, env, arguments);

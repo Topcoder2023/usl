@@ -1,7 +1,6 @@
 package com.gitee.usl;
 
 import com.gitee.usl.api.*;
-import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.grammar.script.ES;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
@@ -9,11 +8,14 @@ import com.gitee.usl.infra.enums.InteractiveMode;
 import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.utils.ServiceSearcher;
-import com.gitee.usl.kernel.configure.EngineConfig;
-import com.gitee.usl.kernel.configure.Configuration;
+import com.gitee.usl.kernel.engine.USLConfiguration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
 import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.kernel.enhancer.LoggerPluginEnhancer;
+import com.gitee.usl.kernel.enhancer.ParameterBinderEnhancer;
+import com.gitee.usl.kernel.loader.AnnotatedFunctionLoader;
+import com.gitee.usl.kernel.loader.NativeFunctionLoader;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,58 +24,89 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * USL-Runner通用脚本语言执行器
+ *
  * @author hongda.li
  */
 @Slf4j
 @Getter
-@Description("USL-Runner通用脚本语言执行器")
 public class USLRunner {
 
-    @Description("USL-Runner默认实例的数量，每默认实例化一个 USL-Runner 时，都会对此变量自增")
+    /**
+     * USL-Runner 默认实例的数量，每默认实例化一个 USL-Runner 时，都会对此变量自增
+     */
     private static final AtomicInteger NUMBER = new AtomicInteger(NumberConstant.ONE);
 
-    @Description("USL-Runner实例全局缓存")
-    private static final Map<String, USLRunner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.EIGHT);
+    /**
+     * USL-Runner 实例全局缓存
+     */
+    private static final Map<String, USLRunner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.FOUR);
 
-    @Description("USL-Runner的名称，每一个执行器的名称应该唯一")
+    /**
+     * USL-Runner 的名称，每一个执行器的名称应该唯一
+     */
     private final String name;
 
-    @Description("USL-Runner实例启动时间")
+    /**
+     * USL-Runner 实例启动时间
+     */
     private final Date startTime;
 
-    @Description("USL-Runner的配置选项，支持为每一个执行器设置单独的配置")
-    private final Configuration configuration;
+    /**
+     * USL-Runner 的配置选项，支持为每一个执行器设置单独的配置
+     */
+    private final USLConfiguration configuration;
 
-    @Description("根据默认配置构造USL-Runner执行器")
+    /**
+     * 根据默认配置构造 USL-Runner 执行器
+     */
     public USLRunner() {
         this(defaultConfiguration());
     }
 
-    @Description("根据指定名称构造USL-Runner执行器")
-    public USLRunner(@Description("执行器名称") String name) {
+    /**
+     * 根据指定名称构造 USL-Runner 执行器
+     *
+     * @param name 执行器名称
+     */
+    public USLRunner(String name) {
         this(name, defaultConfiguration());
     }
 
-    @Description("根据指定配置构造USL-Runner执行器")
-    public USLRunner(@Description("执行器配置") Configuration configuration) {
+    /**
+     * 根据指定配置构造 USL-Runner 执行器
+     *
+     * @param configuration 执行器配置
+     */
+    public USLRunner(USLConfiguration configuration) {
         this(StringConstant.USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement(), configuration);
     }
 
-    @Description("根据指定名称和指定配置构造USL-Runner执行器")
-    public USLRunner(@Description("执行器名称") String name,
-                     @Description("执行器配置") Configuration configuration) {
+    /**
+     * 根据指定名称和指定配置构造 USL-Runner 执行器
+     *
+     * @param name          执行器名称
+     * @param configuration 执行器配置
+     */
+    public USLRunner(String name, USLConfiguration configuration) {
         this.name = name;
         this.startTime = new Date();
         this.configuration = configuration;
         this.configuration.setRunner(this);
     }
 
-    @Description("启动USL-Runner执行器，执行器仅在启动后才能执行脚本，默认不采用任何交互模式")
+    /**
+     * 启动 USL-Runner 执行器，执行器仅在启动后才能执行脚本，默认不采用任何交互模式
+     */
     public void start() {
         this.start(InteractiveMode.NONE);
     }
 
-    @Description("以指定的模式启动USL-Runner执行器")
+    /**
+     * 以指定的模式启动 USL-Runner 执行器
+     *
+     * @param mode 指定模式
+     */
     public void start(InteractiveMode mode) {
         if (ENGINE_CONTEXT.containsKey(name)) {
             return;
@@ -84,21 +117,25 @@ public class USLRunner {
         try {
             log.info("{} - 启动中...", name);
             ENGINE_CONTEXT.put(name, this);
-            List<Initializer> initializers = ServiceSearcher.searchAll(Initializer.class);
-            initializers.forEach(initializer -> initializer.doInit(configuration));
+            this.configuration.refresh();
             log.info("{} - 启动成功，共耗时[{}]毫秒", name, (System.currentTimeMillis() - start));
         } catch (Exception e) {
-            ENGINE_CONTEXT.values().removeIf(runner -> Objects.equals(runner.name, name));
+            ENGINE_CONTEXT.keySet().removeIf(name -> Objects.equals(name, this.name));
             throw e;
         }
 
         this.interactive(mode);
     }
 
-    @Description("执行脚本")
-    public Result run(@Description("脚本参数") Param param) {
+    /**
+     * 执行脚本
+     *
+     * @param param 脚本参数
+     * @return 执行结果
+     */
+    public Result run(Param param) {
 
-        configuration.getCompilerConfig().getScriptCompiler().compile(param);
+        configuration.getCompiler().compile(param);
 
         if (param.getCompiled() instanceof ES es) {
             throw es.getException();
@@ -112,26 +149,47 @@ public class USLRunner {
         }
     }
 
-    @Description("获取当前USL-Runner执行器的配置类")
-    public Configuration configuration() {
+    /**
+     * 获取当前 USL-Runner 执行器的配置类
+     *
+     * @return 配置类
+     */
+    public USLConfiguration configuration() {
         return configuration;
     }
 
-    @Description("获取新的默认配置")
-    public static Configuration defaultConfiguration() {
-        return new Configuration().getEngineConfig().scan(USLRunner.class).getConfiguration();
+    /**
+     * 获取新的默认配置
+     *
+     * @return 默认配置
+     */
+    public static USLConfiguration defaultConfiguration() {
+        return new USLConfiguration()
+                .scan(USLRunner.class)
+                .enhancer(new LoggerPluginEnhancer())
+                .enhancer(new ParameterBinderEnhancer())
+                .loader(new NativeFunctionLoader())
+                .loader(new AnnotatedFunctionLoader());
     }
 
-    @Description("返回所有可用的函数实例")
+    /**
+     * 返回所有可用的函数实例
+     *
+     * @return 函数实例列表
+     */
     public List<_Function> functions() {
         return Optional.ofNullable(this.configuration)
-                .map(Configuration::getEngineConfig)
-                .map(EngineConfig::getFunctionHolder)
+                .map(USLConfiguration::getFunctionHolder)
                 .map(FunctionHolder::toList)
                 .orElse(Collections.emptyList());
     }
 
-    @Description("根据USL-Runner执行器名称获取实例")
+    /**
+     * 根据 USL-Runner 执行器名称获取实例
+     *
+     * @param name 执行器名称
+     * @return 执行器实例
+     */
     public static USLRunner findRunnerByName(String name) {
         if (name == null) {
             return null;
@@ -139,8 +197,12 @@ public class USLRunner {
         return ENGINE_CONTEXT.get(name);
     }
 
-    @Description("开启交互")
-    private void interactive(@Description("交互模式") InteractiveMode mode) {
+    /**
+     * 开启交互
+     *
+     * @param mode 交互模式
+     */
+    private void interactive(InteractiveMode mode) {
         final Interactive interactive = switch (mode) {
             case CLI -> ServiceSearcher.searchFirst(CliInteractive.class);
             case WEB -> ServiceSearcher.searchFirst(WebInteractive.class);

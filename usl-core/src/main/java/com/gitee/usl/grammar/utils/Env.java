@@ -1,7 +1,9 @@
 package com.gitee.usl.grammar.utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -12,20 +14,12 @@ import java.util.Set;
 
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.grammar.runtime.type._Null;
-import com.gitee.usl.grammar.runtime.type._Range;
 import com.gitee.usl.grammar.script.Script;
 import com.gitee.usl.grammar.Feature;
 import com.gitee.usl.grammar.runtime.function.FunctionUtils;
 import com.gitee.usl.grammar.runtime.function.internal.ReducerResult;
-import com.gitee.usl.infra.structure.StringMap;
-import lombok.Getter;
-import lombok.Setter;
 
-/**
- *
- * @author hongda.li
- */
-public class Env extends StringMap<Object> {
+public class Env implements Map<String, Object> {
 
     /**
      * Default values map.
@@ -42,8 +36,6 @@ public class Env extends StringMap<Object> {
      */
     private Map<String, Object> mOverrides;
 
-    @Setter
-    @Getter
     private Script expression;
 
     private List<String> importedSymbols;
@@ -53,7 +45,7 @@ public class Env extends StringMap<Object> {
     // Caching resolved classes
     private transient Map<String/* class name */, Class<?>> resolvedClasses;
 
-    public static final Map<String, Object> EMPTY_ENV = new Env();
+    public static final Map<String, Object> EMPTY_ENV = Collections.emptyMap();
 
     /**
      * Constructs an env instance with empty state.
@@ -74,6 +66,22 @@ public class Env extends StringMap<Object> {
     public Env(final Map<String, Object> defaults, final Map<String, Object> overrides) {
         this.mDefaults = defaults;
         this.mOverrides = overrides;
+    }
+
+    public void setmOverrides(final Map<String, Object> mOverrides) {
+        this.mOverrides = mOverrides;
+    }
+
+    public List<String> getImportedSymbols() {
+        return this.importedSymbols;
+    }
+
+    public Script getExpression() {
+        return this.expression;
+    }
+
+    public void setExpression(final Script expression) {
+        this.expression = expression;
     }
 
     public Map<String, Object> getDefaults() {
@@ -256,8 +264,8 @@ public class Env extends StringMap<Object> {
      * @return override entries
      */
     @Override
-    public Set<Map.Entry<String, Object>> entrySet() {
-        Set<Map.Entry<String, Object>> ret = new HashSet<>(this.mDefaults.entrySet());
+    public Set<Entry<String, Object>> entrySet() {
+        Set<Entry<String, Object>> ret = new HashSet<Entry<String, Object>>(this.mDefaults.entrySet());
         ret.addAll(getmOverrides(true).entrySet());
         return ret;
     }
@@ -289,7 +297,7 @@ public class Env extends StringMap<Object> {
             new IdentityHashMap<String, GetValueTask>();
 
     static {
-        INTERNAL_VARIABLES.put(Constants.REDUCER_LOOP_VAR, new TargetObjectTask(_Range.LOOP));
+       // INTERNAL_VARIABLES.put(Constants.REDUCER_LOOP_VAR, new TargetObjectTask(Range.LOOP));
         INTERNAL_VARIABLES.put(Constants.REDUCER_EMPTY_VAR,
                 new TargetObjectTask(ReducerResult.withEmpty(_Null.NIL)));
         INTERNAL_VARIABLES.put(Constants.ENV_VAR, new GetValueTask() {
@@ -494,30 +502,7 @@ public class Env extends StringMap<Object> {
      */
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(32 * size());
-        buf.append(super.toString()).append("{"). //
-                append(Constants.INSTANCE_VAR).append("=").append(this.instance).append(", ").//
-                append(Constants.EXP_VAR).append("=").append(this.expression).append(", ").//
-                append(Constants.ENV_VAR).append("=").append("<this>");
-
-        Iterator<String> it = keySet().iterator();
-        boolean hasNext = it.hasNext();
-        if (hasNext) {
-            buf.append(", ");
-        }
-        while (hasNext) {
-            String key = it.next();
-            Object value = get(key);
-            buf.append(key).append('=').append(value == this ? "<this>" : value);
-
-            hasNext = it.hasNext();
-            if (hasNext) {
-                buf.append(',').append(' ');
-            }
-        }
-
-        buf.append('}');
-        return buf.toString();
+        return "env";
     }
 
     private Map<String, Object> getmOverrides(final boolean readOnly) {

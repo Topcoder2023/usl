@@ -19,10 +19,7 @@ public class CallStackPlugin implements FinallyPlugin {
         this.runner = runner;
 
         @Description("Aviator引擎实例")
-        ScriptEngine instance = this.runner.getConfiguration()
-                .getEngineConfig()
-                .getEngineInitializer()
-                .getInstance();
+        ScriptEngine instance = this.runner.getConfiguration().getEngine();
 
         if (instance.getEnvProcessor() == null) {
             instance.setEnvProcessor(new EnvProcessorImpl(runner.getName()));

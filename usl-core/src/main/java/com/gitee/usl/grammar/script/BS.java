@@ -85,13 +85,10 @@ public abstract class BS implements Script, ScriptEnhancer {
     }
 
     @Description("构建上下文环境")
-    private Env buildEnv(final Map<String, Object> map) {
-        if (map instanceof Env) {
-            ((Env) map).configure(this.instance, this);
-        }
-        Env env = new Env(map, CollUtil.isEmpty(map) ? new HashMap<>() : map);
+    private Env buildEnv(final Map<String, Object> context) {
+        Env env = new Env(context);
         env.configure(this.instance, this);
-        if (this.compileEnv != null && !this.compileEnv.isEmpty()) {
+        if (CollUtil.isNotEmpty(this.compileEnv)) {
             env.putAll(this.compileEnv);
         }
         if (!this.functionsArgs.isEmpty()) {
