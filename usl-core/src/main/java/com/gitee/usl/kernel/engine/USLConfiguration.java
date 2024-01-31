@@ -4,8 +4,9 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.*;
+import com.gitee.usl.api.impl.DefaultExceptionHandler;
+import com.gitee.usl.api.impl.DefaultVariableDefinable;
 import com.gitee.usl.grammar.ScriptEngine;
-import com.gitee.usl.grammar.lexer.token.Variable;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.infra.structure.StringSet;
@@ -163,15 +164,10 @@ public final class USLConfiguration extends StringMap<Object> {
         this.functionMissing = ObjectUtil.defaultIfNull(this.functionMissing, new MethodInvokerOnMissing(this.methodInvoke));
         log.debug("|| 函数兜底器实现类 - {}", this.functionMissing.getClass().getName());
 
-        this.definable = ObjectUtil.defaultIfNull(this.definable, new VariableDefinable() {
-            @Override
-            public Object define(Variable variable) {
-                return null;
-            }
-        });
+        this.definable = ObjectUtil.defaultIfNull(this.definable, new DefaultVariableDefinable());
         log.debug("|| 变量定义器实现类 - {}", this.definable.getClass().getName());
 
-        this.exceptionHandler = ObjectUtil.defaultIfNull(this.exceptionHandler, ExceptionHandler.DEFAULT);
+        this.exceptionHandler = ObjectUtil.defaultIfNull(this.exceptionHandler, new DefaultExceptionHandler());
         log.debug("|| 异常处理器实现类 - {}", this.exceptionHandler.getClass().getName());
 
         this.packageNameList.forEach(name -> log.debug("|| 函数库扫描包路径 - {}", name));
@@ -187,6 +183,9 @@ public final class USLConfiguration extends StringMap<Object> {
 
         log.debug("|| 配置初始化已完成");
         log.debug("==============================================================");
+
+        engine.loadSystemFunctions();
+        engine.loadFeatureFunctions();
 
         // 根据函数加载器依次加载函数库
         loaderList.forEach(provider -> provider.load(this).forEach(function -> {

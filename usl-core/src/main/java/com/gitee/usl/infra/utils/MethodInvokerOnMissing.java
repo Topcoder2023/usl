@@ -6,17 +6,15 @@ import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.FunctionMissing;
 import com.gitee.usl.grammar.runtime.type._Object;
-import lombok.Data;
 import lombok.Getter;
-import lombok.experimental.Accessors;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
 
 /**
- * 此类作为FunctionMissing接口的默认实现,
- * 在启用了方法调用配置的前提上,会解析<变量名.方法名()>，并通过反射传入参数并获取其返回值
+ * 此类作为 FunctionMissing 接口的默认实现,
+ * 在启用了方法调用配置的前提上,会解析 <变量名.方法名()>，并通过反射传入参数并获取其返回值
  *
  * @author hongda.li
  */

@@ -73,8 +73,6 @@ public final class ScriptEngine {
             this.options.put(opt, opt.getDefaultValueObject());
         }
         setOption(Options.EVAL_MODE, EvalMode.ASM);
-        loadFeatureFunctions();
-        loadSystemFunctions();
     }
 
     @Description("为操作符函数建立别名")
@@ -142,7 +140,7 @@ public final class ScriptEngine {
     }
 
     @Description("加载系统内置函数表")
-    private void loadSystemFunctions() {
+    public void loadSystemFunctions() {
         addSystemFunction(new BinaryFunction(OperatorType.ADD));
         addSystemFunction(new BinaryFunction(OperatorType.Exponent));
         addSystemFunction(new BinaryFunction(OperatorType.SUB));
@@ -159,7 +157,7 @@ public final class ScriptEngine {
     }
 
     @Description("添加特性绑定函数")
-    private void loadFeatureFunctions() {
+    public void loadFeatureFunctions() {
         this.options.get(Options.FEATURE_SET).featureSet
                 .stream()
                 .map(Feature::getFunctions)
