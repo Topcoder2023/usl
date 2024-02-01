@@ -22,16 +22,6 @@
     <dependencies>
         <dependency>
             <groupId>com.gitee</groupId>
-            <artifactId>usl-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
-            <artifactId>usl-plugin</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
             <artifactId>usl-logger</artifactId>
             <optional>true</optional>
         </dependency>
@@ -42,9 +32,8 @@
         </dependency>
 
         <dependency>
-            <artifactId>mysql-connector-java</artifactId>
-            <groupId>mysql</groupId>
-            <optional>true</optional>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
         </dependency>
 
         <dependency>

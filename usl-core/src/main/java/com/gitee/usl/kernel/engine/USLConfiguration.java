@@ -1,5 +1,6 @@
 package com.gitee.usl.kernel.engine;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.gitee.usl.USLRunner;
@@ -137,7 +138,7 @@ public final class USLConfiguration extends StringMap<Object> {
     private final FunctionHolder functionHolder = new FunctionHolder();
 
     /**
-     * 添加指定类所在包类路径
+     * 添加指定类所在包路径
      *
      * @param root 指定类
      * @return 链式调用
@@ -145,6 +146,19 @@ public final class USLConfiguration extends StringMap<Object> {
     public USLConfiguration scan(Class<?> root) {
         Objects.requireNonNull(root);
         this.packageNameList.add(ClassUtil.getPackage(root));
+        return this;
+    }
+
+    /**
+     * 排除指定类所在包路径
+     *
+     * @param root 指定类
+     * @return 链式调用
+     */
+    public USLConfiguration exclude(Class<?> root) {
+        Objects.requireNonNull(root);
+        String packageName = ClassUtil.getPackage(root);
+        this.packageNameList.removeIf(name -> CharSequenceUtil.startWith(name, packageName));
         return this;
     }
 
@@ -173,8 +187,11 @@ public final class USLConfiguration extends StringMap<Object> {
     /**
      * 刷新配置
      */
-    public void refresh() {
-        this.refreshed = Boolean.FALSE;
+    public synchronized void refresh() {
+        // 若已经刷新过配置类，则跳过刷新
+        if (Boolean.TRUE.equals(this.refreshed)) {
+            return;
+        }
 
         this.size = ObjectUtil.defaultIfNull(this.size, 2 << 10);
         log.debug("脚本最大缓存容量 - {}", this.size);

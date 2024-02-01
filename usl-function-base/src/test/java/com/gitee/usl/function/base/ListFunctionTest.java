@@ -17,13 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ListFunctionTest {
 
-    static USLRunner runner;
-
-    @BeforeAll
-    static void before() {
-        runner = new USLRunner();
-        runner.start();
-    }
+    static USLRunner runner = new USLRunner();
 
     @Test
     void list() {

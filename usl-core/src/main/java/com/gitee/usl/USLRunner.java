@@ -17,6 +17,7 @@ import com.gitee.usl.kernel.domain.Result;
 import com.gitee.usl.grammar.runtime.type._Function;
 import com.gitee.usl.kernel.enhancer.LoggerPluginEnhancer;
 import com.gitee.usl.kernel.enhancer.ParameterBinderEnhancer;
+import com.gitee.usl.kernel.enhancer.SharedPluginEnhancer;
 import com.gitee.usl.kernel.loader.AnnotatedFunctionLoader;
 import com.gitee.usl.kernel.loader.NativeFunctionLoader;
 import com.gitee.usl.kernel.loader.SystemFunctionLoader;
@@ -122,6 +123,7 @@ public class USLRunner {
             this.configuration.refresh();
             log.info("{} - 启动成功，共耗时[{}]毫秒", this.name, (System.currentTimeMillis() - this.timestamp));
         } catch (Exception e) {
+            this.configuration.setRefreshed(Boolean.FALSE);
             ENGINE_CONTEXT.keySet().removeIf(name -> Objects.equals(name, this.name));
             throw e;
         }
@@ -136,7 +138,11 @@ public class USLRunner {
      * @return 执行结果
      */
     public Result run(Param param) {
-        Assert.isTrue(this.configuration.getRefreshed(), name + "尚未初始化");
+        // 若配置类尚未初始化，则先刷新配置后再执行脚本
+        if (!Boolean.TRUE.equals(this.configuration.getRefreshed())) {
+            this.start();
+            return this.run(param);
+        }
 
         this.configuration.getCompiler().compile(param);
 
@@ -169,6 +175,7 @@ public class USLRunner {
     public static USLConfiguration defaultConfiguration() {
         return new USLConfiguration()
                 .scan(USLRunner.class)
+                .enhancer(new SharedPluginEnhancer())
                 .enhancer(new LoggerPluginEnhancer())
                 .enhancer(new ParameterBinderEnhancer())
                 .loader(new SystemFunctionLoader())

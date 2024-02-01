@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -41,8 +42,11 @@ public class LoggerPlugin implements BeginPlugin, SuccessPlugin, FailurePlugin {
     @Override
     public void onSuccess(FunctionSession session) {
         String name = session.getDefinition().getName();
-        Supplier<Object[]> supplier = () -> new Object[]{name, session.getResult()};
-        EnabledLogger.debug(logger, "执行成功 - [{}] : [{}]", supplier);
+        if (Objects.isNull(session.getResult())) {
+            EnabledLogger.debug(logger, "执行成功 - [{}]", () -> new Object[]{name});
+        } else {
+            EnabledLogger.debug(logger, "执行成功 - [{}] : [{}]", () -> new Object[]{name, session.getResult()});
+        }
     }
 
     @Description("格式化参数")

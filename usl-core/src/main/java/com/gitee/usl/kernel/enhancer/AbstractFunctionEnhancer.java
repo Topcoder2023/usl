@@ -1,6 +1,7 @@
 package com.gitee.usl.kernel.enhancer;
 
 import com.gitee.usl.api.FunctionEnhancer;
+import com.gitee.usl.api.FunctionPluggable;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
@@ -15,6 +16,10 @@ import java.lang.reflect.Proxy;
 public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
     @Override
     public void enhance(_Function function) {
+
+        if (function instanceof FunctionPluggable fp) {
+            this.enhancePluggable(fp);
+        }
 
         @Description("代理类标识")
         boolean isProxy = Proxy.isProxyClass(function.getClass());
@@ -32,6 +37,10 @@ public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
     protected void enhanceFunction(_Function func) {
     }
 
+    @Description("增强插件函数")
+    protected void enhancePluggable(FunctionPluggable fp) {
+    }
+
     @Description("增强代理函数")
     protected void enhanceNativeFunction(NativeFunction nf) {
     }
@@ -39,5 +48,4 @@ public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
     @Description("增强注解函数")
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
     }
-
 }
