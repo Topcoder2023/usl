@@ -3,6 +3,7 @@ package com.gitee.usl.kernel.plugin;
 import cn.hutool.core.convert.Convert;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.infra.structure.wrapper.ParameterWrapper;
@@ -18,8 +19,12 @@ import java.util.List;
 /**
  * @author hongda.li
  */
+@Order(ParameterBinderPlugin.PARAM_BINDER_ORDER)
 @Description("参数绑定插件")
 public class ParameterBinderPlugin implements BeginPlugin {
+
+    @Description("参数绑定插件生效的优先级")
+    public static final int PARAM_BINDER_ORDER = Integer.MIN_VALUE + 10;
 
     @Override
     public void onBegin(FunctionSession session) {

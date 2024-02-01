@@ -98,7 +98,7 @@ public class CallStack {
             stackInfo.append("异常栈 : ").append(ExceptionUtil.stacktraceToString(e)).append("\n");
         });
 
-        if (stackInfo.length() > 0) {
+        if (!stackInfo.isEmpty()) {
             stackInfo.insert(0, START);
             stackInfo.append(END);
             log.debug(stackInfo.toString());

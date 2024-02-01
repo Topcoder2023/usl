@@ -6,6 +6,7 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.utils.LambdaHelper;
 import com.gitee.usl.grammar.runtime.type._Function;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -16,6 +17,7 @@ import java.util.function.Predicate;
  * @author hongda.li
  */
 @Slf4j
+@ToString
 @Description("函数实例容器")
 public class FunctionHolder {
 
@@ -26,8 +28,8 @@ public class FunctionHolder {
     private final Map<String, _Function> container;
 
     public FunctionHolder() {
-        this.aliasMap = new HashMap<>(NumberConstant.EIGHT);
-        this.container = new HashMap<>(NumberConstant.COMMON_SIZE);
+        this.aliasMap = new HashMap<>(NumberConstant.NORMAL_SIZE);
+        this.container = new HashMap<>(NumberConstant.NORMAL_MAX_SIZE);
     }
 
     /**
@@ -53,7 +55,6 @@ public class FunctionHolder {
             } else {
                 log.warn("重复注册 - [{}]", name);
             }
-
             return;
         }
 

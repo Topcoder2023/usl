@@ -11,15 +11,14 @@ import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.infra.structure.StringSet;
+import com.gitee.usl.infra.structure.UniqueList;
 import com.gitee.usl.infra.utils.MethodInvokerOnMissing;
-import com.gitee.usl.kernel.enhancer.ResortPluginEnhancer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,6 +32,7 @@ import java.util.Objects;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 public final class USLConfiguration extends StringMap<Object> {
+
     /**
      * 是否已经刷新过配置
      */
@@ -124,12 +124,12 @@ public final class USLConfiguration extends StringMap<Object> {
     /**
      * 函数加载器
      */
-    private final List<FunctionLoader> loaderList = new ArrayList<>();
+    private final List<FunctionLoader> loaders = new UniqueList<>();
 
     /**
      * 函数增强器
      */
-    private final List<FunctionEnhancer> enhancers = new ArrayList<>();
+    private final List<FunctionEnhancer> enhancers = new UniqueList<>();
 
     /**
      * 函数容器
@@ -155,13 +155,7 @@ public final class USLConfiguration extends StringMap<Object> {
      * @return 函数加载器
      */
     public USLConfiguration loader(FunctionLoader loader) {
-        Objects.requireNonNull(loader);
-        if (this.loaderList.stream().anyMatch(item -> item.getClass().equals(loader.getClass()))) {
-            log.warn("已存在相同类型的函数加载器实现类 - {}", loader.getClass().getName());
-            return this;
-        } else {
-            this.loaderList.add(loader);
-        }
+        this.loaders.add(loader);
         return this;
     }
 
@@ -172,13 +166,7 @@ public final class USLConfiguration extends StringMap<Object> {
      * @return 函数增强器
      */
     public USLConfiguration enhancer(FunctionEnhancer enhancer) {
-        Objects.requireNonNull(enhancer);
-        if (this.enhancers.stream().anyMatch(item -> item.getClass().equals(enhancer.getClass()))) {
-            log.warn("已存在相同类型的函数增强器实现类 - {}", enhancer.getClass().getName());
-            return this;
-        } else {
-            this.enhancers.add(enhancer);
-        }
+        this.enhancers.add(enhancer);
         return this;
     }
 
@@ -211,10 +199,8 @@ public final class USLConfiguration extends StringMap<Object> {
 
         this.packageNameList.forEach(name -> log.debug("函数库扫描包路径 - {}", name));
 
-        this.loaderList.forEach(loader -> log.debug("函数加载器实现类 - {}", loader.getClass().getName()));
+        this.loaders.forEach(loader -> log.debug("函数加载器实现类 - {}", loader.getClass().getName()));
 
-        // 添加插件重排序增强器
-        this.enhancer(new ResortPluginEnhancer());
         this.enhancers.forEach(enhancer -> log.debug("函数增强器实现类 - {}", enhancer.getClass().getName()));
 
         this.engine = new ScriptEngine(this);
@@ -223,7 +209,7 @@ public final class USLConfiguration extends StringMap<Object> {
         log.debug("脚本编译器实现类 - {}", this.compiler.getClass().getName());
 
         // 根据函数加载器依次加载函数库
-        loaderList.stream()
+        loaders.stream()
                 .flatMap(provider -> provider.load(this).stream())
                 .forEach(functionHolder::register);
 

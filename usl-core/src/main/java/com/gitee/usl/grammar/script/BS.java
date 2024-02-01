@@ -5,6 +5,7 @@ import java.util.*;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.api.impl.DefaultScriptProcessor;
 import com.gitee.usl.infra.constant.AsmConstants;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.USLCompileException;
@@ -50,7 +51,7 @@ public abstract class BS implements Script, ScriptEnhancer {
         this.symbolTable = symbolTable;
         this.envProcessor = Optional.ofNullable(this.instance)
                 .map(ScriptEngine::getEnvProcessor)
-                .orElse(ScriptProcessor.EMPTY);
+                .orElse(new DefaultScriptProcessor());
     }
 
     @Description("函数逻辑的默认实现")

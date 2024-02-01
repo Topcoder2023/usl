@@ -1,11 +1,10 @@
 package com.gitee.usl.infra.structure;
 
-import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.api.plugin.Plugin;
+import com.gitee.usl.infra.utils.AnnotatedComparator;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -18,26 +17,14 @@ import java.util.function.Consumer;
 public class Plugins {
 
     @Description("插件容器")
-    private final List<Plugin> container;
-
-    public Plugins() {
-        container = new ArrayList<>(NumberConstant.EIGHT);
-    }
+    private final List<Plugin> container = new UniqueList<>(NumberConstant.EIGHT);
 
     @Description("安装插件")
     public void install(Plugin plugin) {
-        Assert.notNull(plugin);
-        boolean exists = this.container.stream().anyMatch(item -> item.getClass().equals(plugin.getClass()));
-        if (!exists) {
-            this.container.add(plugin);
-        }
+        Objects.requireNonNull(plugin);
+        this.container.add(plugin);
+        this.container.sort(Comparator.comparing(item -> AnnotatedComparator.getOrder(item.getClass())));
     }
-
-    @Description("从指定位置安装插件")
-    public void install(int index, Plugin plugin) {
-        this.container.add(index, plugin);
-    }
-
 
     @Description("卸载指定类型的插件")
     public void uninstall(Class<? extends Plugin> type) {
