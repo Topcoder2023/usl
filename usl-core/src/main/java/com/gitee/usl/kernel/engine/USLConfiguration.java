@@ -12,7 +12,7 @@ import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.infra.structure.StringSet;
 import com.gitee.usl.infra.structure.UniqueList;
-import com.gitee.usl.infra.utils.MethodInvokerOnMissing;
+import com.gitee.usl.api.impl.DefaultFunctionMissing;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -188,7 +188,7 @@ public final class USLConfiguration extends StringMap<Object> {
         this.enableMethodInvoke = ObjectUtil.defaultIfNull(this.enableMethodInvoke, Boolean.TRUE);
         log.debug("是否开启方法访问 - {}", this.enableMethodInvoke);
 
-        this.functionMissing = ObjectUtil.defaultIfNull(this.functionMissing, new MethodInvokerOnMissing(this.enableMethodInvoke));
+        this.functionMissing = ObjectUtil.defaultIfNull(this.functionMissing, new DefaultFunctionMissing(this.enableMethodInvoke));
         log.debug("函数兜底器实现类 - {}", this.functionMissing.getClass().getName());
 
         this.definable = ObjectUtil.defaultIfNull(this.definable, new DefaultVariableDefinable());

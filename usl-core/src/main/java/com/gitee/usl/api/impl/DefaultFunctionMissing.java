@@ -1,4 +1,4 @@
-package com.gitee.usl.infra.utils;
+package com.gitee.usl.api.impl;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
@@ -6,6 +6,7 @@ import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.FunctionMissing;
 import com.gitee.usl.grammar.runtime.type._Object;
+import com.gitee.usl.infra.exception.USLNotFoundException;
 import lombok.Getter;
 
 import java.lang.reflect.Method;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @author hongda.li
  */
 @Getter
-public class MethodInvokerOnMissing implements FunctionMissing {
+public class DefaultFunctionMissing implements FunctionMissing {
 
     @Description("是否启用")
     private final boolean enabled;
@@ -30,11 +31,13 @@ public class MethodInvokerOnMissing implements FunctionMissing {
     @Description("方法调用标识")
     private static final String REGEX = "\\.";
 
-    public MethodInvokerOnMissing(boolean enabled) {
-        this(enabled, DEFAULT);
+    public DefaultFunctionMissing(boolean enabled) {
+        this(enabled, (name, env, args) -> {
+            throw new USLNotFoundException("无法加载此函数 - {}", name);
+        });
     }
 
-    public MethodInvokerOnMissing(boolean enabled, FunctionMissing functionMissing) {
+    public DefaultFunctionMissing(boolean enabled, FunctionMissing functionMissing) {
         this.enabled = enabled;
         this.functionMissing = functionMissing;
     }

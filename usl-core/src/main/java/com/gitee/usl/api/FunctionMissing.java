@@ -1,7 +1,6 @@
 package com.gitee.usl.api;
 
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.infra.exception.USLNotFoundException;
 import com.gitee.usl.grammar.runtime.type._Object;
 
 import java.util.Map;
@@ -16,9 +15,5 @@ public interface FunctionMissing {
     _Object onFunctionMissing(@Description("函数名称") final String name,
                               @Description("上下文环境") final Map<String, Object> env,
                               @Description("函数参数") final _Object... arguments);
-
-    FunctionMissing DEFAULT = (name, env, args) -> {
-        throw new USLNotFoundException("无法加载此函数 - {}", name);
-    };
 
 }
