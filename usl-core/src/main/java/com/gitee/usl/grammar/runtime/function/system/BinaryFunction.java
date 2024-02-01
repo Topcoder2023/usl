@@ -1,6 +1,6 @@
 package com.gitee.usl.grammar.runtime.function.system;
 
-import com.gitee.usl.api.annotation.SystemFunction;
+import com.gitee.usl.api.annotation.SystemComponent;
 import com.gitee.usl.grammar.runtime.function.BasicFunction;
 import com.gitee.usl.grammar.utils.Env;
 import com.gitee.usl.grammar.lexer.token.OperatorType;
@@ -12,7 +12,7 @@ import lombok.Getter;
  * @author hongda.li
  */
 @Getter
-@SystemFunction
+@SystemComponent
 public class BinaryFunction extends BasicFunction {
 
     private final OperatorType opType;

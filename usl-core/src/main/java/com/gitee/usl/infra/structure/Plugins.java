@@ -6,7 +6,9 @@ import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.api.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -63,6 +65,11 @@ public class Plugins {
                 .filter(plugin -> pluginType.isAssignableFrom(plugin.getClass()))
                 .map(pluginType::cast)
                 .forEach(consumer);
+    }
+
+    public void sort(Comparator<Plugin> comparator) {
+        Objects.requireNonNull(comparator);
+        this.container.sort(comparator);
     }
 
 }

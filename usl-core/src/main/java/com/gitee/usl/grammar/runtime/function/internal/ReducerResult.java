@@ -1,6 +1,6 @@
 package com.gitee.usl.grammar.runtime.function.internal;
 
-import com.gitee.usl.api.annotation.SystemFunction;
+import com.gitee.usl.api.annotation.SystemComponent;
 import com.gitee.usl.grammar.runtime.type._RuntimeJavaType;
 import com.gitee.usl.grammar.runtime.type._Type;
 import com.gitee.usl.grammar.utils.Env;
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author hongda.li
  */
-@SystemFunction
+@SystemComponent
 public class ReducerResult extends _RuntimeJavaType {
     public final ReducerState state;
     public _Object obj;

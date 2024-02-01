@@ -2,7 +2,7 @@ package com.gitee.usl.grammar.runtime.function.internal;
 
 import java.util.Map;
 
-import com.gitee.usl.api.annotation.SystemFunction;
+import com.gitee.usl.api.annotation.SystemComponent;
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
 import com.gitee.usl.grammar.runtime.function.BasicFunction;
 import com.gitee.usl.grammar.runtime.type._Long;
@@ -19,7 +19,7 @@ import com.gitee.usl.grammar.utils.Constants;
 /**
  * @author hongda.li
  */
-@SystemFunction
+@SystemComponent
 public class ReducerFunction extends BasicFunction {
 
     public static final String NAME = "__reducer_callcc";

@@ -12,6 +12,7 @@ import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.infra.structure.StringSet;
 import com.gitee.usl.infra.utils.MethodInvokerOnMissing;
+import com.gitee.usl.kernel.enhancer.ResortPluginEnhancer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -155,7 +156,12 @@ public final class USLConfiguration extends StringMap<Object> {
      */
     public USLConfiguration loader(FunctionLoader loader) {
         Objects.requireNonNull(loader);
-        this.loaderList.add(loader);
+        if (this.loaderList.stream().anyMatch(item -> item.getClass().equals(loader.getClass()))) {
+            log.warn("已存在相同类型的函数加载器实现类 - {}", loader.getClass().getName());
+            return this;
+        } else {
+            this.loaderList.add(loader);
+        }
         return this;
     }
 
@@ -167,7 +173,12 @@ public final class USLConfiguration extends StringMap<Object> {
      */
     public USLConfiguration enhancer(FunctionEnhancer enhancer) {
         Objects.requireNonNull(enhancer);
-        this.enhancers.add(enhancer);
+        if (this.enhancers.stream().anyMatch(item -> item.getClass().equals(enhancer.getClass()))) {
+            log.warn("已存在相同类型的函数增强器实现类 - {}", enhancer.getClass().getName());
+            return this;
+        } else {
+            this.enhancers.add(enhancer);
+        }
         return this;
     }
 
@@ -202,6 +213,8 @@ public final class USLConfiguration extends StringMap<Object> {
 
         this.loaderList.forEach(loader -> log.debug("函数加载器实现类 - {}", loader.getClass().getName()));
 
+        // 添加插件重排序增强器
+        this.enhancer(new ResortPluginEnhancer());
         this.enhancers.forEach(enhancer -> log.debug("函数增强器实现类 - {}", enhancer.getClass().getName()));
 
         this.engine = new ScriptEngine(this);

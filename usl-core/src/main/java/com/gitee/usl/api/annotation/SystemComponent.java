@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 /**
  * @author hongda.li
  */
-@Description("系统函数标识")
+@Description("系统内置组件")
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SystemFunction {
+public @interface SystemComponent {
 }

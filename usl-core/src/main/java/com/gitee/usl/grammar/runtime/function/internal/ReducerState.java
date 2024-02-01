@@ -1,11 +1,11 @@
 package com.gitee.usl.grammar.runtime.function.internal;
 
-import com.gitee.usl.api.annotation.SystemFunction;
+import com.gitee.usl.api.annotation.SystemComponent;
 
 /**
  * @author hongda.li
  */
-@SystemFunction
+@SystemComponent
 public enum ReducerState {
     Empty, Cont, Break, Return
 }

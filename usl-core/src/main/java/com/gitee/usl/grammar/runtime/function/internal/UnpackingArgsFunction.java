@@ -3,7 +3,7 @@ package com.gitee.usl.grammar.runtime.function.internal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gitee.usl.api.annotation.SystemFunction;
+import com.gitee.usl.api.annotation.SystemComponent;
 import com.gitee.usl.grammar.runtime.RuntimeUtils;
 import com.gitee.usl.grammar.runtime.function.BasicFunction;
 import com.gitee.usl.grammar.runtime.type._RuntimeJavaType;
@@ -15,7 +15,7 @@ import com.gitee.usl.grammar.utils.Env;
 /**
  * @author hongda.li
  */
-@SystemFunction
+@SystemComponent
 public class UnpackingArgsFunction extends BasicFunction {
 
     private final _Function fn;

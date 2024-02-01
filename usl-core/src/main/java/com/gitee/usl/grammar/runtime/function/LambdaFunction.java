@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.hutool.core.collection.CollUtil;
-import com.gitee.usl.api.annotation.SystemFunction;
+import com.gitee.usl.api.annotation.SystemComponent;
 import com.gitee.usl.grammar.runtime.type._RuntimeJavaType;
 import com.gitee.usl.grammar.script.BS;
 import com.gitee.usl.grammar.script.Script;
@@ -20,7 +20,7 @@ import lombok.Setter;
 /**
  * @author hongda.li
  */
-@SystemFunction
+@SystemComponent
 public final class LambdaFunction extends BasicFunction {
 
     private final List<FunctionParam> params;

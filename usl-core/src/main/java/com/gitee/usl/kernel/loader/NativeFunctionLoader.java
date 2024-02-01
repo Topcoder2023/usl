@@ -4,7 +4,7 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.annotation.SystemFunction;
+import com.gitee.usl.api.annotation.SystemComponent;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
@@ -54,7 +54,7 @@ public class NativeFunctionLoader extends AbstractFunctionLoader {
         return _Function.class.isAssignableFrom(clz)
                 && ClassUtil.isNormalClass(clz)
                 && !AnnotatedFunction.class.isAssignableFrom(clz)
-                && !AnnotationUtil.hasAnnotation(clz, SystemFunction.class);
+                && !AnnotationUtil.hasAnnotation(clz, SystemComponent.class);
     }
 
 }

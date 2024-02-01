@@ -1,6 +1,6 @@
 package com.gitee.usl.grammar.runtime.function;
 
-import com.gitee.usl.api.annotation.SystemFunction;
+import com.gitee.usl.api.annotation.SystemComponent;
 import com.gitee.usl.grammar.utils.Env;
 import com.gitee.usl.grammar.exception.FunctionNotFoundException;
 import com.gitee.usl.grammar.runtime.type._Object;
@@ -12,7 +12,7 @@ import java.util.TreeMap;
 /**
  * @author hongda.li
  */
-@SystemFunction
+@SystemComponent
 public class DispatchFunction extends BasicFunction {
 
     private final IdentityHashMap<Integer, LambdaFunction> functions = new IdentityHashMap<>();
