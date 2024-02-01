@@ -10,16 +10,16 @@
     <modules>
         <module>usl-core</module>
         <module>usl-plugin</module>
-        <module>usl-function-web</module>
+        <module>usl-function-http</module>
         <module>usl-function-base</module>
         <module>usl-function-system</module>
         <module>usl-function-math</module>
         <module>usl-function-db</module>
         <module>usl-logger</module>
         <module>usl-all</module>
-        <module>usl-resource</module>
+        <module>usl-interactive-web</module>
         <module>usl-spring-boot-starter</module>
-        <module>usl-cli</module>
+        <module>usl-interactive-cli</module>
     </modules>
 
     <groupId>com.gitee</groupId>
@@ -111,13 +111,13 @@
 
             <dependency>
                 <groupId>com.gitee</groupId>
-                <artifactId>usl-function-web</artifactId>
+                <artifactId>usl-function-http</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.gitee</groupId>
-                <artifactId>usl-resource</artifactId>
+                <artifactId>usl-interactive-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -135,19 +135,6 @@
             </dependency>
 
             <dependency>
-                <groupId>cn.zhxu</groupId>
-                <artifactId>xjsonkit-api</artifactId>
-                <version>${xjsonkit.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.zhxu</groupId>
-                <artifactId>xjsonkit-fastjson2</artifactId>
-                <version>${xjsonkit.version}</version>
-                <optional>true</optional>
-            </dependency>
-
-            <dependency>
                 <groupId>org.smartboot.http</groupId>
                 <artifactId>smart-http-server</artifactId>
                 <version>${smart.version}</version>
@@ -157,12 +144,6 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.lmax</groupId>
-                <artifactId>disruptor</artifactId>
-                <version>${disruptor.version}</version>
             </dependency>
 
             <dependency>

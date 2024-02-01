@@ -3,7 +3,6 @@
 <p style="text-align:center">
 <img src="https://img.shields.io/badge/JDK-21+-brightgreen" alt="">
 <img src="https://img.shields.io/badge/Aviator-5.4.1-brightgreen" alt="">
-<img src="https://img.shields.io/badge/Disruptor-3.4.4-brightgreen" alt="">
 <img src="https://jitpack.io/v/com.gitee.yixi-dlmu/usl.svg" alt="">
 <a href='https://gitee.com/yixi-dlmu/usl/stargazers'><img src='https://gitee.com/yixi-dlmu/usl/badge/star.svg?theme=dark' alt='star'></a>
 </p>
@@ -44,7 +43,7 @@
 
 ## 五、安装与使用
 
-> 项目于`2023年9月12日`正式立项，计划第一个正式版本于`2024年1月1日`正式发布，目前可以通过以下方式提前试用：
+> 项目于`2023年9月12日`正式立项，计划第一个正式版本于`2024年3月12日`正式发布，目前可以通过以下方式提前试用：
 
 1. 将此仓库地址添加到您的`pom.xml`或者`setting.xml`中
 

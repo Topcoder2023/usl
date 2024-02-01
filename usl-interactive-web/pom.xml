@@ -9,7 +9,7 @@
         <version>v1.0.0.SNAPSHOT</version>
     </parent>
 
-    <artifactId>usl-all</artifactId>
+    <artifactId>usl-interactive-web</artifactId>
     <version>${parent.version}</version>
     <packaging>jar</packaging>
 
@@ -32,43 +32,14 @@
         </dependency>
 
         <dependency>
-            <groupId>com.gitee</groupId>
-            <artifactId>usl-plugin</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
-            <artifactId>usl-interactive-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
-            <artifactId>usl-function-db</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
-            <artifactId>usl-function-base</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
-            <artifactId>usl-function-math</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
-            <artifactId>usl-function-system</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
-            <artifactId>usl-function-http</artifactId>
+            <groupId>org.smartboot.http</groupId>
+            <artifactId>smart-http-server</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
