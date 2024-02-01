@@ -22,6 +22,11 @@ public enum ResultCode {
     FAILURE(500),
 
     /**
+     * 共享变量尚未初始化
+     */
+    EMPTY_SHARED_SESSION(501),
+
+    /**
      * 编译失败
      */
     COMPILE_FAILURE(510),

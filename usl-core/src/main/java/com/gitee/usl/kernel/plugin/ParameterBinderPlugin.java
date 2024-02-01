@@ -1,8 +1,6 @@
 package com.gitee.usl.kernel.plugin;
 
 import cn.hutool.core.convert.Convert;
-import com.gitee.usl.USLRunner;
-import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
@@ -17,104 +15,91 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 
 /**
+ * 参数绑定插件
+ *
  * @author hongda.li
  */
 @Order(ParameterBinderPlugin.PARAM_BINDER_ORDER)
-@Description("参数绑定插件")
 public class ParameterBinderPlugin implements BeginPlugin {
 
-    @Description("参数绑定插件生效的优先级")
+    /**
+     * 参数绑定插件生效的优先级
+     */
     public static final int PARAM_BINDER_ORDER = Integer.MIN_VALUE + 10;
 
     @Override
     public void onBegin(FunctionSession session) {
 
-        @Description("方法元数据")
+        // 方法元数据
         MethodMeta<?> methodMeta = session.getDefinition().getMethodMeta();
 
+        // 无参函数，无需绑定
         if (methodMeta.isNoArgs()) {
             session.setInvocation(methodMeta.toInvocation());
             return;
         }
 
-        @Description("上下文环境")
+        // 上下文环境
         Env env = session.getEnv();
 
-        @Description("额外参数数量")
-        IntWrapper additionalCount = new IntWrapper();
-
-        @Description("实参列表")
+        // 实参列表
         _Object[] actualArgs = session.getObjects();
 
-        @Description("形参列表")
+        // 形参列表
         List<ParameterWrapper> expectArgs = methodMeta.getParameterWrapperList();
 
-        @Description("参数绑定")
+        // 参数绑定
         Object[] args = expectArgs.stream()
-                .map(expectArg -> this.bind(expectArg, additionalCount, env, session, actualArgs))
+                .map(expectArg -> this.bind(env, expectArg, actualArgs))
                 .toArray(Object[]::new);
 
+        // 将方法元属性转为方法调用器
         session.setInvocation(methodMeta.toInvocation(args));
     }
 
-    @Description("参数绑定，将AviatorObject参数转换为具体类型的参数")
-    protected Object bind(@Description("函数形参") ParameterWrapper expectArg,
-                          @Description("额外参数数量") IntWrapper additionalCount,
-                          @Description("上下文环境") Env env,
-                          @Description("函数调用会话") FunctionSession session,
-                          @Description("实参列表") _Object[] actualArgs) {
-        @Description("形参索引")
+    /**
+     * 参数绑定，将 _Object 参数转换为具体类型的参数
+     *
+     * @param expectArg  函数形参
+     * @param env        上下文环境
+     * @param actualArgs 实参列表
+     * @return 转换后的参数
+     */
+    protected Object bind(Env env, ParameterWrapper expectArg, _Object[] actualArgs) {
+        // 形参索引
         int index = expectArg.getIndex();
 
-        @Description("形参实例")
+        // 形参实例
         Parameter parameter = expectArg.get();
 
-        @Description("形参类型")
+        // 形参类型
         Class<?> type = parameter.getType();
 
-        @Description("实参长度")
+        // 实参长度
         int actualLength = actualArgs.length;
 
-        if (Env.class.equals(type)) {
-            additionalCount.increment();
-            return env;
-        }
-
-        if (USLRunner.class.equals(type)) {
-            additionalCount.increment();
-            return session.getDefinition().getRunner();
-        }
-
-        if (FunctionSession.class.equals(type)) {
-            additionalCount.increment();
-            return session;
-        }
-
-        @Description("避免数组越界，直接用空值填充，此处可能产生的原因是方法定义了N个参数，但实际传入的参数小于N")
-        boolean outOfLength = index - additionalCount.get() > actualLength - 1;
-        if (outOfLength) {
+        // 避免数组越界，直接用空值填充，此处可能产生的原因是方法定义了N个参数，但实际传入的参数小于N
+        if (index > actualLength - 1) {
             return null;
         }
 
+        // 原始类型，无需转换
         if (_Object.class.isAssignableFrom(type)) {
-            return actualArgs[index - additionalCount.get()];
+            return actualArgs[index];
         }
 
-        @Description("数组参数或可变长度的参数")
-        boolean isArray = type.isArray();
-
-        if (isArray) {
-            @Description("数组元素的实际类型")
+        if (type.isArray()) {
+            // 数组元素的实际类型
             Class<?> elementType = type.getComponentType();
 
-            @Description("构造数组长度为：实际传入参数个数 - 已绑定的参数个数(除来自于环境变量以外的参数)")
-            Object array = Array.newInstance(elementType, actualArgs.length - index + additionalCount.get());
+            // 构造数组长度为：实际传入参数个数 - 已绑定的参数个数
+            Object array = Array.newInstance(elementType, actualArgs.length - index);
 
-            @Description("内循环次数标识")
-            IntWrapper loop = new IntWrapper(index - additionalCount.get());
+            // 内循环次数标识
+            IntWrapper loop = new IntWrapper(index);
 
             while (loop.get() < actualArgs.length) {
-                Array.set(array, loop.get() - index + additionalCount.get(), _Object.class.isAssignableFrom(elementType)
+                Array.set(array, loop.get() - index, _Object.class.isAssignableFrom(elementType)
                         ? actualArgs[loop.get()]
                         : Convert.convert(elementType, actualArgs[loop.get()].getValue(env)));
                 loop.increment();
@@ -123,17 +108,7 @@ public class ParameterBinderPlugin implements BeginPlugin {
             return array;
         }
 
-        @Description("尚未转换的实际值")
-        Object unconverted = actualArgs[index - additionalCount.get()].getValue(env);
-
-        @Description("无需转换标识")
-        boolean skipConvert = unconverted != null && type.isAssignableFrom(unconverted.getClass());
-
-        if (skipConvert) {
-            return type.cast(unconverted);
-        }
-
-        return Convert.convert(type, unconverted);
+        return Convert.convert(type, actualArgs[index].getValue(env));
     }
 
 }

@@ -10,6 +10,7 @@ import com.gitee.usl.grammar.runtime.function.FunctionUtils;
 import com.gitee.usl.grammar.runtime.type._Function;
 import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Env;
+import com.gitee.usl.infra.structure.SharedSession;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -240,17 +241,20 @@ public class ListFunction {
     }
 
     @Function("list_allMatch")
-    public <T> boolean allMatch(Env env, List<T> from, _Function function) {
+    public <T> boolean allMatch(List<T> from, _Function function) {
+        Env env = SharedSession.getSession().getEnv();
         return CollUtil.allMatch(from, element -> FunctionUtils.getBooleanValue(function.execute(env, FunctionUtils.wrapReturn(element)), env));
     }
 
     @Function("list_anyMatch")
-    public <T> boolean anyMatch(Env env, List<T> from, _Function function) {
+    public <T> boolean anyMatch(List<T> from, _Function function) {
+        Env env = SharedSession.getSession().getEnv();
         return CollUtil.anyMatch(from, element -> FunctionUtils.getBooleanValue(function.execute(env, FunctionUtils.wrapReturn(element)), env));
     }
 
     @Function("list_toMap")
-    public <T> Map<?, ?> toMap(Env env, List<T> from, _Function keyMapping, _Function valueMapping) {
+    public <T> Map<?, ?> toMap(List<T> from, _Function keyMapping, _Function valueMapping) {
+        Env env = SharedSession.getSession().getEnv();
         if (from == null || keyMapping == null || valueMapping == null) {
             return new LinkedHashMap<>(NumberConstant.EIGHT);
         }
@@ -264,7 +268,8 @@ public class ListFunction {
     }
 
     @Function("list_foreach")
-    public <T> List<T> foreach(Env env, List<T> from, _Function function) {
+    public <T> List<T> foreach(List<T> from, _Function function) {
+        Env env = SharedSession.getSession().getEnv();
         if (from != null) {
             from.forEach(element -> function.execute(env, FunctionUtils.wrapReturn(element)));
         }
@@ -272,7 +277,8 @@ public class ListFunction {
     }
 
     @Function("list_convert")
-    public <T> List<?> convert(Env env, List<T> from, _Function function) {
+    public <T> List<?> convert(List<T> from, _Function function) {
+        Env env = SharedSession.getSession().getEnv();
         List<?> result;
         if (from != null && function != null) {
             result = from.stream()
@@ -285,7 +291,8 @@ public class ListFunction {
     }
 
     @Function("list_group")
-    public <E> Map<?, List<E>> group(Env env, List<E> from, _Function function) {
+    public <E> Map<?, List<E>> group(List<E> from, _Function function) {
+        Env env = SharedSession.getSession().getEnv();
         if (from == null || function == null) {
             return new LinkedHashMap<>(NumberConstant.EIGHT);
         }
