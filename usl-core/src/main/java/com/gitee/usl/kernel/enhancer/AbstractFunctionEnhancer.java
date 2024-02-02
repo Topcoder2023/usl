@@ -7,29 +7,30 @@ import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.grammar.runtime.type._Function;
 
-import java.lang.reflect.Proxy;
+import static java.lang.reflect.Proxy.getInvocationHandler;
+import static java.lang.reflect.Proxy.isProxyClass;
 
 /**
+ * 使用模板模式构建函数增强逻辑
+ *
  * @author hongda.li
  */
-@Description("使用模板模式构建函数增强逻辑")
 public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
     @Override
     public void enhance(_Function function) {
+
+        this.enhanceFunction(function);
+
+        if (function instanceof AnnotatedFunction) {
+            this.enhanceAnnotatedFunction((AnnotatedFunction) function);
+        }
 
         if (function instanceof FunctionPluggable fp) {
             this.enhancePluggable(fp);
         }
 
-        @Description("代理类标识")
-        boolean isProxy = Proxy.isProxyClass(function.getClass());
-
-        if (function instanceof AnnotatedFunction) {
-            this.enhanceAnnotatedFunction((AnnotatedFunction) function);
-        } else if (isProxy && Proxy.getInvocationHandler(function) instanceof NativeFunction) {
-            this.enhanceNativeFunction((NativeFunction) Proxy.getInvocationHandler(function));
-        } else {
-            this.enhanceFunction(function);
+        if (isProxyClass(function.getClass()) && getInvocationHandler(function) instanceof NativeFunction) {
+            this.enhanceNativeFunction((NativeFunction) getInvocationHandler(function));
         }
     }
 
@@ -48,4 +49,5 @@ public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
     @Description("增强注解函数")
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
     }
+
 }

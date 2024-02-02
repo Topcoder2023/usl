@@ -1,28 +1,21 @@
 package com.gitee.usl.function.db;
 
-import cn.hutool.db.Db;
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.function.infra.ConnectHelper;
-import com.gitee.usl.kernel.engine.USLConfiguration;
-import com.gitee.usl.kernel.domain.ResourceParam;
+import com.gitee.usl.function.domain.Database;
+import com.gitee.usl.kernel.domain.Param;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.sql.SQLException;
 
 /**
  * @author hongda.li
  */
 class ConnectFunctionTest {
 
+    static USLRunner runner = new USLRunner();
+
     @Test
-    void query() throws SQLException {
-        Db db = ConnectHelper.newDatabase("", "usl");
-        String sql = "CREATE TABLE COMPANY " +
-                "(ID INT PRIMARY KEY     NOT NULL," +
-                " NAME           TEXT    NOT NULL, " +
-                " AGE            INT     NOT NULL, " +
-                " ADDRESS        CHAR(50), " +
-                " SALARY         REAL)";
-        db.execute(sql);
+    void connect() {
+        Object data = runner.run(new Param("db_connect('test')")).getData();
+        Assertions.assertInstanceOf(Database.class, data);
     }
 }

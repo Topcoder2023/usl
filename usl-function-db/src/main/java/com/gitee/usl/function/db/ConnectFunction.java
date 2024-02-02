@@ -1,12 +1,13 @@
 package com.gitee.usl.function.db;
 
-import cn.hutool.db.Db;
-import cn.hutool.db.Entity;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
+import com.gitee.usl.function.domain.Database;
+import com.gitee.usl.function.infra.ConnectHelper;
+import com.gitee.usl.infra.structure.SharedSession;
 
-import java.sql.SQLException;
-import java.util.List;
+import static com.gitee.usl.function.infra.DatabaseConstant.*;
 
 /**
  * @author hongda.li
@@ -14,30 +15,12 @@ import java.util.List;
 @FunctionGroup
 public class ConnectFunction {
 
-    @Function("db_query_count")
-    public long queryCount(String sql, Object... params) throws SQLException {
-        return Db.use().count(sql, params);
+    @Function("db_connect")
+    public Database connect(String databaseName) {
+        String runnerName = SharedSession.getSession().getDefinition().getRunner().getName();
+        String path = DEFAULT_PATH + runnerName + FILE_SPLIT;
+        String name = CharSequenceUtil.addSuffixIfNot(databaseName, DATABASE_SUFFIX);
+        return ConnectHelper.newDatabase(path, name);
     }
 
-    @Function("db_query_one")
-    public Entity queryOne(String sql, Object... params) throws SQLException {
-        return Db.use().queryOne(sql, params);
-    }
-
-    @Function("db_query_list")
-    public List<Entity> queryList(String sql, Object... params) throws SQLException {
-        return Db.use().query(sql, params);
-    }
-
-    @Function("db_insert_one")
-    public Entity inertOne(Entity entity) throws SQLException {
-        Db.use().insert(entity);
-        return entity;
-    }
-
-    @Function("db_insert_list")
-    public List<Entity> inertList(List<Entity> entityList) throws SQLException {
-        Db.use().insert(entityList);
-        return entityList;
-    }
 }

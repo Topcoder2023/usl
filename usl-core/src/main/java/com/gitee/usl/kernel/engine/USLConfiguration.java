@@ -200,6 +200,7 @@ public final class USLConfiguration extends StringMap<Object> {
         log.debug("脚本缓存失效时间 - {}", this.expired);
 
         this.enableDebug = ObjectUtil.defaultIfNull(this.enableDebug, Boolean.FALSE);
+        this.functionHolder.debug(this.enableDebug);
         log.debug("是否开启调试模式 - {}", this.enableDebug);
 
         this.enableMethodInvoke = ObjectUtil.defaultIfNull(this.enableMethodInvoke, Boolean.TRUE);

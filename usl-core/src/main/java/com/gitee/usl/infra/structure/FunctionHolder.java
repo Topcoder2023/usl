@@ -27,9 +27,21 @@ public class FunctionHolder {
     @Description("函数名称映射")
     private final Map<String, _Function> container;
 
+    @Description("是否开启调试")
+    private boolean debug = false;
+
     public FunctionHolder() {
         this.aliasMap = new HashMap<>(NumberConstant.NORMAL_SIZE);
         this.container = new HashMap<>(NumberConstant.NORMAL_MAX_SIZE);
+    }
+
+    /**
+     * 设置是否开启调试模式
+     *
+     * @param debug 是否开启调试模式
+     */
+    public void debug(boolean debug) {
+        this.debug = debug;
     }
 
     /**
@@ -51,14 +63,18 @@ public class FunctionHolder {
 
             if (overload) {
                 ((Overloaded<?>) found).addOverloadImpl((Overloaded<?>) function);
-                log.debug("函数重载 - [{}]", name);
+                if (debug) {
+                    log.debug("函数重载 - [{}]", name);
+                }
             } else {
                 log.warn("重复注册 - [{}]", name);
             }
             return;
         }
 
-        log.debug("注册函数 - [{}]", name);
+        if (debug) {
+            log.debug("注册函数 - [{}]", name);
+        }
         this.container.put(name, function);
 
         if (function instanceof Definable definable) {
@@ -68,7 +84,9 @@ public class FunctionHolder {
                     .filter(item -> !Objects.equals(item, name))
                     .forEach(aliasName -> {
                         this.aliasMap.put(aliasName, name);
-                        log.debug("函数别名 - [{} ==> {}]", name, aliasName);
+                        if (debug) {
+                            log.debug("函数别名 - [{} ==> {}]", name, aliasName);
+                        }
                     });
         }
     }
