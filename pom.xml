@@ -19,7 +19,7 @@
         <module>usl-all</module>
         <module>usl-interactive-web</module>
         <module>usl-interactive-cli</module>
-        <module>usl-function-ai</module>
+        <module>usl-function-model</module>
     </modules>
 
     <groupId>com.gitee</groupId>
