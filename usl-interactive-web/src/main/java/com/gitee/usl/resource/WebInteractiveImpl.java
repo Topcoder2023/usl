@@ -8,7 +8,6 @@ import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Order;
 import com.gitee.usl.api.WebInteractive;
 import com.gitee.usl.infra.constant.StringConstant;
-import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.resource.api.FilterRoute;
 import com.gitee.usl.resource.api.WebFilter;
 import com.gitee.usl.resource.api.WebHandler;
@@ -26,11 +25,10 @@ import org.smartboot.http.server.HttpResponse;
 import org.smartboot.http.server.HttpServerHandler;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -53,10 +51,12 @@ public class WebInteractiveImpl extends HttpServerHandler implements WebInteract
     public WebInteractiveImpl() {
         this.bootstrap = new HttpBootstrap();
         this.host = NetUtil.getLocalhostStr();
-        this.filterList = ServiceSearcher.searchAll(WebFilter.class);
-        this.handlerMap = ServiceSearcher.searchAll(WebHandler.class)
-                .stream()
-                .collect(Collectors.toMap(WebHandler::getRoute, Function.identity()));
+        this.filterList = Collections.emptyList();
+                //ServiceSearcher.searchAll(WebFilter.class);
+        this.handlerMap = Collections.emptyMap();
+//                ServiceSearcher.searchAll(WebHandler.class)
+//                .stream()
+//                .collect(Collectors.toMap(WebHandler::getRoute, Function.identity()));
     }
 
     @Override

@@ -5,15 +5,12 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.*;
-import com.gitee.usl.api.impl.DefaultExceptionHandler;
-import com.gitee.usl.api.impl.DefaultScriptCompiler;
-import com.gitee.usl.api.impl.DefaultVariableDefinable;
+import com.gitee.usl.api.impl.*;
 import com.gitee.usl.grammar.ScriptEngine;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.infra.structure.StringSet;
 import com.gitee.usl.infra.structure.UniqueList;
-import com.gitee.usl.api.impl.DefaultFunctionMissing;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -103,6 +100,11 @@ public final class USLConfiguration extends StringMap<Object> {
     private ScriptCompiler compiler;
 
     /**
+     * 服务发现
+     */
+    private ServiceFinder serviceFinder;
+
+    /**
      * 变量初始化器
      */
     private VariableDefinable definable;
@@ -116,6 +118,16 @@ public final class USLConfiguration extends StringMap<Object> {
      * 异常处理器
      */
     private ExceptionHandler exceptionHandler;
+
+    /**
+     * CLI交互
+     */
+    private CliInteractive cliInteractive;
+
+    /**
+     * WEB交互
+     */
+    private WebInteractive webInteractive;
 
     /**
      * 函数包扫描路径
@@ -206,6 +218,9 @@ public final class USLConfiguration extends StringMap<Object> {
         this.enableMethodInvoke = ObjectUtil.defaultIfNull(this.enableMethodInvoke, Boolean.TRUE);
         log.debug("是否开启方法访问 - {}", this.enableMethodInvoke);
 
+        this.serviceFinder = ObjectUtil.defaultIfNull(this.serviceFinder, new DefaultServiceFinder());
+        log.debug("服务发现者实现类 - {}", this.serviceFinder.getClass().getName());
+
         this.functionMissing = ObjectUtil.defaultIfNull(this.functionMissing, new DefaultFunctionMissing(this.enableMethodInvoke));
         log.debug("函数兜底器实现类 - {}", this.functionMissing.getClass().getName());
 
@@ -228,7 +243,7 @@ public final class USLConfiguration extends StringMap<Object> {
 
         // 根据函数加载器依次加载函数库
         loaders.stream()
-                .flatMap(provider -> provider.load(this).stream())
+                .flatMap(loader -> loader.load(this).stream())
                 .forEach(functionHolder::register);
 
         // 函数库全部加载完成后，由函数增强器列表依次增强函数

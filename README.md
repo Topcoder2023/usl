@@ -22,7 +22,7 @@
 3. **更完整的调用堆栈**，对于每一次函数调用，保存调用时的子表达式内容、参数信息、异常信息、调用结果
 4. **更强大的参数校验**，对函数的参数类型、参数个数、参数大小、返回值类型等常见场景进行校验
 5. **更实用的性能优化**，例如使用`Caffeine`替代原有的`LRU-Map`缓存，提供脚本引擎执行全生命周期监听器等
-6. **更方便的交互选项**，可以使用生产者-消费者(`Disruptor`)队列模式，也可以使用`CLI`命令行模式，也可以使用`WEB`模式交互
+6. **更方便的交互选项**，可以使用内嵌模式，也可以使用`CLI`命令行模式，也可以使用`WEB`模式交互
 
 ## 二、整体架构
 
@@ -380,7 +380,7 @@ class SpringServiceFinder implements ServiceFinder, ApplicationContextAware {
     }
 
     @Override
-    public <T> List<T> findAll(Class<T> serviceType) {
+    public <T> T search(Class<T> serviceType) {
         return context.getBean(serviceType);
     }
 }

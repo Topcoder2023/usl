@@ -43,6 +43,11 @@
 
         <dependency>
             <groupId>com.gitee</groupId>
+            <artifactId>usl-interactive-cli</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gitee</groupId>
             <artifactId>usl-function-db</artifactId>
         </dependency>
 
@@ -59,6 +64,11 @@
         <dependency>
             <groupId>com.gitee</groupId>
             <artifactId>usl-function-system</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gitee</groupId>
+            <artifactId>usl-function-model</artifactId>
         </dependency>
 
         <dependency>

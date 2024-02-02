@@ -5,7 +5,6 @@ import cn.hutool.core.date.DateUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.infra.constant.StringConstant;
-import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.resource.ScriptSearcher;
 import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.api.WebHandler;
@@ -51,7 +50,8 @@ public class WelcomeHandler implements WebHandler {
         infoCache.sourceCodeUrl = SOURCE_URL_GITEE;
         infoCache.functionSize = runner.functions().size();
       //  infoCache.serviceSize = ServiceSearcher.searchAll(Initializer.class).size();
-        infoCache.enhancerSize = ServiceSearcher.searchAll(FunctionEnhancer.class).size();
+        infoCache.enhancerSize = 0;
+                // ServiceSearcher.searchAll(FunctionEnhancer.class).size();
         return infoCache;
     }
 

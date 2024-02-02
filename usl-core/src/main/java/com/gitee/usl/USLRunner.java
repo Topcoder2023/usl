@@ -9,7 +9,6 @@ import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
-import com.gitee.usl.infra.utils.ServiceSearcher;
 import com.gitee.usl.kernel.engine.USLConfiguration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
@@ -213,9 +212,10 @@ public class USLRunner {
      * @param mode 交互模式
      */
     private void interactive(InteractiveMode mode) {
+        ServiceFinder finder = this.configuration.getServiceFinder();
         final Interactive interactive = switch (mode) {
-            case CLI -> ServiceSearcher.searchFirst(CliInteractive.class);
-            case WEB -> ServiceSearcher.searchFirst(WebInteractive.class);
+            case CLI -> finder.search(CliInteractive.class);
+            case WEB -> finder.search(WebInteractive.class);
             default -> runner -> {
             };
         };

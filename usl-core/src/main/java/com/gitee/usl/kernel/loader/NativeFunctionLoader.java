@@ -4,6 +4,7 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
+import com.gitee.usl.api.ServiceFinder;
 import com.gitee.usl.api.annotation.SystemComponent;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
@@ -23,7 +24,8 @@ public class NativeFunctionLoader extends AbstractFunctionLoader {
 
     @Override
     protected List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner) {
-        _Function ifPossible = (_Function) ReflectUtil.newInstanceIfPossible(clz);
+        ServiceFinder finder = runner.getConfiguration().getServiceFinder();
+        _Function ifPossible = (_Function) finder.search(clz);
 
         if (ifPossible == null) {
             log.warn("无法实例化指定类 - {}", clz.getName());

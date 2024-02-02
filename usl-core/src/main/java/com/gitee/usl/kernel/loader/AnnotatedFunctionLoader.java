@@ -5,6 +5,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
+import com.gitee.usl.api.ServiceFinder;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
@@ -29,7 +30,8 @@ public class AnnotatedFunctionLoader extends AbstractFunctionLoader {
 
     @Override
     protected List<FunctionDefinition> class2Definition(Class<?> clz, USLRunner runner) {
-        Object ifPossible = ReflectUtil.newInstanceIfPossible(clz);
+        ServiceFinder finder = runner.getConfiguration().getServiceFinder();
+        Object ifPossible = finder.search(clz);
 
         if (ifPossible == null) {
             log.warn("无法实例化指定类 - {}", clz.getName());
