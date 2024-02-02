@@ -41,6 +41,15 @@
             <email>hongda_li_dlmu@163.com</email>
         </developer>
         <developer>
+            <id>ZJS</id>
+            <name>jingshu.zeng</name>
+            <roles>
+                <role>Developer</role>
+                <role>Maintainer</role>
+            </roles>
+            <email>597535178@qq.com</email>
+        </developer>
+        <developer>
             <id>SJH</id>
             <name>jiahao.song</name>
             <roles>
