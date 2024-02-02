@@ -40,6 +40,15 @@
             </roles>
             <email>hongda_li_dlmu@163.com</email>
         </developer>
+        <developer>
+            <id>SJH</id>
+            <name>jiahao.song</name>
+            <roles>
+                <role>Developer</role>
+                <role>Maintainer</role>
+            </roles>
+            <email>874416635@qq.com</email>
+        </developer>
     </developers>
 
     <properties>
