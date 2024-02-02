@@ -33,9 +33,14 @@ public class StringMap<V> extends LinkedHashMap<String, V> implements BasicTypeG
         this.putAll(otherMap);
     }
 
-    public V putAny(Object key, V value) {
+    public StringMap<V> putAny(Object key, V value) {
         this.put(String.valueOf(key), value);
-        return value;
+        return this;
+    }
+
+    public StringMap<V> putOne(String key, V value) {
+        this.put(key, value);
+        return this;
     }
 
     @Override
