@@ -11,19 +11,19 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author hongda.li
  */
-public final class UslLoggerFactory implements ILoggerFactory {
+public final class USLLoggerFactory implements ILoggerFactory {
     /**
      * Logger 缓存
      * 避免反复多次创建重复的 Logger
      */
-    private final Map<String, UslLogger> loggerCache;
+    private final Map<String, USLLogger> loggerCache;
 
-    public UslLoggerFactory() {
+    public USLLoggerFactory() {
         loggerCache = new ConcurrentHashMap<>(2 << 4);
     }
 
     @Override
     public Logger getLogger(String name) {
-        return this.loggerCache.computeIfAbsent(name, UslLogger::new);
+        return this.loggerCache.computeIfAbsent(name, USLLogger::new);
     }
 }

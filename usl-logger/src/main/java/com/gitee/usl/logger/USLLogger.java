@@ -7,6 +7,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassUtil;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
+import org.slf4j.helpers.LegacyAbstractLogger;
 
 import java.io.Serial;
 import java.util.Date;
@@ -20,11 +21,11 @@ import static java.lang.System.out;
  *
  * @author hongda.li
  */
-public class UslLogger extends AbstractUslEnabledLogger {
+public class USLLogger extends LegacyAbstractLogger {
     @Serial
     private static final long serialVersionUID = -6857629823140297158L;
 
-    public UslLogger(String name) {
+    public USLLogger(String name) {
         this.name = name;
     }
 
@@ -81,6 +82,27 @@ public class UslLogger extends AbstractUslEnabledLogger {
 
     @Override
     public boolean isTraceEnabled() {
-        return false;
+        return true;
     }
+
+    @Override
+    public boolean isDebugEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isInfoEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isWarnEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isErrorEnabled() {
+        return true;
+    }
+
 }

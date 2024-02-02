@@ -15,7 +15,7 @@ import org.slf4j.spi.SLF4JServiceProvider;
  *
  * @author hongda.li
  */
-public class UslServiceProvider implements SLF4JServiceProvider {
+public class USLServiceProvider implements SLF4JServiceProvider {
     /**
      * USL 日志服务提供者所需的 SLF4J 的最低版本
      * 默认最低版本为 2.0.*
@@ -68,7 +68,7 @@ public class UslServiceProvider implements SLF4JServiceProvider {
 
         // 默认使用 USL 自定义的日志工厂
         // 该日志工厂会创建 USL 自定义日志记录器
-        this.loggerFactory = new UslLoggerFactory();
+        this.loggerFactory = new USLLoggerFactory();
 
         // 默认使用 SLF4J 提供的基础 Marker 工厂
         this.markerFactory = new BasicMarkerFactory();
