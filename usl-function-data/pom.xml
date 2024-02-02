@@ -9,7 +9,7 @@
         <version>v1.0.0.SNAPSHOT</version>
     </parent>
 
-    <artifactId>usl-function-db</artifactId>
+    <artifactId>usl-function-data</artifactId>
     <version>${parent.version}</version>
     <packaging>jar</packaging>
 

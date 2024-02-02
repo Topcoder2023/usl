@@ -12,7 +12,7 @@
         <module>usl-core</module>
         <module>usl-logger</module>
         <module>usl-plugin</module>
-        <module>usl-function-db</module>
+        <module>usl-function-data</module>
         <module>usl-function-http</module>
         <module>usl-function-base</module>
         <module>usl-function-math</module>
@@ -84,7 +84,7 @@
 
             <dependency>
                 <groupId>com.gitee</groupId>
-                <artifactId>usl-function-db</artifactId>
+                <artifactId>usl-function-data</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
