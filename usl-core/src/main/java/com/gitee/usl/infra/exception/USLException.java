@@ -16,6 +16,9 @@ import lombok.Setter;
 @Getter
 public class USLException extends RuntimeException {
 
+    @Description("异常参数")
+    private Object[] arguments;
+
     @Description("状态码")
     private ResultCode resultCode;
 
@@ -33,6 +36,7 @@ public class USLException extends RuntimeException {
 
     public USLException(String message, Object... arguments) {
         super(CharSequenceUtil.format(message, arguments));
+        this.arguments = arguments;
     }
 
     public USLException(Throwable throwable) {
@@ -41,5 +45,6 @@ public class USLException extends RuntimeException {
 
     public USLException(Throwable throwable, String message, Object... arguments) {
         super(CharSequenceUtil.format(message, arguments), throwable);
+        this.arguments = arguments;
     }
 }

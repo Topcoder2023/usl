@@ -1,7 +1,0 @@
-com.gitee.usl.plugin.enhancer.AsynchronousEnhancer
-com.gitee.usl.plugin.enhancer.CacheableEnhancer
-com.gitee.usl.plugin.enhancer.CallStackEnhancer
-com.gitee.usl.plugin.enhancer.RateLimitEnhancer
-com.gitee.usl.plugin.enhancer.RetryableEnhancer
-com.gitee.usl.plugin.enhancer.SensitiveEnhancer
-com.gitee.usl.plugin.enhancer.TimeWatchEnhancer
