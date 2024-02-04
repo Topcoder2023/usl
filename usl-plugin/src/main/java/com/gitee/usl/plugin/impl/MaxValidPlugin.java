@@ -2,6 +2,7 @@ package com.gitee.usl.plugin.impl;
 
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.plugin.annotation.Max;
+import com.gitee.usl.plugin.domain.Location;
 import com.gitee.usl.plugin.exception.USLValidException;
 
 /**
@@ -10,11 +11,11 @@ import com.gitee.usl.plugin.exception.USLValidException;
 public class MaxValidPlugin extends AbstractValidPlugin<Max> {
     @Override
     public void onBegin(FunctionSession session) {
-        filter(session);
+        this.filterAnnotation(session);
     }
 
     @Override
-    protected void valid(FunctionSession session, Max annotation, int index, Object actual) {
+    protected void valid(Location location, Max annotation, Object actual) {
         // Max注解预期的最大值
         long accept = annotation.value();
 
@@ -25,8 +26,8 @@ public class MaxValidPlugin extends AbstractValidPlugin<Max> {
             String message = annotation.message();
 
             // 替换预置变量
-            String replace = message.replace("{name}", session.getDefinition().getName())
-                    .replace("{index}", String.valueOf(index + 1))
+            String replace = message.replace("{name}", location.getName())
+                    .replace("{index}", String.valueOf(location.getIndex()))
                     .replace("{value}", String.valueOf(actual))
                     .replace("{max}", String.valueOf(accept));
 
