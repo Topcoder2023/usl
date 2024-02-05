@@ -26,7 +26,7 @@ public class NotNullValidPlugin extends AbstractValidPlugin<NotNull> {
                     .replace("{index}", String.valueOf(location.getIndex()));
 
             // 抛出校验异常
-            throw new USLValidException(replace, location.getName(), location.getIndex());
+            throw new USLValidException(replace, location);
         }
     }
 }
