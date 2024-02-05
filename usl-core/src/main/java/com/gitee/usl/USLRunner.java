@@ -1,5 +1,6 @@
 package com.gitee.usl;
 
+import cn.hutool.core.exceptions.ExceptionUtil;
 import com.gitee.usl.api.*;
 import com.gitee.usl.grammar.script.ES;
 import com.gitee.usl.infra.constant.NumberConstant;
@@ -152,7 +153,13 @@ public class USLRunner {
             return Result.success(param.getCompiled().execute(param.getContext()));
         } catch (USLExecuteException uee) {
             log.warn("USL执行出现错误", uee);
-            return Result.failure(uee.getResultCode(), uee.getMessage());
+            String message;
+            if (uee.getCause() != null) {
+                message = uee.getCause().getMessage();
+            } else {
+                message = uee.getMessage();
+            }
+            return Result.failure(uee.getResultCode(), message, uee);
         }
     }
 

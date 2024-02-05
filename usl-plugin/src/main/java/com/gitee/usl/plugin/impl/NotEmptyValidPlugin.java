@@ -26,7 +26,7 @@ public class NotEmptyValidPlugin extends AbstractValidPlugin<NotEmpty> {
                     .replace("{index}", String.valueOf(location.getIndex()));
 
             // 抛出校验异常
-            throw new USLValidException(replace);
+            throw new USLValidException(replace, location.getName(), location.getIndex());
         }
     }
 }
