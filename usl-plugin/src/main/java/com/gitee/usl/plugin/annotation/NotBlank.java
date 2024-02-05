@@ -12,13 +12,13 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface NotNull {
+public @interface NotBlank {
 
     /**
      * 错误消息
      *
      * @return 错误消息
      */
-    String message() default "函数 [{name}] 的第 [{index}] 个参数不能为空";
+    String message() default "函数 [{name}] 的第 [{index}] 个参数不能为空白";
 
 }

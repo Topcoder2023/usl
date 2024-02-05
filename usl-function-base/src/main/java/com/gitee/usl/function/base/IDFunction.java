@@ -8,7 +8,7 @@ import com.gitee.usl.api.annotation.FunctionGroup;
 
 
 /**
- * @author jingshu.zeng
+ * @author jingshu.zeng, jiahao.song
  */
 @SuppressWarnings("unused")
 @FunctionGroup
@@ -35,8 +35,8 @@ public class IDFunction {
     }
 
     @Function("base64_decode")
-    public String base64_decode(String encode) {
-        return Base64.decodeStr(encode);
+    public String base64_decode(String str) {
+        return Base64.decodeStr(str);
     }
 
     @Function("rot_encode")
@@ -45,8 +45,8 @@ public class IDFunction {
     }
 
     @Function("rot_decode")
-    public String rot_decode(String encode13) {
-        return Rot.decode13(encode13);
+    public String rot_decode(String str) {
+        return Rot.decode13(str);
     }
 
 }
