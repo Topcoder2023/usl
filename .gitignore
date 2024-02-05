@@ -36,3 +36,14 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/.idea/vcs.xml
+/.idea/misc.xml
+/.idea/uiDesigner.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/jsLibraryMappings.xml
+/.idea/git_toolbox_prj.xml
+/.idea/encodings.xml
+/.idea/dataSources.xml
+/usl-function-data/usl.db
+/.idea/workspace.xml
+/.idea/dataSources.local.xml
