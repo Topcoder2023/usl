@@ -47,3 +47,4 @@ build/
 /usl-function-data/usl.db
 /.idea/workspace.xml
 /.idea/dataSources.local.xml
+/.idea/.gitignore
