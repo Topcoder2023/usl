@@ -40,8 +40,5 @@ public @interface Length {
      *
      * @return 错误消息
      */
-    String message() default "参数 [{name}] 的第 [{index}] 个长度校验失败，实际值为 [{value}]"
-            + "{最小长度为 [{minLength}]}"
-            + "{期望长度为 [{exactLength}]}"
-            + "{最大长度为 [{maxLength}]}";
+    String message() default "函数 [{name}] 的第 [{index}] 个参数长度为 [{value}]，不符合预期长度 [{expect}]";
 }

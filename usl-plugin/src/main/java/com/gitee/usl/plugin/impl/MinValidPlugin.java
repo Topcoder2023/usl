@@ -32,7 +32,7 @@ public class MinValidPlugin extends AbstractValidPlugin<Min> {
                     .replace("{min}", String.valueOf(accept));
 
             // 抛出校验异常
-            throw new USLValidException(replace);
+            throw new USLValidException(replace, location.getName(), location.getIndex(), actual, accept);
         }
     }
 }

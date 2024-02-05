@@ -27,25 +27,41 @@ public class LengthValidPlugin extends AbstractValidPlugin<Length> {
         int maxLength = annotation.maxLength();
 
         // 参数实际值校验
-        if (actual instanceof CharSequence) {
-            int actualLength = ((CharSequence) actual).length();
+        if (actual instanceof CharSequence cs) {
+            int actualLength = cs.length();
 
             // 校验长度范围
-            if ((minLength != -1 && actualLength < minLength) || (maxLength != -1 && actualLength > maxLength) || (exactLength != -1 && actualLength != exactLength)) {
+            boolean less = minLength != -1 && actualLength < minLength;
+            boolean more = maxLength != -1 && actualLength > maxLength;
+            boolean none = exactLength != -1 && actualLength != exactLength;
+            if (less || more || none) {
 
                 // 注解指定的错误信息
                 String message = annotation.message();
 
+                int expect;
+                if (less) {
+                    expect = minLength;
+                } else if (more) {
+                    expect = maxLength;
+                } else {
+                    expect = exactLength;
+                }
+
                 // 替换预置变量
                 String replace = message.replace("{name}", location.getName())
                         .replace("{index}", String.valueOf(location.getIndex()))
-                        .replace("{value}", String.valueOf(actual))
-                        .replace("{exactLength}", String.valueOf(exactLength))
-                        .replace("{minLength}", String.valueOf(minLength))
-                        .replace("{maxLength}", String.valueOf(maxLength));
+                        .replace("{value}", String.valueOf(actualLength))
+                        .replace("{expect}", String.valueOf(expect));
 
                 // 抛出校验异常
-                throw new USLValidException(replace);
+                throw new USLValidException(replace,
+                        location.getName(),
+                        location.getIndex(),
+                        actualLength,
+                        less,
+                        more,
+                        none);
             }
         }
     }

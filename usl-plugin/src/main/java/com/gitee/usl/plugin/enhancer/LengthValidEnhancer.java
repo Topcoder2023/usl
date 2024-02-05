@@ -1,5 +1,6 @@
 package com.gitee.usl.plugin.enhancer;
 
+import cn.hutool.core.lang.Singleton;
 import com.gitee.usl.api.plugin.Plugin;
 import com.gitee.usl.plugin.annotation.Length;
 import com.gitee.usl.plugin.impl.LengthValidPlugin;
@@ -14,6 +15,6 @@ public class LengthValidEnhancer extends AbstractValidEnhancer<Length> {
 
     @Override
     protected Plugin provide() {
-        return new LengthValidPlugin();
+        return Singleton.get(LengthValidPlugin.class);
     }
 }
