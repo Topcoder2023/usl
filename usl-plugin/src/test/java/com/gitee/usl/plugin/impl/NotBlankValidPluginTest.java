@@ -25,7 +25,7 @@ class NotBlankValidPluginTest {
                 .setEnableDebug(Boolean.TRUE)
                 .enhancer(new NotBlankValidEnhancer()));
 
-        Result result = runner.run(new Param("test1('')"));
+        Result result = runner.run(new Param("test1('  ')"));
         assertEquals(ResultCode.FAILURE.code(), result.getCode());
     }
 

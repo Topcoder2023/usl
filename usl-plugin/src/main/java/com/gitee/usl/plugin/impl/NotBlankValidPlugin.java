@@ -1,5 +1,6 @@
 package com.gitee.usl.plugin.impl;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.plugin.annotation.NotBlank;
 import com.gitee.usl.plugin.domain.Location;
@@ -18,7 +19,7 @@ public class NotBlankValidPlugin extends AbstractValidPlugin<NotBlank> {
     protected void valid(Location location, NotBlank annotation, Object actual) {
 
         // 参数实际值校验
-        if (((String) actual).isBlank()) {
+        if (actual instanceof CharSequence cs && CharSequenceUtil.isBlank(cs)) {
 
             // 注解指定的错误信息
             String message = annotation.message();
@@ -28,7 +29,7 @@ public class NotBlankValidPlugin extends AbstractValidPlugin<NotBlank> {
                     .replace("{index}", String.valueOf(location.getIndex()));
 
             // 抛出校验异常
-            throw new USLValidException(replace);
+            throw new USLValidException(replace, location);
         }
     }
 }
