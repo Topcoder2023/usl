@@ -44,9 +44,13 @@ public class Location {
      * @return 参数位置信息
      */
     public static Location from(Token<?> from) {
-        return new Location()
-                .setLineNo(from.getLineNo())
-                .setLineStartIndex(from.getStartIndex())
-                .setLineEndIndex(from.getEndIndex());
+        if (from == null) {
+            return new Location();
+        } else {
+            return new Location()
+                    .setLineNo(from.getLineNo())
+                    .setLineStartIndex(from.getStartIndex())
+                    .setLineEndIndex(from.getEndIndex());
+        }
     }
 }

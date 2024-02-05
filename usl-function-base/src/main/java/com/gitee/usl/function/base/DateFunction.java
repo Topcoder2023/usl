@@ -16,8 +16,14 @@ public class DateFunction {
         return DateUtil.date();
     }
 
-    @Function("date")
+    @Function("date_of")
     public DateTime date(long timestamp) {
         return DateUtil.date(timestamp);
     }
+
+    @Function("date_timestamp")
+    public long timestamp() {
+        return System.currentTimeMillis();
+    }
+
 }

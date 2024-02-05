@@ -69,13 +69,15 @@ public abstract class AbstractValidPlugin<T extends Annotation> implements Begin
                         return;
                     }
 
+                    Integer current = index.get();
+
                     // 参数位置信息
-                    Location location = Location.from(objects[index.get()].getFrom())
-                            .setIndex(index.get() + 1)
+                    Location location = Location.from(current >= objects.length ? null : objects[current].getFrom())
+                            .setIndex(current + 1)
                             .setName(session.getDefinition().getName());
 
                     // 若注解存在则执行校验
-                    this.valid(location, annotation, values[index.get()]);
+                    this.valid(location, annotation, current >= values.length ? null : values[current]);
 
                     // 参数索引自增
                     index.increment();
