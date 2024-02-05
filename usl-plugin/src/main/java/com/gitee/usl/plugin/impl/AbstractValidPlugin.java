@@ -4,6 +4,7 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.TypeUtil;
 import com.gitee.usl.api.plugin.BeginPlugin;
+import com.gitee.usl.grammar.lexer.token.Token;
 import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.infra.structure.wrapper.IntWrapper;
 import com.gitee.usl.kernel.engine.FunctionSession;
@@ -72,12 +73,12 @@ public abstract class AbstractValidPlugin<T extends Annotation> implements Begin
                     Integer current = index.get();
 
                     // 参数位置信息
-                    Location location = Location.from(current >= objects.length ? null : objects[current].getFrom())
-                            .setIndex(current + 1)
-                            .setName(session.getDefinition().getName());
+                    Token<?> token = current >= objects.length ? null : objects[current].getFrom();
+                    Location location = Location.from(token).setIndex(current + 1).setName(session.getDefinition().getName());
 
                     // 若注解存在则执行校验
-                    this.valid(location, annotation, current >= values.length ? null : values[current]);
+                    Object actual = current >= values.length ? null : values[current];
+                    this.valid(location, annotation, actual);
 
                     // 参数索引自增
                     index.increment();

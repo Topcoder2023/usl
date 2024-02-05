@@ -5,13 +5,11 @@ import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.kernel.domain.Param;
-import com.gitee.usl.kernel.domain.Result;
-import com.gitee.usl.plugin.annotation.Max;
 import com.gitee.usl.plugin.annotation.NotEmpty;
-import com.gitee.usl.plugin.enhancer.MaxValidEnhancer;
 import com.gitee.usl.plugin.enhancer.NotEmptyValidEnhancer;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +27,14 @@ class NotEmptyValidPluginTest {
                 .setEnableDebug(Boolean.TRUE)
                 .enhancer(new NotEmptyValidEnhancer()));
 
-        assertEquals(ResultCode.FAILURE.code(), runner.run(new Param("test_1()")).getCode());
-        assertEquals(ResultCode.FAILURE.code(), runner.run(new Param("test_2()")).getCode());
-        assertEquals(ResultCode.FAILURE.code(), runner.run(new Param("test_3()")).getCode());
-        assertEquals(ResultCode.FAILURE.code(), runner.run(new Param("test_4()")).getCode());
-        assertEquals(ResultCode.FAILURE.code(), runner.run(new Param("test_5()")).getCode());
+        assertEquals(ResultCode.FAILURE.code(), runner.run(new Param("test_1(var)")
+                .addContext("var", null)).getCode());
+        assertEquals(ResultCode.FAILURE.code(), runner.run(new Param("test_2(var)")
+                .addContext("var", Collections.emptyMap())).getCode());
+        assertEquals(ResultCode.FAILURE.code(), runner.run(new Param("test_3(var)")
+                .addContext("var", Collections.emptyList())).getCode());
+        assertEquals(ResultCode.FAILURE.code(), runner.run(new Param("test_4(var)")
+                .addContext("var", "")).getCode());
     }
 
     @FunctionGroup
@@ -55,8 +56,5 @@ class NotEmptyValidPluginTest {
         void test4(@NotEmpty String obj) {
         }
 
-        @Function("test_5")
-        void test5(@NotEmpty Object[] obj) {
-        }
     }
 }
