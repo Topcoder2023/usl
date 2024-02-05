@@ -1,5 +1,6 @@
 package com.gitee.usl.plugin.enhancer;
 
+import cn.hutool.core.lang.Singleton;
 import com.gitee.usl.api.plugin.Plugin;
 import com.gitee.usl.plugin.annotation.Max;
 import com.gitee.usl.plugin.impl.MaxValidPlugin;
@@ -14,6 +15,6 @@ public class MaxValidEnhancer extends AbstractValidEnhancer<Max> {
 
     @Override
     protected Plugin provide() {
-        return new MaxValidPlugin();
+        return Singleton.get(MaxValidPlugin.class);
     }
 }
