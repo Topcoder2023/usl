@@ -11,6 +11,7 @@ import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.infra.structure.StringSet;
 import com.gitee.usl.infra.structure.UniqueList;
+import com.gitee.usl.infra.structure.wrapper.BoolWrapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -140,6 +141,11 @@ public final class USLConfiguration extends StringMap<Object> {
     private final List<FunctionLoader> loaders = new UniqueList<>();
 
     /**
+     * 函数过滤器
+     */
+    private final List<FunctionFilter> filters = new UniqueList<>();
+
+    /**
      * 函数增强器
      */
     private final List<FunctionEnhancer> enhancers = new UniqueList<>();
@@ -178,7 +184,7 @@ public final class USLConfiguration extends StringMap<Object> {
      * 添加函数加载器
      *
      * @param loader 函数加载器实例
-     * @return 函数加载器
+     * @return 链式调用
      */
     public USLConfiguration loader(FunctionLoader loader) {
         this.loaders.add(loader);
@@ -189,10 +195,21 @@ public final class USLConfiguration extends StringMap<Object> {
      * 添加函数增强器
      *
      * @param enhancer 函数增强器实例
-     * @return 函数增强器
+     * @return 链式调用
      */
     public USLConfiguration enhancer(FunctionEnhancer enhancer) {
         this.enhancers.add(enhancer);
+        return this;
+    }
+
+    /**
+     * 添加函数过滤器
+     *
+     * @param filter 函数过滤器
+     * @return 链式调用
+     */
+    public USLConfiguration filter(FunctionFilter filter) {
+        this.filters.add(filter);
         return this;
     }
 
@@ -243,7 +260,16 @@ public final class USLConfiguration extends StringMap<Object> {
         // 根据函数加载器依次加载函数库
         loaders.stream()
                 .flatMap(loader -> loader.load(this).stream())
-                .forEach(functionHolder::register);
+                .forEach(function -> {
+                    // 根据函数过滤器决定是否注册函数
+                    BoolWrapper allowed = new BoolWrapper(true);
+                    filters.forEach(filter -> allowed.and(filter.allowedRegister(function)));
+                    if (allowed.get()) {
+                        functionHolder.register(function);
+                    } else {
+                        log.debug("取消注册 - [{}]", function.name());
+                    }
+                });
 
         // 函数库全部加载完成后，由函数增强器列表依次增强函数
         functionHolder.onVisit(function -> enhancers.forEach(enhancer -> enhancer.enhance(function)));
