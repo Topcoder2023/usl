@@ -35,11 +35,6 @@ public class FunctionDefinition {
     @Description("函数元数据")
     private final AttributeMeta attribute = new AttributeMeta();
 
-    public FunctionDefinition(String name, USLRunner runner) {
-        this.name = name;
-        this.runner = runner;
-    }
-
     public FunctionDefinition(String name, USLRunner runner, MethodMeta<?> methodMeta) {
         this.name = name;
         this.runner = runner;

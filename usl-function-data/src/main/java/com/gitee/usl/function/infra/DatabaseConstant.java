@@ -16,4 +16,14 @@ public class DatabaseConstant {
     public static final String DATABASE_SUFFIX = ".db";
 
     public static final String SQLITE_URL_PREFIX = "jdbc:sqlite:";
+
+    public static final String DEFAULT_DATABASE_NAME = "SYSTEM";
+
+    public static final String TABLE_LOCK_SQL = "sql/LOCK_TABLE.sql";
+
+    public static final String TABLE_LOCK_NAME = "LOCK";
+
+    public static final String TABLE_QUEUE_NAME = "QUEUE";
+
+    public static final Long LOCK_TIMEOUT = 1000L * 60 * 5;
 }

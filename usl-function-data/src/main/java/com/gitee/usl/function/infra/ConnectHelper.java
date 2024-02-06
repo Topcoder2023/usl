@@ -1,5 +1,6 @@
 package com.gitee.usl.function.infra;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.db.Db;
 import cn.hutool.db.dialect.DriverNamePool;
 import com.gitee.usl.function.domain.Database;
@@ -23,6 +24,7 @@ public class ConnectHelper {
         return DB_CACHE.computeIfAbsent(path + name, key -> {
             synchronized (ConnectHelper.class) {
                 log.debug("创建 [Sqlite] 数据源 - {}", key);
+                FileUtil.mkdir(path);
                 // 1.UTF-8编码格式；2.临时表数据存放到内存；3.读写完全并发执行；4.执行写入数据后，直接结束
                 SQLiteConfig config = new SQLiteConfig();
                 config.setEncoding(SQLiteConfig.Encoding.UTF_8);

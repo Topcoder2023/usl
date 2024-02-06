@@ -1,5 +1,6 @@
 package com.gitee.usl.kernel.enhancer;
 
+import com.gitee.usl.api.Definable;
 import com.gitee.usl.api.FunctionEnhancer;
 import com.gitee.usl.api.FunctionPluggable;
 import com.gitee.usl.api.annotation.Description;
@@ -21,6 +22,10 @@ public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
 
         this.enhanceFunction(function);
 
+        if (function instanceof Definable def) {
+            this.enhanceDefinableFunction(def);
+        }
+
         if (function instanceof AnnotatedFunction) {
             this.enhanceAnnotatedFunction((AnnotatedFunction) function);
         }
@@ -40,6 +45,10 @@ public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
 
     @Description("增强插件函数")
     protected void enhancePluggable(FunctionPluggable fp) {
+    }
+
+    @Description("增强可定义函数")
+    protected void enhanceDefinableFunction(Definable def) {
     }
 
     @Description("增强代理函数")

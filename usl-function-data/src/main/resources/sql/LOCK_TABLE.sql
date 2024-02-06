@@ -1,0 +1,16 @@
+-- 创建分布式锁表结构
+CREATE TABLE IF NOT EXISTS LOCK
+(
+    -- 主键自增ID
+    ID              INTEGER NOT NULL CONSTRAINT LOCK_PK PRIMARY KEY AUTOINCREMENT CONSTRAINT LOCK_U1 UNIQUE,
+    -- 执行器名称
+    RUNNER_NAME     TEXT    NOT NULL,
+    -- 锁唯一名称
+    LOCK_NAME       TEXT    NOT NULL,
+    -- 锁创建时间
+    CREATED_TIME    TEXT    NOT NULL,
+    -- 锁超时时间
+    EXPIRED_TIME    TEXT    NOT NULL,
+    -- 唯一索引
+    CONSTRAINT LOCK_U2 UNIQUE (LOCK_NAME, RUNNER_NAME)
+);

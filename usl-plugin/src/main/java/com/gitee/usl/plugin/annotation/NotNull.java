@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 不允许空白校验注解
+ * 不允许空校验注解
  *
  * @author jiahao.song
  */
