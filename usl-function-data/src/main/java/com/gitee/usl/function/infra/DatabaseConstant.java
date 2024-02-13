@@ -26,4 +26,9 @@ public class DatabaseConstant {
     public static final String TABLE_QUEUE_NAME = "QUEUE";
 
     public static final Long LOCK_TIMEOUT = 1000L * 60 * 5;
+
+    public static final String ENABLE_LOCK_KEY = "Enable_Lock";
+    public static final String FIELD_NAME = "LOCK_NAME";
+    public static final String FIELD_CREATED_TIME = "CREATED_TIME";
+    public static final String FIELD_EXPIRED_TIME = "EXPIRED_TIME";
 }

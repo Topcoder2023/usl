@@ -20,6 +20,10 @@ public class USLExecuteException extends USLException {
         setResultCode(ResultCode.FAILURE);
     }
 
+    public USLExecuteException(String message) {
+        super(message);
+    }
+
     public USLExecuteException(ResultCode resultCode) {
         super();
         setResultCode(resultCode);

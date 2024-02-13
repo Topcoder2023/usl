@@ -27,6 +27,14 @@ public class BoolWrapper implements BaseWrapper<Boolean> {
         return value;
     }
 
+    public boolean isTrue() {
+        return Boolean.TRUE.equals(this.value);
+    }
+
+    public boolean isFalse() {
+        return Boolean.FALSE.equals(this.value);
+    }
+
     public void and(boolean bool) {
         if (!this.value) {
             return;

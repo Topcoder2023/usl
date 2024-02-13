@@ -22,7 +22,7 @@ public abstract class AbstractFunctionLoader implements FunctionLoader {
 
         return configuration.getPackageNameList()
                 .stream()
-                .flatMap(packageName -> ClassUtil.scanPackage(packageName, this::filter)
+                .flatMap(packageName -> ClassUtil.scanPackage(packageName, clz -> this.filter(clz, configuration))
                         .stream()
                         .flatMap(clz -> this.class2Definition(clz, runner).stream())
                         .toList()
@@ -34,7 +34,7 @@ public abstract class AbstractFunctionLoader implements FunctionLoader {
     }
 
     @Description("过滤出声明式函数类")
-    protected abstract boolean filter(Class<?> clz);
+    protected abstract boolean filter(Class<?> clz, USLConfiguration configuration);
 
     @Description("将函数定义信息转为函数实例")
     protected abstract _Function definition2Func(FunctionDefinition definition);

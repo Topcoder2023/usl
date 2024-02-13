@@ -1,5 +1,7 @@
 package com.gitee.usl.api;
 
+import com.gitee.usl.kernel.engine.USLConfiguration;
+
 /**
  * 注册回调接口
  *
@@ -10,5 +12,5 @@ public interface RegisterCallback {
     /**
      * 回调方法
      */
-    void callback();
+    void callback(USLConfiguration configuration);
 }

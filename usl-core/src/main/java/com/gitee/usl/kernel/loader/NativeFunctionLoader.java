@@ -2,15 +2,16 @@ package com.gitee.usl.kernel.loader;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.ServiceFinder;
+import com.gitee.usl.api.annotation.ConditionOnTrue;
 import com.gitee.usl.api.annotation.SystemComponent;
 import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.kernel.engine.USLConfiguration;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
@@ -52,11 +53,12 @@ public class NativeFunctionLoader extends AbstractFunctionLoader {
     }
 
     @Override
-    protected boolean filter(Class<?> clz) {
+    protected boolean filter(Class<?> clz, USLConfiguration configuration) {
         return _Function.class.isAssignableFrom(clz)
                 && ClassUtil.isNormalClass(clz)
                 && !AnnotatedFunction.class.isAssignableFrom(clz)
-                && !AnnotationUtil.hasAnnotation(clz, SystemComponent.class);
+                && !AnnotationUtil.hasAnnotation(clz, SystemComponent.class)
+                && Boolean.TRUE.equals(configuration.getBool(AnnotationUtil.getAnnotationValue(clz, ConditionOnTrue.class), false));
     }
 
 }

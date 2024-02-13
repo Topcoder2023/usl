@@ -6,6 +6,7 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.ServiceFinder;
+import com.gitee.usl.api.annotation.ConditionOnTrue;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
@@ -14,6 +15,7 @@ import com.gitee.usl.infra.proxy.MethodMeta;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.FunctionDefinition;
 import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.kernel.engine.USLConfiguration;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
@@ -65,8 +67,10 @@ public class AnnotatedFunctionLoader extends AbstractFunctionLoader {
 
     @Override
     @Description("过滤出声明式函数类")
-    protected boolean filter(Class<?> clz) {
-        return AnnotationUtil.hasAnnotation(clz, FunctionGroup.class) && ClassUtil.isNormalClass(clz);
+    protected boolean filter(Class<?> clz, USLConfiguration configuration) {
+        return AnnotationUtil.hasAnnotation(clz, FunctionGroup.class)
+                && ClassUtil.isNormalClass(clz)
+                && Boolean.TRUE.equals(configuration.getBool(AnnotationUtil.getAnnotationValue(clz, ConditionOnTrue.class), false));
     }
 
 }

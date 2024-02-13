@@ -25,6 +25,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * USL-Runner 通用脚本语言执行器
@@ -98,6 +99,17 @@ public class USLRunner {
     }
 
     /**
+     * 链式配置
+     *
+     * @param consumer 配置消费者
+     * @return 链式调用
+     */
+    public USLRunner configure(Consumer<USLConfiguration> consumer) {
+        consumer.accept(this.configuration);
+        return this;
+    }
+
+    /**
      * 启动 USL-Runner 执行器，执行器仅在启动后才能执行脚本，默认不采用任何交互模式
      */
     public void start() {
@@ -154,13 +166,8 @@ public class USLRunner {
             return Result.success(param.getCompiled().execute(param.getContext()));
         } catch (USLExecuteException uee) {
             log.warn("USL执行出现错误", uee);
-            String message;
-            if (uee.getCause() != null) {
-                message = uee.getCause().getMessage();
-            } else {
-                message = uee.getMessage();
-            }
-            return Result.failure(uee.getResultCode(), message, uee);
+            Throwable cause = Optional.ofNullable(ExceptionUtil.getRootCause(uee)).orElse(uee);
+            return Result.failure(uee.getResultCode(), cause.getMessage(), uee);
         }
     }
 
