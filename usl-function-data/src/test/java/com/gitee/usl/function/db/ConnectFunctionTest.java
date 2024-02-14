@@ -20,6 +20,6 @@ class ConnectFunctionTest {
 
     @Test
     void connect() throws SQLException {
-        runner.run(new Param("db_lock('test_obj2')"));
+        runner.run(new Param("lock('test_obj4')"));
     }
 }
