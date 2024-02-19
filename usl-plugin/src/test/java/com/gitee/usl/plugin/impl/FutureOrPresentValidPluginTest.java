@@ -24,7 +24,6 @@ class FutureOrPresentValidPluginTest {
     void validFutureDate() {
         // 创建一个未来日期
         long futureTime = System.currentTimeMillis() + 5 * 24 * 60 * 60 * 1000; // 假设未来5天，以毫秒为单位
-        Date futureDate = new Date(futureTime);
 
         // 创建USLRunner并启用调试模式
         USLRunner runner = new USLRunner(USLRunner.defaultConfiguration()
@@ -43,7 +42,7 @@ class FutureOrPresentValidPluginTest {
     void validPastDate() {
         // 创建一个过去日期
         long pastTime = System.currentTimeMillis() - 5 * 24 * 60 * 60 * 1000; // 减去五天，得到过去日期，以毫秒为单位
-        Date pastDate = new Date(pastTime);
+
 
         // 创建USLRunner并启用调试模式
         USLRunner runner = new USLRunner(USLRunner.defaultConfiguration()
@@ -61,7 +60,6 @@ class FutureOrPresentValidPluginTest {
     void validPresentDate() {
         // 创建一个当前日期
         long currentTime = System.currentTimeMillis(); // 获取当前时间的毫秒级时间戳
-        Date currentDate = new Date(currentTime);
 
         // 创建USLRunner并启用调试模式
         USLRunner runner = new USLRunner(USLRunner.defaultConfiguration()
