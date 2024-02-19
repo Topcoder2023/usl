@@ -10,7 +10,6 @@ import com.gitee.usl.api.annotation.FunctionGroup;
 /**
  * @author jingshu.zeng, jiahao.song
  */
-@SuppressWarnings("unused")
 @FunctionGroup
 public class IDFunction {
 

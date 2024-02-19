@@ -6,33 +6,34 @@ import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
-import com.gitee.usl.plugin.annotation.Min;
-import com.gitee.usl.plugin.enhancer.MinValidEnhancer;
+import com.gitee.usl.plugin.annotation.AssertTrue;
+import com.gitee.usl.plugin.enhancer.AssertTrueValidEnhancer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 /**
- * 最小值注解测试
+ * 真值注解测试
  * @author jingshu.zeng
  */
-class MinValidPluginTest {
+class AssertTrueValidPluginTest {
 
     @Test
     void valid() {
         USLRunner runner = new USLRunner(USLRunner.defaultConfiguration()
                 .setEnableDebug(Boolean.TRUE)
-                .enhancer(new MinValidEnhancer()));
+                .enhancer(new AssertTrueValidEnhancer()));
 
-        Result result = runner.run(new Param("subtract_10(0)"));
-        assertEquals(ResultCode.FAILURE.code(), result.getCode());
+        Result result = runner.run(new Param("ValidateAssertTrue(7 > 6)"));
+        assertEquals(ResultCode.SUCCESS.code(), result.getCode());
     }
 
     @FunctionGroup
-    static class MinFunctionTest {
-        @Function("subtract_10")
-        int subtract10(@Min(50) int num) {
-            return num - 10;
-        }
+    static class AssertTrueFunctionTest {
 
+        @Function("ValidateAssertTrue")
+        boolean ValidateAssertTrue(@AssertTrue boolean isValid) {
+            return isValid;
+        }
     }
 }

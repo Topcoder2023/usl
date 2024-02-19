@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * 长度校验插件测试
+ * @author jingshu.zeng
  */
 class LengthValidPluginTest {
 
