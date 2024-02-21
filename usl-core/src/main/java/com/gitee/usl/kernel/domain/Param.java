@@ -1,41 +1,44 @@
 package com.gitee.usl.kernel.domain;
 
-import com.gitee.usl.infra.constant.NumberConstant;
+import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.grammar.script.Script;
+import com.gitee.usl.infra.structure.StringMap;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.StringJoiner;
 
 /**
- * USL 参数结构
- *
  * @author hongda.li
  */
+@Data
+@Accessors(chain = true)
+@Description("USL 参数结构")
 public class Param {
-    /**
-     * 是否缓存表达式
-     */
-    private boolean cached;
 
-    /**
-     * 脚本内容
-     */
-    private String script;
+    @Description("脚本内容")
+    private final String script;
 
-    /**
-     * 上下文变量
-     */
-    private Map<String, Object> context;
+    @Description("是否缓存表达式")
+    private final boolean cached;
 
-    public Param() {
-        this.cached = true;
-        this.context = new HashMap<>(NumberConstant.COMMON_SIZE);
-    }
+    @Description("上下文变量")
+    private final StringMap<Object> context = new StringMap<>();
+
+    @Description("表达式编译值")
+    private Script compiled;
 
     public Param(String script) {
+        this(true, script);
+    }
+
+    public Param self() {
+        return new Param(this.cached, this.script);
+    }
+
+    public Param(boolean cached, String script) {
         this.script = script;
-        this.cached = true;
-        this.context = new HashMap<>(NumberConstant.COMMON_SIZE);
+        this.cached = cached;
     }
 
     public Param addContext(String name, Object value) {
@@ -43,39 +46,9 @@ public class Param {
         return this;
     }
 
-    public boolean isCached() {
-        return cached;
-    }
-
-    public Param setCached(boolean cached) {
-        this.cached = cached;
+    public Param addContext(Map<String, Object> other) {
+        this.context.putAll(other);
         return this;
     }
 
-    public String getScript() {
-        return script;
-    }
-
-    public Param setScript(String script) {
-        this.script = script;
-        return this;
-    }
-
-    public Map<String, Object> getContext() {
-        return context;
-    }
-
-    public Param setContext(Map<String, Object> context) {
-        this.context = context;
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", Param.class.getSimpleName() + "[", "]")
-                .add("cached=" + cached)
-                .add("content='" + script + "'")
-                .add("context=" + context)
-                .toString();
-    }
 }

@@ -1,233 +1,219 @@
 package com.gitee.usl;
 
-import cn.hutool.core.lang.Assert;
-import com.gitee.usl.api.Initializer;
-import com.gitee.usl.api.Shutdown;
-import com.gitee.usl.api.Interactive;
-import com.gitee.usl.api.CliInteractive;
-import com.gitee.usl.api.WebInteractive;
+import cn.hutool.core.exceptions.ExceptionUtil;
+import com.gitee.usl.api.*;
+import com.gitee.usl.grammar.script.ES;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.enums.InteractiveMode;
-import com.gitee.usl.infra.exception.UslException;
+import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.infra.structure.FunctionHolder;
-import com.gitee.usl.infra.utils.ServiceSearcher;
-import com.gitee.usl.kernel.configure.EngineConfiguration;
-import com.gitee.usl.kernel.configure.Configuration;
+import com.gitee.usl.infra.structure.StringMap;
+import com.gitee.usl.infra.structure.wrapper.IntWrapper;
+import com.gitee.usl.kernel.engine.USLConfiguration;
 import com.gitee.usl.kernel.domain.Param;
 import com.gitee.usl.kernel.domain.Result;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.gitee.usl.grammar.runtime.type._Function;
+import com.gitee.usl.kernel.enhancer.LoggerPluginEnhancer;
+import com.gitee.usl.kernel.enhancer.ParameterBinderEnhancer;
+import com.gitee.usl.kernel.enhancer.RegisterCallbackEnhancer;
+import com.gitee.usl.kernel.enhancer.SharedPluginEnhancer;
+import com.gitee.usl.kernel.loader.AnnotatedFunctionLoader;
+import com.gitee.usl.kernel.loader.NativeFunctionLoader;
+import com.gitee.usl.kernel.loader.SystemFunctionLoader;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /**
- * USL Runner 是 通用脚本语言执行器
- * 其实例可以存在多个，每个实例使用不同的配置
+ * USL-Runner 通用脚本语言执行器
  *
  * @author hongda.li
  */
-@SuppressWarnings("AlibabaClassNamingShouldBeCamel")
+@Slf4j
+@Getter
 public class USLRunner {
-    private static final Logger LOGGER = LoggerFactory.getLogger(USLRunner.class);
 
     /**
-     * USL Runner 实例的数量
-     * 每实例化一个 USL Runner 时，都会对 NUMBER 自增
-     * USL Runner 作为重量级对象，不建议实例化多个
-     * 建议全局唯一或根据使用场景定制化
+     * USL-Runner 默认实例的数量，每默认实例化一个 USL-Runner 时，都会对此变量自增
      */
-    private static final AtomicInteger NUMBER = new AtomicInteger(NumberConstant.ONE);
+    private static final IntWrapper NUMBER = new IntWrapper(NumberConstant.ONE);
 
     /**
-     * USL Runner 实例全局缓存
+     * USL-Runner 实例全局缓存
      */
-    private static final Map<String, USLRunner> ENGINE_CONTEXT = new ConcurrentHashMap<>(NumberConstant.EIGHT);
+    private static final StringMap<USLRunner> ENGINE_CONTEXT = new StringMap<>(NumberConstant.FOUR);
 
     /**
-     * USL Runner的名称
-     * 每一个执行器的名称应该唯一
+     * USL-Runner 的名称，每一个执行器的名称应该唯一
      */
     private final String name;
 
     /**
-     * 实例启动时间
+     * USL-Runner 实例启动时间
      */
-    private final Date startTime;
+    private Long timestamp;
 
     /**
-     * 在 JVM 关闭前的回调函数
+     * USL-Runner 的配置选项，支持为每一个执行器设置单独的配置
      */
-    private static List<Shutdown> shutdowns;
+    private final USLConfiguration configuration;
 
     /**
-     * USL Runner的配置选项
-     * 支持为每一个执行器设置单独的配置
-     */
-    private final Configuration configuration;
-
-    static {
-        // 绑定 JVM 生命周期钩子，在关闭 JVM 之前执行 USL 关闭回调函数
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            // 仅在关闭前再初始化回调函数
-            shutdowns = ServiceSearcher.searchAll(Shutdown.class);
-            // 若存在多个 USL 执行器实例则依次关闭
-            ENGINE_CONTEXT.values().forEach(runner -> {
-                LOGGER.info("{} - Shutdown initiated.", runner.name);
-                shutdowns.forEach(shutdown -> shutdown.close(runner.configuration));
-                LOGGER.info("{} - Shutdown completed.", runner.name);
-            });
-        }));
-    }
-
-    /**
-     * 根据默认配置类构造 USL 执行器
+     * 根据默认配置构造 USL-Runner 执行器
      */
     public USLRunner() {
         this(defaultConfiguration());
     }
 
     /**
-     * 根据指定配置类构造 USL 执行器
+     * 根据指定名称构造 USL-Runner 执行器
      *
-     * @param configuration 指定配置类
+     * @param name 执行器名称
      */
-    public USLRunner(Configuration configuration) {
+    public USLRunner(String name) {
+        this(name, defaultConfiguration());
+    }
+
+    /**
+     * 根据指定配置构造 USL-Runner 执行器
+     *
+     * @param configuration 执行器配置
+     */
+    public USLRunner(USLConfiguration configuration) {
         this(StringConstant.USL_RUNNER_NAME_PREFIX + NUMBER.getAndIncrement(), configuration);
     }
 
     /**
-     * 根据指定配置类构造 USL 执行器
+     * 根据指定名称和指定配置构造 USL-Runner 执行器
      *
-     * @param configuration 指定配置类
+     * @param name          执行器名称
+     * @param configuration 执行器配置
      */
-    public USLRunner(String name, Configuration configuration) {
+    public USLRunner(String name, USLConfiguration configuration) {
         this.name = name;
-        this.startTime = new Date();
         this.configuration = configuration;
+        this.configuration.setRunner(this);
     }
 
     /**
-     * 启动 USL 执行器
-     * USL 执行器仅在启动后才能执行脚本
-     * 默认不采用任何交互模式
+     * 链式配置
+     *
+     * @param consumer 配置消费者
+     * @return 链式调用
+     */
+    public USLRunner configure(Consumer<USLConfiguration> consumer) {
+        consumer.accept(this.configuration);
+        return this;
+    }
+
+    /**
+     * 启动 USL-Runner 执行器，执行器仅在启动后才能执行脚本，默认不采用任何交互模式
      */
     public void start() {
         this.start(InteractiveMode.NONE);
     }
 
     /**
-     * 启动 USL 执行器
-     * 当交互模式为 WEB 时，会在启动后加载 WEB 服务
-     * 当交互模式为 CLI 时，会在启动后开启命令行界面
+     * 以指定的模式启动 USL-Runner 执行器
      *
-     * @param mode 指定的交互模式
+     * @param mode 指定模式
      */
     public void start(InteractiveMode mode) {
-        Assert.isFalse(ENGINE_CONTEXT.containsKey(name), () -> new UslException("USL Runner has been started."));
+        if (ENGINE_CONTEXT.containsKey(name)) {
+            return;
+        }
+
+        log.info("{} - 启动中...", name);
+        ENGINE_CONTEXT.put(name, this);
+
+        this.timestamp = System.currentTimeMillis();
 
         try {
-            LOGGER.info("{} - Starting...", name);
-            ENGINE_CONTEXT.put(name, this);
-            List<Initializer> initializers = ServiceSearcher.searchAll(Initializer.class);
-            initializers.forEach(initializer -> initializer.doInit(configuration));
-            LOGGER.info("{} - Start completed.", name);
+            this.configuration.refresh();
+            log.info("{} - 启动成功，共耗时[{}]毫秒", this.name, (System.currentTimeMillis() - this.timestamp));
         } catch (Exception e) {
-            ENGINE_CONTEXT.values().removeIf(runner -> runner.equals(this));
-            LOGGER.error("{} - Start failed.", name);
+            this.configuration.setRefreshed(Boolean.FALSE);
+            ENGINE_CONTEXT.keySet().removeIf(name -> Objects.equals(name, this.name));
             throw e;
         }
 
-        // 开启交互
         this.interactive(mode);
     }
 
     /**
-     * 执行 USL 脚本
+     * 执行脚本
      *
-     * @param param USL 参数
-     * @param <T>   USL 返回值泛型
-     * @return USL 返回值
+     * @param param 脚本参数
+     * @return 执行结果
      */
-    public <T> Result<T> run(Param param) {
-        return Optional.ofNullable(this.configuration)
-                .map(Configuration::configEngine)
-                .map(EngineConfiguration::scriptEngineManager)
-                .map(manager -> manager.<T>run(param))
-                .orElseThrow(() -> new UslException("USL Runner has not been started."));
+    public Result run(Param param) {
+        // 若配置类尚未初始化，则先刷新配置后再执行脚本
+        if (!Boolean.TRUE.equals(this.configuration.getRefreshed())) {
+            this.start();
+            return this.run(param);
+        }
+
+        this.configuration.getCompiler().compile(param);
+
+        if (param.getCompiled() instanceof ES es) {
+            throw es.getException();
+        }
+
+        try {
+            return Result.success(param.getCompiled().execute(param.getContext()));
+        } catch (USLExecuteException uee) {
+            log.warn("USL执行出现错误", uee);
+            Throwable cause = Optional.ofNullable(ExceptionUtil.getRootCause(uee)).orElse(uee);
+            return Result.failure(uee.getResultCode(), cause.getMessage(), uee);
+        }
     }
 
     /**
-     * 获取当前 USL 执行器的配置类
+     * 获取当前 USL-Runner 执行器的配置类
      *
-     * @return USL 配置类
+     * @return 配置类
      */
-    public Configuration configuration() {
+    public USLConfiguration configuration() {
         return configuration;
     }
 
     /**
-     * 获取默认的 USL 配置类
+     * 获取新的默认配置
      *
-     * @return USL 配置类
+     * @return 默认配置
      */
-    public static Configuration defaultConfiguration() {
-        return new Configuration()
-                .configEngine()
-                .scan(USLRunner.class).finish()
-                .configExecutor()
-                .setCorePoolSize(8)
-                .setMaxPoolSize(16)
-                .setQueueSize(1024)
-                .setAliveTime(60)
-                .setAllowedTimeout(false)
-                .setTimeUnit(TimeUnit.SECONDS).finish()
-                .configWebServer()
-                .setPort(10086)
-                .setDebug(false)
-                .finish();
+    public static USLConfiguration defaultConfiguration() {
+        return new USLConfiguration()
+                .scan(USLRunner.class)
+                .enhancer(new SharedPluginEnhancer())
+                .enhancer(new LoggerPluginEnhancer())
+                .enhancer(new ParameterBinderEnhancer())
+                .enhancer(new RegisterCallbackEnhancer())
+                .loader(new SystemFunctionLoader())
+                .loader(new NativeFunctionLoader())
+                .loader(new AnnotatedFunctionLoader());
     }
 
     /**
      * 返回所有可用的函数实例
      *
-     * @return 函数实例集合
+     * @return 函数实例列表
      */
-    public List<AviatorFunction> functions() {
+    public List<_Function> functions() {
         return Optional.ofNullable(this.configuration)
-                .map(Configuration::configEngine)
-                .map(EngineConfiguration::functionHolder)
+                .map(USLConfiguration::getFunctionHolder)
                 .map(FunctionHolder::toList)
                 .orElse(Collections.emptyList());
     }
 
     /**
-     * 获取当前 USL 执行器的名称
+     * 根据 USL-Runner 执行器名称获取实例
      *
-     * @return USL 执行器名称
-     */
-    public String name() {
-        return name;
-    }
-
-    /**
-     * 获取当前 USL 执行器的启动时间
-     *
-     * @return 启动时间
-     */
-    public Date startTime() {
-        return startTime;
-    }
-
-    /**
-     * 根据 USL Runner 名称获取实例
-     *
-     * @param name 名称
-     * @return 实例
+     * @param name 执行器名称
+     * @return 执行器实例
      */
     public static USLRunner findRunnerByName(String name) {
         if (name == null) {
@@ -242,21 +228,21 @@ public class USLRunner {
      * @param mode 交互模式
      */
     private void interactive(InteractiveMode mode) {
-        final Interactive interactive;
-        switch (mode) {
-            case CLI:
-                interactive = ServiceSearcher.searchFirst(CliInteractive.class);
-                break;
-            case WEB:
-                interactive = ServiceSearcher.searchFirst(WebInteractive.class);
-                break;
-            case NONE:
-            default:
-                interactive = runner -> {
-                };
-                break;
-        }
+        ServiceFinder finder = this.configuration.getServiceFinder();
+        final Interactive interactive = switch (mode) {
+            case CLI -> finder.search(CliInteractive.class);
+            case WEB -> finder.search(WebInteractive.class);
+            default -> runner -> {
+            };
+        };
 
         Optional.ofNullable(interactive).ifPresent(item -> item.open(this));
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", USLRunner.class.getSimpleName() + "[", "]")
+                .add(name)
+                .toString();
     }
 }

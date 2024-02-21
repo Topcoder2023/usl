@@ -1,25 +1,24 @@
 package com.gitee.usl.infra.enums;
 
+import com.gitee.usl.api.annotation.Description;
+import lombok.Getter;
+
 /**
  * @author hongda.li
  */
+@Getter
 public enum EngineName {
-    /**
-     * JavaScript
-     */
+
+    @Description("JavaScript")
     JS("JavaScript"),
 
-    /**
-     * AviatorScript
-     */
+    @Description("AviatorScript")
     AS("AviatorScript"),
-    /**
-     * Groovy
-     */
+
+    @Description("Groovy")
     GROOVY("Groovy"),
-    /**
-     * Python
-     */
+
+    @Description("Python")
     PYTHON("python");
 
     private final String name;
@@ -28,7 +27,4 @@ public enum EngineName {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
 }

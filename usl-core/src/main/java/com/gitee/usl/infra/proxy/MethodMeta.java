@@ -1,43 +1,60 @@
 package com.gitee.usl.infra.proxy;
 
+import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.infra.structure.wrapper.IntWrapper;
+import com.gitee.usl.infra.structure.wrapper.ParameterWrapper;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * 方法元属性
- * 包含方法所在对象的实例以及其实例类型
- *
  * @author hongda.li
  */
-public final class MethodMeta<E> {
-    private final Object target;
-    private final Class<E> targetType;
-    private final Method method;
+@Description("方法元属性")
+public record MethodMeta<E>(@Description("调用实例") Object target,
+                            @Description("调用实例类型") Class<E> targetType,
+                            @Description("调用实例方法") Method method) {
 
-    public MethodMeta(Object target, Class<E> targetType, Method method) {
-        this.target = target;
-        this.targetType = targetType;
-        this.method = method;
+    public boolean isNoArgs() {
+        return method != null && method.getParameterCount() == 0;
     }
 
-    public Object target() {
-        return target;
+    @Description("将方法元属性转为无参调用器")
+    public Invocation<?> toInvocation() {
+        return this.toInvocation(null);
     }
 
-    public Class<E> targetType() {
-        return targetType;
-    }
-
-    public Method method() {
-        return method;
-    }
-
-    /**
-     * 将方法元属性转为方法调用器
-     *
-     * @param args 方法调用的参数
-     * @return 方法调用器
-     */
+    @Description("将方法元属性转为方法调用器")
     public Invocation<?> toInvocation(Object[] args) {
         return new Invocation<>(target, targetType, method, args);
+    }
+
+    @Description("获取方法包装参数列表")
+    public List<ParameterWrapper> getParameterWrapperList() {
+        if (method == null) {
+            return Collections.emptyList();
+        }
+
+        @Description("形参索引")
+        IntWrapper index = new IntWrapper();
+
+        @Description("形参列表")
+        Parameter[] parameters = method.getParameters();
+
+        return Arrays.stream(parameters)
+                .map(item -> {
+                    ParameterWrapper wrapper = new ParameterWrapper();
+                    wrapper.setIndex(index.getAndIncrement());
+                    wrapper.set(item);
+                    return wrapper;
+                })
+                .collect(Collectors.toList());
     }
 }

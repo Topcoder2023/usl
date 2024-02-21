@@ -10,10 +10,12 @@
     </parent>
 
     <artifactId>usl-all</artifactId>
+    <version>${parent.version}</version>
+    <packaging>jar</packaging>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -36,17 +38,17 @@
 
         <dependency>
             <groupId>com.gitee</groupId>
-            <artifactId>usl-resource</artifactId>
+            <artifactId>usl-interactive-web</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.gitee</groupId>
-            <artifactId>usl-function-date</artifactId>
+            <artifactId>usl-interactive-cli</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.gitee</groupId>
-            <artifactId>usl-function-db</artifactId>
+            <artifactId>usl-function-data</artifactId>
         </dependency>
 
         <dependency>
@@ -66,12 +68,12 @@
 
         <dependency>
             <groupId>com.gitee</groupId>
-            <artifactId>usl-function-text</artifactId>
+            <artifactId>usl-function-model</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.gitee</groupId>
-            <artifactId>usl-function-web</artifactId>
+            <artifactId>usl-function-http</artifactId>
         </dependency>
 
         <dependency>

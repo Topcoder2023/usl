@@ -1,5 +1,7 @@
 package com.gitee.usl.plugin.impl;
 
+import cn.hutool.cache.Cache;
+import cn.hutool.cache.CacheUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.ArrayUtil;
@@ -8,10 +10,8 @@ import com.gitee.usl.api.plugin.SuccessPlugin;
 import com.gitee.usl.infra.proxy.Invocation;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.plugin.api.CacheKeyGenerator;
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.googlecode.aviator.runtime.type.AviatorObject;
-import com.googlecode.aviator.utils.Env;
+import com.gitee.usl.grammar.runtime.type._Object;
+import com.gitee.usl.grammar.utils.Env;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,24 +30,20 @@ public class CacheablePlugin implements BeginPlugin, SuccessPlugin {
     private final Cache<String, Object> cache;
     private final CacheKeyGenerator cacheKeyGenerator;
 
-    public CacheablePlugin(long maxSize,
+    public CacheablePlugin(int maxSize,
                            long expired,
                            TimeUnit unit,
                            CacheKeyGenerator cacheKeyGenerator) {
-        this.cache = Caffeine.newBuilder()
-                .softValues()
-                .maximumSize(maxSize)
-                .expireAfterWrite(expired, unit)
-                .build();
+        this.cache = CacheUtil.newLRUCache(maxSize, unit.toMillis(expired));
         this.cacheKeyGenerator = cacheKeyGenerator;
     }
 
     @Override
     public void onBegin(FunctionSession session) {
-        String key = cacheKeyGenerator.generateKey(session.definition().name(), session.invocation());
+        String key = cacheKeyGenerator.generateKey(session.getDefinition().getName(), session.getInvocation());
 
         // 缓存为空直接跳过
-        Object ifPresent = cache.getIfPresent(key);
+        Object ifPresent = cache.get(key);
 
         if (ifPresent == null) {
             logger.debug("Cache is empty. Try to update cache - [{}]", key);
@@ -60,13 +56,13 @@ public class CacheablePlugin implements BeginPlugin, SuccessPlugin {
 
     @Override
     public void onSuccess(FunctionSession session) {
-        String key = cacheKeyGenerator.generateKey(session.definition().name(), session.invocation());
+        String key = cacheKeyGenerator.generateKey(session.getDefinition().getName(), session.getInvocation());
 
-        if (cache.getIfPresent(key) != null) {
+        if (cache.get(key) != null) {
             return;
         }
 
-        this.cache.put(key, session.result());
+        this.cache.put(key, session.getResult());
         logger.debug("Cache updated success - [{}]", key);
     }
 
@@ -84,8 +80,8 @@ public class CacheablePlugin implements BeginPlugin, SuccessPlugin {
                     .filter(arg -> !Env.class.equals(arg.getClass()))
                     .map(obj -> {
                         Object val;
-                        if (obj instanceof AviatorObject && envIfIsNative instanceof Env) {
-                            val = ((AviatorObject) obj).getValue((Env) envIfIsNative);
+                        if (obj instanceof _Object && envIfIsNative instanceof Env) {
+                            val = ((_Object) obj).getValue((Env) envIfIsNative);
                         } else {
                             val = obj;
                         }

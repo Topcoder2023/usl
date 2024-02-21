@@ -1,75 +1,73 @@
 package com.gitee.usl.kernel.domain;
 
 import cn.hutool.core.text.CharSequenceUtil;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.enums.ResultCode;
-
-import java.util.StringJoiner;
+import com.gitee.usl.infra.structure.BasicConverter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
- * 执行结果
- *
  * @author hongda.li
  */
-public class Result<T> {
-    /**
-     * 返回值
-     */
-    private final T data;
+@Data
+@Description("执行结果")
+@Accessors(chain = true)
+public class Result implements BasicConverter {
 
-    /**
-     * 状态码
-     */
+    @Description("返回值")
+    private final Object data;
+
+    @Description("状态码")
     private final Integer code;
 
-    /**
-     * 消息描述
-     */
+    @Description("消息描述")
     private final String message;
+    @Description("异常信息")
+    private final Exception exception;
 
-    public static <T> Result<T> success() {
-        return new Result<>(ResultCode.SUCCESS, CharSequenceUtil.EMPTY, null);
+    public static Result empty() {
+        return new Result(ResultCode.SUCCESS, null, null, null);
     }
 
-    public static <T> Result<T> success(T data) {
-        return new Result<>(ResultCode.SUCCESS, CharSequenceUtil.EMPTY, data);
+    public static Result success() {
+        return new Result(ResultCode.SUCCESS, CharSequenceUtil.EMPTY, null, null);
     }
 
-    public static <T> Result<T> failure() {
-        return new Result<>(ResultCode.FAILURE, CharSequenceUtil.EMPTY, null);
+    public static Result success(Object data) {
+        return new Result(ResultCode.SUCCESS, CharSequenceUtil.EMPTY, data, null);
     }
 
-    public static <T> Result<T> failure(ResultCode resultCode) {
-        return new Result<>(resultCode, CharSequenceUtil.EMPTY, null);
+    public static Result failure() {
+        return new Result(ResultCode.FAILURE, CharSequenceUtil.EMPTY, null, null);
     }
 
-    public static <T> Result<T> failure(ResultCode resultCode, String message) {
-        return new Result<>(resultCode, message, null);
+    public static Result failure(ResultCode resultCode) {
+        return new Result(resultCode, CharSequenceUtil.EMPTY, null, null);
     }
 
-    public Result(ResultCode resultCode, String message, T data) {
+    public static Result failure(ResultCode resultCode, String message) {
+        return new Result(resultCode, message, null, null);
+    }
+
+    public static Result failure(ResultCode resultCode, Exception exception) {
+        return new Result(resultCode, null, null, exception);
+    }
+
+    public static Result failure(ResultCode resultCode, String message, Exception exception) {
+        return new Result(resultCode, message, null, exception);
+    }
+
+    public Result(ResultCode resultCode, String message, Object data, Exception exception) {
         this.data = data;
         this.message = message;
         this.code = resultCode.code();
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public T getData() {
-        return data;
+        this.exception = exception;
     }
 
     @Override
-    public String toString() {
-        return new StringJoiner(", ", Result.class.getSimpleName() + "[", "]")
-                .add("data=" + data)
-                .add("code=" + code)
-                .add("message='" + message + "'")
-                .toString();
+    public Object origin() {
+        return this.data;
     }
+
 }

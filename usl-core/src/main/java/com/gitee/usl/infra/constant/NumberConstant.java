@@ -25,6 +25,11 @@ public final class NumberConstant {
     public static final int ONE = 1;
 
     /**
+     * 数字四
+     */
+    public static final int FOUR = 4;
+
+    /**
      * 数字五
      */
     public static final int FIVE = 5;
@@ -38,4 +43,19 @@ public final class NumberConstant {
      * 默认的容器初始化大小
      */
     public static final int COMMON_SIZE = 2 << 3;
+
+    /**
+     * 常见的初始值大小 64
+     */
+    public static final int NORMAL_SIZE = 2 << 5;
+
+    /**
+     * 常见的初始值大小 1024
+     */
+    public static final int NORMAL_MAX_SIZE = 2 << 9;
+
+    /**
+     * 小写字母 a 的索引
+     */
+    public static final int INDEX_OF_LOWER_A = 97;
 }

@@ -3,7 +3,7 @@ package com.gitee.usl.plugin.impl;
 import cn.hutool.core.lang.Assert;
 import com.gitee.usl.api.plugin.BeginPlugin;
 import com.gitee.usl.infra.enums.ResultCode;
-import com.gitee.usl.infra.exception.UslExecuteException;
+import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.google.common.util.concurrent.RateLimiter;
 
@@ -30,6 +30,6 @@ public class RateLimitPlugin implements BeginPlugin {
     public void onBegin(FunctionSession session) {
         boolean acquired = rateLimiter.tryAcquire(this.timeout, this.unit);
 
-        Assert.isTrue(acquired, () -> new UslExecuteException(ResultCode.TIMEOUT));
+        Assert.isTrue(acquired, () -> new USLExecuteException(ResultCode.TIMEOUT));
     }
 }

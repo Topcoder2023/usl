@@ -1,91 +1,62 @@
 package com.gitee.usl.infra.structure;
 
-import cn.hutool.core.lang.Assert;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.api.plugin.Plugin;
+import com.gitee.usl.infra.utils.AnnotatedComparator;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
  * @author hongda.li
  */
+@Description("插件链")
 public class Plugins {
-    private final List<Plugin> container;
 
-    public Plugins() {
-        container = new ArrayList<>(NumberConstant.EIGHT);
-    }
+    @Description("插件容器")
+    private final List<Plugin> container = new UniqueList<>(NumberConstant.EIGHT);
 
-    /**
-     * 安装插件
-     *
-     * @param plugin 插件
-     */
+    @Description("安装插件")
     public void install(Plugin plugin) {
-        Assert.notNull(plugin);
-        boolean exists = this.container.stream().anyMatch(item -> item.getClass().equals(plugin.getClass()));
-        if (!exists) {
-            this.container.add(plugin);
-        }
+        Objects.requireNonNull(plugin);
+        this.container.add(plugin);
+        this.container.sort(Comparator.comparing(item -> AnnotatedComparator.getOrder(item.getClass())));
     }
 
-    /**
-     * 从指定位置安装插件
-     *
-     * @param index  插件位置
-     * @param plugin 插件
-     */
-    public void install(int index, Plugin plugin) {
-        this.container.add(index, plugin);
-    }
-
-    /**
-     * 卸载指定类型的插件
-     *
-     * @param type 插件类型
-     */
+    @Description("卸载指定类型的插件")
     public void uninstall(Class<? extends Plugin> type) {
         this.container.removeIf(plugin -> type.isAssignableFrom(plugin.getClass()));
     }
 
-    /**
-     * 卸载全部插件
-     */
+    @Description("卸载全部插件")
     public void uninstall() {
         this.container.clear();
     }
 
-    /**
-     * 遍历所有插件
-     *
-     * @param consumer 插件消费者
-     */
+    @Description("遍历所有插件")
     public void visit(Consumer<Plugin> consumer) {
         this.container.forEach(consumer);
     }
 
-    /**
-     * 获取插件总数量
-     *
-     * @return 插件数量
-     */
+    @Description("获取插件总数量")
     public int size() {
         return this.container.size();
     }
 
-    /**
-     * 执行插件
-     *
-     * @param pluginType 插件类型
-     * @param consumer   插件消费者
-     * @param <T>        插件泛型
-     */
+    @Description("执行插件")
     public <T> void execute(Class<T> pluginType, Consumer<T> consumer) {
         this.container.stream()
                 .filter(plugin -> pluginType.isAssignableFrom(plugin.getClass()))
                 .map(pluginType::cast)
                 .forEach(consumer);
     }
+
+    public void sort(Comparator<Plugin> comparator) {
+        Objects.requireNonNull(comparator);
+        this.container.sort(comparator);
+    }
+
 }

@@ -1,128 +1,112 @@
 package com.gitee.usl.infra.structure;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Assert;
+import com.gitee.usl.api.Definable;
+import com.gitee.usl.api.Overloaded;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.gitee.usl.infra.utils.LambdaHelper;
+import com.gitee.usl.grammar.runtime.type._Function;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * 通过组合模式屏蔽 Map 的部分方法
- * 仅暴露注册、检索以及遍历的方法
- *
  * @author hongda.li
  */
+@Slf4j
+@ToString
+@Description("函数实例容器")
 public class FunctionHolder {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final List<Predicate<AviatorFunction>> filterList;
-    private final Map<String, AviatorFunction> container;
-    private final Map<String, String> aliasMap;
+
+    @Description("函数别名映射")
+    private final StringMap<String> aliasMap;
+
+    @Description("函数名称映射")
+    private final StringMap<_Function> container;
 
     public FunctionHolder() {
-        this.filterList = new ArrayList<>(NumberConstant.EIGHT);
-        this.container = new HashMap<>(NumberConstant.COMMON_SIZE);
-        this.aliasMap = new HashMap<>(NumberConstant.EIGHT);
+        this.aliasMap = new StringMap<>(NumberConstant.NORMAL_SIZE);
+        this.container = new StringMap<>(NumberConstant.NORMAL_MAX_SIZE);
     }
 
     /**
      * 注册函数
      *
-     * @param function 非空的函数实例
+     * @param function 函数实例
      */
-    public void register(AviatorFunction function) {
-        Assert.notNull(function, "An empty function instance can not be registered");
+    public void register(_Function function) {
+        String name = function.name();
 
-        // 过滤非法函数实例
-        for (Predicate<AviatorFunction> predicate : filterList) {
-            if (!predicate.test(function)) {
-                return;
+        _Function found = this.container.get(name);
+
+        if (found != null) {
+            // 函数重载标识
+            boolean overload = found instanceof Overloaded
+                    && function instanceof Overloaded
+                    && ((Definable) found).definition().getArgsLength()
+                    != ((Definable) function).definition().getArgsLength();
+
+            if (overload) {
+                ((Overloaded<?>) found).addOverloadImpl((Overloaded<?>) function);
+                log.debug("函数重载 - [{}]", name);
+            } else {
+                log.warn("重复注册 - [{}]", name);
             }
-        }
-
-        String name = function.getName();
-
-        if (this.container.containsKey(name)) {
-            logger.warn("USL function has been registered - [{}]", name);
             return;
         }
 
+        log.debug("注册函数 - [{}]", name);
         this.container.put(name, function);
 
-        logger.info("Register USL function - [{}]", name);
-    }
-
-    public void register(AviatorFunction function, Set<String> alias) {
-        this.register(function);
-
-        if (CollUtil.isNotEmpty(alias)) {
-            String actualName = function.getName();
-            alias.forEach(aliasName -> {
-                this.aliasMap.put(aliasName, actualName);
-                logger.info("Alias USL function - [{} - {}]", actualName, aliasName);
-            });
+        if (function instanceof Definable definable) {
+            definable.definition()
+                    .getAlias()
+                    .stream()
+                    .filter(item -> !Objects.equals(item, name))
+                    .forEach(aliasName -> {
+                        this.aliasMap.put(aliasName, name);
+                        log.debug("函数别名 - [{} ==> {}]", name, aliasName);
+                    });
         }
     }
 
-    /**
-     * 遍历函数
-     *
-     * @param consumer 函数消费者
-     */
-    public void onVisit(Consumer<AviatorFunction> consumer) {
-        this.container.values().forEach(consumer);
+    @Description("遍历函数")
+    public void onVisit(Consumer<_Function> consumer) {
+        this.onVisit(LambdaHelper.anyTrue(), consumer);
     }
 
-    /**
-     * 遍历部分函数
-     *
-     * @param predicate 函数过滤器
-     * @param consumer  函数消费者
-     */
-    public void onVisit(Predicate<AviatorFunction> predicate, Consumer<AviatorFunction> consumer) {
-        this.container.values()
-                .stream()
-                .filter(predicate)
-                .forEach(consumer);
+    @Description("遍历指定函数")
+    public void onVisit(Predicate<_Function> predicate, Consumer<_Function> consumer) {
+        this.toList().stream().filter(predicate).forEach(consumer);
     }
 
-    /**
-     * 通过函数名称检索函数实例
-     *
-     * @param name 函数名称
-     * @return 函数实例
-     */
-    public AviatorFunction search(String name) {
+    @Description("通过函数名称检索函数实例")
+    public _Function search(String name) {
         final String key;
+
         if (!this.container.containsKey(name)) {
             key = this.aliasMap.get(name);
         } else {
             key = name;
         }
 
-        AviatorFunction function = this.container.get(key);
-
-        if (function == null) {
-            logger.warn("USL function not found - [{}]", name);
-        }
-
-        return function;
+        return this.container.get(key);
     }
 
-    /**
-     * 添加函数名称过滤器
-     *
-     * @param filter 函数名称过滤器
-     */
-    public void addFilter(Predicate<AviatorFunction> filter) {
-        this.filterList.add(filter);
-    }
-
-    public List<AviatorFunction> toList() {
-        return new ArrayList<>(this.container.values());
+    @Description("获取所有函数实例")
+    public List<_Function> toList() {
+        List<_Function> functions = new ArrayList<>(this.container.values());
+        this.container.values()
+                .stream()
+                .filter(item -> item instanceof Overloaded)
+                .map(item -> (Overloaded<?>) item)
+                .map(Overloaded::allOverloadImpl)
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream)
+                .forEach(functions::add);
+        return functions;
     }
 }

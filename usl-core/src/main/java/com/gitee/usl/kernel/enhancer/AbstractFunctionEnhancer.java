@@ -1,43 +1,62 @@
 package com.gitee.usl.kernel.enhancer;
 
+import com.gitee.usl.api.Definable;
 import com.gitee.usl.api.FunctionEnhancer;
+import com.gitee.usl.api.FunctionPluggable;
+import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.kernel.engine.AnnotatedFunction;
 import com.gitee.usl.kernel.engine.NativeFunction;
-import com.googlecode.aviator.runtime.type.AviatorFunction;
+import com.gitee.usl.grammar.runtime.type._Function;
 
-import java.lang.reflect.Proxy;
+import static java.lang.reflect.Proxy.getInvocationHandler;
+import static java.lang.reflect.Proxy.isProxyClass;
 
 /**
  * 使用模板模式构建函数增强逻辑
- * 抽象父类并不实现具体的逻辑而是交由子类实现
  *
  * @author hongda.li
  */
 public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
     @Override
-    public void enhance(AviatorFunction function) {
-        boolean isProxy = Proxy.isProxyClass(function.getClass());
+    public void enhance(_Function function) {
 
-        // 增强注解函数
+        this.enhanceFunction(function);
+
+        if (function instanceof Definable def) {
+            this.enhanceDefinableFunction(def);
+        }
+
         if (function instanceof AnnotatedFunction) {
             this.enhanceAnnotatedFunction((AnnotatedFunction) function);
         }
-        // 增强代理函数
-        else if (isProxy && Proxy.getInvocationHandler(function) instanceof NativeFunction) {
-            this.enhanceNativeFunction((NativeFunction) Proxy.getInvocationHandler(function));
+
+        if (function instanceof FunctionPluggable fp) {
+            this.enhancePluggable(fp);
         }
-        // 增强其余函数
-        else {
-            this.enhanceFunction(function);
+
+        if (isProxyClass(function.getClass()) && getInvocationHandler(function) instanceof NativeFunction) {
+            this.enhanceNativeFunction((NativeFunction) getInvocationHandler(function));
         }
     }
 
-    protected void enhanceFunction(AviatorFunction func) {
+    @Description("增强普通函数")
+    protected void enhanceFunction(_Function func) {
     }
 
+    @Description("增强插件函数")
+    protected void enhancePluggable(FunctionPluggable fp) {
+    }
+
+    @Description("增强可定义函数")
+    protected void enhanceDefinableFunction(Definable def) {
+    }
+
+    @Description("增强代理函数")
     protected void enhanceNativeFunction(NativeFunction nf) {
     }
 
+    @Description("增强注解函数")
     protected void enhanceAnnotatedFunction(AnnotatedFunction af) {
     }
+
 }

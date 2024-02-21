@@ -20,7 +20,7 @@ public @interface Cacheable {
      *
      * @return 数量
      */
-    long maxSize() default Long.MAX_VALUE;
+    int maxSize() default Integer.MAX_VALUE;
 
     /**
      * 缓存过期时间

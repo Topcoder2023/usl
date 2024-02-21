@@ -5,7 +5,7 @@ import com.gitee.usl.plugin.api.RetryBuilderFactory;
 import com.gitee.usl.plugin.annotation.Retryable;
 import com.gitee.usl.api.plugin.BeginPlugin;
 import com.gitee.usl.infra.constant.NumberConstant;
-import com.gitee.usl.infra.exception.UslExecuteException;
+import com.gitee.usl.infra.exception.USLExecuteException;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.github.rholder.retry.*;
 import org.slf4j.Logger;
@@ -29,9 +29,9 @@ public class RetryPlugin implements BeginPlugin {
     @Override
     public void onBegin(FunctionSession session) {
         try {
-            session.setResult(retryer.call(() -> session.handler().apply(session)));
+            session.setResult(retryer.call(() -> session.getHandler().apply(session)));
         } catch (ExecutionException | RetryException e) {
-            throw new UslExecuteException(e);
+            throw new USLExecuteException(e);
         }
     }
 

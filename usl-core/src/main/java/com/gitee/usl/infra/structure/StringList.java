@@ -2,6 +2,7 @@ package com.gitee.usl.infra.structure;
 
 import com.gitee.usl.infra.constant.NumberConstant;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -10,6 +11,8 @@ import java.util.Collection;
  */
 public class StringList extends ArrayList<String> {
     private static final StringList EMPTY = new StringList(NumberConstant.ZERO);
+
+    @Serial
     private static final long serialVersionUID = -3906350419629179610L;
 
     public StringList() {
