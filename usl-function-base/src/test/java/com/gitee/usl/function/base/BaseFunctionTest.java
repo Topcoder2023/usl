@@ -2,7 +2,7 @@ package com.gitee.usl.function.base;
 
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.kernel.engine.USLConfiguration;
-import com.gitee.usl.kernel.domain.ResourceParam;
+import com.gitee.usl.domain.ResourceParam;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

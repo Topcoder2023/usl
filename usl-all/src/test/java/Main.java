@@ -1,5 +1,5 @@
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.kernel.domain.ResourceParam;
+import com.gitee.usl.domain.ResourceParam;
 
 /**
  * @author hongda.li

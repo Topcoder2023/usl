@@ -1,7 +1,7 @@
 package com.gitee.usl.api;
 
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.kernel.domain.Param;
+import com.gitee.usl.domain.Param;
 
 /**
  * @author hongda.li

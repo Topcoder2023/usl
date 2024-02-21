@@ -1,11 +1,9 @@
 package com.gitee.usl.function.db;
 
-import cn.hutool.core.io.resource.ResourceUtil;
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.function.domain.Database;
-import com.gitee.usl.function.infra.DatabaseConstant;
-import com.gitee.usl.kernel.domain.Param;
-import org.junit.jupiter.api.Assertions;
+import com.gitee.usl.infra.DatabaseConstant;
+import com.gitee.usl.domain.Param;
+import com.gitee.usl.plugin.enhancer.FunctionMetaEnhancer;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -16,7 +14,8 @@ import java.sql.SQLException;
 class ConnectFunctionTest {
 
     static USLRunner runner = new USLRunner()
-            .configure(configuration -> configuration.put(DatabaseConstant.ENABLE_LOCK_KEY, true));
+            .configure(configuration -> configuration.put(DatabaseConstant.ENABLE_LOCK_KEY, true))
+            .configure(configuration -> configuration.enhancer(new FunctionMetaEnhancer()));
 
     @Test
     void connect() throws SQLException {

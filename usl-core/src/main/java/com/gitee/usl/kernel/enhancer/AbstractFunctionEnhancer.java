@@ -20,8 +20,6 @@ public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
     @Override
     public void enhance(_Function function) {
 
-        this.enhanceFunction(function);
-
         if (function instanceof Definable def) {
             this.enhanceDefinableFunction(def);
         }
@@ -37,6 +35,8 @@ public abstract class AbstractFunctionEnhancer implements FunctionEnhancer {
         if (isProxyClass(function.getClass()) && getInvocationHandler(function) instanceof NativeFunction) {
             this.enhanceNativeFunction((NativeFunction) getInvocationHandler(function));
         }
+
+        this.enhanceFunction(function);
     }
 
     @Description("增强普通函数")

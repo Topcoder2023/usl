@@ -1,8 +1,8 @@
 package com.gitee.usl.resource.handler;
 
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.kernel.domain.Param;
-import com.gitee.usl.kernel.domain.Result;
+import com.gitee.usl.domain.Param;
+import com.gitee.usl.domain.Result;
 import com.gitee.usl.resource.ScriptSearcher;
 import com.gitee.usl.resource.api.WebHandler;
 import com.gitee.usl.resource.api.WebHelper;

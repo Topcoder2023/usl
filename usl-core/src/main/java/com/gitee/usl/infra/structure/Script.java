@@ -6,7 +6,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.text.StrPool;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.constant.StringConstant;
-import com.gitee.usl.kernel.domain.Param;
+import com.gitee.usl.domain.Param;
 import com.gitee.usl.grammar.utils.Env;
 import lombok.Getter;
 import lombok.ToString;

@@ -4,7 +4,7 @@ import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.infra.enums.ResultCode;
-import com.gitee.usl.kernel.domain.Param;
+import com.gitee.usl.domain.Param;
 import com.gitee.usl.plugin.annotation.NotEmpty;
 import com.gitee.usl.plugin.enhancer.NotEmptyValidEnhancer;
 import org.junit.jupiter.api.Test;

@@ -4,6 +4,7 @@ import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.api.plugin.Plugin;
 import com.gitee.usl.infra.utils.AnnotatedComparator;
+import lombok.Getter;
 
 import java.util.Comparator;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.function.Consumer;
 /**
  * @author hongda.li
  */
+@Getter
 @Description("插件链")
 public class Plugins {
 
@@ -36,16 +38,6 @@ public class Plugins {
         this.container.clear();
     }
 
-    @Description("遍历所有插件")
-    public void visit(Consumer<Plugin> consumer) {
-        this.container.forEach(consumer);
-    }
-
-    @Description("获取插件总数量")
-    public int size() {
-        return this.container.size();
-    }
-
     @Description("执行插件")
     public <T> void execute(Class<T> pluginType, Consumer<T> consumer) {
         this.container.stream()
@@ -54,6 +46,7 @@ public class Plugins {
                 .forEach(consumer);
     }
 
+    @Description("插件排序")
     public void sort(Comparator<Plugin> comparator) {
         Objects.requireNonNull(comparator);
         this.container.sort(comparator);

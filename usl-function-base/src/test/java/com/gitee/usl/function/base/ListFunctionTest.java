@@ -1,8 +1,7 @@
 package com.gitee.usl.function.base;
 
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.kernel.domain.Param;
-import org.junit.jupiter.api.BeforeAll;
+import com.gitee.usl.domain.Param;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

@@ -1,10 +1,8 @@
 package com.gitee.usl.function.ai;
 
 import com.gitee.usl.USLRunner;
-import com.gitee.usl.kernel.domain.Param;
+import com.gitee.usl.domain.Param;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author hongda.li

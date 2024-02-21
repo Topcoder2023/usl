@@ -17,7 +17,7 @@ import com.gitee.usl.grammar.script.ES;
 import com.gitee.usl.infra.enums.ResultCode;
 import com.gitee.usl.infra.exception.USLCompileException;
 import com.gitee.usl.infra.structure.FunctionHolder;
-import com.gitee.usl.kernel.domain.Param;
+import com.gitee.usl.domain.Param;
 import com.gitee.usl.kernel.engine.USLConfiguration;
 import lombok.Getter;
 import lombok.Setter;

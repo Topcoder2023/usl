@@ -1,0 +1,18 @@
+-- 创建函数调用信息表结构
+CREATE TABLE IF NOT EXISTS INVOKE
+(
+    -- 主键自增ID
+    ID              INTEGER NOT NULL CONSTRAINT INVOKE_PK PRIMARY KEY AUTOINCREMENT CONSTRAINT INVOKE_U1 UNIQUE,
+    -- 函数名称
+    FUNCTION_ID     INTEGER NOT NULL,
+    -- 函数调用参数
+    INVOKE_PARAM    TEXT,
+    -- 函数调用状态(SUCCESS、FAILURE)
+    INVOKE_STATUS   TEXT    NOT NULL,
+    -- 函数调用结果
+    INVOKE_RESULT   TEXT,
+    -- 调用异常原因
+    ERROR_MESSAGE   TEXT,
+    -- 函数调用时间
+    INVOKE_TIME     TEXT    NOT NULL
+);
