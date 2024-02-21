@@ -17,8 +17,7 @@ class ConnectFunctionTest {
             .configure(configuration -> configuration.put(DatabaseConstant.ENABLE_LOCK_KEY, true))
             .configure(configuration -> configuration.enhancer(new FunctionMetaEnhancer()));
 
-    @Test
-    void connect() throws SQLException {
-        runner.run(new Param("lock('test_obj5')"));
+    public static void main(String[] args) {
+        Object data = runner.run(new Param("date_value('02-2024-19','MM-yyyy-dd')")).getData();
     }
 }

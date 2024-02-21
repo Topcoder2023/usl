@@ -31,6 +31,8 @@ public class DatabaseConstant {
 
     public static final String TABLE_FUNCTION_NAME = "FUNCTION";
 
+    public static final String TABLE_INVOKE_NAME = "INVOKE";
+
     public static final Long LOCK_TIMEOUT = 1000L * 60 * 5;
 
     public static final String ENABLE_MQ_KEY = "Enable_MQ";

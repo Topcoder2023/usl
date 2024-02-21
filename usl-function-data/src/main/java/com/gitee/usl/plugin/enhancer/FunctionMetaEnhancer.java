@@ -7,7 +7,7 @@ import cn.hutool.json.JSONUtil;
 import com.gitee.usl.api.Definable;
 import com.gitee.usl.api.FunctionPluggable;
 import com.gitee.usl.api.plugin.Plugin;
-import com.gitee.usl.domain.Selector;
+import com.gitee.usl.domain.FunctionMeta;
 import com.gitee.usl.grammar.runtime.type._Function;
 import com.gitee.usl.infra.ConnectHelper;
 import com.gitee.usl.infra.exception.USLException;
@@ -24,6 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.gitee.usl.domain.FunctionMeta.UNKNOWN;
 import static com.gitee.usl.infra.DatabaseConstant.*;
 
 /**
@@ -67,7 +68,7 @@ public class FunctionMetaEnhancer extends AbstractFunctionEnhancer {
             this.initTable();
         }
 
-        Db proxy = ConnectHelper.connect(DEFAULT_DATABASE_NAME).proxy();
+        Db proxy = ConnectHelper.connectSystem().proxy();
 
         if (func instanceof Definable definable) {
             FunctionDefinition definition = definable.definition();
@@ -91,42 +92,32 @@ public class FunctionMetaEnhancer extends AbstractFunctionEnhancer {
                     .collect(Collectors.toList()))
                     : JSONUtil.toJsonStr(Collections.emptyList());
 
-            Entity exists = Selector.of(TABLE_FUNCTION_NAME)
-                    .select("ID")
-                    .andEquals("RUNNER_NAME", runnerName)
-                    .andEquals("FUNCTION_NAME", functionName)
-                    .findOne();
-
-            Entity insert = Entity.create(TABLE_FUNCTION_NAME)
-                    .set("RUNNER_NAME", runnerName)
-                    .set("FUNCTION_NAME", functionName)
-                    .set("ALIAS_NAME", aliasName)
-                    .set("ATTRIBUTE", attribute)
-                    .set("CLASS_NAME", className)
-                    .set("METHOD_NAME", methodName)
-                    .set("PLUGIN_NAME", pluginName);
+            // 已存在的数据
+            Entity exists = FunctionMeta.selectByName(runnerName, functionName);
+            // 待插入的数据
+            Entity insert = FunctionMeta.create(runnerName,
+                    functionName,
+                    aliasName,
+                    attribute,
+                    className,
+                    methodName,
+                    pluginName);
 
             if (exists == null) {
                 proxy.insert(insert);
             } else {
-                proxy.update(insert, Entity.create().set("ID", exists.get("ID")));
+                proxy.update(insert, FunctionMeta.byId(exists));
             }
         } else {
-            Entity exists = Selector.of(TABLE_FUNCTION_NAME)
-                    .select("ID")
-                    .andEquals("RUNNER_NAME", "UNKNOWN")
-                    .andEquals("FUNCTION_NAME", func.name())
-                    .findOne();
-
-            Entity insert = Entity.create(TABLE_FUNCTION_NAME)
-                    .set("RUNNER_NAME", "UNKNOWN")
-                    .set("FUNCTION_NAME", func.name())
-                    .set("CLASS_NAME", func.getClass().getName());
+            // 已存在的数据
+            Entity exists = FunctionMeta.selectByName(UNKNOWN, func.name());
+            // 待插入的数据
+            Entity insert = FunctionMeta.create(UNKNOWN, func.name(), func.getClass().getName());
 
             if (exists == null) {
                 proxy.insert(insert);
             } else {
-                proxy.update(insert, Entity.create().set("ID", exists.get("ID")));
+                proxy.update(insert, FunctionMeta.byId(exists));
             }
 
         }
