@@ -1175,7 +1175,6 @@ public class ScriptParser implements Parser {
             // Anonymous function
             lambda(true);
         } else {
-
             checkVariableName(this.current);
             checkFunctionName(this.current, true);
             getCodeGeneratorWithTimes().onConstant(this.current.withMeta(Constants.INIT_META, true)

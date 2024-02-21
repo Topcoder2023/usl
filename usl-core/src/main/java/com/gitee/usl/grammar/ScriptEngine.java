@@ -101,11 +101,6 @@ public final class ScriptEngine {
         return this.options.get(opt);
     }
 
-    @Description("获取脚本引擎语法特性配置集合")
-    public Set<Feature> getFeatures() {
-        return this.options.get(Options.FEATURE_SET).featureSet;
-    }
-
     @Description("判断脚本引擎语法特性配置是否启用")
     public boolean isFeatureEnabled(final Feature feature) {
         return this.options.get(Options.FEATURE_SET).featureSet.contains(feature);
