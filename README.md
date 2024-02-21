@@ -41,32 +41,7 @@
 4. 再次更新本地`master`分支，并将本地`master`分支合并到新分支上，确保无代码冲突
 5. 发起`pull request`，将本地新分支合并到远程`master`主分支上，并等待审核
 
-## 五、安装与使用
-
-> 项目于`2023年9月12日`正式立项，计划第一个正式版本于`2024年3月12日`正式发布，目前可以通过以下方式提前试用：
-
-1. 将此仓库地址添加到您的`pom.xml`或者`setting.xml`中
-
-```xml
-
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-```
-
-2. 将此依赖添加到您的`dependency`中
-
-```xml
-
-<dependency>
-    <groupId>com.gitee.yixi-dlmu</groupId>
-    <artifactId>usl</artifactId>
-    <version>v1.0.0.RELEASE</version>
-</dependency>
-```
+## 五、使用方法
 
 ### 1.执行脚本/表达式
 
@@ -82,7 +57,7 @@ class Test {
         param.setScript("str.isEmpty('test')");
 
         // 运行脚本/表达式
-        Result<Boolean> result = runner.run(param);
+        Result result = runner.run(param);
 
         // 打印输出执行结果的状态码、异常信息以及执行结果
         System.out.println(result.getCode());
@@ -159,46 +134,6 @@ class RegisterTest {
 
 > 上述例子中，首先获取了一个新的默认配置项，`defaultConfiguration()`，然后在默认配置项的基础上，获取执行引擎配置项，并设置
 > 扫描以`StringFunctionTest.class`类路径为基础的包及其子包下的函数。当且仅当类上拥有`@Func`注解时，才会被注册。
-
-当需要注册的函数，来源于现有的工具类库中，且无需改变函数逻辑时，还可以通过批量手动注册的方式，例如：
-
-```java
-
-@AutoService(FunctionProvider.class)
-public class StringFunctionProvider implements FunctionProvider {
-    /**
-     * 字符串类函数的统一前缀
-     */
-    public static final String STRING_FUNCTION_PREFIX = "string.";
-
-    @Override
-    public List<AviatorFunction> provide(EngineConfiguration configuration) {
-        return Function.newBuilder()
-                .runner(configuration.finish().getRunner())
-                .clazz(CharSequenceUtil.class)
-                .mapping(methodName -> STRING_FUNCTION_PREFIX + methodName)
-                .method("isEmpty")
-                .next()
-                .method("isBlank")
-                .next()
-                .method("hasBlank")
-                .next()
-                .method("nullToEmpty")
-                .next()
-                .method("nullToDefault")
-                .next()
-                .method("emptyToDefault")
-                .next()
-                .method("blankToDefault")
-                .next()
-                .method("emptyToNull")
-                .buildAll();
-    }
-}
-```
-
-> 上述例子中，`clazz()`指定了引入的工具类库，`runner()`指定了函数作用于哪个`USL`实例下，`mapping()`指定了新的函数名称和引入的方法名称的映射关系，
-> `method()`指定了需要引入的方法，`next()`开始构建函数，`buildAll()`会将所有构建的函数一并返回。当然，可以指定的选项有很多种，上述仅展示了一些常用配置。
 
 ### 4.如何开发一个插件
 
@@ -339,9 +274,6 @@ interface FunctionPluggable {
 与函数注册逻辑类似，插件的开发也分为插件声明和插件注册两部分，一个标准的插件注册逻辑如下：
 
 ```java
-
-@Order(Integer.MAX_VALUE - 10)
-@AutoService(FunctionEnhancer.class)
 class LoggerEnhancer extends AbstractFunctionEnhancer {
     private final LoggerPlugin singletonPlugin = new LoggerPlugin();
 

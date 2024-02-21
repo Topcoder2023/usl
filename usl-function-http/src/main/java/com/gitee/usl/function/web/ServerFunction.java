@@ -3,8 +3,8 @@ package com.gitee.usl.function.web;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
-import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Description;
+import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.function.web.domain.HttpServer;
 import com.gitee.usl.infra.structure.Script;
@@ -12,6 +12,7 @@ import com.gitee.usl.grammar.runtime.function.FunctionUtils;
 import com.gitee.usl.grammar.runtime.type._Function;
 import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.grammar.utils.Env;
+import com.gitee.usl.infra.structure.SharedSession;
 import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -29,26 +30,26 @@ public class ServerFunction {
     @Description({"USL-Http响应体变量", "存放当前响应的所有信息"})
     public static final String RESPONSE_NAME = "Usl_Response";
 
-    @com.gitee.usl.api.annotation.Function("server")
-    public HttpServer server(USLRunner runner, int port) {
-        return new HttpServer(runner, port);
+    @Function("server_listen")
+    public HttpServer server(int port) {
+        return new HttpServer(port);
     }
 
-    @com.gitee.usl.api.annotation.Function("server_start")
+    @Function("server_start")
     public HttpServer start(HttpServer server) {
-        server.getServer().start();
+        server.getProxy().start();
         return server;
     }
 
-    @com.gitee.usl.api.annotation.Function("server_stop")
+    @Function("server_stop")
     public HttpServer stop(HttpServer server) {
-        server.getServer().getRawServer().stop(Integer.MAX_VALUE);
+        server.getProxy().getRawServer().stop(Integer.MAX_VALUE);
         return server;
     }
 
-    @com.gitee.usl.api.annotation.Function("server_filter")
+    @Function("server_filter")
     public HttpServer filter(Env env, HttpServer server, _Function function) {
-        server.getServer().addFilter(new Filter() {
+        server.getProxy().addFilter(new Filter() {
             @Override
             public void doFilter(HttpExchange httpExchange, Chain chain) throws IOException {
                 try (HttpServerRequest request = new HttpServerRequest(httpExchange); HttpServerResponse response = new HttpServerResponse(httpExchange)) {
@@ -67,21 +68,22 @@ public class ServerFunction {
         return server;
     }
 
-    @com.gitee.usl.api.annotation.Function("server_resource")
-    public HttpServer route(Env env, HttpServer server, String path) {
-        server.getServer().setRoot(path);
+    @Function("server_resource")
+    public HttpServer route(HttpServer server, String path) {
+        server.getProxy().setRoot(path);
         return server;
     }
 
-    @com.gitee.usl.api.annotation.Function("server_route")
-    public HttpServer route(Env env, HttpServer server, String path, _Function function) {
-        server.getServer().addAction(path, (request, response) -> function.execute(env, wrapReturn(request), wrapReturn(response)));
+    @Function("server_route")
+    public HttpServer route(HttpServer server, String path, _Function function) {
+        Env env = SharedSession.getSession().getEnv();
+        server.getProxy().addAction(path, (request, response) -> function.execute(env, wrapReturn(request), wrapReturn(response)));
         return server;
     }
 
-    @com.gitee.usl.api.annotation.Function("server_route_script")
+    @Function("server_route_script")
     public HttpServer route(Env env, HttpServer server, String path, Script script) {
-        server.getServer().addAction(path, (request, response) -> {
+        server.getProxy().addAction(path, (request, response) -> {
             env.put(REQUEST_NAME, request);
             env.put(RESPONSE_NAME, response);
             script.run(env);
