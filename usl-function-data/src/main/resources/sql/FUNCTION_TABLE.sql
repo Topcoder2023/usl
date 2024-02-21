@@ -15,8 +15,6 @@ CREATE TABLE IF NOT EXISTS FUNCTION
     CLASS_NAME      TEXT,
     -- 函数映射方法
     METHOD_NAME     TEXT,
-    -- 函数调用次数
-    INVOKE_COUNT    INTEGER NOT NULL DEFAULT 0,
     -- 函数插件链(插件全类名集合的JSON格式)
     PLUGIN_NAME     TEXT
 );

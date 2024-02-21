@@ -3,6 +3,7 @@ package com.gitee.usl.plugin.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
 import cn.hutool.json.JSONUtil;
 import com.gitee.usl.api.plugin.FinallyPlugin;
@@ -57,7 +58,8 @@ public class FunctionMetaPlugin implements FinallyPlugin {
                     .set("ERROR_MESSAGE", errorMessage)
                     .set("INVOKE_TIME", invokeTime);
 
-            ConnectHelper.connectSystem().proxy().insert(insert);
+            Db proxy = ConnectHelper.connectSystem().proxy();
+            proxy.insert(insert);
         } catch (Exception e) {
             log.error("新增函数调用记录异常", e);
             throw new USLException(e);
