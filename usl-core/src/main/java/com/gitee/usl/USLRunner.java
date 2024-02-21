@@ -35,6 +35,10 @@ import java.util.function.Consumer;
 @Slf4j
 @Getter
 public class USLRunner {
+    /**
+     * 版本号
+     */
+    public static final String VERSION = "v1.0.1.SNAPSHOT";
 
     /**
      * USL-Runner 默认实例的数量，每默认实例化一个 USL-Runner 时，都会对此变量自增

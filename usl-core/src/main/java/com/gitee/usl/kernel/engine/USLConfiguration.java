@@ -222,6 +222,8 @@ public final class USLConfiguration extends StringMap<Object> {
             return;
         }
 
+        log.debug("USL Runner Version - {}", USLRunner.VERSION);
+
         this.size = ObjectUtil.defaultIfNull(this.size, 2 << 10);
         log.debug("脚本最大缓存容量 - {}", this.size);
 
