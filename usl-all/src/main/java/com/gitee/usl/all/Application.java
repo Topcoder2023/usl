@@ -3,23 +3,16 @@ package com.gitee.usl.all;
 import cn.hutool.core.util.ArrayUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.infra.enums.InteractiveMode;
-import com.gitee.usl.kernel.engine.USLConfiguration;
 
 /**
  * @author hongda.li
  */
 public class Application {
     public static void main(String[] args) {
-        final USLRunner runner = new USLRunner(Application.globalConfig());
-
         if (ArrayUtil.isEmpty(args)) {
-            runner.start();
+            new USLRunner().start();
         } else {
-            runner.start(InteractiveMode.of(args[0]));
+            new USLRunner().start(InteractiveMode.of(args[0]));
         }
-    }
-
-    public static USLConfiguration globalConfig() {
-        return USLRunner.defaultConfiguration();
     }
 }

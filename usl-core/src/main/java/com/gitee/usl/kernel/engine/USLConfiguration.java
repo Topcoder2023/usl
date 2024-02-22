@@ -8,6 +8,7 @@ import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.*;
 import com.gitee.usl.api.impl.*;
 import com.gitee.usl.grammar.ScriptEngine;
+import com.gitee.usl.grammar.runtime.type._Function;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
@@ -250,7 +251,7 @@ public final class USLConfiguration extends StringMap<Object> {
         // 重置日志级别
         LoggerHelper.resetLevel(this.loggerLevel);
 
-        log.debug("USL Runner Version - {}", USLRunner.VERSION);
+        log.info("USL Runner Version - {}", USLRunner.VERSION);
 
         this.size = ObjectUtil.defaultIfNull(this.size, 2 << 10);
         log.debug("脚本最大缓存容量 - {}", this.size);
@@ -288,18 +289,19 @@ public final class USLConfiguration extends StringMap<Object> {
         log.debug("脚本编译器实现类 - {}", this.compiler.getClass().getName());
 
         // 根据函数加载器依次加载函数库
-        loaders.stream()
-                .flatMap(loader -> loader.load(this).stream())
-                .forEach(function -> {
-                    // 根据函数过滤器决定是否注册函数
-                    BoolWrapper allowed = new BoolWrapper(true);
-                    filters.forEach(filter -> allowed.and(filter.allowedRegister(function)));
-                    if (allowed.get()) {
-                        functionHolder.register(function);
-                    } else {
-                        log.debug("取消注册 - [{}]", function.name());
-                    }
-                });
+        for (FunctionLoader loader : loaders) {
+            List<_Function> functions = loader.load(this);
+            functions.forEach(function -> {
+                // 根据函数过滤器决定是否注册函数
+                BoolWrapper allowed = new BoolWrapper(true);
+                filters.forEach(filter -> allowed.and(filter.allowedRegister(function)));
+                if (allowed.get()) {
+                    functionHolder.register(function);
+                } else {
+                    log.debug("取消注册 - [{}]", function.name());
+                }
+            });
+        }
 
         // 函数库全部加载完成后，由函数增强器列表依次增强函数
         functionHolder.onVisit(function -> enhancers.forEach(enhancer -> enhancer.enhance(function)));

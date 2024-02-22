@@ -70,7 +70,8 @@ public class AnnotatedFunctionLoader extends AbstractFunctionLoader {
     protected boolean filter(Class<?> clz, USLConfiguration configuration) {
         return AnnotationUtil.hasAnnotation(clz, FunctionGroup.class)
                 && ClassUtil.isNormalClass(clz)
-                && Boolean.TRUE.equals(configuration.getBool(AnnotationUtil.getAnnotationValue(clz, ConditionOnTrue.class), true));
+                && (!AnnotationUtil.hasAnnotation(clz, ConditionOnTrue.class)
+                || Boolean.TRUE.equals(configuration.getBool(AnnotationUtil.getAnnotationValue(clz, ConditionOnTrue.class), false)));
     }
 
 }
