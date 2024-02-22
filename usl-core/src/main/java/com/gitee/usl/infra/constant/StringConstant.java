@@ -35,4 +35,8 @@ public final class StringConstant {
     public static final String PASSWORD = "password";
 
     public static final String SCRIPT_SUFFIX = "usl";
+
+    public static final String RESET_LEVEL_METHOD_NAME = "resetLevel";
+
+    public static final String ADD_LOGGER_FILTER_METHOD_NAME = "addFilter";
 }

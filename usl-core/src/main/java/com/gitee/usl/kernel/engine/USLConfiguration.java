@@ -3,23 +3,31 @@ package com.gitee.usl.kernel.engine;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.*;
 import com.gitee.usl.api.impl.*;
 import com.gitee.usl.grammar.ScriptEngine;
+import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.infra.structure.StringMap;
 import com.gitee.usl.infra.structure.StringSet;
 import com.gitee.usl.infra.structure.UniqueList;
 import com.gitee.usl.infra.structure.wrapper.BoolWrapper;
+import com.gitee.usl.infra.utils.LoggerHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * USL 配置类
@@ -136,6 +144,11 @@ public final class USLConfiguration extends StringMap<Object> {
     private final StringSet packageNameList = new StringSet();
 
     /**
+     * 日志级别
+     */
+    private final StringMap<Level> loggerLevel = new StringMap<>();
+
+    /**
      * 函数加载器
      */
     private final List<FunctionLoader> loaders = new UniqueList<>();
@@ -214,6 +227,18 @@ public final class USLConfiguration extends StringMap<Object> {
     }
 
     /**
+     * 设置日志级别
+     *
+     * @param name  日志名称
+     * @param level 日志级别
+     * @return 链式调用
+     */
+    public USLConfiguration loggerLevel(String name, Level level) {
+        this.loggerLevel.put(name, level);
+        return this;
+    }
+
+    /**
      * 刷新配置
      */
     public synchronized void refresh() {
@@ -221,6 +246,9 @@ public final class USLConfiguration extends StringMap<Object> {
         if (Boolean.TRUE.equals(this.refreshed)) {
             return;
         }
+
+        // 重置日志级别
+        LoggerHelper.resetLevel(this.loggerLevel);
 
         log.debug("USL Runner Version - {}", USLRunner.VERSION);
 
@@ -279,5 +307,4 @@ public final class USLConfiguration extends StringMap<Object> {
         // 重置刷新标记
         this.refreshed = Boolean.TRUE;
     }
-
 }

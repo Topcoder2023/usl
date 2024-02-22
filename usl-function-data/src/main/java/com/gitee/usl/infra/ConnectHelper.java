@@ -2,14 +2,18 @@ package com.gitee.usl.infra;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.db.Db;
 import cn.hutool.db.dialect.DriverNamePool;
 import com.gitee.usl.domain.Database;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.structure.StringMap;
+import com.gitee.usl.infra.utils.LoggerHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;
+import org.sqlite.core.NativeDB;
 import org.sqlite.javax.SQLiteConnectionPoolDataSource;
 
 import static com.gitee.usl.infra.DatabaseConstant.*;
@@ -22,6 +26,15 @@ public class ConnectHelper {
     private static final StringMap<Database> DB_CACHE = new StringMap<>();
 
     private ConnectHelper() {
+    }
+
+    static {
+        LoggerHelper.addLoggerFilter(LoggerFactory.getLogger(NativeDB.class), msg -> !StrUtil.containsAny(
+                msg,
+                "[SQLite EXEC] pragma",
+                "[SQLite EXEC] begin;",
+                "[SQLite EXEC] commit;"
+        ));
     }
 
     public static Database connectSystem() {

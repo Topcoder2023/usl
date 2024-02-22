@@ -3,7 +3,7 @@ package com.gitee.usl.kernel.plugin;
 import cn.hutool.core.text.CharPool;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.gitee.usl.api.annotation.Description;
-import com.gitee.usl.infra.utils.EnabledLogger;
+import com.gitee.usl.infra.utils.LoggerHelper;
 import com.gitee.usl.kernel.engine.FunctionSession;
 import com.gitee.usl.api.plugin.BeginPlugin;
 import com.gitee.usl.api.plugin.FailurePlugin;
@@ -29,23 +29,23 @@ public class LoggerPlugin implements BeginPlugin, SuccessPlugin, FailurePlugin {
     public void onBegin(FunctionSession session) {
         String name = session.getDefinition().getName();
         Supplier<Object[]> supplier = () -> new Object[]{name, format(session.getEnv(), session.getObjects())};
-        EnabledLogger.debug(logger, "参数列表 - [{}] : [{}]", supplier);
+        LoggerHelper.debug(logger, "参数列表 - [{}] : [{}]", supplier);
     }
 
     @Override
     public void onFailure(FunctionSession session) {
         String name = session.getDefinition().getName();
         Supplier<Object[]> supplier = () -> new Object[]{name, session.getException().getMessage()};
-        EnabledLogger.warn(logger, "执行失败 - [{}] : [{}]", supplier);
+        LoggerHelper.warn(logger, "执行失败 - [{}] : [{}]", supplier);
     }
 
     @Override
     public void onSuccess(FunctionSession session) {
         String name = session.getDefinition().getName();
         if (Objects.isNull(session.getResult())) {
-            EnabledLogger.debug(logger, "执行成功 - [{}]", () -> new Object[]{name});
+            LoggerHelper.debug(logger, "执行成功 - [{}]", () -> new Object[]{name});
         } else {
-            EnabledLogger.debug(logger, "执行成功 - [{}] : [{}]", () -> new Object[]{name, session.getResult()});
+            LoggerHelper.debug(logger, "执行成功 - [{}] : [{}]", () -> new Object[]{name, session.getResult()});
         }
     }
 

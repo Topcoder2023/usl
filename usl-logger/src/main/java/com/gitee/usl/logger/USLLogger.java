@@ -10,9 +10,12 @@ import org.slf4j.event.Level;
 import org.slf4j.helpers.LegacyAbstractLogger;
 
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static java.lang.System.out;
 
@@ -22,6 +25,8 @@ import static java.lang.System.out;
  * @author hongda.li
  */
 public class USLLogger extends LegacyAbstractLogger {
+    private Level level = Level.TRACE;
+    private final List<Predicate<String>> filter = new ArrayList<>();
     @Serial
     private static final long serialVersionUID = -6857629823140297158L;
 
@@ -73,6 +78,12 @@ public class USLLogger extends LegacyAbstractLogger {
         // 格式化消息模板，将其中的 {} 替换为对应的参数值
         final String message = CharSequenceUtil.format(format, arguments);
 
+        for (Predicate<String> predicate : this.filter) {
+            if (!predicate.test(message)) {
+                return;
+            }
+        }
+
         // 格式化特殊编码模板并输出到控制台
         out.format(template, time, level.name(), " - ", ClassUtil.getShortClassName(this.getName()), message);
 
@@ -80,29 +91,43 @@ public class USLLogger extends LegacyAbstractLogger {
         Optional.ofNullable(throwable).ifPresent(Throwable::printStackTrace);
     }
 
+    public Level getLevel() {
+        return level;
+    }
+
+    public USLLogger setLevel(Level level) {
+        this.level = level;
+        return this;
+    }
+
+    public USLLogger addFilter(Predicate<String> predicate) {
+        this.filter.add(predicate);
+        return this;
+    }
+
     @Override
     public boolean isTraceEnabled() {
-        return true;
+        return this.level.toInt() <= Level.TRACE.toInt();
     }
 
     @Override
     public boolean isDebugEnabled() {
-        return true;
+        return this.level.toInt() <= Level.DEBUG.toInt();
     }
 
     @Override
     public boolean isInfoEnabled() {
-        return true;
+        return this.level.toInt() <= Level.INFO.toInt();
     }
 
     @Override
     public boolean isWarnEnabled() {
-        return true;
+        return this.level.toInt() <= Level.WARN.toInt();
     }
 
     @Override
     public boolean isErrorEnabled() {
-        return true;
+        return this.level.toInt() <= Level.ERROR.toInt();
     }
 
 }
