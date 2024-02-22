@@ -58,7 +58,8 @@ public class NativeFunctionLoader extends AbstractFunctionLoader {
                 && ClassUtil.isNormalClass(clz)
                 && !AnnotatedFunction.class.isAssignableFrom(clz)
                 && !AnnotationUtil.hasAnnotation(clz, SystemComponent.class)
-                && Boolean.TRUE.equals(configuration.getBool(AnnotationUtil.getAnnotationValue(clz, ConditionOnTrue.class), true));
+                && (!AnnotationUtil.hasAnnotation(clz, ConditionOnTrue.class)
+                || Boolean.TRUE.equals(configuration.getBool(AnnotationUtil.getAnnotationValue(clz, ConditionOnTrue.class), false)));
     }
 
 }
