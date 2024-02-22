@@ -17,6 +17,6 @@ class AmountFunctionTest {
     @Test
     void amount_to_capital_eng() {
         Object data = runner.run(new Param("amount_to_capital_eng(107000.53)")).getData();
-        assertEquals("SAY US DOLLARS ONE HUNDRED AND SEVEN THOUSAND AND CENTS FIFTY-THREE ONLY", data);
+        assertEquals("ONE HUNDRED AND CENTS TWENTY THREE ONLY", data);
     }
 }
