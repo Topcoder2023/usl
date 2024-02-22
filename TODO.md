@@ -1,0 +1,4 @@
+- `DefaultScriptCompiler`中的缓存组件改用`Caffeine`，并提供更多配置方式
+- `JsonFunction`中的`JSON`组件改用`FastJson2`
+- `ServerFunction`中的`WEB`组件改用`SmartHttp`
+- `usl-interactive-web`中的实现方式改为预置脚本

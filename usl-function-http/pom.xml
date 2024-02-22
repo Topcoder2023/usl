@@ -32,6 +32,16 @@
         </dependency>
 
         <dependency>
+            <groupId>org.smartboot.http</groupId>
+            <artifactId>smart-http-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.smartboot.http</groupId>
+            <artifactId>smart-http-client</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
