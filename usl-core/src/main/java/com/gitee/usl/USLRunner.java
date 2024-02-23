@@ -14,10 +14,7 @@ import com.gitee.usl.kernel.engine.USLConfiguration;
 import com.gitee.usl.domain.Param;
 import com.gitee.usl.domain.Result;
 import com.gitee.usl.grammar.runtime.type._Function;
-import com.gitee.usl.kernel.enhancer.LoggerPluginEnhancer;
-import com.gitee.usl.kernel.enhancer.ParameterBinderEnhancer;
-import com.gitee.usl.kernel.enhancer.RegisterCallbackEnhancer;
-import com.gitee.usl.kernel.enhancer.SharedPluginEnhancer;
+import com.gitee.usl.kernel.enhancer.*;
 import com.gitee.usl.kernel.loader.AnnotatedFunctionLoader;
 import com.gitee.usl.kernel.loader.ImportFunctionLoader;
 import com.gitee.usl.kernel.loader.NativeFunctionLoader;
@@ -197,6 +194,7 @@ public class USLRunner {
                 .enhancer(new LoggerPluginEnhancer())
                 .enhancer(new ParameterBinderEnhancer())
                 .enhancer(new RegisterCallbackEnhancer())
+                .enhancer(new DescriptionEnhancer())
                 .loader(new SystemFunctionLoader())
                 .loader(new NativeFunctionLoader())
                 .loader(new ImportFunctionLoader())
