@@ -19,6 +19,7 @@ import com.gitee.usl.kernel.enhancer.ParameterBinderEnhancer;
 import com.gitee.usl.kernel.enhancer.RegisterCallbackEnhancer;
 import com.gitee.usl.kernel.enhancer.SharedPluginEnhancer;
 import com.gitee.usl.kernel.loader.AnnotatedFunctionLoader;
+import com.gitee.usl.kernel.loader.ImportFunctionLoader;
 import com.gitee.usl.kernel.loader.NativeFunctionLoader;
 import com.gitee.usl.kernel.loader.SystemFunctionLoader;
 import lombok.Getter;
@@ -198,6 +199,7 @@ public class USLRunner {
                 .enhancer(new RegisterCallbackEnhancer())
                 .loader(new SystemFunctionLoader())
                 .loader(new NativeFunctionLoader())
+                .loader(new ImportFunctionLoader())
                 .loader(new AnnotatedFunctionLoader());
     }
 
