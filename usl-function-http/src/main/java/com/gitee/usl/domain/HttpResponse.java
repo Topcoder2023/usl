@@ -1,4 +1,4 @@
-package com.gitee.usl.function.http.domain;
+package com.gitee.usl.domain;
 
 /**
  * @author hongda.li

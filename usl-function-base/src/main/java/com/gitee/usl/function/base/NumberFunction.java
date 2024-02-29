@@ -1,5 +1,6 @@
 package com.gitee.usl.function.base;
 
+import cn.hutool.core.convert.Convert;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 
@@ -7,8 +8,6 @@ import com.gitee.usl.api.annotation.FunctionGroup;
 /**
  * @author jingshu.zeng
  */
-
-
 @FunctionGroup
 public class NumberFunction {
     @Function("abs")
@@ -20,6 +19,7 @@ public class NumberFunction {
     public double ceil(double number) {
         return Math.ceil(number);
     }
+
     @Function("max")
     public double max(double... numbers) {
         if (numbers.length == 0) {
@@ -39,6 +39,7 @@ public class NumberFunction {
     public double floor(double num) {
         return Math.floor(num);
     }
+
     @Function("min")
     public double min(double... numbers) {
         if (numbers.length == 0) {
@@ -68,6 +69,15 @@ public class NumberFunction {
         return Math.round(number * factor) / factor;
     }
 
+    @Function("digit_chinese")
+    public static String digitToChinese(double number) {
+        return Convert.digitToChinese(number);
+    }
+
+    @Function("number_word")
+    public static String numberToWord(double number) {
+        return Convert.numberToWord(number);
+    }
 }
 
 

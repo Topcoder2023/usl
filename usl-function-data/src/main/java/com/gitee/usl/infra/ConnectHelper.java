@@ -17,6 +17,8 @@ import org.sqlite.core.NativeDB;
 import org.sqlite.javax.SQLiteConnectionPoolDataSource;
 
 import static com.gitee.usl.infra.DatabaseConstant.*;
+import static com.gitee.usl.infra.constant.StringConstant.DEFAULT_PATH;
+import static com.gitee.usl.infra.constant.StringConstant.FILE_SPLIT;
 
 /**
  * @author hongda.li

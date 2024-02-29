@@ -3,8 +3,14 @@ package com.gitee.usl.function.base;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
-import com.gitee.usl.infra.structure.Script;
+import com.gitee.usl.domain.ExecutableParam;
+import com.gitee.usl.domain.FileParam;
+import com.gitee.usl.domain.ResourceParam;
 import com.gitee.usl.grammar.utils.Env;
+import com.gitee.usl.infra.structure.SharedSession;
+import com.gitee.usl.kernel.engine.FunctionSession;
+
+import java.io.File;
 
 /**
  * @author hongda.li
@@ -12,28 +18,33 @@ import com.gitee.usl.grammar.utils.Env;
 @SuppressWarnings("unused")
 @FunctionGroup
 public class ScriptFunction {
-    @Function("script")
-    public Script script(USLRunner runner, String path) {
-        return new Script(runner, path);
+    @Function("script_file")
+    public ExecutableParam script(File file) {
+        FunctionSession session = SharedSession.getSession();
+        USLRunner runner = session.getDefinition().getRunner();
+        Env env = session.getEnv();
+        ExecutableParam param = new ExecutableParam(runner, new FileParam(file));
+        param.addContext(env);
+        return param;
     }
 
-    @Function("script_path")
-    public String path(Script script) {
-        return script.getPath();
+    @Function("script_resource")
+    public ExecutableParam script(String name) {
+        FunctionSession session = SharedSession.getSession();
+        USLRunner runner = session.getDefinition().getRunner();
+        Env env = session.getEnv();
+        ExecutableParam param = new ExecutableParam(runner, new ResourceParam(name));
+        param.addContext(env);
+        return param;
     }
 
-    @Function("script_content")
-    public String content(Script script) {
-        return script.getContent();
-    }
-
-    @Function("script_run")
-    public Object run(Env env, Script script) {
-        return script.run(env);
+    @Function("script_execute")
+    public Object run(ExecutableParam param) {
+        return param.execute();
     }
 
     @Function("script_result")
-    public Object result(Env env, Script script) {
-        return script.getResult(env);
+    public Object result(ExecutableParam script) {
+        return script.getCacheResult();
     }
 }

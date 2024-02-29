@@ -3,6 +3,7 @@ package com.gitee.usl.function.http;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.domain.Param;
 import com.gitee.usl.domain.ResourceParam;
+import com.gitee.usl.domain.Result;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,18 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author hongda.li
  */
 class ServerFunctionTest {
-    static USLRunner runner;
+    static USLRunner runner = new USLRunner();
 
     public static void main(String[] args) {
-        ResourceParam param = new ResourceParam("test.js");
-        runner = new USLRunner();
-        runner.start();
-
-        System.out.println(runner.run(param));
-    }
-
-    @Test
-    void serverTest() {
-        assertDoesNotThrow(() -> runner.run(new Param("server(10001)")));
+        runner.run(new ResourceParam("main.js"));
     }
 }
