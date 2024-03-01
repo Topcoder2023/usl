@@ -1,1 +1,1 @@
-http_resp_string(Response, 'hello world')
+response.write_to_json('hello world');

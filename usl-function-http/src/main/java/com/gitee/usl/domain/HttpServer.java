@@ -4,11 +4,11 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.net.NetUtil;
 import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.WebRoute;
+import com.gitee.usl.api.annotation.Accessible;
 import com.gitee.usl.api.impl.DefaultHttpHandler;
-import com.gitee.usl.function.http.ServerFunction;
 import com.gitee.usl.infra.structure.SharedSession;
 import com.gitee.usl.infra.structure.StringMap;
-import lombok.Data;
+import lombok.Getter;
 import org.smartboot.http.server.HttpBootstrap;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
@@ -19,19 +19,29 @@ import java.util.function.Consumer;
 /**
  * @author hongda.li
  */
-@Data
 public class HttpServer {
+    /**
+     * 内置变量名称
+     */
+    private static final String REQUEST = "request";
+    /**
+     * 内置变量名称
+     */
+    private static final String RESPONSE = "response";
     /**
      * 端口号
      */
+    @Getter
     private final int port;
     /**
      * 本机地址
      */
+    @Getter
     private final String host;
     /**
      * 服务器名称
      */
+    @Getter
     private final String serverName;
     /**
      * 服务器代理
@@ -40,6 +50,7 @@ public class HttpServer {
     /**
      * 路由映射
      */
+    @Getter
     private final StringMap<WebRoute> routeMapping = new StringMap<>();
 
     public HttpServer(int port) {
@@ -59,6 +70,7 @@ public class HttpServer {
         this.proxy.setPort(port);
     }
 
+    @Accessible
     public HttpServer start() {
         this.proxy.httpHandler(new DefaultHttpHandler(routeMapping));
         this.proxy.start();
@@ -75,8 +87,12 @@ public class HttpServer {
             @Override
             public Boolean doHandle(HttpRequest request, HttpResponse response) {
                 ExecutableParam param = new ExecutableParam(runner, new ResourceParam(resource));
-                param.addContext(ServerFunction.REQUEST_NAME, request);
-                param.addContext(ServerFunction.RESPONSE_NAME, response);
+                HttpRequestWrapper requestWrapper = new HttpRequestWrapper();
+                requestWrapper.set(request);
+                param.addContext(REQUEST, requestWrapper);
+                HttpResponseWrapper responseWrapper = new HttpResponseWrapper();
+                responseWrapper.set(response);
+                param.addContext(RESPONSE, responseWrapper);
                 return Optional.ofNullable(param.execute())
                         .map(res -> Convert.toBool(res, Boolean.TRUE))
                         .orElse(Boolean.TRUE);

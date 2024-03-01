@@ -3,9 +3,11 @@ package com.gitee.usl.infra.utils;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.USLRunner;
+import com.gitee.usl.api.annotation.Accessible;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
@@ -21,10 +23,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static cn.hutool.core.annotation.AnnotationUtil.hasAnnotation;
@@ -36,10 +35,12 @@ public class LibraryGenerator {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final File output;
     private final Set<Class<?>> functionSet;
+    private final Set<Class<?>> typeSet;
 
     public LibraryGenerator(File output, Set<Class<?>> functionSet) {
         this.output = output;
         this.functionSet = functionSet;
+        this.typeSet = new LinkedHashSet<>();
     }
 
     public static LibraryGeneratorBuilder newBuilder() {
@@ -56,28 +57,91 @@ public class LibraryGenerator {
                 this.generateForAnnotation(method, writer);
             }
 
-            for (Field field : ReflectUtil.getFields(clazz, field -> hasAnnotation(field, Description.class))) {
+            for (Field field : ReflectUtil.getFields(clazz, field -> hasAnnotation(field, Accessible.class))) {
                 this.generateForAnnotation(field, writer);
             }
         });
+
+        typeSet.forEach(type -> this.generateForAnnotation(type, writer));
+    }
+
+    private void generateForAnnotation(Class<?> type, FileWriter writer) {
+        writer.append("interface ");
+        writer.append(type.getSimpleName() + " {\n");
+        Method[] methods = ReflectUtil.getMethods(type);
+        for (Method method : methods) {
+            if (AnnotationUtil.hasAnnotation(method, Accessible.class)) {
+                writer.append("    " + method.getName() + "() : any\n");
+            } else {
+                Field[] fields = ReflectUtil.getFields(type);
+                if (ArrayUtil.isNotEmpty(fields)) {
+                    for (Field field : fields) {
+                        String name = field.getName();
+                        if (method.getName().equalsIgnoreCase("get" + name)
+                                || method.getName().equalsIgnoreCase("is" + name)) {
+                            writer.append("    " + name + " : any\n");
+                        }
+                    }
+                }
+            }
+        }
+        writer.append("}\n\n");
     }
 
     private void generateForAnnotation(Field field, FileWriter writer) {
-        Object value = ReflectUtil.getStaticFieldValue(field);
-        if (value == null) {
-            return;
+        Description annotation = AnnotationUtil.getAnnotation(field, Description.class);
+        String[] description;
+        if (annotation == null) {
+            description = new String[]{field.getName()};
+        } else {
+            description = annotation.value();
         }
-        String valueOf = String.valueOf(value);
+        if (ArrayUtil.isNotEmpty(description)) {
+            writer.append("/*\n");
+            for (String desc : description) {
+                writer.append(" * " + desc + "\n");
+            }
+            writer.append(" */\n");
+        }
+
+        String fieldName = field.getName();
+        Class<?> type = field.getType();
         writer.append("declare var ");
-        writer.append(valueOf);
-        writer.append(": any;\n\n");
-        logger.info("[{}]变量示例文件构建成功", valueOf);
+        writer.append(fieldName);
+        if (String.class.isAssignableFrom(type)) {
+            writer.append(": string;\n\n");
+        } else if (Number.class.isAssignableFrom(type)
+                || int.class.isAssignableFrom(type)
+                || byte.class.isAssignableFrom(type)
+                || short.class.isAssignableFrom(type)
+                || long.class.isAssignableFrom(type)
+                || double.class.isAssignableFrom(type)
+                || float.class.isAssignableFrom(type)) {
+            writer.append(": number;\n\n");
+        } else if (Boolean.class.isAssignableFrom(type) || boolean.class.isAssignableFrom(type)) {
+            writer.append(": boolean;\n\n");
+        } else {
+            writer.append(": " + type.getSimpleName() + ";\n\n");
+            this.typeSet.add(type);
+        }
+        logger.info("[{}]变量示例文件构建成功", fieldName);
     }
 
     private void generateForAnnotation(Method method, FileWriter writer) {
         Function function = AnnotationUtil.getAnnotation(method, Function.class);
         String[] names = function.value();
         for (String functionName : names) {
+            Description annotation = AnnotationUtil.getAnnotation(method, Description.class);
+            if (annotation != null) {
+                String[] description = annotation.value();
+                if (ArrayUtil.isNotEmpty(description)) {
+                    writer.append("/*\n");
+                    for (String desc : description) {
+                        writer.append(" * " + desc + "\n");
+                    }
+                    writer.append(" */\n");
+                }
+            }
             this.generateForAnnotation(functionName, method.getParameters(), writer);
         }
     }

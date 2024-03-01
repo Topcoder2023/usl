@@ -1,8 +1,10 @@
 package com.gitee.usl.api.impl;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
+import com.gitee.usl.api.annotation.Accessible;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.FunctionMissing;
 import com.gitee.usl.grammar.runtime.function.FunctionUtils;
@@ -64,7 +66,7 @@ public class DefaultFunctionMissing implements FunctionMissing {
         // 方法实例
         Method method = ReflectUtil.getMethodByName(target.getClass(), methodName);
 
-        if (method == null) {
+        if (method == null || !AnnotationUtil.hasAnnotation(method, Accessible.class)) {
             return functionMissing.onFunctionMissing(name, env, arguments);
         }
 

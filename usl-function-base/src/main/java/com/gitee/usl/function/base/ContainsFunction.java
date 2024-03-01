@@ -11,10 +11,10 @@ import java.util.Collection;
  * @author hongda.li
  */
 @FunctionGroup
-public class InFunction {
+public class ContainsFunction {
 
-    @Function("in")
-    public boolean in(Object element, Object container) {
+    @Function("contains")
+    public boolean contains(Object container, Object element) {
         return ObjectUtil.contains(container, element);
     }
 
