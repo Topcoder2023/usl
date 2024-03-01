@@ -341,8 +341,7 @@ public class _JavaType extends _Object {
     public Object getValueFromEnv(final String name, final boolean nameContainsDot,
                                   final Map<String, Object> env, final boolean throwExceptionNotFound) {
         if (env != null) {
-            if (nameContainsDot && !env.containsKey(name) && RuntimeUtils.getInstance(env)
-                    .getOptionValue(Options.ENABLE_PROPERTY_SYNTAX_SUGAR).bool) {
+            if (nameContainsDot && !env.containsKey(name) && RuntimeUtils.getInstance(env).getOptionValue(Options.ENABLE_PROPERTY_SYNTAX_SUGAR).bool) {
                 if (this.subNames == null) {
                     // cache the result
                     this.subNames = Constants.SPLIT_PAT.split(name);
@@ -452,16 +451,7 @@ public class _JavaType extends _Object {
                     tryResolveStaticMethod, 0, names.length);
 
         } catch (Throwable t) {
-            if (RuntimeUtils.getInstance(env).getOptionValue(Options.TRACE_EVAL).bool) {
-                t.printStackTrace();
-            }
-            if (RuntimeUtils.getInstance(env).getOptionValue(Options.NIL_WHEN_PROPERTY_NOT_FOUND).bool) {
-                return null;
-            } else if (throwExceptionNotFound) {
-                throw new ExpressionRuntimeException("Could not find variable " + name, t);
-            } else {
-                return null;
-            }
+            return null;
         }
     }
 
