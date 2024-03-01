@@ -1,8 +1,8 @@
 package com.gitee.usl.resource.handler;
 
+import com.gitee.usl.domain.Returns;
 import com.gitee.usl.resource.ScriptSearcher;
 import com.gitee.usl.resource.api.WebHandler;
-import com.gitee.usl.resource.entity.Returns;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
 

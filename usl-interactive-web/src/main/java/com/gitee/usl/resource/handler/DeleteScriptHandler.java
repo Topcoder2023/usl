@@ -2,10 +2,10 @@ package com.gitee.usl.resource.handler;
 
 import cn.hutool.core.io.FileUtil;
 import com.gitee.usl.USLRunner;
+import com.gitee.usl.domain.Returns;
 import com.gitee.usl.resource.ScriptSearcher;
 import com.gitee.usl.resource.api.WebHandler;
 import com.gitee.usl.resource.api.WebHelper;
-import com.gitee.usl.resource.entity.Returns;
 import com.gitee.usl.resource.entity.ScriptInfo;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;

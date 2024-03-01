@@ -1,11 +1,20 @@
 package com.gitee.usl.domain;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.net.NetUtil;
+import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.WebRoute;
 import com.gitee.usl.api.impl.DefaultHttpHandler;
+import com.gitee.usl.function.http.ServerFunction;
+import com.gitee.usl.infra.structure.SharedSession;
 import com.gitee.usl.infra.structure.StringMap;
 import lombok.Data;
 import org.smartboot.http.server.HttpBootstrap;
+import org.smartboot.http.server.HttpRequest;
+import org.smartboot.http.server.HttpResponse;
+
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * @author hongda.li
@@ -54,6 +63,28 @@ public class HttpServer {
         this.proxy.httpHandler(new DefaultHttpHandler(routeMapping));
         this.proxy.start();
         return this;
+    }
+
+    public HttpServer addRoute(HttpServer server,
+                               String path,
+                               String resource,
+                               Consumer<WebRoute> consumer) {
+        USLRunner runner = SharedSession.getSession().getDefinition().getRunner();
+        StringMap<WebRoute> handlerMap = server.getRouteMapping();
+        WebRoute route = new WebRoute() {
+            @Override
+            public Boolean doHandle(HttpRequest request, HttpResponse response) {
+                ExecutableParam param = new ExecutableParam(runner, new ResourceParam(resource));
+                param.addContext(ServerFunction.REQUEST_NAME, request);
+                param.addContext(ServerFunction.RESPONSE_NAME, response);
+                return Optional.ofNullable(param.execute())
+                        .map(res -> Convert.toBool(res, Boolean.TRUE))
+                        .orElse(Boolean.TRUE);
+            }
+        };
+        consumer.accept(route);
+        handlerMap.put(path, route);
+        return server;
     }
 
     private String generateName() {

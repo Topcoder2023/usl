@@ -1,15 +1,22 @@
 package com.gitee.usl.domain;
 
 import com.gitee.usl.infra.constant.StringConstant;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.StringJoiner;
 
 /**
  * @author hongda.li
  */
+@Getter
+@ToString
 public class Returns {
+
     private String code;
+
     private String message;
+
     private Object data;
 
     public static Returns success() {
@@ -28,17 +35,9 @@ public class Returns {
         return new Returns().setCode(StringConstant.FAILURE).setMessage(message);
     }
 
-    public String getCode() {
-        return code;
-    }
-
     public Returns setCode(String code) {
         this.code = code;
         return this;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     public Returns setMessage(String message) {
@@ -46,21 +45,8 @@ public class Returns {
         return this;
     }
 
-    public Object getData() {
-        return data;
-    }
-
     public Returns setData(Object data) {
         this.data = data;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", Returns.class.getSimpleName() + "[", "]")
-                .add("flag='" + code + "'")
-                .add("message='" + message + "'")
-                .add("data=" + data)
-                .toString();
     }
 }

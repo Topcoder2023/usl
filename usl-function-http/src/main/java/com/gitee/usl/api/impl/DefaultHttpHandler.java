@@ -1,8 +1,10 @@
 package com.gitee.usl.api.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.alibaba.fastjson2.JSON;
 import com.gitee.usl.api.WebRoute;
 import com.gitee.usl.domain.Returns;
+import com.gitee.usl.infra.constant.NumberConstant;
 import com.gitee.usl.infra.constant.StringConstant;
 import com.gitee.usl.infra.structure.StringMap;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +16,10 @@ import org.smartboot.http.server.HttpResponse;
 import org.smartboot.http.server.HttpServerHandler;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * @author hongda.li
@@ -37,22 +41,43 @@ public class DefaultHttpHandler extends HttpServerHandler {
             return;
         }
 
-        WebRoute route = Optional.ofNullable(mapping.get(path))
+        List<WebRoute> routeList = Optional.ofNullable(mapping.get(path))
+                .map(Stream::of)
                 .orElse(mapping.entrySet()
                         .stream()
                         .filter(entry -> PATH_MATCHER.match(entry.getKey(), path))
-                        .findFirst()
-                        .map(Map.Entry::getValue)
-                        .orElse(null));
+                        .map(Map.Entry::getValue))
+                .toList();
 
-        if (route == null) {
+        List<WebRoute> filterList = routeList.stream()
+                .filter(route -> route.getFilterFlag().isTrue())
+                .toList();
+
+        for (WebRoute filter : filterList) {
+            boolean release = filter.doHandle(request, response);
+            if (!release) {
+                return;
+            }
+        }
+
+        List<WebRoute> handlerList = routeList.stream()
+                .filter(route -> route.getFilterFlag().isFalse())
+                .toList();
+
+        if (CollUtil.isEmpty(handlerList)) {
             response.setHttpStatus(HttpStatus.NOT_FOUND);
             log.warn("未找到匹配的路由处理器 - [{}]", path);
             return;
         }
 
+        if (handlerList.size() > NumberConstant.ONE) {
+            response.setHttpStatus(HttpStatus.NOT_FOUND);
+            log.warn("存在重复的路由处理器 - [{}]", path);
+            return;
+        }
+
         try {
-            route.doHandle(request, response);
+            handlerList.getFirst().doHandle(request, response);
         } catch (Exception e) {
             log.error("路由处理器发生异常", e);
             response.setContentType(HeaderValueEnum.APPLICATION_JSON.getName() + StringConstant.CONTENT_TYPE_SUFFIX);

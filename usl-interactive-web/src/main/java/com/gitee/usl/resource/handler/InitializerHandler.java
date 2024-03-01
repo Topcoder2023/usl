@@ -1,7 +1,6 @@
 package com.gitee.usl.resource.handler;
 
-
-import com.gitee.usl.resource.entity.Returns;
+import com.gitee.usl.domain.Returns;
 import com.gitee.usl.resource.entity.TreeInfo;
 import com.gitee.usl.resource.api.WebHandler;
 import org.smartboot.http.server.HttpRequest;
