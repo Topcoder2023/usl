@@ -5,6 +5,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.gitee.usl.api.annotation.Description;
 import com.gitee.usl.api.FunctionMissing;
+import com.gitee.usl.grammar.runtime.function.FunctionUtils;
 import com.gitee.usl.grammar.runtime.type._Object;
 import com.gitee.usl.infra.exception.USLNotFoundException;
 import lombok.Getter;
@@ -79,9 +80,9 @@ public class DefaultFunctionMissing implements FunctionMissing {
         Assert.isTrue(metaInfo.length == 2, "不支持链式调用对象方法");
 
         if (ArrayUtil.isEmpty(arguments)) {
-            return ReflectUtil.invoke(target, method);
+            return FunctionUtils.wrapReturn(ReflectUtil.invoke(target, method));
         } else {
-            return ReflectUtil.invoke(target, method, Arrays.stream(arguments).map(arg -> arg.getValue(env)).toArray());
+            return FunctionUtils.wrapReturn(ReflectUtil.invoke(target, method, Arrays.stream(arguments).map(arg -> arg.getValue(env)).toArray()));
         }
     }
 
