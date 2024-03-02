@@ -22,18 +22,18 @@
     <dependencies>
         <dependency>
             <groupId>com.gitee</groupId>
-            <artifactId>usl-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gitee</groupId>
             <artifactId>usl-logger</artifactId>
             <optional>true</optional>
         </dependency>
 
         <dependency>
-            <groupId>org.smartboot.http</groupId>
-            <artifactId>smart-http-server</artifactId>
+            <groupId>com.gitee</groupId>
+            <artifactId>usl-function-http</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gitee</groupId>
+            <artifactId>usl-function-data</artifactId>
         </dependency>
 
         <dependency>

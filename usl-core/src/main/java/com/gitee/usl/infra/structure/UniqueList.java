@@ -1,6 +1,9 @@
 package com.gitee.usl.infra.structure;
 
+import com.gitee.usl.infra.utils.AnnotatedComparator;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -26,7 +29,9 @@ public class UniqueList<E> extends ArrayList<E> {
         if (this.stream().anyMatch(item -> Objects.equals(item.getClass(), type))) {
             return false;
         }
-        return super.add(element);
+        boolean added = super.add(element);
+        this.sort(Comparator.comparing(item -> AnnotatedComparator.getOrder(item.getClass())));
+        return added;
     }
 
     @Override
@@ -37,6 +42,7 @@ public class UniqueList<E> extends ArrayList<E> {
             return;
         }
         super.add(index, element);
+        this.sort(Comparator.comparing(item -> AnnotatedComparator.getOrder(item.getClass())));
     }
 
 }

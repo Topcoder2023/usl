@@ -1,8 +1,5 @@
 package com.gitee.usl.api.impl;
 
-import cn.hutool.cache.Cache;
-import cn.hutool.cache.impl.LRUCache;
-import cn.hutool.core.lang.func.Func0;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.gitee.usl.api.ScriptCompiler;
@@ -19,6 +16,9 @@ import com.gitee.usl.infra.exception.USLCompileException;
 import com.gitee.usl.infra.structure.FunctionHolder;
 import com.gitee.usl.domain.Param;
 import com.gitee.usl.kernel.engine.USLConfiguration;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.RemovalListener;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -47,19 +47,22 @@ public class DefaultScriptCompiler implements ScriptCompiler {
         this.engine = configuration.getEngine();
         this.definable = configuration.getDefinable();
         this.functionHolder = configuration.getFunctionHolder();
-        this.cache = new LRUCache<>(configuration.getSize(), configuration.getExpired().toMillis());
-        this.cache.setListener((key, param) -> log.debug("剔除缓存 - [{}]", key));
+        this.cache = Caffeine.newBuilder()
+                .softValues()
+                .maximumSize(configuration.getSize())
+                .expireAfterAccess(configuration.getExpired())
+                .evictionListener((RemovalListener<String, Param>) (key, param, removalCause) -> log.debug("剔除缓存 - [{}]", key))
+                .build();
     }
 
     @Override
     public void compile(Param param) {
         String key = DigestUtil.sha256Hex(param.getScript());
-        log.debug("新增缓存 - [{}]", key);
 
-        Param value = cache.get(key, (Func0<Param>) () -> param.self().setCompiled(this.compile(param.getScript())));
+        Param value = cache.get(key, k -> param.self().setCompiled(this.compile(key, param.getScript())));
 
         if (!param.isCached()) {
-            cache.remove(key);
+            cache.invalidate(key);
             log.debug("剔除缓存 - [{}]", key);
         }
 
@@ -82,7 +85,8 @@ public class DefaultScriptCompiler implements ScriptCompiler {
                         }));
     }
 
-    protected BS compile(String script) {
+    protected BS compile(String key, String script) {
+        log.debug("新增缓存 - [{}]", key);
         if (CharSequenceUtil.isBlank(script)) {
             return ES.empty().setException(new USLCompileException(ResultCode.SCRIPT_EMPTY));
         } else {

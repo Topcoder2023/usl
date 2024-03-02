@@ -88,12 +88,6 @@ public final class USLConfiguration extends StringMap<Object> {
     private Boolean enableLambda;
 
     /**
-     * 是否开启对象方法调用
-     * 启用后可通过 <对象名>.<方法名> 快速调用
-     */
-    private Boolean enableMethodInvoke;
-
-    /**
      * 缓存的失效时间
      * 默认为一小时后失效
      */
@@ -262,13 +256,10 @@ public final class USLConfiguration extends StringMap<Object> {
         this.enableDebug = ObjectUtil.defaultIfNull(this.enableDebug, Boolean.FALSE);
         log.debug("是否开启调试模式 - {}", this.enableDebug);
 
-        this.enableMethodInvoke = ObjectUtil.defaultIfNull(this.enableMethodInvoke, Boolean.TRUE);
-        log.debug("是否开启方法访问 - {}", this.enableMethodInvoke);
-
         this.serviceFinder = ObjectUtil.defaultIfNull(this.serviceFinder, new DefaultServiceFinder());
         log.debug("服务发现者实现类 - {}", this.serviceFinder.getClass().getName());
 
-        this.functionMissing = ObjectUtil.defaultIfNull(this.functionMissing, new DefaultFunctionMissing(this.enableMethodInvoke));
+        this.functionMissing = ObjectUtil.defaultIfNull(this.functionMissing, new DefaultFunctionMissing());
         log.debug("函数兜底器实现类 - {}", this.functionMissing.getClass().getName());
 
         this.definable = ObjectUtil.defaultIfNull(this.definable, new DefaultVariableDefinable());

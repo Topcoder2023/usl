@@ -18,7 +18,7 @@ public class LoggerPluginEnhancer extends AbstractFunctionEnhancer {
         boolean skip;
 
         if (fp instanceof Definable definable) {
-            boolean enableDebug = Boolean.TRUE.equals(definable.definition()
+            boolean disableDebug = !Boolean.TRUE.equals(definable.definition()
                     .getRunner()
                     .getConfiguration()
                     .getEnableDebug());
@@ -27,8 +27,8 @@ public class LoggerPluginEnhancer extends AbstractFunctionEnhancer {
                     .getMethodMeta()
                     .targetType();
 
-            boolean noneLogger = ArrayUtil.isNotEmpty(ReflectUtil.getFields(targeted, field -> Logger.class.equals(field.getType())));
-            skip = enableDebug && noneLogger;
+            boolean hasLogger = ArrayUtil.isNotEmpty(ReflectUtil.getFields(targeted, field -> Logger.class.equals(field.getType())));
+            skip = disableDebug || hasLogger;
         } else {
             skip = false;
         }

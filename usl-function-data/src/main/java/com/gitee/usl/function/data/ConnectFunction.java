@@ -11,6 +11,8 @@ import com.gitee.usl.infra.structure.SharedSession;
 import com.gitee.usl.plugin.annotation.NotNull;
 
 import static com.gitee.usl.infra.DatabaseConstant.*;
+import static com.gitee.usl.infra.constant.StringConstant.DEFAULT_PATH;
+import static com.gitee.usl.infra.constant.StringConstant.FILE_SPLIT;
 
 /**
  * @author hongda.li
