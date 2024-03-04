@@ -77,6 +77,7 @@ public class DefaultHttpHandler extends HttpServerHandler {
         }
 
         try {
+            log.debug("开始处理请求 - [{}]", path);
             handlerList.getFirst().doHandle(request, response);
         } catch (Exception e) {
             log.error("路由处理器发生异常", e);

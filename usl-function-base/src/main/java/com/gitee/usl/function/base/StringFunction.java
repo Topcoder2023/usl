@@ -2,7 +2,6 @@ package com.gitee.usl.function.base;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.pinyin.PinyinUtil;
 import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 
@@ -17,78 +16,72 @@ import java.nio.charset.StandardCharsets;
 @FunctionGroup
 public class StringFunction {
 
-    @Function("contains")
+    @Function("string_contains")
     public boolean contains(String text, String compareText) {
         return CharSequenceUtil.contains(text, compareText);
     }
 
-    @Function("starts_with")
+    @Function("string_starts_with")
     public boolean starts_with(String arg1, String arg2) {
         return CharSequenceUtil.startWith(arg1, arg2);
     }
 
-    @Function("ends_with")
+    @Function("string_ends_with")
     public boolean ends_with(String arg1, String arg2) {
         return CharSequenceUtil.endWith(arg1, arg2);
     }
 
-    @Function("index_of")
+    @Function("string_index_of")
     public int index_of(CharSequence arg1, char arg2) {
         return CharSequenceUtil.indexOf(arg1, arg2);
     }
 
-    @Function("replace")
+    @Function("string_replace")
     public String replace(String text, String oldText, String newText) {
         return CharSequenceUtil.replace(text, oldText, newText);
     }
 
-    @Function("substring")
+    @Function("string_substring")
     public String substring(String text, int start, int end) {
         return StrUtil.sub(text, start, end);
     }
 
-    @Function("length")
+    @Function("string_length")
     public int length(String text) {
         return CharSequenceUtil.length(text);
     }
 
-
-    @Function("to_lower_case")
+    @Function("string_to_lower_case")
     public String to_lower_case(String text) {
         return text.toLowerCase();
     }
 
-    @Function("regex")
+    @Function("string_regex")
     public int regex(String text, String regex) {
         return text.matches(regex) ? 1 : 0;
     }
 
-    @Function("pinyin")
-    public String pinyin(String text) {
-        return PinyinUtil.getPinyin(text, "");
-    }
-
-    @Function("trim")
+    @Function("string_trim")
     public String trim(String str) {
         return CharSequenceUtil.trim(str);
     }
 
-    @Function("trim_start")
+    @Function("string_trim_start")
     public String trim_start(String str) {
         return CharSequenceUtil.trimStart(str);
     }
 
-    @Function("trim_end")
+    @Function("string_trim_end")
     public String trim_end(String str) {
         return CharSequenceUtil.trimEnd(str);
     }
 
-    @Function("url_encode")
+    @Function("string_url_encode")
     public String url_encode(String url) throws UnsupportedEncodingException {
         return URLEncoder.encode(url, StandardCharsets.UTF_8.displayName());
     }
 
-    @Function("url_decode")
+    @Function("string_url_decode")
     public String url_decode(String url) throws UnsupportedEncodingException {
         return URLDecoder.decode(url, StandardCharsets.UTF_8.displayName());
     }

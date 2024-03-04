@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * 此类作为 FunctionMissing 接口的默认实现,
- * 在启用了方法调用配置的前提上,会解析 <变量名.方法名()>，并通过反射传入参数并获取其返回值
+ * 会解析 <变量名.方法名()>，并通过反射传入参数并获取其返回值
  *
  * @author hongda.li
  */
@@ -75,7 +75,9 @@ public class DefaultFunctionMissing implements FunctionMissing {
         if (ArrayUtil.isEmpty(arguments)) {
             return FunctionUtils.wrapReturn(ReflectUtil.invoke(target, method));
         } else {
-            return FunctionUtils.wrapReturn(ReflectUtil.invoke(target, method, Arrays.stream(arguments).map(arg -> arg.getValue(env)).toArray()));
+            return FunctionUtils.wrapReturn(ReflectUtil.invoke(target, method, Arrays.stream(arguments)
+                    .map(arg -> arg.getValue(env))
+                    .toArray()));
         }
     }
 

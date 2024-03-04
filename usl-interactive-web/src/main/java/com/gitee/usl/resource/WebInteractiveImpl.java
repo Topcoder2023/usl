@@ -16,6 +16,6 @@ public class WebInteractiveImpl implements WebInteractive {
 
     @Override
     public void open(USLRunner runner) {
-        runner.run(new ResourceParam("main.js"));
+        runner.run(new ResourceParam("route/main.js"));
     }
 }

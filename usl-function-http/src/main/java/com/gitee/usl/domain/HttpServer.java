@@ -6,9 +6,9 @@ import com.gitee.usl.USLRunner;
 import com.gitee.usl.api.WebRoute;
 import com.gitee.usl.api.annotation.Accessible;
 import com.gitee.usl.api.impl.DefaultHttpHandler;
-import com.gitee.usl.infra.structure.SharedSession;
 import com.gitee.usl.infra.structure.StringMap;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.smartboot.http.server.HttpBootstrap;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 /**
  * @author hongda.li
  */
+@Slf4j
 public class HttpServer {
     /**
      * 内置变量名称
@@ -48,16 +49,19 @@ public class HttpServer {
      */
     private final HttpBootstrap proxy;
     /**
+     * 执行器
+     */
+    private final USLRunner runner;
+    /**
      * 路由映射
      */
-    @Getter
     private final StringMap<WebRoute> routeMapping = new StringMap<>();
 
-    public HttpServer(int port) {
-        this(port, NetUtil.getLocalhostStr());
+    public HttpServer(int port, USLRunner runner) {
+        this(port, NetUtil.getLocalhostStr(), runner);
     }
 
-    public HttpServer(int port, String host) {
+    public HttpServer(int port, String host, USLRunner runner) {
         this.host = host;
         this.port = port;
         this.proxy = new HttpBootstrap();
@@ -68,21 +72,32 @@ public class HttpServer {
                 .bannerEnabled(false)
                 .serverName(serverName);
         this.proxy.setPort(port);
+        this.runner = runner;
     }
 
     @Accessible
     public HttpServer start() {
+        log.info("HTTP服务启动成功 - [{}]", serverName);
         this.proxy.httpHandler(new DefaultHttpHandler(routeMapping));
         this.proxy.start();
         return this;
     }
 
-    public HttpServer addRoute(HttpServer server,
-                               String path,
-                               String resource,
-                               Consumer<WebRoute> consumer) {
-        USLRunner runner = SharedSession.getSession().getDefinition().getRunner();
-        StringMap<WebRoute> handlerMap = server.getRouteMapping();
+    @Accessible
+    public void filter(String path, String resource) {
+        log.info("HTTP服务过滤器添加成功 - [{} ~ {}]", path, resource);
+        this.addRoute(path, resource, WebRoute::filter);
+    }
+
+    @Accessible
+    public void handler(String path, String resource) {
+        log.info("HTTP服务处理器添加成功 - [{} ~ {}]", path, resource);
+        this.addRoute(path, resource, WebRoute::handler);
+    }
+
+    public void addRoute(String path,
+                         String resource,
+                         Consumer<WebRoute> consumer) {
         WebRoute route = new WebRoute() {
             @Override
             public Boolean doHandle(HttpRequest request, HttpResponse response) {
@@ -99,13 +114,10 @@ public class HttpServer {
             }
         };
         consumer.accept(route);
-        handlerMap.put(path, route);
-        return server;
+        routeMapping.put(path, route);
     }
 
     private String generateName() {
-        return "[USL-HTTP-Server-(host:port)]"
-                .replace("host", this.host)
-                .replace("port", String.valueOf(this.port));
+        return this.host + ":" + this.port;
     }
 }
