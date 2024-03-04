@@ -1,5 +1,7 @@
 package com.gitee.usl.infra;
 
+import com.gitee.usl.plugin.annotation.Past;
+
 /**
  * @author hongda.li
  */
@@ -13,6 +15,8 @@ public class DatabaseConstant {
     public static final String DEFAULT_DATABASE_NAME = "SYSTEM";
 
     public static final String TABLE_LOCK_SQL = "sql/LOCK_TABLE.sql";
+
+    public static final String TABLE_QUEUE_SQL = "sql/QUEUE_TABLE.sql";
 
     public static final String TABLE_FUNCTION_SQL = "sql/FUNCTION_TABLE.sql";
 
@@ -33,4 +37,9 @@ public class DatabaseConstant {
     public static final String FIELD_NAME = "LOCK_NAME";
     public static final String FIELD_CREATED_TIME = "CREATED_TIME";
     public static final String FIELD_EXPIRED_TIME = "EXPIRED_TIME";
+    public static final String FIELD_MESSAGE_CONTENT = "MESSAGE_CONTENT";
+    public static final String FIELD_PRODUCED_TIME = "PRODUCED_TIME";
+    public static final String FIELD_CONSUMED_TIME = "CONSUMED_TIME";
+    public static final int DEFAULT_BATCH_SIZE = 1;
+    public static final Long DEFAULT_CONSUME_INTERVAL = 1000L * 10;
 }
