@@ -3,7 +3,7 @@ package com.gitee.usl.domain;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.net.NetUtil;
-
+import cn.hutool.core.net.URLDecoder;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
@@ -22,13 +22,13 @@ import org.smartboot.http.server.HttpResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
-/**
- * @author hongda.li, jingshu.zeng
- */
+
 @Slf4j
 public class HttpServer {
     private static final String REQUEST = "request";
@@ -81,8 +81,6 @@ public class HttpServer {
         this.addRoute(path, resource, WebRoute::filter);
     }
 
-
-
     @Accessible
     public void handler(String path, String resource) {
         log.info("HTTP服务处理器添加成功 - [{} ~ {}]", path, resource);
@@ -97,17 +95,16 @@ public class HttpServer {
             public Boolean doHandle(HttpRequest request, HttpResponse response) {
                 ExecutableParam param = new ExecutableParam(runner, new ResourceParam(resource));
 
-                // 解析URL参数
-                Map<String, String> urlParams = parseUrlParams(request.getQueryString());
-                param.addContext("urlParams", urlParams);
-
-                // 解析JSON参数
-                JSONObject jsonObj = parseJsonParams(request);
-                param.addContext("jsonParams", jsonObj);
-
-                // 解析Body参数
-                Map<String, String> bodyParams = parseBodyParams(request);
-                param.addContext("bodyParams", bodyParams);
+                String method = request.getMethod(); // 获取请求方法
+                if ("GET".equalsIgnoreCase(method)) {
+                    // 解析URL参数
+                    Map<String, String> urlParams = parseUrlParams(request.getQueryString());
+                    param.addContext("urlParams", urlParams);
+                } else if ("POST".equalsIgnoreCase(method)) {
+                    // 解析Body参数
+                    Map<String, String> bodyParams = parseBodyParams(request);
+                    param.addContext("bodyParams", bodyParams);
+                }
 
                 HttpRequestWrapper requestWrapper = new HttpRequestWrapper();
                 requestWrapper.set(request);
@@ -139,56 +136,51 @@ public class HttpServer {
                 params.put(key, value);
             }
         }
+        log.info("url参数解析成功");
+        log.info("url参数:" + params.toString());
         return params;
-    }
-
-    private JSONObject parseJsonParams(HttpRequest request) {
-        JSONObject jsonObj = null;
-        try {
-            // 从请求体输入流中读取数据
-            InputStream inputStream = request.getInputStream();
-            if (inputStream != null) {
-                String bodyString = IoUtil.read(inputStream, CharsetUtil.CHARSET_UTF_8);
-                // 解析 JSON 字符串为 JSONObject 对象
-                jsonObj = JSONUtil.parseObj(bodyString);
-            }
-        } catch (IOException e) {
-            log.error("解析JSON参数时发生IO异常：", e);
-        } catch (Exception e) {
-            log.error("解析JSON参数时发生异常：", e);
-        }
-        return jsonObj;
     }
 
     private Map<String, String> parseBodyParams(HttpRequest request) {
         Map<String, String> bodyParams = new HashMap<>();
         String contentType = request.getContentType();
         try {
-            if (StrUtil.isNotBlank(contentType) && contentType.toLowerCase().contains("application/json")) {
-                // JSON格式的参数获取
-                String bodyString = IoUtil.read(request.getInputStream(), CharsetUtil.CHARSET_UTF_8);
-                JSONObject jsonObj = JSONUtil.parseObj(bodyString);
-                for (Map.Entry<String, Object> entry : jsonObj.entrySet()) {
-                    bodyParams.put(entry.getKey(), entry.getValue().toString());
-                }
-            } else if (StrUtil.isNotBlank(contentType) && contentType.toLowerCase().contains("application/x-www-form-urlencoded")) {
-                // 表单形式的参数获取
-                Map<String, String[]> params = request.getParameters();
-                for (Map.Entry<String, String[]> entry : params.entrySet()) {
-                    if (entry.getValue() != null && entry.getValue().length > 0) {
-                        bodyParams.put(entry.getKey(), entry.getValue()[0]);
+            if (StrUtil.isNotBlank(contentType)) {
+                if (contentType.toLowerCase().contains("application/json")) {
+                    // JSON格式的参数获取
+                    String bodyString = IoUtil.read(request.getInputStream(), CharsetUtil.CHARSET_UTF_8);
+                    JSONObject jsonObj = JSONUtil.parseObj(bodyString);
+                    for (Map.Entry<String, Object> entry : jsonObj.entrySet()) {
+                        bodyParams.put(entry.getKey(), entry.getValue().toString());
                     }
+                } else if (contentType.toLowerCase().contains("application/x-www-form-urlencoded")) {
+                    // 表单形式的参数获取
+                    Map<String, String[]> params = request.getParameters();
+                    for (Map.Entry<String, String[]> entry : params.entrySet()) {
+                        if (entry.getValue() != null && entry.getValue().length > 0) {
+                            bodyParams.put(entry.getKey(), entry.getValue()[0]);
+                        }
+                    }
+                } else if (contentType.toLowerCase().contains("text/plain")) {
+                    // 文本类型的参数获取
+                    String bodyString = IoUtil.read(request.getInputStream(), CharsetUtil.CHARSET_UTF_8);
+                    bodyParams.put("body", bodyString); // 假设将文本内容作为 "body" 参数存储
+                } else {
+                    log.error("暂不支持解析该类型的body参数：{}", contentType);
                 }
+            } else {
+                log.info("不存在body参数");
             }
         } catch (IOException e) {
             log.error("解析请求的body参数时发生IO异常：", e);
         } catch (Exception e) {
             log.error("解析请求的body参数时发生异常：", e);
         }
+
+        if (!bodyParams.isEmpty()) {
+            log.info("body参数解析成功");
+            log.info("body参数: {}", bodyParams);
+        }
         return bodyParams;
     }
-
-
-
-
 }
