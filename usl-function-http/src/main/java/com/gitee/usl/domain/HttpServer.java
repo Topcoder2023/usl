@@ -3,7 +3,6 @@ package com.gitee.usl.domain;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.net.NetUtil;
-import cn.hutool.core.net.URLDecoder;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
@@ -21,32 +20,50 @@ import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * @author hongda.li, jingshu.zeng, jiahao.song
+ */
 @Slf4j
 public class HttpServer {
+    /**
+     * 内置变量名称
+     */
     private static final String REQUEST = "request";
+    /**
+     * 内置变量名称
+     */
     private static final String RESPONSE = "response";
-
+    /**
+     * 端口号
+     */
     @Getter
     private final int port;
-
+    /**
+     * 本机地址
+     */
     @Getter
     private final String host;
-
+    /**
+     * 服务器名称
+     */
     @Getter
     private final String serverName;
-
+    /**
+     * 服务器代理
+     */
     private final HttpBootstrap proxy;
-
+    /**
+     * 执行器
+     */
     private final USLRunner runner;
-
+    /**
+     * 路由映射
+     */
     private final StringMap<WebRoute> routeMapping = new StringMap<>();
 
     public HttpServer(int port, USLRunner runner) {
@@ -95,16 +112,14 @@ public class HttpServer {
             public Boolean doHandle(HttpRequest request, HttpResponse response) {
                 ExecutableParam param = new ExecutableParam(runner, new ResourceParam(resource));
 
-                String method = request.getMethod(); // 获取请求方法
-                if ("GET".equalsIgnoreCase(method)) {
-                    // 解析URL参数
-                    Map<String, String> urlParams = parseUrlParams(request.getQueryString());
-                    param.addContext("urlParams", urlParams);
-                } else if ("POST".equalsIgnoreCase(method)) {
-                    // 解析Body参数
-                    Map<String, String> bodyParams = parseBodyParams(request);
-                    param.addContext("bodyParams", bodyParams);
-                }
+                // 解析URL参数
+                Map<String, String> urlParams = parseUrlParams(request.getQueryString());
+                param.addContext("urlParams", urlParams);
+
+                // 解析Body参数
+                Map<String, String> bodyParams = parseBodyParams(request);
+                param.addContext("bodyParams", bodyParams);
+
 
                 HttpRequestWrapper requestWrapper = new HttpRequestWrapper();
                 requestWrapper.set(request);
@@ -161,15 +176,17 @@ public class HttpServer {
                             bodyParams.put(entry.getKey(), entry.getValue()[0]);
                         }
                     }
+                } else if (contentType.toLowerCase().contains("multipart/form-data")) {
+
                 } else if (contentType.toLowerCase().contains("text/plain")) {
                     // 文本类型的参数获取
                     String bodyString = IoUtil.read(request.getInputStream(), CharsetUtil.CHARSET_UTF_8);
-                    bodyParams.put("body", bodyString); // 假设将文本内容作为 "body" 参数存储
+                    bodyParams.put("body", bodyString);
                 } else {
                     log.error("暂不支持解析该类型的body参数：{}", contentType);
                 }
             } else {
-                log.info("不存在body参数");
+                log.info("没有body参数");
             }
         } catch (IOException e) {
             log.error("解析请求的body参数时发生IO异常：", e);
