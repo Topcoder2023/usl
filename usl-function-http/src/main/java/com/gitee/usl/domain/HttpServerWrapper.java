@@ -29,7 +29,7 @@ import java.util.function.Consumer;
  * @author hongda.li, jingshu.zeng, jiahao.song
  */
 @Slf4j
-public class HttpServer {
+public class HttpServerWrapper {
     /**
      * 内置变量名称
      */
@@ -64,13 +64,14 @@ public class HttpServer {
     /**
      * 路由映射
      */
+    @Getter
     private final StringMap<WebRoute> routeMapping = new StringMap<>();
 
-    public HttpServer(int port, USLRunner runner) {
+    public HttpServerWrapper(int port, USLRunner runner) {
         this(port, NetUtil.getLocalhostStr(), runner);
     }
 
-    public HttpServer(int port, String host, USLRunner runner) {
+    public HttpServerWrapper(int port, String host, USLRunner runner) {
         this.host = host;
         this.port = port;
         this.proxy = new HttpBootstrap();
@@ -85,7 +86,7 @@ public class HttpServer {
     }
 
     @Accessible
-    public HttpServer start() {
+    public HttpServerWrapper start() {
         log.info("HTTP服务启动成功 - [{}]", serverName);
         this.proxy.httpHandler(new DefaultHttpHandler(routeMapping));
         this.proxy.start();

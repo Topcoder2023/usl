@@ -7,7 +7,7 @@ import com.gitee.usl.api.annotation.Function;
 import com.gitee.usl.api.annotation.FunctionGroup;
 import com.gitee.usl.domain.HttpRequestWrapper;
 import com.gitee.usl.domain.HttpResponseWrapper;
-import com.gitee.usl.domain.HttpServer;
+import com.gitee.usl.domain.HttpServerWrapper;
 import com.gitee.usl.infra.structure.SharedSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ServerFunction {
     @Accessible
     @Description("HTTP-Server")
-    public static final HttpServer server = null;
+    public static final HttpServerWrapper server = null;
 
     @Accessible
     @Description({"USL-HTTP请求体变量", "存放当前请求的所有信息"})
@@ -30,14 +30,14 @@ public class ServerFunction {
     public static final HttpResponseWrapper response = null;
 
     @Function("http_listen")
-    public HttpServer server(int port) {
+    public HttpServerWrapper server(int port) {
         USLRunner runner = SharedSession.getSession().getDefinition().getRunner();
-        return new HttpServer(port, runner);
+        return new HttpServerWrapper(port, runner);
     }
 
     @Function("http_listen_host")
-    public HttpServer server(int port, String host) {
+    public HttpServerWrapper server(int port, String host) {
         USLRunner runner = SharedSession.getSession().getDefinition().getRunner();
-        return new HttpServer(port, host, runner);
+        return new HttpServerWrapper(port, host, runner);
     }
 }
