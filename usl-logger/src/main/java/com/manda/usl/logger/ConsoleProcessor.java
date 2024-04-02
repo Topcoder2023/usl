@@ -18,7 +18,7 @@ import static java.lang.System.out;
  * @author hongda.li
  */
 @AutoService(LoggerProcessor.class)
-public class ConsoleLogger implements LoggerProcessor {
+public class ConsoleProcessor implements LoggerProcessor {
     /**
      * 控制台打印时间的颜色
      */
