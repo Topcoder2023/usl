@@ -6,9 +6,10 @@
     <parent>
         <groupId>com.gitee</groupId>
         <artifactId>usl</artifactId>
-        <version>v1.0.1.SNAPSHOT</version>
+        <version>v1.0.2</version>
     </parent>
 
+    <groupId>com.manda</groupId>
     <artifactId>usl-logger</artifactId>
     <version>${parent.version}</version>
     <packaging>jar</packaging>
@@ -30,6 +31,16 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
