@@ -14,11 +14,15 @@ public final class FunctionSession {
 
     private final Env env;
 
-    private Invocation<?> invocation;
-
     private final AviatorObject[] objects;
 
     private final FunctionMeta definition;
+
+    private Invocation<?> invocation;
+
+    private Object result;
+
+    private Exception exception;
 
     public FunctionSession(Env env, AviatorObject[] objects, FunctionMeta definition) {
         this.env = env;

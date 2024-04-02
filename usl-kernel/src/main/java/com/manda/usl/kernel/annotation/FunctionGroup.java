@@ -21,4 +21,11 @@ public @interface FunctionGroup {
      * @return 名称
      */
     String value() default USLRunner.DEFAULT_NAME;
+
+    /**
+     * 插件列表
+     *
+     * @return 插件列表
+     */
+    Class<?>[] plugins() default {};
 }

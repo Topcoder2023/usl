@@ -20,4 +20,11 @@ public @interface Function {
      * @return 函数名称
      */
     String value() default "";
+
+    /**
+     * 插件列表
+     *
+     * @return 插件列表
+     */
+    Class<?>[] plugins() default {};
 }
