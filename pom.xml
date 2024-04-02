@@ -13,7 +13,7 @@
 
     <groupId>com.gitee</groupId>
     <artifactId>usl</artifactId>
-    <version>v1.0.2</version>
+    <version>v1.1.0</version>
 
     <inceptionYear>2023</inceptionYear>
     <url>https://gitee.com/yixi-dlmu/usl</url>
@@ -79,6 +79,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.manda</groupId>
+                <artifactId>usl-logger</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
