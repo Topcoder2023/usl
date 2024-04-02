@@ -1,6 +1,7 @@
 package com.manda.usl.kernel.function;
 
 import cn.hutool.core.annotation.AnnotationUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
@@ -10,6 +11,7 @@ import com.manda.usl.kernel.annotation.Function;
 import com.manda.usl.kernel.annotation.FunctionGroup;
 import com.manda.usl.kernel.bean.BeanContext;
 import com.manda.usl.kernel.bean.BeanId;
+import com.manda.usl.kernel.common.FunctionEnhancer;
 import com.manda.usl.kernel.entity.FunctionMeta;
 import com.manda.usl.kernel.entity.MethodMeta;
 import com.manda.usl.kernel.plugin.Plugin;
@@ -26,6 +28,7 @@ import java.util.stream.Stream;
 public class EnhancedFunctionLoader implements FunctionLoader {
     private final String runnerName;
     private final Map<String, AviatorFunction> functions = new HashMap<>();
+    private List<FunctionEnhancer> enhancerList;
 
     public EnhancedFunctionLoader(String runnerName) {
         this.runnerName = runnerName;
@@ -45,7 +48,19 @@ public class EnhancedFunctionLoader implements FunctionLoader {
                     return functionMeta;
                 })
                 .map(EnhancedFunction::new)
+                .map(this::enhance)
                 .forEach(this::cache));
+    }
+
+    private EnhancedFunction enhance(EnhancedFunction function) {
+        if (enhancerList == null) {
+            enhancerList = BeanContext.find(FunctionEnhancer.class);
+        }
+        if (CollUtil.isEmpty(enhancerList)) {
+            return function;
+        }
+        enhancerList.forEach(enhancer -> enhancer.enhance(function));
+        return function;
     }
 
     private List<Plugin> parsePlugin(Class<?> clazz, Method method) {
