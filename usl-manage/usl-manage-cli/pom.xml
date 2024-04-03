@@ -4,13 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.gitee</groupId>
-        <artifactId>usl</artifactId>
+        <groupId>com.manda</groupId>
+        <artifactId>usl-manage</artifactId>
         <version>v1.1.0</version>
     </parent>
 
-    <groupId>com.manda</groupId>
-    <artifactId>usl-basic</artifactId>
+    <artifactId>usl-manage-cli</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

@@ -7,15 +7,16 @@
 
     <name>usl</name>
     <modules>
+        <module>usl-data</module>
+        <module>usl-http</module>
+        <module>usl-base</module>
         <module>usl-kernel</module>
         <module>usl-logger</module>
         <module>usl-plugin</module>
-        <module>usl-data</module>
-        <module>usl-http</module>
-        <module>usl-basic</module>
+        <module>usl-manage</module>
     </modules>
 
-    <groupId>com.gitee</groupId>
+    <groupId>com.manda</groupId>
     <artifactId>usl</artifactId>
     <version>v1.1.0</version>
 

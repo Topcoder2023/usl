@@ -1,6 +1,7 @@
 package com.manda.usl.http.server.entity;
 
 import cn.hutool.core.net.NetUtil;
+import cn.hutool.core.text.StrPool;
 import lombok.Data;
 
 /**
@@ -14,6 +15,8 @@ public class ServerConfiguration {
     private String host = NetUtil.getLocalhostStr();
 
     private Integer port = NetUtil.getUsableLocalPort();
+
+    private String resource = StrPool.SLASH;
 
     private Integer threadNum = 8;
 
