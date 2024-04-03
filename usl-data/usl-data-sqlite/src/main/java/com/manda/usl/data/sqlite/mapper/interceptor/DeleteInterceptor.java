@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
-import com.manda.usl.data.sqlite.mapper.Metadata;
+import com.manda.usl.data.sqlite.entity.Metadata;
 import com.manda.usl.kernel.annotation.Singleton;
 
 import java.lang.reflect.Method;

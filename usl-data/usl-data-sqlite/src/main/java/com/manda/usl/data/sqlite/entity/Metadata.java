@@ -1,6 +1,7 @@
-package com.manda.usl.data.sqlite.mapper;
+package com.manda.usl.data.sqlite.entity;
 
 import cn.hutool.db.meta.JdbcType;
+import com.manda.usl.data.sqlite.mapper.SqlInterceptor;
 import lombok.Data;
 
 import javax.sql.DataSource;

@@ -1,4 +1,4 @@
-package com.manda.usl.data.sqlite.mapper;
+package com.manda.usl.data.sqlite.entity;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import lombok.Data;

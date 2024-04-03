@@ -11,6 +11,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.manda.usl.data.sqlite.annotation.PrimaryKey;
 import com.manda.usl.data.sqlite.annotation.Select;
 import com.manda.usl.data.sqlite.annotation.Table;
+import com.manda.usl.data.sqlite.entity.Metadata;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -69,8 +70,6 @@ public final class MetadataParser {
 
     private static void parseColumns(Metadata metadata, Class<?> entity) {
         Field[] fields = ReflectUtil.getFields(entity);
-        Assert.notEmpty(fields, "There are no fields in the entity - {}", entity.getName());
-
         for (Field field : fields) {
             PrimaryKey primaryKey = AnnotationUtil.getAnnotation(field, PrimaryKey.class);
             if (primaryKey != null) {

@@ -3,7 +3,7 @@ package com.manda.usl.data.sqlite.mapper.interceptor;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.db.Db;
 import cn.hutool.db.Page;
-import com.manda.usl.data.sqlite.mapper.Metadata;
+import com.manda.usl.data.sqlite.entity.Metadata;
 import com.manda.usl.kernel.annotation.Singleton;
 
 import java.lang.reflect.Method;

@@ -3,6 +3,7 @@ package com.manda.usl.data.sqlite.mapper;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.TypeUtil;
 import cn.hutool.db.Db;
+import com.manda.usl.data.sqlite.entity.Metadata;
 import com.manda.usl.data.sqlite.mapper.interceptor.InterceptorContext;
 import lombok.extern.slf4j.Slf4j;
 

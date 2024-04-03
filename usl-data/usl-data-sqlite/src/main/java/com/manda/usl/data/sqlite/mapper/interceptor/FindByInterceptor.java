@@ -6,7 +6,7 @@ import cn.hutool.db.Db;
 import cn.hutool.db.handler.BeanListHandler;
 import cn.hutool.db.sql.Condition;
 import cn.hutool.db.sql.Query;
-import com.manda.usl.data.sqlite.mapper.Metadata;
+import com.manda.usl.data.sqlite.entity.Metadata;
 import com.manda.usl.kernel.annotation.Singleton;
 
 import java.lang.reflect.Method;

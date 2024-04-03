@@ -8,7 +8,7 @@ import cn.hutool.core.util.ModifierUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.db.Entity;
 import com.manda.usl.data.sqlite.BaseMapper;
-import com.manda.usl.data.sqlite.mapper.Metadata;
+import com.manda.usl.data.sqlite.entity.Metadata;
 import com.manda.usl.data.sqlite.mapper.SqlInterceptor;
 
 import java.beans.Transient;
@@ -47,9 +47,10 @@ public abstract class AbstractInterceptor implements SqlInterceptor {
 
         for (Field field : fields) {
             String columnName = CharSequenceUtil.toUnderlineCase(field.getName());
-            Object value = ReflectUtil.getFieldValue(bean, field);
-            if (value != null) {
+            try {
+                Object value = ReflectUtil.getFieldValue(bean, field);
                 entity.set(columnName, value);
+            } catch (Exception ignored) {
             }
         }
 

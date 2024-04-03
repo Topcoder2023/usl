@@ -8,8 +8,10 @@ import cn.hutool.log.level.Level;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.manda.usl.data.sqlite.BaseMapper;
 import com.manda.usl.data.sqlite.annotation.Mapper;
+import com.manda.usl.data.sqlite.entity.DatabaseConfig;
 import com.manda.usl.kernel.USLRunner;
 import com.manda.usl.kernel.bean.BeanContext;
+import com.manda.usl.kernel.bean.BeanId;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,7 +55,10 @@ public class SqlExecutorFactory {
                 .filter(ClassUtil::isInterface)
                 .forEach(mapper -> {
                     //noinspection unchecked
-                    getMapper((Class<? extends BaseMapper<?>>) mapper);
+                    BaseMapper<?> baseMapper = getMapper((Class<? extends BaseMapper<?>>) mapper);
+                    BeanContext.register(new BeanId()
+                            .setType(mapper)
+                            .defaultName(), baseMapper);
                 });
     }
 
