@@ -10,6 +10,9 @@
         <module>usl-kernel</module>
         <module>usl-logger</module>
         <module>usl-plugin</module>
+        <module>usl-data</module>
+        <module>usl-http</module>
+        <module>usl-basic</module>
     </modules>
 
     <groupId>com.gitee</groupId>
