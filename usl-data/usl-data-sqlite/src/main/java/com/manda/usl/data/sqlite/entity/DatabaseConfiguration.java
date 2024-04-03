@@ -9,7 +9,7 @@ import java.util.List;
  * @author hongda.li
  */
 @Data
-public class DatabaseConfig {
+public class DatabaseConfiguration {
 
     private String url;
 

@@ -1,4 +1,4 @@
-package com.manda.usl.http.server.anontation;
+package com.manda.usl.kernel.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

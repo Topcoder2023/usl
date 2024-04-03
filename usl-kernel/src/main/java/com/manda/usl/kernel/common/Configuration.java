@@ -1,6 +1,7 @@
 package com.manda.usl.kernel.common;
 
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.util.ReflectUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 
@@ -37,6 +38,9 @@ public class Configuration extends JSONObject {
      */
     public <C> C read(String path, Class<C> type) {
         Object result = this.getByPath(path);
+        if (result == null) {
+            return ReflectUtil.newInstanceIfPossible(type);
+        }
         if (result instanceof JSONObject jsonObject) {
             return jsonObject.to(type);
         } else {

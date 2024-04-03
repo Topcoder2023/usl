@@ -8,7 +8,7 @@ import cn.hutool.log.level.Level;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.manda.usl.data.sqlite.BaseMapper;
 import com.manda.usl.data.sqlite.annotation.Mapper;
-import com.manda.usl.data.sqlite.entity.DatabaseConfig;
+import com.manda.usl.data.sqlite.entity.DatabaseConfiguration;
 import com.manda.usl.kernel.USLRunner;
 import com.manda.usl.kernel.bean.BeanContext;
 import com.manda.usl.kernel.bean.BeanId;
@@ -44,7 +44,7 @@ public class SqlExecutorFactory {
     }
 
     private void initMapper() {
-        DatabaseConfig config = USLRunner.getConfiguration().read("data.database", DatabaseConfig.class);
+        DatabaseConfiguration config = USLRunner.getConfiguration().read("data.database", DatabaseConfiguration.class);
         Optional.ofNullable(config.getMapper())
                 .orElse(Collections.singletonList(ClassUtil.getPackage(USLRunner.getMain())))
                 .stream()
@@ -63,7 +63,7 @@ public class SqlExecutorFactory {
     }
 
     public static DataSource defaultDataSource() {
-        DatabaseConfig config = USLRunner.getConfiguration().read("data.database", DatabaseConfig.class);
+        DatabaseConfiguration config = USLRunner.getConfiguration().read("data.database", DatabaseConfiguration.class);
         log.debug("Data-Database configuration : {}", config);
 
         DruidDataSource druidDataSource = new DruidDataSource();

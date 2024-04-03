@@ -4,7 +4,7 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.text.AntPathMatcher;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
-import com.manda.usl.http.server.anontation.Mapping;
+import com.manda.usl.kernel.annotation.Mapping;
 import com.manda.usl.http.server.mapping.ParameterBinder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

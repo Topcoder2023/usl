@@ -9,7 +9,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.TypeUtil;
 import com.alibaba.fastjson2.JSON;
-import com.manda.usl.http.server.anontation.Body;
+import com.manda.usl.kernel.annotation.Body;
 import com.manda.usl.http.server.entity.ServerMapping;
 import com.manda.usl.kernel.annotation.Param;
 import lombok.extern.slf4j.Slf4j;

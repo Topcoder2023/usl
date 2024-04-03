@@ -7,7 +7,7 @@ import lombok.Data;
  * @author hongda.li
  */
 @Data
-public class ServerConfig {
+public class ServerConfiguration {
 
     private String name;
 

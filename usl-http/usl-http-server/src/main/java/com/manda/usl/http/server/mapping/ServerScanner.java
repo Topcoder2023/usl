@@ -3,7 +3,7 @@ package com.manda.usl.http.server.mapping;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
-import com.manda.usl.http.server.anontation.Mapping;
+import com.manda.usl.kernel.annotation.Mapping;
 import com.manda.usl.http.server.entity.Filter;
 import com.manda.usl.http.server.entity.ServerMapping;
 import com.manda.usl.kernel.bean.BeanContext;

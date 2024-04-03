@@ -145,12 +145,6 @@
             </dependency>
 
             <dependency>
-                <groupId>cn.zhxu</groupId>
-                <artifactId>okhttps</artifactId>
-                <version>${ok-https.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
@@ -160,6 +154,12 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>${druid.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.zhxu</groupId>
+                <artifactId>okhttps-fastjson2</artifactId>
+                <version>${ok-https.version}</version>
             </dependency>
 
             <dependency>

@@ -37,7 +37,6 @@ public class SelectInterceptor extends AbstractInterceptor {
             return true;
         }
 
-        Object result;
         String sql = context.getSql();
         Method method = context.getMethod();
         Db database = context.getDatabase();
@@ -46,19 +45,19 @@ public class SelectInterceptor extends AbstractInterceptor {
         try {
             if (List.class.equals(returnType)) {
                 Type argument = TypeUtil.getTypeArgument(method.getGenericReturnType());
+                Class<?> elementType;
                 if (argument instanceof ParameterizedType) {
-                    returnType = (Class<?>) ((ParameterizedType) argument).getRawType();
+                    elementType = (Class<?>) ((ParameterizedType) argument).getRawType();
                 } else {
-                    returnType = Object.class;
+                    elementType = Object.class;
                 }
-                result = database.query(sql, returnType, context.getArgs());
-            } else {
-                result = database.query(sql, returnType, context.getArgs());
-                Assert.isTrue(CollUtil.size(result) <= 1, "Too many result found but expect one");
-                result = CollUtil.getFirst((List<?>) result);
+                context.setResult(database.query(sql, elementType, context.getArgs()));
+                return true;
             }
 
-            context.setResult(result);
+            List<?> result = database.query(sql, returnType, context.getArgs());
+            Assert.isTrue(CollUtil.size(result) <= 1, "Too many result found but expect one");
+            context.setResult(CollUtil.getFirst((List<?>) result));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

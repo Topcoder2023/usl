@@ -2,7 +2,7 @@ package com.manda.usl.http.server;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
-import com.manda.usl.http.server.entity.ServerConfig;
+import com.manda.usl.http.server.entity.ServerConfiguration;
 import com.manda.usl.http.server.mapping.ServerHandler;
 import com.manda.usl.kernel.annotation.Singleton;
 import com.manda.usl.kernel.common.Configuration;
@@ -21,7 +21,7 @@ public final class Server {
     private final HttpBootstrap bootstrap;
 
     public Server(Configuration configuration) {
-        ServerConfig config = configuration.read("http.server", ServerConfig.class);
+        ServerConfiguration config = configuration.read("http.server", ServerConfiguration.class);
         log.debug("Http-Server configuration : {}", config);
 
         this.bootstrap = new HttpBootstrap();
