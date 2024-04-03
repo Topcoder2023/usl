@@ -105,16 +105,16 @@ public final class USLRunner implements SingleBeanLoader {
     private void configure() {
         this.aviator.useLRUExpressionCache(1 << 10);
         this.aviator.setOption(Options.TRACE_EVAL, false);
-        this.aviator.setOption(Options.EVAL_MODE, EvalMode.ASM);
         this.aviator.setOption(Options.SERIALIZABLE, false);
         this.aviator.setOption(Options.CAPTURE_FUNCTION_ARGS, true);
-        this.aviator.addFunctionLoader(new EnhancedFunctionLoader(this.name));
+        this.aviator.setOption(Options.EVAL_MODE, EvalMode.INTERPRETER);
         this.aviator.setOption(Options.MAX_LOOP_COUNT, Integer.MIN_VALUE);
+        this.aviator.addFunctionLoader(new EnhancedFunctionLoader(this.name));
         this.aviator.setOption(Options.MATH_CONTEXT, MathContext.DECIMAL128);
         this.aviator.setOption(Options.NIL_WHEN_PROPERTY_NOT_FOUND, true);
-        this.aviator.setOption(Options.OPTIMIZE_LEVEL, AviatorEvaluator.EVAL);
         this.aviator.setOption(Options.ENABLE_PROPERTY_SYNTAX_SUGAR, true);
         this.aviator.setOption(Options.PUT_CAPTURING_GROUPS_INTO_ENV, false);
+        this.aviator.setOption(Options.OPTIMIZE_LEVEL, AviatorEvaluator.COMPILE);
         this.aviator.setOption(Options.ALLOWED_CLASS_SET, Collections.emptySet());
         this.aviator.setOption(Options.USE_USER_ENV_AS_TOP_ENV_DIRECTLY, true);
         this.aviator.removeFunctionLoader(ClassPathConfigFunctionLoader.getInstance());

@@ -6,6 +6,7 @@ import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
+import com.manda.usl.kernel.common.USLException;
 import com.manda.usl.kernel.entity.FunctionMeta;
 import com.manda.usl.kernel.entity.FunctionSession;
 import com.manda.usl.kernel.entity.MethodMeta;
@@ -87,7 +88,11 @@ public class EnhancedFunction extends AbstractVariadicFunction {
             Optional.ofNullable(session.getException()).ifPresent(error -> {
                 // 如果调用异常不为空，则将调用异常统一包装为 USL-Execute 异常
                 // 这样做是为了更好的区分整个脚本执行周期中的异常来源
-                throw new RuntimeException(error);
+                if (error instanceof USLException exception) {
+                    throw exception;
+                } else {
+                    throw new USLException(error);
+                }
             });
 
             // 返回并包装调用会话中的返回值

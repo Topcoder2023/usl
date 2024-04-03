@@ -9,6 +9,7 @@
     <modules>
         <module>usl-kernel</module>
         <module>usl-logger</module>
+        <module>usl-plugin</module>
     </modules>
 
     <groupId>com.gitee</groupId>
@@ -82,6 +83,12 @@
             <dependency>
                 <groupId>com.manda</groupId>
                 <artifactId>usl-logger</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.manda</groupId>
+                <artifactId>usl-kernel</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
