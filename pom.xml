@@ -98,6 +98,12 @@
 
             <dependency>
                 <groupId>com.manda</groupId>
+                <artifactId>usl-plugin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.manda</groupId>
                 <artifactId>usl-data-sqlite</artifactId>
                 <version>${project.version}</version>
             </dependency>
