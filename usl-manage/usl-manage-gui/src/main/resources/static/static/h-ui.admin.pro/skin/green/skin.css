@@ -1,0 +1,19 @@
+@charset "utf-8";
+/* 绿色 */
+.Hui-admin-aside-wrapper {
+  background-color: #1ab684;
+}
+.Hui-admin-logo-wrapper {
+	background-color: #19a97b;
+}
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-item .Hui-menu-item-sub {
+	background-color: #16976e;
+}
+.Hui-admin-dislpayArrow a:hover {
+  color: #046848;
+  background-color: rgba(0,0,0,0.03);
+}
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-title.current,
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-item.current {
+  background-color: #046848;
+}

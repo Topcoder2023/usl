@@ -1,0 +1,36 @@
+@charset "utf-8";
+/* 黄色 */
+.Hui-admin-aside-wrapper {
+  background-color: #ffd200;
+}
+.Hui-admin-logo-wrapper {
+	background-color: #f8cf0e;
+}
+.Hui-admin-logo-wrapper a {
+  color: #282828;
+}
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-item .Hui-menu-item-sub {
+	background-color: #f7d01c;
+}
+
+
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-title,
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-title a,
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-item a {
+  color: rgba(0,0,0,0.65);
+}
+
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-title.open,
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-title.open a,
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-item a:hover {
+  color: rgba(0,0,0, 1);
+}
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-title.current,
+.Hui-admin-aside-wrapper .Hui-admin-menu-dropdown .Hui-menu .Hui-menu-item.current {
+  background-color: #ac8d05;
+}
+
+.Hui-admin-dislpayArrow a:hover {
+  color: #ffd200;
+  background-color: rgba(0,0,0,0.03);
+}
