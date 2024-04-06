@@ -7,6 +7,7 @@ import cn.hutool.core.util.ReflectUtil;
 import com.manda.usl.kernel.annotation.Mapping;
 import com.manda.usl.http.server.mapping.ParameterBinder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
@@ -47,6 +48,10 @@ public class ServerMapping {
         this.methodName = mappingOnMethod.method();
         this.method = method;
         this.containsPathVariable = MATCHER.isPattern(path);
+    }
+
+    public static AntPathMatcher getMatcher() {
+        return MATCHER;
     }
 
     public boolean matchUri(String uri) {

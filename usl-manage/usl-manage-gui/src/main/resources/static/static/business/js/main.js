@@ -276,7 +276,7 @@ function getMenu() {
                 {
                     id: '40',
                     name: '404',
-                    linkPath: 'error-404.html',
+                    linkPath: '404.html',
                     icon: '',
                     parentLinkId: '39',
                 },

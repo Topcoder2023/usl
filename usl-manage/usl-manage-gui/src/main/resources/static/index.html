@@ -1,43 +1,27 @@
-﻿<!--_meta 作为公共模版分离出去-->
-<!DOCTYPE HTML>
-<html>
+﻿<!DOCTYPE HTML>
+<html lang="zh">
 <head>
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="Bookmark" href="favicon.ico">
     <link rel="Shortcut Icon" href="favicon.ico"/>
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="lib/html5.js"></script>
-    <script type="text/javascript" src="lib/respond.min.js"></script>
-    <![endif]-->
     <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin.pro/css/h-ui.admin.pro.css"/>
     <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.9/iconfont.css"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin.pro/skin/default/skin.css" id="skin"/>
     <link rel="stylesheet" type="text/css" href="static/business/css/style.css"/>
-    <!--[if IE 6]>
-    <script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js"></script>
-    <script>DD_belatedPNG.fix('*');</script>
-    <![endif]-->
-    <!--/meta 作为公共模版分离出去-->
-
-    <title>h-ui.admin.pro v1.0</title>
-    <meta name="keywords" content="h-ui.admin.pro v1.0,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
-    <meta name="description"
-          content="h-ui.admin.pro v1.0，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+    <title>GUI For USL 首页</title>
 </head>
-<body>
 
-<!--_menu 作为公共模版分离出去-->
+<body>
 <aside class="Hui-admin-aside-wrapper">
     <div class="Hui-admin-logo-wrapper">
-        <a class="logo navbar-logo" href="/aboutHui.shtml">
+        <a class="logo navbar-logo" href="index.html">
             <i class="va-m iconpic global-logo"></i>
-            <span class="va-m">H-ui.admin</span>
+            <span class="va-m">GUI For USL</span>
         </a>
     </div>
     <div class="Hui-admin-menu-dropdown bk_2">
@@ -45,7 +29,6 @@
     </div>
 </aside>
 <div class="Hui-admin-aside-mask"></div>
-<!--/_menu 作为公共模版分离出去-->
 
 <div class="Hui-admin-dislpayArrow">
     <a href="javascript:void(0);" onClick="displaynavbar(this)">
@@ -60,43 +43,17 @@
             <div class="container-fluid clearfix">
                 <nav id="Hui-topNav" class="nav navbar-nav">
                     <ul class="clearfix">
-                        <li><a href="">顶部菜单</a></li>
-                        <li class="dropDown dropDown_hover">
-                            <a class="dropDown_A" href="javascript:;">顶部菜单</a>
-                            <ul class="dropDown-menu menu radius box-shadow">
-                                <li class="">
-                                    <a href="#">二级导航</a>
-                                </li>
-                                <li class="">
-                                    <a href="#">二级导航</a>
-                                </li>
-                            </ul>
-                        </li>
+                        <li><a href="">文件管理</a></li>
+                        <li><a href="">脚本管理</a></li>
                     </ul>
                 </nav>
                 <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar">
                     <ul class="clearfix">
-                        <li>超级管理员</li>
-                        <li class="dropDown dropDown_hover"><a href="#" class="dropDown_A">admin <i
-                                class="Hui-iconfont">&#xe6d5;</i></a>
+                        <li class="dropDown dropDown_hover">
+                            <a href="#" class="dropDown_A">超级管理员<i class="Hui-iconfont">&#xe6d5;</i></a>
                             <ul class="dropDown-menu menu radius box-shadow">
-                                <li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
                                 <li><a href="#">切换账户</a></li>
-                                <li><a href="#">退出</a></li>
-                            </ul>
-                        </li>
-                        <li id="Hui-msg"><a href="#" title="消息"><span class="badge badge-danger">1</span><i
-                                class="Hui-iconfont" style="font-size:18px">&#xe68a;</i></a></li>
-                        <li id="Hui-skin" class="dropDown dropDown_hover right">
-                            <a href="javascript:;" class="dropDown_A" title="换肤"><i class="Hui-iconfont"
-                                                                                      style="font-size:18px">&#xe62a;</i></a>
-                            <ul class="dropDown-menu menu radius box-shadow">
-                                <li><a href="javascript:;" data-val="default" title="默认（蓝色）">默认（深蓝）</a></li>
-
-                                <li><a href="javascript:;" data-val="green" title="绿色">绿色</a></li>
-                                <li><a href="javascript:;" data-val="red" title="红色">红色</a></li>
-                                <li><a href="javascript:;" data-val="yellow" title="黄色">黄色</a></li>
-                                <li><a href="javascript:;" data-val="orange" title="橙色">橙色</a></li>
+                                <li><a href="login.html">退出</a></li>
                             </ul>
                         </li>
                     </ul>

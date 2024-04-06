@@ -23,10 +23,12 @@ import java.util.Optional;
 public class ServerHandler extends org.smartboot.http.server.HttpServerHandler {
     private final List<Filter> filterList;
     private final Map<String, ServerMapping> metaMap;
+    private final StaticHandler staticHandler;
 
-    public ServerHandler() {
+    public ServerHandler(StaticHandler staticHandler) {
         this.metaMap = ServerScanner.scanMapping();
         this.filterList = ServerScanner.scanFilter();
+        this.staticHandler = staticHandler;
     }
 
     @Override
@@ -41,6 +43,13 @@ public class ServerHandler extends org.smartboot.http.server.HttpServerHandler {
                     log.debug("Request has been intercepted by the filter");
                     return;
                 }
+            }
+
+            // 静态资源匹配
+            boolean isStatic = ServerMapping.getMatcher().match(StaticHandler.PATH, request.getRequestURI());
+            if (isStatic) {
+                staticHandler.handle(request, response);
+                return;
             }
 
             final Result result;

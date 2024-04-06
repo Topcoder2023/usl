@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import com.manda.usl.http.server.entity.ServerConfiguration;
 import com.manda.usl.http.server.mapping.ServerHandler;
+import com.manda.usl.http.server.mapping.StaticHandler;
 import com.manda.usl.kernel.annotation.Singleton;
 import com.manda.usl.kernel.common.Configuration;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public final class Server {
     private final String path;
     private final HttpBootstrap bootstrap;
+    private final StaticHandler staticHandler;
 
     public Server(Configuration configuration) {
         ServerConfiguration config = configuration.read("http.server", ServerConfiguration.class);
@@ -38,11 +40,12 @@ public final class Server {
                 .setHttpIdleTimeout(config.getIdleTimeout())
                 .serverName(Optional.ofNullable(config.getName()).orElse(URLUtil.normalize(host + StrUtil.COLON + port)))
                 .setMaxRequestSize(config.getMaxRequestSize());
+        this.staticHandler = new StaticHandler(config.getResource(), config.getNotFound());
     }
 
     public void start() {
         log.info("Http-Server listen on : {}", this.path);
-        this.bootstrap.httpHandler(new ServerHandler());
+        this.bootstrap.httpHandler(new ServerHandler(staticHandler));
         this.bootstrap.start();
     }
 
