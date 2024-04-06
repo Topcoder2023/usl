@@ -9,14 +9,12 @@
         <version>v1.1.0</version>
     </parent>
 
-    <groupId>com.manda</groupId>
     <artifactId>usl-data</artifactId>
     <packaging>pom</packaging>
 
     <modules>
         <module>usl-data-sqlite</module>
         <module>usl-data-file</module>
-        <module>usl-data-cache</module>
     </modules>
 
     <properties>

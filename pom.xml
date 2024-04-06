@@ -97,6 +97,24 @@
             </dependency>
 
             <dependency>
+                <groupId>com.manda</groupId>
+                <artifactId>usl-data-sqlite</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.manda</groupId>
+                <artifactId>usl-http-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.manda</groupId>
+                <artifactId>usl-http-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>

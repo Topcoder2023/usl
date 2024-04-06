@@ -17,4 +17,26 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.manda</groupId>
+            <artifactId>usl-http-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.manda</groupId>
+            <artifactId>usl-data-sqlite</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
