@@ -25,7 +25,7 @@
 
         <dependency>
             <groupId>com.manda</groupId>
-            <artifactId>usl-data-sqlite</artifactId>
+            <artifactId>usl-data-file</artifactId>
         </dependency>
 
         <dependency>

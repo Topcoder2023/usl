@@ -1,294 +1,81 @@
-/* 这里面是整个系统业务相关的js代码 */
-
 function getMenu() {
-    // 可以服务端获取数据
     const menuData = [
         {
             id: '1',
-            name: '首页',
+            name: '系统首页',
             linkPath: 'index.html',
             icon: '&#xe67f;',
             parentLinkId: '0',
         },
         {
             id: '2',
-            name: '资讯管理',
+            name: '文件管理',
+            linkPath: 'article-list.html',
+            icon: '&#xe72d;',
+            parentLinkId: '0'
+        },
+        {
+            id: '3',
+            name: '脚本管理',
+            linkPath: 'member-list.html',
+            icon: '&#xe72b;',
+            parentLinkId: '0'
+        },
+        {
+            id: '4',
+            name: '函数管理',
+            linkPath: 'system-data.html',
+            icon: '&#xe70c;',
+            parentLinkId: '0'
+        },
+        {
+            id: '5',
+            name: '日志管理',
+            linkPath: 'system-log.html',
+            icon: '&#xe623;',
+            parentLinkId: '0',
+        },
+        {
+            id: '6',
+            name: '开放平台',
             linkPath: '#',
-            icon: '&#xe616;',
+            icon: '&#xe639;',
             parentLinkId: '0',
             subMenus: [
                 {
-                    id: '3',
-                    name: '资讯列表',
-                    linkPath: 'article-list.html',
+                    id: '7',
+                    name: 'USL',
+                    linkPath: 'https://gitee.com/yixi-dlmu/usl',
+                    newPage: true,
                     icon: '',
-                    parentLinkId: '2',
-                    subMenus: [
-                        {
-                            id: '21',
-                            name: '三级菜单',
-                            linkPath: 'ssss.html',
-                            icon: '',
-                            parentLinkId: '3',
-                        },
-                    ]
+                    parentLinkId: '6',
                 },
-            ]
-        },
-        {
-            id: '7',
-            name: '图片管理',
-            linkPath: '#',
-            icon: '&#xe613;',
-            parentLinkId: '0',
-            subMenus: [
                 {
                     id: '8',
-                    name: '图片列表',
-                    linkPath: 'picture-list.html',
+                    name: 'Milvus',
+                    linkPath: 'https://cloud.zilliz.com/orgs',
+                    newPage: true,
                     icon: '',
-                    parentLinkId: '7',
+                    parentLinkId: '6',
                 },
+                {
+                    id: '9',
+                    name: '清华智谱',
+                    linkPath: 'https://open.bigmodel.cn/dev/api#overview',
+                    newPage: true,
+                    icon: '',
+                    parentLinkId: '6',
+                },
+                {
+                    id: '10',
+                    name: '阿里云盘',
+                    linkPath: 'https://www.yuque.com/aliyundrive/zpfszx',
+                    newPage: true,
+                    icon: '',
+                    parentLinkId: '6',
+                }
             ]
-        },
-        {
-            id: '10',
-            name: '产品管理',
-            linkPath: '#',
-            icon: '&#xe620;',
-            parentLinkId: '0',
-            subMenus: [
-                {
-                    id: '11',
-                    name: '品牌管理',
-                    linkPath: 'product-brand.html',
-                    icon: '',
-                    parentLinkId: '10',
-                },
-                {
-                    id: '12',
-                    name: '分类管理',
-                    linkPath: 'product-category.html',
-                    icon: '',
-                    parentLinkId: '10',
-                },
-                {
-                    id: '13',
-                    name: '产品列表',
-                    linkPath: 'product-list.html',
-                    icon: '',
-                    parentLinkId: '10',
-                },
-            ]
-        },
-        {
-            id: '14',
-            name: '评论管理',
-            linkPath: '#',
-            icon: '&#xe622;',
-            parentLinkId: '0',
-            subMenus: [
-                {
-                    id: '15',
-                    name: '评论列表',
-                    linkPath: 'comment-list.html',
-                    icon: '',
-                    parentLinkId: '14',
-                },
-                {
-                    id: '16',
-                    name: '意见反馈',
-                    linkPath: 'feedback-list.html',
-                    icon: '',
-                    parentLinkId: '14',
-                },
-            ]
-        },
-        {
-            id: '17',
-            name: '会员管理',
-            linkPath: '#',
-            icon: '&#xe60d;',
-            parentLinkId: '0',
-            subMenus: [
-                {
-                    id: '18',
-                    name: '会员列表',
-                    linkPath: 'member-list.html',
-                    icon: '',
-                    parentLinkId: '17',
-                },
-                {
-                    id: '19',
-                    name: '删除的会员',
-                    linkPath: 'member-del.html',
-                    icon: '',
-                    parentLinkId: '17',
-                },
-                {
-                    id: '20',
-                    name: '浏览记录',
-                    linkPath: 'member-record-browse.html',
-                    icon: '',
-                    parentLinkId: '17',
-                },
-                {
-                    id: '21',
-                    name: '下载记录',
-                    linkPath: 'member-record-download.html',
-                    icon: '',
-                    parentLinkId: '17',
-                },
-                {
-                    id: '22',
-                    name: '分享记录',
-                    linkPath: 'member-record-share.html',
-                    icon: '',
-                    parentLinkId: '17',
-                },
-            ]
-        },
-        {
-            id: '23',
-            name: '管理员管理',
-            linkPath: '#',
-            icon: '&#xe62d;',
-            parentLinkId: '0',
-            subMenus: [
-                {
-                    id: '24',
-                    name: '角色管理',
-                    linkPath: 'admin-role.html',
-                    icon: '',
-                    parentLinkId: '23',
-                },
-                {
-                    id: '25',
-                    name: '权限管理',
-                    linkPath: 'admin-permission.html',
-                    icon: '',
-                    parentLinkId: '23',
-                },
-                {
-                    id: '26',
-                    name: '管理员列表',
-                    linkPath: 'admin-list.html',
-                    icon: '',
-                    parentLinkId: '23',
-                },
-            ]
-        },
-        {
-            id: '27',
-            name: '系统统计',
-            linkPath: '#',
-            icon: '&#xe61a;',
-            parentLinkId: '0',
-            subMenus: [
-                {
-                    id: '28',
-                    name: '折线图',
-                    linkPath: 'charts-1.html',
-                    icon: '',
-                    parentLinkId: '27',
-                },
-                {
-                    id: '29',
-                    name: '区域图',
-                    linkPath: 'charts-2.html',
-                    icon: '',
-                    parentLinkId: '27',
-                },
-                {
-                    id: '30',
-                    name: '柱状图',
-                    linkPath: 'charts-3.html',
-                    icon: '',
-                    parentLinkId: '27',
-                },
-                {
-                    id: '31',
-                    name: '饼状图',
-                    linkPath: 'charts-4.html',
-                    icon: '',
-                    parentLinkId: '27',
-                },
-                {
-                    id: '32',
-                    name: '散点图',
-                    linkPath: 'charts-5.html',
-                    icon: '',
-                    parentLinkId: '27',
-                },
-            ]
-        },
-        {
-            id: '33',
-            name: '系统管理',
-            linkPath: '#',
-            icon: '&#xe62e;',
-            parentLinkId: '0',
-            subMenus: [
-                {
-                    id: '34',
-                    name: '系统设置',
-                    linkPath: 'system-base.html',
-                    icon: '',
-                    parentLinkId: '33',
-                },
-                {
-                    id: '35',
-                    name: '栏目管理',
-                    linkPath: 'system-category.html',
-                    icon: '',
-                    parentLinkId: '33',
-                },
-                {
-                    id: '36',
-                    name: '数据字典',
-                    linkPath: 'system-data.html',
-                    icon: '',
-                    parentLinkId: '33',
-                },
-                {
-                    id: '37',
-                    name: '屏蔽词',
-                    linkPath: 'system-shielding.html',
-                    icon: '',
-                    parentLinkId: '33',
-                },
-                {
-                    id: '38',
-                    name: '系统日志',
-                    linkPath: 'system-log.html',
-                    icon: '',
-                    parentLinkId: '33',
-                },
-            ]
-        },
-        {
-            id: '39',
-            name: '异常页面',
-            linkPath: '#',
-            icon: '&#xe6e0;',
-            parentLinkId: '0',
-            subMenus: [
-                {
-                    id: '40',
-                    name: '404',
-                    linkPath: '404.html',
-                    icon: '',
-                    parentLinkId: '39',
-                },
-                {
-                    id: '41',
-                    name: '500',
-                    linkPath: 'error-500.html',
-                    icon: '',
-                    parentLinkId: '39',
-                },
-            ]
-        },
+        }
     ];
     const pid = [];
     const pathname = window.location.pathname;
@@ -299,7 +86,7 @@ function getMenu() {
 
     function recursion(menuData) {
         if (menuData && menuData.length > 0) {
-            for (var i in menuData) {
+            for (const i in menuData) {
                 if (menuData[i].subMenus && menuData[i].subMenus.length > 0) {
                     str +=
                         '<li class="Hui-menu-item">' +
@@ -315,7 +102,13 @@ function getMenu() {
                     } else {
                         str += '<div class="Hui-menu-title">';
                     }
-                    str += '<a href="' + menuData[i].linkPath + '"><i class="Hui-iconfont">' + menuData[i].icon + '</i> ' + menuData[i].name + '</a></div><ul class="Hui-menu-item-sub"></ul></li>';
+                    let prefix;
+                    if (menuData[i].newPage) {
+                        prefix = '<a target="_blank" href="';
+                    } else {
+                        prefix = '<a href="';
+                    }
+                    str += prefix + menuData[i].linkPath + '"><i class="Hui-iconfont">' + menuData[i].icon + '</i> ' + menuData[i].name + '</a></div><ul class="Hui-menu-item-sub"></ul></li>';
                 }
             }
         }

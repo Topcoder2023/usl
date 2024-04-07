@@ -110,6 +110,12 @@
 
             <dependency>
                 <groupId>com.manda</groupId>
+                <artifactId>usl-data-file</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.manda</groupId>
                 <artifactId>usl-http-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
