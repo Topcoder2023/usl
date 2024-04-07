@@ -27,6 +27,11 @@
             <groupId>com.manda</groupId>
             <artifactId>usl-data-sqlite</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -290,9 +290,9 @@ function getMenu() {
             ]
         },
     ];
-    var pid = new Array;
-    var pathname = window.location.pathname;
-    var str = '';
+    const pid = [];
+    const pathname = window.location.pathname;
+    let str = '';
 
     recursion(menuData);
     $('.Hui-admin-menu-dropdown .Hui-menu').append(str);
@@ -309,7 +309,7 @@ function getMenu() {
                     str += '</ul></li>';
                 } else {
                     str += '<li class="Hui-menu-item">';
-                    if (pathname == menuData[i].linkPath) {
+                    if (pathname === menuData[i].linkPath) {
                         str += '<div class="Hui-menu-title current">';
                         pid.push(parseInt(i))
                     } else {

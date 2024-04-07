@@ -26,6 +26,10 @@ import java.util.Optional;
 @AutoService(BeanLoader.class)
 public final class USLRunner implements SingleBeanLoader {
     /**
+     * 当前版本号
+     */
+    public static final String VERSION = "v1.1.0";
+    /**
      * 配置文件存放地址
      * 相对路径 classpath://config.json
      */
