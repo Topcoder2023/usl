@@ -34,7 +34,12 @@ public class FileService {
 
     public void loadFileView() {
         if (CollUtil.isNotEmpty(categoryList)) {
-            fileMapper.deleteAll();
+            List<FileView> toDeleteList = fileMapper.find(new FileView())
+                    .stream()
+                    .filter(view -> Objects.nonNull(view.getPath()))
+                    .filter(view -> !FileUtil.exist(view.getPath()))
+                    .toList();
+            fileMapper.batchDelete(toDeleteList);
             categoryList.forEach(category -> this.loadFileView(category, any -> true));
         }
     }
@@ -50,6 +55,9 @@ public class FileService {
                         .setPath(file.getAbsolutePath())
                         .setSuffix(FileUtil.getSuffix(file))
                         .generateUuid())
+                .filter(view -> fileMapper.findOne(new FileView()
+                        .setStatus(null)
+                        .setUuid(view.getUuid())) == null)
                 .forEach(fileMapper::insert);
     }
 
