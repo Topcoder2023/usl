@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>usl-manage</artifactId>
-    <version>${parent.version}</version>
     <packaging>pom</packaging>
 
     <modules>

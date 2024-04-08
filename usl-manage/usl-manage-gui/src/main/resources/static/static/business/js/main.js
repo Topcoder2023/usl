@@ -10,7 +10,7 @@ function getMenu() {
         {
             id: '2',
             name: '文件管理',
-            linkPath: 'article-list.html',
+            linkPath: 'file.html',
             icon: '&#xe72d;',
             parentLinkId: '0'
         },

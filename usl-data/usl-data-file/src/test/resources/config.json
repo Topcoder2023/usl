@@ -1,9 +1,0 @@
-{
-  "data": {
-    "database": {
-      "url": "jdbc:sqlite:C:/Users/hongd/USL/SYSTEM.db",
-      "username": "",
-      "password": ""
-    }
-  }
-}

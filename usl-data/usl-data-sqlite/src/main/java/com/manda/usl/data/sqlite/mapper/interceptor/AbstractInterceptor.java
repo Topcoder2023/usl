@@ -49,7 +49,9 @@ public abstract class AbstractInterceptor implements SqlInterceptor {
             String columnName = CharSequenceUtil.toUnderlineCase(field.getName());
             try {
                 Object value = ReflectUtil.getFieldValue(bean, field);
-                entity.set(columnName, value);
+                if (value != null) {
+                    entity.set(columnName, value);
+                }
             } catch (Exception ignored) {
             }
         }

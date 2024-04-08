@@ -7,12 +7,11 @@ import cn.hutool.db.handler.BeanListHandler;
 import cn.hutool.db.sql.Condition;
 import cn.hutool.db.sql.Query;
 import com.manda.usl.data.sqlite.entity.Metadata;
+import com.manda.usl.data.sqlite.mapper.ConditionBuilder;
 import com.manda.usl.kernel.annotation.Singleton;
 
 import java.lang.reflect.Method;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author hongda.li
@@ -29,17 +28,15 @@ public class FindByInterceptor extends AbstractInterceptor {
         Db database = context.getDatabase();
         Metadata metadata = context.getMetadata();
 
-        Query query = ArrayUtil.get(context.getArgs(), 0);
-        query.setTableNames(metadata.getTableName());
+        Query query = new Query(metadata.getTableName());
 
-        Condition[] where = query.getWhere();
-        if (ArrayUtil.isNotEmpty(where)) {
-            List<Condition> whereList = new ArrayList<>(where.length);
-            for (Condition condition : where) {
+        ConditionBuilder builder = ArrayUtil.get(context.getArgs(), 0);
+        if (builder != null) {
+            Condition[] array = builder.toArray();
+            for (Condition condition : array) {
                 condition.setField(CharSequenceUtil.toUnderlineCase(condition.getField()));
-                whereList.add(condition);
             }
-            query.setWhere(whereList.toArray(Condition[]::new));
+            query.setWhere(array);
         }
 
         try {

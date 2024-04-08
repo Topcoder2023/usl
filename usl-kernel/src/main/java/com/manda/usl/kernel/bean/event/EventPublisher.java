@@ -33,7 +33,6 @@ public final class EventPublisher {
                 .flatMap(Collection::stream)
                 .forEach(eventListener -> {
                     try {
-                        log.debug("Event-Listener execute : [{}]", eventListener.getClass().getName());
                         eventListener.listen(event);
                     } catch (Exception e) {
                         log.error("Exception occurred in the event listener", e);

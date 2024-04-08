@@ -68,7 +68,7 @@ public class ServerHandler extends org.smartboot.http.server.HttpServerHandler {
             }
 
             Optional.ofNullable(result).ifPresent(res -> {
-                response.setHttpStatus(HttpStatus.valueOf(res.getCode()));
+                response.setHttpStatus(HttpStatus.OK);
                 response.setContentType(ContentType.JSON.toString(StandardCharsets.UTF_8));
                 try {
                     response.write(JSON.toJSONString(res).getBytes(StandardCharsets.UTF_8));

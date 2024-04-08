@@ -2,6 +2,8 @@ CREATE TABLE IF NOT EXISTS FILE
 (
     -- 主键
     ID       INTEGER NOT NULL CONSTRAINT FILE_PK PRIMARY KEY AUTOINCREMENT,
+    -- 唯一标识
+    UUID     TEXT    NOT NULL,
     -- 文件大小
     SIZE     INTEGER,
     -- 文件名称
@@ -11,6 +13,8 @@ CREATE TABLE IF NOT EXISTS FILE
     -- 文件后缀
     SUFFIX   TEXT,
     -- 文件目录
-    CATEGORY TEXT
+    CATEGORY TEXT,
+    -- 状态
+    STATUS   INTEGER
 );
 

@@ -2,7 +2,7 @@ package com.manda.usl.data.sqlite;
 
 import cn.hutool.db.Page;
 import cn.hutool.db.PageResult;
-import cn.hutool.db.sql.Query;
+import com.manda.usl.data.sqlite.mapper.ConditionBuilder;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface BaseMapper<E> {
 
     Long findNumber(E condition);
 
-    List<E> findBy(Query query);
+    List<E> findBy(ConditionBuilder builder);
 
     PageResult<E> findPage(E condition, Page page);
 
@@ -26,6 +26,8 @@ public interface BaseMapper<E> {
     E update(E entity);
 
     E delete(E entity);
+
+    void deleteAll();
 
     List<E> batchInsert(List<E> entityList);
 

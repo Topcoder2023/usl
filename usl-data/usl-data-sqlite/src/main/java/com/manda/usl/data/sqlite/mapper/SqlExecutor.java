@@ -1,6 +1,8 @@
 package com.manda.usl.data.sqlite.mapper;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.TypeUtil;
 import cn.hutool.db.Db;
 import com.manda.usl.data.sqlite.entity.Metadata;
@@ -53,10 +55,12 @@ public class SqlExecutor implements InvocationHandler {
                 .filter(interceptor -> interceptor.filter(method))
                 .sorted(Comparator.comparingInt(SqlInterceptor::order))
                 .toList();
-        Assert.notEmpty(interceptors, "Can't invoke mapper because of the interceptor not found : {}", methodName);
 
-        interceptors.forEach(item -> item.intercept(context));
-
-        return context.getResult();
+        if (CollUtil.isNotEmpty(interceptors)) {
+            interceptors.forEach(item -> item.intercept(context));
+            return context.getResult();
+        } else {
+            return ReflectUtil.invoke(proxy, method, args);
+        }
     }
 }

@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>usl-manage-gui</artifactId>
+    <version>${parent.version}</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -25,7 +26,7 @@
 
         <dependency>
             <groupId>com.manda</groupId>
-            <artifactId>usl-data-file</artifactId>
+            <artifactId>usl-data-sqlite</artifactId>
         </dependency>
 
         <dependency>

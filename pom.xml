@@ -14,6 +14,7 @@
         <module>usl-logger</module>
         <module>usl-plugin</module>
         <module>usl-manage</module>
+        <module>usl-data/usl-data-milvus</module>
     </modules>
 
     <groupId>com.manda</groupId>
@@ -105,12 +106,6 @@
             <dependency>
                 <groupId>com.manda</groupId>
                 <artifactId>usl-data-sqlite</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.manda</groupId>
-                <artifactId>usl-data-file</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
