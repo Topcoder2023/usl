@@ -31,7 +31,7 @@ function getMenu() {
         {
             id: '5',
             name: '日志管理',
-            linkPath: 'system-log.html',
+            linkPath: 'log.html',
             icon: '&#xe623;',
             parentLinkId: '0',
         },

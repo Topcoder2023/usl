@@ -2,6 +2,7 @@ package com.manda.usl.manage.gui.service;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.swing.DesktopUtil;
 import cn.hutool.core.text.CharSequenceUtil;
@@ -9,7 +10,10 @@ import com.manda.usl.http.server.entity.Result;
 import com.manda.usl.kernel.annotation.Property;
 import com.manda.usl.kernel.annotation.Singleton;
 import com.manda.usl.manage.gui.entity.FileView;
+import com.manda.usl.manage.gui.entity.LogView;
 import com.manda.usl.manage.gui.mapper.FileMapper;
+import com.manda.usl.manage.gui.mapper.LogMapper;
+import org.slf4j.event.Level;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -22,6 +26,8 @@ import java.util.Optional;
  */
 @Singleton
 public class FileService {
+    @Property
+    private LogMapper logMapper;
 
     @Property
     private FileMapper fileMapper;
@@ -35,11 +41,19 @@ public class FileService {
 
     public void loadFileView() {
         if (CollUtil.isNotEmpty(categoryList)) {
+            logMapper.insert(new LogView()
+                    .setType(LogView.FILE_MANAGER)
+                    .setTime(DateUtil.now())
+                    .setLevel(Level.INFO.name())
+                    .setMessage("扫描文件")
+                    .setSource(this.getClass().getName()));
+
             List<FileView> toDeleteList = fileMapper.find(new FileView())
                     .stream()
                     .filter(view -> Objects.nonNull(view.getPath()))
                     .filter(view -> !FileUtil.exist(view.getPath()))
                     .toList();
+
             fileMapper.batchDelete(toDeleteList);
             categoryList.forEach(category -> this.loadFileView(category, any -> true));
         }
@@ -84,6 +98,13 @@ public class FileService {
     }
 
     public void clear() {
+        logMapper.insert(new LogView()
+                .setType(LogView.FILE_MANAGER)
+                .setTime(DateUtil.now())
+                .setLevel(Level.INFO.name())
+                .setMessage("清除缓存")
+                .setSource(this.getClass().getName()));
+
         fileMapper.deleteAll();
     }
 }

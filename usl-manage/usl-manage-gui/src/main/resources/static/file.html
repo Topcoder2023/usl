@@ -43,7 +43,7 @@
                     <ul class="clearfix">
                         <li><a href="member-list.html">脚本管理</a></li>
                         <li><a href="system-data.html">函数管理</a></li>
-                        <li><a href="system-log.html">日志管理</a></li>
+                        <li><a href="log.html">日志管理</a></li>
                     </ul>
                 </nav>
             </div>
@@ -90,11 +90,11 @@
                     <div class="clearfix">
 							<span class="f-l">
 								<button class="btn btn-primary radius"
-                                        onclick="reload()" title="创建索引"><i class="Hui-iconfont">&#xe604;</i>创建索引</button>
+                                        onclick="reload()" title="扫描文件"><i class="Hui-iconfont">&#xe604;</i>扫描文件</button>
                                 <button class="btn btn-success radius"
                                         onclick="reload()" title="同步向量"><i class="Hui-iconfont">&#xe603;</i>同步向量</button>
                                  <button class="btn btn-danger radius"
-                                         onclick="clearIndex()" title="清除索引"><i class="Hui-iconfont">&#xe6e2;</i>清除索引</button>
+                                         onclick="clearIndex()" title="清除缓存"><i class="Hui-iconfont">&#xe6e2;</i>清除缓存</button>
 							</span>
                     </div>
                     <div class="mt-20 clearfix">
@@ -111,7 +111,7 @@
                                 <th style="width: 6%">同步状态</th>
                             </tr>
                             </thead>
-                            <tbody class="getData-list" data-currPage='1'></tbody>
+                            <tbody id="file-body"></tbody>
                         </table>
                     </div>
                     <div id="laypage" class="text-c"></div>

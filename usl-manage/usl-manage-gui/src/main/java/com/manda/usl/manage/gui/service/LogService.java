@@ -1,0 +1,27 @@
+package com.manda.usl.manage.gui.service;
+
+import cn.hutool.db.sql.Condition;
+import com.manda.usl.data.sqlite.mapper.ConditionBuilder;
+import com.manda.usl.kernel.annotation.Property;
+import com.manda.usl.kernel.annotation.Singleton;
+import com.manda.usl.manage.gui.entity.LogView;
+import com.manda.usl.manage.gui.mapper.LogMapper;
+
+import java.util.List;
+
+/**
+ * @author hongda.li
+ */
+@Singleton
+public class LogService {
+
+    @Property
+    private LogMapper logMapper;
+
+    public List<LogView> list(String type, String time, String level) {
+        return logMapper.findBy(ConditionBuilder.newBuilder()
+                .andLike(LogView.FIELD_LEVEL, level, Condition.LikeType.Contains)
+                .andLike(LogView.FIELD_TIME, time, Condition.LikeType.Contains)
+                .andLike(LogView.FIELD_TYPE, type, Condition.LikeType.Contains));
+    }
+}

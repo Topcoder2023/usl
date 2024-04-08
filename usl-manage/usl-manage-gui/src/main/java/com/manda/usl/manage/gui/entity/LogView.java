@@ -5,8 +5,6 @@ import com.manda.usl.data.sqlite.annotation.Table;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
-
 /**
  * @author hongda.li
  */
@@ -15,14 +13,24 @@ import java.util.Date;
 @Accessors(chain = true)
 public class LogView {
 
+    public static final String FILE_MANAGER = "文件管理";
+
+    public static final String FIELD_TIME = "time";
+
+    public static final String FIELD_TYPE = "type";
+
+    public static final String FIELD_LEVEL = "level";
+
     @PrimaryKey
     private Long id;
 
-    private Date time;
+    private String time;
 
     private String type;
 
     private String level;
 
     private String message;
+
+    private String source;
 }

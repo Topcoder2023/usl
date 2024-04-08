@@ -22,10 +22,13 @@ public class CreateTableListener implements EventListener<ReadyEvent> {
 
     @Override
     public void listen(Event event) {
+        Db use = Db.use(BeanContext.findFirst(DataSource.class));
+
         try {
-            Db.use(BeanContext.findFirst(DataSource.class)).execute(ResourceUtil.readUtf8Str("sql/File.sql"));
+            use.execute(ResourceUtil.readUtf8Str("sql/Log.sql"));
+            use.execute(ResourceUtil.readUtf8Str("sql/File.sql"));
         } catch (SQLException e) {
-            log.error("Error in creating `FILE` table", e);
+            log.error("Error in creating table", e);
         }
 
         BeanContext.findFirst(FileService.class).loadFileView();

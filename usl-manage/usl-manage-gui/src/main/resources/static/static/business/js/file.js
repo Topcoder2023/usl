@@ -48,12 +48,12 @@ function selectData() {
                 for (let i = 0; i < data.length; i++) {
                     content +=
                         '<tr>' +
-                        '<td>' + data[i].name + '</td>' +
-                        '<td>' + (parseInt(data[i].size / 1024)) + 'KB</td>' +
-                        '<td>' + data[i].suffix + '</td>' +
-                        '<td>' + data[i].modify + '</td>' +
-                        '<td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="view(\'' + data[i].uuid + '\', 1)" title="查看">' + data[i].path + '</u></td>' +
-                        '<td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="view(\'' + data[i].uuid + '\', 0)" title="查看">' + data[i].category + '</u></td>'
+                        '<td style="text-align: center">' + data[i].name + '</td>' +
+                        '<td style="text-align: center">' + (parseInt(data[i].size / 1024)) + 'KB</td>' +
+                        '<td style="text-align: center">' + data[i].suffix + '</td>' +
+                        '<td style="text-align: center">' + data[i].modify + '</td>' +
+                        '<td class="text-l" style="text-align: center"><u style="cursor:pointer" class="text-primary" onClick="view(\'' + data[i].uuid + '\', 1)" title="查看">' + data[i].path + '</u></td>' +
+                        '<td class="text-l" style="text-align: center"><u style="cursor:pointer" class="text-primary" onClick="view(\'' + data[i].uuid + '\', 0)" title="查看">' + data[i].category + '</u></td>'
                     if (data[i].status === 1) {
                         content += '<td class="td-status"><span class="label label-success radius">已同步</span></td>';
                     } else {
@@ -61,7 +61,7 @@ function selectData() {
                     }
                     content += '</tr>';
                 }
-                $(".getData-list").html(content);
+                $("#file-body").html(content);
             }
         }
     })
