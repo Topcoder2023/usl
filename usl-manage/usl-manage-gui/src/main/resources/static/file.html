@@ -90,9 +90,11 @@
                     <div class="clearfix">
 							<span class="f-l">
 								<button class="btn btn-primary radius"
-                                        onclick="reload()" title="重新加载文件"><i class="Hui-iconfont">&#xe68f;</i>重新加载</button>
+                                        onclick="reload()" title="重新加载"><i class="Hui-iconfont">&#xe68f;</i>重新加载</button>
                                 <button class="btn btn-success radius"
                                         onclick="reload()" title="同步向量"><i class="Hui-iconfont">&#xe603;</i>同步向量</button>
+                                 <button class="btn btn-danger radius"
+                                         onclick="clearIndex()" title="清除索引"><i class="Hui-iconfont">&#xe6e2;</i>清除索引</button>
 							</span>
                     </div>
                     <div class="mt-20 clearfix">
@@ -105,7 +107,7 @@
                                 <th style="width: 6%">文件类型</th>
                                 <th style="width: 30%">文件路径</th>
                                 <th style="width: 20%">所在目录</th>
-                                <th style="width: 6%">发布状态</th>
+                                <th style="width: 6%">同步状态</th>
                             </tr>
                             </thead>
                             <tbody class="getData-list" data-currPage='1'></tbody>

@@ -80,4 +80,8 @@ public class FileService {
 
         return Result.success();
     }
+
+    public void clear() {
+        fileMapper.deleteAll();
+    }
 }

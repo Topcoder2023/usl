@@ -28,6 +28,12 @@ public class FileApi {
         return Result.success();
     }
 
+    @Mapping("/clear")
+    public Result clear() {
+        fileService.clear();
+        return Result.success();
+    }
+
     @Mapping("/list")
     public List<FileView> list(@Param("name") String name, @Param("suffix") String suffix) {
         return fileService.list(name, suffix);

@@ -1,6 +1,7 @@
 const file_list = '/file/list';
 const file_view = '/file/view';
 const file_load = '/file/load';
+const file_clear = '/file/clear';
 
 $(function () {
     getMenu();
@@ -18,6 +19,19 @@ function reload() {
             });
         }
     });
+}
+
+function clearIndex() {
+    $.post(file_clear, function (res) {
+        if (res.code === 200) {
+            layer.msg('清除成功', {
+                icon: 1,
+                time: 2000
+            }, function () {
+                window.location.reload();
+            });
+        }
+    })
 }
 
 function selectData() {
