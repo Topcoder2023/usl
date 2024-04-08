@@ -51,6 +51,7 @@ function selectData() {
                         '<td>' + data[i].name + '</td>' +
                         '<td>' + (parseInt(data[i].size / 1024)) + 'KB</td>' +
                         '<td>' + data[i].suffix + '</td>' +
+                        '<td>' + data[i].modify + '</td>' +
                         '<td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="view(\'' + data[i].uuid + '\', 1)" title="查看">' + data[i].path + '</u></td>' +
                         '<td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="view(\'' + data[i].uuid + '\', 0)" title="查看">' + data[i].category + '</u></td>'
                     if (data[i].status === 1) {

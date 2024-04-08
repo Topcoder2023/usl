@@ -1,6 +1,7 @@
 package com.manda.usl.manage.gui.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.swing.DesktopUtil;
 import cn.hutool.core.text.CharSequenceUtil;
@@ -54,6 +55,7 @@ public class FileService {
                         .setCategory(file.getParent())
                         .setPath(file.getAbsolutePath())
                         .setSuffix(FileUtil.getSuffix(file))
+                        .setModify(new DateTime(FileUtil.lastModifiedTime(file)).toString())
                         .generateUuid())
                 .filter(view -> fileMapper.findOne(new FileView()
                         .setStatus(null)

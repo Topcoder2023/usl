@@ -33,10 +33,12 @@ public class FileView {
 
     private String category;
 
+    private String modify;
+
     private Integer status = 0;
 
     public FileView generateUuid() {
-        this.uuid = DigestUtil.md5Hex(path);
+        this.uuid = DigestUtil.md5Hex(path + modify);
         return this;
     }
 }

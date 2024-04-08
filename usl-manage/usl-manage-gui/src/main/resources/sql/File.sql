@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS FILE
     ID       INTEGER NOT NULL CONSTRAINT FILE_PK PRIMARY KEY AUTOINCREMENT,
     -- 唯一标识
     UUID     TEXT    NOT NULL,
+    -- 修改时间
+    MODIFY   TEXT,
     -- 文件大小
     SIZE     INTEGER,
     -- 文件名称
