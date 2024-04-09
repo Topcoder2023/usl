@@ -2,18 +2,21 @@ package com.manda.usl.data.sqlite.mapper;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.db.Page;
 import cn.hutool.db.sql.Condition;
 import cn.hutool.db.sql.LogicalOperator;
 import cn.hutool.db.sql.Order;
+import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author hongda.li
  */
 public class ConditionBuilder {
+    @Getter
+    private Page page;
 
     private final List<Order> orders = new ArrayList<>();
 
@@ -223,21 +226,34 @@ public class ConditionBuilder {
     }
 
     public ConditionBuilder orderBy(Order order) {
+        order.setField(CharSequenceUtil.toUnderlineCase(order.getField()));
         orders.add(order);
         return this;
     }
 
-    public Condition[] toArray() {
-        return conditionList.toArray(new Condition[]{});
+    public ConditionBuilder page(Page page) {
+        Objects.requireNonNull(page);
+        if (ArrayUtil.isNotEmpty(orders)) {
+            page.setOrder(orders.toArray(new Order[]{}));
+        } else {
+            orders.addAll(Arrays.asList(page.getOrders()));
+        }
+        return this;
     }
 
     public Order[] getOrders() {
         if (CollUtil.isEmpty(orders)) {
             return new Order[]{};
         } else {
-            // 驼峰转下划线
-            orders.forEach(order -> order.setField(CharSequenceUtil.toUnderlineCase(order.getField())));
             return orders.toArray(new Order[]{});
+        }
+    }
+
+    public Condition[] getConditions() {
+        if (CollUtil.isEmpty(conditionList)) {
+            return new Condition[]{};
+        } else {
+            return conditionList.toArray(new Condition[]{});
         }
     }
 }

@@ -4,7 +4,6 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.db.Db;
 import cn.hutool.db.Page;
-import cn.hutool.db.dialect.impl.Sqlite3Dialect;
 import cn.hutool.db.handler.BeanListHandler;
 import cn.hutool.db.sql.Condition;
 import cn.hutool.db.sql.Order;
@@ -15,7 +14,7 @@ import com.manda.usl.kernel.annotation.Singleton;
 
 import java.lang.reflect.Method;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * @author hongda.li
@@ -36,17 +35,20 @@ public class FindByInterceptor extends AbstractInterceptor {
 
         ConditionBuilder builder = ArrayUtil.get(context.getArgs(), 0);
         if (builder != null) {
-            Condition[] array = builder.toArray();
+            Condition[] array = builder.getConditions();
             for (Condition condition : array) {
                 condition.setField(CharSequenceUtil.toUnderlineCase(condition.getField()));
             }
             query.setWhere(array);
 
+            Page page = builder.getPage();
+            query.setPage(page);
+
             Order[] orders = builder.getOrders();
             if (ArrayUtil.isNotEmpty(orders)) {
-                Page maxPage = new Page(0, Integer.MAX_VALUE);
-                maxPage.setOrder(orders);
-                query.setPage(maxPage);
+                Page withOrder = Optional.ofNullable(query.getPage()).orElse(new Page(0, Integer.MAX_VALUE));
+                withOrder.setOrder(orders);
+                query.setPage(withOrder);
             }
         }
 
