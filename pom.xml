@@ -11,10 +11,9 @@
         <module>usl-kernel</module>
         <module>usl-logger</module>
         <module>usl-plugin</module>
-        <module>usl-data-milvus</module>
-        <module>usl-data-sqlite</module>
-        <module>usl-manage-cli</module>
-        <module>usl-manage-gui</module>
+        <module>usl-manage</module>
+        <module>usl-data-vector</module>
+        <module>usl-data-sql</module>
         <module>usl-http-server</module>
         <module>usl-http-client</module>
     </modules>
@@ -67,7 +66,7 @@
     </developers>
 
     <properties>
-        <hutool.version>5.8.26</hutool.version>
+        <hutool.version>5.8.27</hutool.version>
         <sqlite.version>3.45.1.0</sqlite.version>
         <lombok.version>1.18.30</lombok.version>
         <caffeine.version>3.1.8</caffeine.version>
@@ -107,7 +106,7 @@
 
             <dependency>
                 <groupId>com.manda</groupId>
-                <artifactId>usl-data-sqlite</artifactId>
+                <artifactId>usl-data-sql</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
