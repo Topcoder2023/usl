@@ -7,14 +7,15 @@
 
     <name>usl</name>
     <modules>
-        <module>usl-data</module>
         <module>usl-http</module>
         <module>usl-base</module>
         <module>usl-kernel</module>
         <module>usl-logger</module>
         <module>usl-plugin</module>
-        <module>usl-manage</module>
-        <module>usl-data/usl-data-milvus</module>
+        <module>usl-data-milvus</module>
+        <module>usl-data-sqlite</module>
+        <module>usl-manage-cli</module>
+        <module>usl-manage-gui</module>
     </modules>
 
     <groupId>com.manda</groupId>
