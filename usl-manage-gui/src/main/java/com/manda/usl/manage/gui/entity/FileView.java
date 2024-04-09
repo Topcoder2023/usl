@@ -1,6 +1,7 @@
 package com.manda.usl.manage.gui.entity;
 
 import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.db.sql.Order;
 import com.manda.usl.data.sqlite.annotation.PrimaryKey;
 import com.manda.usl.data.sqlite.annotation.Table;
 import lombok.Data;
@@ -17,6 +18,8 @@ public class FileView {
     public static final String FIELD_NAME = "name";
 
     public static final String FIELD_SUFFIX = "suffix";
+
+    public static final String FIELD_MODIFY = "modify";
 
     @PrimaryKey
     private Long id;

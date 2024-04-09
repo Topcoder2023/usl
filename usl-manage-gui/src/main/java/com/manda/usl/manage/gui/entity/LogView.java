@@ -1,5 +1,6 @@
 package com.manda.usl.manage.gui.entity;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import com.manda.usl.data.sqlite.annotation.PrimaryKey;
 import com.manda.usl.data.sqlite.annotation.Table;
 import lombok.Data;
@@ -33,4 +34,14 @@ public class LogView {
     private String message;
 
     private String source;
+
+    public LogView setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    public LogView setMessage(String message, Object... arguments) {
+        this.message = CharSequenceUtil.format(message, arguments);
+        return this;
+    }
 }

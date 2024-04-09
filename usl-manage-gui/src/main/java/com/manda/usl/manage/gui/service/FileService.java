@@ -41,26 +41,33 @@ public class FileService {
 
     public void loadFileView() {
         if (CollUtil.isNotEmpty(categoryList)) {
-            logMapper.insert(new LogView()
-                    .setType(LogView.FILE_MANAGER)
-                    .setTime(DateUtil.now())
-                    .setLevel(Level.INFO.name())
-                    .setMessage("扫描文件")
-                    .setSource(this.getClass().getName()));
-
             List<FileView> toDeleteList = fileMapper.find(new FileView())
                     .stream()
                     .filter(view -> Objects.nonNull(view.getPath()))
                     .filter(view -> !FileUtil.exist(view.getPath()))
                     .toList();
 
+            // 删除数量
+            int deleteCount = toDeleteList.size();
+
             fileMapper.batchDelete(toDeleteList);
-            categoryList.forEach(category -> this.loadFileView(category, any -> true));
+
+            // 新增数量
+            int insertCount = categoryList.stream().map(category -> this.loadFileView(category, any -> true))
+                    .mapToInt(Integer::intValue)
+                    .sum();
+
+            logMapper.insert(new LogView()
+                    .setType(LogView.FILE_MANAGER)
+                    .setTime(DateUtil.now())
+                    .setLevel(Level.INFO.name())
+                    .setMessage("扫描文件，移除 [{}] 份文件，新增 [{}] 份文件", deleteCount, insertCount)
+                    .setSource(this.getClass().getName()));
         }
     }
 
-    public void loadFileView(String categoryPath, FileFilter fileFilter) {
-        FileUtil.loopFiles(categoryPath, fileFilter)
+    public int loadFileView(String categoryPath, FileFilter fileFilter) {
+        List<FileView> toInsertList = FileUtil.loopFiles(categoryPath, fileFilter)
                 .stream()
                 .filter(FileUtil::isFile)
                 .map(file -> new FileView()
@@ -74,7 +81,10 @@ public class FileService {
                 .filter(view -> fileMapper.findOne(new FileView()
                         .setStatus(null)
                         .setUuid(view.getUuid())) == null)
-                .forEach(fileMapper::insert);
+                .toList();
+        fileMapper.batchInsert(toInsertList);
+
+        return toInsertList.size();
     }
 
     public Result view(String uuid, Integer fileFlag) {
@@ -102,7 +112,7 @@ public class FileService {
                 .setType(LogView.FILE_MANAGER)
                 .setTime(DateUtil.now())
                 .setLevel(Level.INFO.name())
-                .setMessage("清除缓存")
+                .setMessage("清除缓存，移除所有已扫描文件")
                 .setSource(this.getClass().getName()));
 
         fileMapper.deleteAll();

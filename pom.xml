@@ -7,7 +7,6 @@
 
     <name>usl</name>
     <modules>
-        <module>usl-http</module>
         <module>usl-base</module>
         <module>usl-kernel</module>
         <module>usl-logger</module>
@@ -16,6 +15,8 @@
         <module>usl-data-sqlite</module>
         <module>usl-manage-cli</module>
         <module>usl-manage-gui</module>
+        <module>usl-http-server</module>
+        <module>usl-http-client</module>
     </modules>
 
     <groupId>com.manda</groupId>
