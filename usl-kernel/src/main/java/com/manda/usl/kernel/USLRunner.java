@@ -58,13 +58,18 @@ public final class USLRunner implements SingleBeanLoader {
     @Getter
     private final AviatorEvaluatorInstance aviator;
 
+    @Getter
+    private EnhancedFunctionLoader enhancedFunctionLoader;
+
     public USLRunner() {
-        this(DEFAULT_NAME);
+        this.name = DEFAULT_NAME;
+        this.aviator = AviatorEvaluator.getInstance();
     }
 
     public USLRunner(String name) {
         this.name = name;
         this.aviator = AviatorEvaluator.newInstance();
+        this.enhancedFunctionLoader = new EnhancedFunctionLoader(name);
         this.configure();
     }
 
@@ -72,7 +77,7 @@ public final class USLRunner implements SingleBeanLoader {
         if (defaultRunner != null) {
             return defaultRunner;
         }
-        defaultRunner = new USLRunner();
+        defaultRunner = new USLRunner(DEFAULT_NAME);
         return defaultRunner;
     }
 
@@ -110,10 +115,10 @@ public final class USLRunner implements SingleBeanLoader {
         this.aviator.useLRUExpressionCache(1 << 10);
         this.aviator.setOption(Options.TRACE_EVAL, false);
         this.aviator.setOption(Options.SERIALIZABLE, false);
+        this.aviator.addFunctionLoader(this.enhancedFunctionLoader);
         this.aviator.setOption(Options.CAPTURE_FUNCTION_ARGS, true);
         this.aviator.setOption(Options.EVAL_MODE, EvalMode.INTERPRETER);
         this.aviator.setOption(Options.MAX_LOOP_COUNT, Integer.MIN_VALUE);
-        this.aviator.addFunctionLoader(new EnhancedFunctionLoader(this.name));
         this.aviator.setOption(Options.MATH_CONTEXT, MathContext.DECIMAL128);
         this.aviator.setOption(Options.NIL_WHEN_PROPERTY_NOT_FOUND, true);
         this.aviator.setOption(Options.ENABLE_PROPERTY_SYNTAX_SUGAR, true);
@@ -134,7 +139,6 @@ public final class USLRunner implements SingleBeanLoader {
      * @return 执行结果
      */
     public Object execute(Param param) {
-        Assert.isTrue(started, "USL-Runner hasn't been started");
         String cacheKey = DigestUtil.md5Hex(param.getExpression());
         return this.aviator.execute(cacheKey, param.getExpression(), param.getContext(), param.isCached());
     }
