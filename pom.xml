@@ -12,7 +12,6 @@
         <module>usl-logger</module>
         <module>usl-plugin</module>
         <module>usl-manage</module>
-        <module>usl-data-vector</module>
         <module>usl-data-sql</module>
         <module>usl-http-server</module>
         <module>usl-http-client</module>
@@ -89,6 +88,12 @@
             <dependency>
                 <groupId>com.manda</groupId>
                 <artifactId>usl-logger</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.manda</groupId>
+                <artifactId>usl-manage</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
