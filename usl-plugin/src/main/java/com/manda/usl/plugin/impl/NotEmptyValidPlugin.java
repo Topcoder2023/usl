@@ -1,8 +1,8 @@
 package com.manda.usl.plugin.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.manda.usl.kernel.common.USLException;
-import com.manda.usl.kernel.entity.FunctionSession;
+import com.manda.usl.kernel.common.FuncException;
+import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.NotEmpty;
 import com.manda.usl.plugin.entity.Location;
 
@@ -26,7 +26,7 @@ public class NotEmptyValidPlugin extends AbstractValidPlugin<NotEmpty> {
                     .replace("{index}", String.valueOf(location.getIndex()));
 
             // 抛出校验异常
-            throw new USLException(replace, location);
+            throw new FuncException(replace, location);
         }
     }
 }

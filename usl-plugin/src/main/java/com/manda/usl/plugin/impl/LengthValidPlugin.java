@@ -1,7 +1,7 @@
 package com.manda.usl.plugin.impl;
 
-import com.manda.usl.kernel.common.USLException;
-import com.manda.usl.kernel.entity.FunctionSession;
+import com.manda.usl.kernel.common.FuncException;
+import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.Length;
 import com.manda.usl.plugin.entity.Location;
 
@@ -54,7 +54,7 @@ public class LengthValidPlugin extends AbstractValidPlugin<Length> {
                         .replace("{expect}", String.valueOf(expect));
 
                 // 抛出校验异常
-                throw new USLException(replace,
+                throw new FuncException(replace,
                         location.getName(),
                         location.getIndex(),
                         actualLength,

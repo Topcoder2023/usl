@@ -6,20 +6,18 @@
     <packaging>pom</packaging>
 
     <name>usl</name>
+
     <modules>
-        <module>usl-base</module>
+        <module>usl-common</module>
         <module>usl-kernel</module>
         <module>usl-logger</module>
         <module>usl-plugin</module>
-        <module>usl-manage</module>
-        <module>usl-data-sql</module>
-        <module>usl-http-server</module>
-        <module>usl-http-client</module>
+        <module>usl-math</module>
     </modules>
 
     <groupId>com.manda</groupId>
     <artifactId>usl</artifactId>
-    <version>v1.1.0</version>
+    <version>1.2.0</version>
 
     <inceptionYear>2023</inceptionYear>
     <url>https://gitee.com/yixi-dlmu/usl</url>
@@ -93,12 +91,6 @@
 
             <dependency>
                 <groupId>com.manda</groupId>
-                <artifactId>usl-manage</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.manda</groupId>
                 <artifactId>usl-kernel</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -106,24 +98,6 @@
             <dependency>
                 <groupId>com.manda</groupId>
                 <artifactId>usl-plugin</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.manda</groupId>
-                <artifactId>usl-data-sql</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.manda</groupId>
-                <artifactId>usl-http-server</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.manda</groupId>
-                <artifactId>usl-http-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -159,39 +133,9 @@
             </dependency>
 
             <dependency>
-                <groupId>org.xerial</groupId>
-                <artifactId>sqlite-jdbc</artifactId>
-                <version>${sqlite.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.alibaba.fastjson2</groupId>
-                <artifactId>fastjson2</artifactId>
-                <version>${fastjson2.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.smartboot.http</groupId>
-                <artifactId>smart-http-server</artifactId>
-                <version>${smart.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid</artifactId>
-                <version>${druid.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.zhxu</groupId>
-                <artifactId>okhttps-fastjson2</artifactId>
-                <version>${ok-https.version}</version>
             </dependency>
 
             <dependency>

@@ -1,7 +1,7 @@
 package com.manda.usl.plugin.impl;
 
-import com.manda.usl.kernel.common.USLException;
-import com.manda.usl.kernel.entity.FunctionSession;
+import com.manda.usl.kernel.common.FuncException;
+import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.Digits;
 import com.manda.usl.plugin.entity.Location;
 
@@ -44,7 +44,7 @@ public class DigitsValidPlugin extends AbstractValidPlugin<Digits> {
                         .replace("{fraction}", String.valueOf(fraction));
 
                 // 抛出校验异常
-                throw new USLException(replace, location, actual, integer + "." + fraction);
+                throw new FuncException(replace, location, actual, integer + "." + fraction);
             }
         } else if (actual instanceof String) {
             // 如果是字符串类型，先尝试将其转换为数字类型，然后再进行校验
@@ -53,11 +53,11 @@ public class DigitsValidPlugin extends AbstractValidPlugin<Digits> {
                 valid(location, annotation, value);
             } catch (NumberFormatException e) {
                 // 如果无法转换为数字类型，则直接抛出校验异常
-                throw new USLException("The parameter must be a valid number", location, actual, integer + "." + fraction);
+                throw new FuncException("The parameter must be a valid number", location, actual, integer + "." + fraction);
             }
         } else {
             // 如果既不是数字类型也不是字符串类型，则抛出异常
-            throw new USLException("The parameter must be either a Number or a String", location, actual, integer + "." + fraction);
+            throw new FuncException("The parameter must be either a Number or a String", location, actual, integer + "." + fraction);
         }
     }
 }

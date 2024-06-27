@@ -1,10 +1,10 @@
 package com.manda.usl.kernel;
 
-import com.manda.usl.kernel.annotation.Function;
-import com.manda.usl.kernel.annotation.FunctionGroup;
+import com.manda.usl.kernel.annotation.Func;
+import com.manda.usl.kernel.annotation.FuncGroup;
 import com.manda.usl.kernel.annotation.Singleton;
 import com.manda.usl.kernel.bean.BeanContext;
-import com.manda.usl.kernel.entity.Param;
+import com.manda.usl.kernel.view.Param;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,10 +24,10 @@ class USLRunnerTest {
     }
 
     @Singleton
-    @FunctionGroup
+    @FuncGroup
     static class NumberFunctions {
 
-        @Function("test_sum")
+        @Func("test_sum")
         double sum(int a, double b, float c) {
             return a + b + c;
         }

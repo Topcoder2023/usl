@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.manda</groupId>
         <artifactId>usl</artifactId>
-        <version>v1.1.0</version>
+        <version>1.2.0</version>
     </parent>
 
     <artifactId>usl-kernel</artifactId>
@@ -38,11 +38,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
         </dependency>
 
         <dependency>

@@ -6,11 +6,11 @@ import com.googlecode.aviator.runtime.function.AbstractVariadicFunction;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
-import com.manda.usl.kernel.common.USLException;
-import com.manda.usl.kernel.entity.FunctionMeta;
-import com.manda.usl.kernel.entity.FunctionSession;
-import com.manda.usl.kernel.entity.MethodMeta;
-import com.manda.usl.kernel.entity.SharedSession;
+import com.manda.usl.kernel.common.FuncException;
+import com.manda.usl.kernel.view.FunctionMeta;
+import com.manda.usl.kernel.view.FunctionSession;
+import com.manda.usl.kernel.view.MethodMeta;
+import com.manda.usl.kernel.view.SharedSession;
 import com.manda.usl.kernel.plugin.*;
 import lombok.Getter;
 
@@ -29,7 +29,6 @@ import java.util.function.Consumer;
  * @author hongda.li
  */
 @Getter
-@SuppressWarnings("ReassignedVariable")
 public class EnhancedFunction extends AbstractVariadicFunction {
 
     private final FunctionMeta definition;
@@ -88,10 +87,10 @@ public class EnhancedFunction extends AbstractVariadicFunction {
             Optional.ofNullable(session.getException()).ifPresent(error -> {
                 // 如果调用异常不为空，则将调用异常统一包装为 USL-Execute 异常
                 // 这样做是为了更好的区分整个脚本执行周期中的异常来源
-                if (error instanceof USLException exception) {
+                if (error instanceof FuncException exception) {
                     throw exception;
                 } else {
-                    throw new USLException(error);
+                    throw new FuncException(error);
                 }
             });
 

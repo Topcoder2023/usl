@@ -1,8 +1,8 @@
 package com.manda.usl.plugin.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.manda.usl.kernel.common.USLException;
-import com.manda.usl.kernel.entity.FunctionSession;
+import com.manda.usl.kernel.common.FuncException;
+import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.Size;
 import com.manda.usl.plugin.entity.Location;
 
@@ -64,6 +64,6 @@ public class SizeValidPlugin extends AbstractValidPlugin<Size> {
                 .replace("{expect}", expect);
 
         // 抛出校验异常
-        throw new USLException(replace, location, actualSize);
+        throw new FuncException(replace, location, actualSize);
     }
 }

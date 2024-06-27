@@ -6,7 +6,7 @@ import cn.hutool.core.util.TypeUtil;
 import com.googlecode.aviator.code.interpreter.ir.LoadIR;
 import com.googlecode.aviator.lexer.token.Token;
 import com.googlecode.aviator.runtime.type.AviatorObject;
-import com.manda.usl.kernel.entity.FunctionSession;
+import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.kernel.plugin.BeginPlugin;
 import com.manda.usl.plugin.entity.Location;
 

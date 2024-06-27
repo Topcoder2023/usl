@@ -1,8 +1,8 @@
 package com.manda.usl.plugin.impl;
 
 
-import com.manda.usl.kernel.common.USLException;
-import com.manda.usl.kernel.entity.FunctionSession;
+import com.manda.usl.kernel.common.FuncException;
+import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.Future;
 import com.manda.usl.plugin.entity.Location;
 
@@ -36,7 +36,7 @@ public class FutureValidPlugin extends AbstractValidPlugin<Future> {
                         .replace("{now}", now.toString());
 
                 // 抛出校验异常
-                throw new USLException(replace, location, actual, now);
+                throw new FuncException(replace, location, actual, now);
             }
         } else if (actual instanceof Calendar actualCalendar) {
             if (actualCalendar.before(Calendar.getInstance())) {
@@ -50,7 +50,7 @@ public class FutureValidPlugin extends AbstractValidPlugin<Future> {
                         .replace("{now}", Calendar.getInstance().getTime().toString());
 
                 // 抛出校验异常
-                throw new USLException(replace, location, actual, Calendar.getInstance());
+                throw new FuncException(replace, location, actual, Calendar.getInstance());
             }
         } else {
             throw new IllegalArgumentException("Invalid argument type. Expected: Date or Calendar");

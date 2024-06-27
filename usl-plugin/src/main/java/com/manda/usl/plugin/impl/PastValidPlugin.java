@@ -1,7 +1,7 @@
 package com.manda.usl.plugin.impl;
 
-import com.manda.usl.kernel.common.USLException;
-import com.manda.usl.kernel.entity.FunctionSession;
+import com.manda.usl.kernel.common.FuncException;
+import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.Past;
 import com.manda.usl.plugin.entity.Location;
 
@@ -35,7 +35,7 @@ public class PastValidPlugin extends AbstractValidPlugin<Past> {
                         .replace("{value}", String.valueOf(actual));
 
                 // 抛出校验异常
-                throw new USLException(replace, location, actual);
+                throw new FuncException(replace, location, actual);
             }
         }
     }

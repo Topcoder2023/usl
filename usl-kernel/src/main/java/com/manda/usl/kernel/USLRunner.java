@@ -1,114 +1,52 @@
 package com.manda.usl.kernel;
 
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.caller.CallerUtil;
-import cn.hutool.core.util.ServiceLoaderUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import com.google.auto.service.AutoService;
 import com.googlecode.aviator.*;
-import com.manda.usl.kernel.bean.BeanContext;
-import com.manda.usl.kernel.bean.BeanScanner;
-import com.manda.usl.kernel.common.BeanLoader;
-import com.manda.usl.kernel.common.Configuration;
-import com.manda.usl.kernel.common.SingleBeanLoader;
+import com.manda.usl.kernel.common.FuncEnhancer;
 import com.manda.usl.kernel.function.EnhancedFunctionLoader;
-import com.manda.usl.kernel.entity.Param;
+import com.manda.usl.kernel.view.Param;
 import lombok.Getter;
 
 import java.math.MathContext;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Optional;
+import java.util.List;
 
 /**
  * @author hongda.li
  */
-@AutoService(BeanLoader.class)
-public final class USLRunner implements SingleBeanLoader {
-    /**
-     * 当前版本号
-     */
-    public static final String VERSION = "v1.1.0";
-    /**
-     * 配置文件存放地址
-     * 相对路径 classpath://config.json
-     */
-    public static final String CONFIG_JSON_NAME = Optional.ofNullable(System.getProperty("config.path")).orElse("config.json");
+@Getter
+public final class USLRunner {
     /**
      * 默认的执行器名称
      */
     public static final String DEFAULT_NAME = "defaultRunner";
 
-    @Getter
-    private static Class<?> main;
-
-    @Getter
-    private static Long timestamp;
-
-    @Getter
-    private static Configuration configuration;
-
-    private static USLRunner defaultRunner;
-
-    private static boolean started = false;
-
-    @Getter
     private final String name;
 
-    @Getter
     private final AviatorEvaluatorInstance aviator;
 
-    @Getter
-    private EnhancedFunctionLoader enhancedFunctionLoader;
+    private final EnhancedFunctionLoader enhancedFunctionLoader;
+
+    private final List<FuncEnhancer> enhancers = new ArrayList<>();
+
+    private boolean started = false;
 
     public USLRunner() {
-        this.name = DEFAULT_NAME;
-        this.aviator = AviatorEvaluator.getInstance();
+        this(DEFAULT_NAME);
     }
 
     public USLRunner(String name) {
         this.name = name;
         this.aviator = AviatorEvaluator.newInstance();
-        this.enhancedFunctionLoader = new EnhancedFunctionLoader(name);
-        this.configure();
+        this.enhancedFunctionLoader = new EnhancedFunctionLoader(name, this.enhancers);
     }
 
-    public static USLRunner getInstance() {
-        if (defaultRunner != null) {
-            return defaultRunner;
-        }
-        defaultRunner = new USLRunner(DEFAULT_NAME);
-        return defaultRunner;
-    }
-
-    public static void run() {
+    public synchronized void run() {
         Assert.isFalse(started, "USL-Runner has been started");
-
-        USLRunner.main = CallerUtil.getCallerCaller();
-        USLRunner.timestamp = System.currentTimeMillis();
-        USLRunner.configuration = Configuration.parse(CONFIG_JSON_NAME);
-
-        BeanContext.register(USLRunner.configuration);
-
-        ServiceLoaderUtil.loadList(BeanLoader.class)
-                .stream()
-                .map(BeanLoader::load)
-                .flatMap(Collection::stream)
-                .distinct()
-                .map(BeanScanner::new)
-                .map(BeanScanner::scan)
-                .flatMap(Collection::stream)
-                .distinct()
-                .forEach(BeanContext::register);
-
-        BeanContext.refresh();
-
+        this.configure();
         started = true;
-    }
-
-    @Override
-    public Class<?> singleton() {
-        return main;
     }
 
     private void configure() {
@@ -127,9 +65,14 @@ public final class USLRunner implements SingleBeanLoader {
         this.aviator.setOption(Options.ALLOWED_CLASS_SET, Collections.emptySet());
         this.aviator.setOption(Options.USE_USER_ENV_AS_TOP_ENV_DIRECTLY, true);
         this.aviator.removeFunctionLoader(ClassPathConfigFunctionLoader.getInstance());
-        this.aviator.setOption(Options.ASSIGNABLE_ALLOWED_CLASS_SET, Collections.emptySet());
         this.aviator.setOption(Options.ALWAYS_PARSE_INTEGRAL_NUMBER_INTO_DECIMAL, true);
+        this.aviator.setOption(Options.ASSIGNABLE_ALLOWED_CLASS_SET, Collections.emptySet());
         this.aviator.setOption(Options.ALWAYS_PARSE_FLOATING_POINT_NUMBER_INTO_DECIMAL, true);
+    }
+
+    public USLRunner addEnhancer(FuncEnhancer funcEnhancer) {
+        this.enhancers.add(funcEnhancer);
+        return this;
     }
 
     /**
