@@ -1,11 +1,11 @@
 package com.manda.usl.base;
 
-import com.manda.usl.kernel.annotation.FuncGroup;
+import com.manda.usl.kernel.annotation.Func;
 
 /**
  * @author hongda.li
  */
-@FuncGroup
+@Func
 public class StringFunction {
 
 }

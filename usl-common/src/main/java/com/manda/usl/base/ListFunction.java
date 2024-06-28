@@ -8,7 +8,6 @@ import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 import com.manda.usl.kernel.annotation.Func;
-import com.manda.usl.kernel.annotation.FuncGroup;
 import com.manda.usl.kernel.view.SharedSession;
 
 import java.util.*;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * @author hongda.li
  */
-@FuncGroup
+@Func
 public class ListFunction {
     @Func("list")
     public final List<?> list() {
