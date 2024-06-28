@@ -12,7 +12,6 @@
         <module>usl-kernel</module>
         <module>usl-logger</module>
         <module>usl-plugin</module>
-        <module>usl-math</module>
     </modules>
 
     <groupId>com.manda</groupId>
@@ -63,18 +62,13 @@
     </developers>
 
     <properties>
-        <hutool.version>5.8.27</hutool.version>
-        <sqlite.version>3.45.1.0</sqlite.version>
+        <hutool.version>5.8.28</hutool.version>
         <lombok.version>1.18.30</lombok.version>
         <caffeine.version>3.1.8</caffeine.version>
-        <fastjson2.version>2.0.46</fastjson2.version>
-        <smart.version>1.4.0</smart.version>
         <slf4j.version>2.0.9</slf4j.version>
         <junit.version>5.10.2</junit.version>
         <aviator.version>5.4.1</aviator.version>
-        <druid.version>1.2.22</druid.version>
         <auto-service.version>1.1.1</auto-service.version>
-        <ok-https.version>4.0.2</ok-https.version>
 
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>

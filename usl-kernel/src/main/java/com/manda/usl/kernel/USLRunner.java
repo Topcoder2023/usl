@@ -5,6 +5,7 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.googlecode.aviator.*;
 import com.manda.usl.kernel.common.FuncEnhancer;
 import com.manda.usl.kernel.function.EnhancedFunctionLoader;
+import com.manda.usl.kernel.function.FunctionFallback;
 import com.manda.usl.kernel.view.Param;
 import lombok.Getter;
 
@@ -23,14 +24,29 @@ public final class USLRunner {
      */
     public static final String DEFAULT_NAME = "defaultRunner";
 
+    /**
+     * 当前执行器的名称
+     */
     private final String name;
 
+    /**
+     * 脚本引擎
+     */
     private final AviatorEvaluatorInstance aviator;
 
+    /**
+     * 增强函数加载器
+     */
     private final EnhancedFunctionLoader enhancedFunctionLoader;
 
+    /**
+     * 函数增强器集合
+     */
     private final List<FuncEnhancer> enhancers = new ArrayList<>();
 
+    /**
+     * 初始化标识
+     */
     private boolean started = false;
 
     public USLRunner() {
@@ -44,15 +60,16 @@ public final class USLRunner {
     }
 
     public synchronized void run() {
-        Assert.isFalse(started, "USL-Runner has been started");
+        Assert.isFalse(this.started, "USL-Runner has been started");
         this.configure();
-        started = true;
+        this.started = true;
     }
 
     private void configure() {
         this.aviator.useLRUExpressionCache(1 << 10);
         this.aviator.setOption(Options.TRACE_EVAL, false);
         this.aviator.setOption(Options.SERIALIZABLE, false);
+        this.aviator.setFunctionMissing(new FunctionFallback());
         this.aviator.addFunctionLoader(this.enhancedFunctionLoader);
         this.aviator.setOption(Options.CAPTURE_FUNCTION_ARGS, true);
         this.aviator.setOption(Options.EVAL_MODE, EvalMode.INTERPRETER);
@@ -70,6 +87,12 @@ public final class USLRunner {
         this.aviator.setOption(Options.ALWAYS_PARSE_FLOATING_POINT_NUMBER_INTO_DECIMAL, true);
     }
 
+    /**
+     * 添加函数增强器
+     *
+     * @param funcEnhancer 函数增强器
+     * @return 链式调用
+     */
     public USLRunner addEnhancer(FuncEnhancer funcEnhancer) {
         this.enhancers.add(funcEnhancer);
         return this;

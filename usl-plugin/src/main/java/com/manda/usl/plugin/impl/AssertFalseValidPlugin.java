@@ -1,6 +1,5 @@
 package com.manda.usl.plugin.impl;
 
-import com.manda.usl.kernel.annotation.Singleton;
 import com.manda.usl.kernel.common.FuncException;
 import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.AssertFalse;
@@ -11,7 +10,6 @@ import com.manda.usl.plugin.entity.Location;
  *
  * @author jingshu.zeng
  */
-@Singleton(whenNotExist = AssertFalseValidPlugin.class)
 public class AssertFalseValidPlugin extends AbstractValidPlugin<AssertFalse> {
     @Override
     public void onBegin(FunctionSession session) {

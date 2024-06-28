@@ -1,23 +1,24 @@
 package com.manda.usl.kernel.function;
 
 import cn.hutool.core.annotation.AnnotationUtil;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.ServiceLoaderUtil;
 import com.googlecode.aviator.FunctionLoader;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import com.manda.usl.kernel.annotation.Func;
-import com.manda.usl.kernel.annotation.FuncGroup;
-import com.manda.usl.kernel.common.FuncGroupScanner;
+import com.manda.usl.kernel.common.FuncException;
+import com.manda.usl.kernel.common.FuncScanner;
 import com.manda.usl.kernel.common.FuncEnhancer;
-import com.manda.usl.kernel.view.FunctionMeta;
+import com.manda.usl.kernel.view.FuncMeta;
 import com.manda.usl.kernel.view.MethodMeta;
 import com.manda.usl.kernel.plugin.Plugin;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -55,20 +56,24 @@ public class EnhancedFunctionLoader implements FunctionLoader {
     }
 
     private void parse() {
-        List<FuncGroupScanner> scannerList = ServiceLoaderUtil.loadList(FuncGroupScanner.class);
+        // 获取所有函数组扫描器
+        List<FuncScanner> scannerList = ServiceLoaderUtil.loadList(FuncScanner.class);
 
-        FuncGroupScanner.Scanner scanner = new FuncGroupScanner.Scanner(this.runnerName);
+        // 实例化适用于当前执行器的扫描器
+        FuncScanner.Scanner scanner = new FuncScanner.Scanner(this.runnerName);
 
-        for (FuncGroupScanner groupScanner : scannerList) {
+        // 执行扫描
+        for (FuncScanner groupScanner : scannerList) {
             groupScanner.doScan(scanner);
         }
 
+        // 将扫描结果转为函数组实例
         scanner.getGroupList()
-                .forEach(group -> Stream.of(ReflectUtil.getMethods(group.getClass(), this::filter))
+                .forEach(group -> Stream.of(ReflectUtil.getMethods(group.getClass(), this::matchFuncMethod))
                         .map(method -> {
-                            FunctionMeta functionMeta = new FunctionMeta(this.parseName(method), new MethodMeta(group, method));
-                            functionMeta.getPluginList().addAll(this.parsePlugin(group.getClass(), method));
-                            return functionMeta;
+                            FuncMeta funcMeta = new FuncMeta(this.getFuncName(method), new MethodMeta(group, method));
+                            funcMeta.addPluginList(this.buildPluginList(group.getClass(), method));
+                            return funcMeta;
                         })
                         .map(EnhancedFunction::new)
                         .map(this::enhance)
@@ -76,54 +81,47 @@ public class EnhancedFunctionLoader implements FunctionLoader {
     }
 
     private EnhancedFunction enhance(EnhancedFunction function) {
-        enhancerList.forEach(enhancer -> enhancer.enhance(function));
+        enhancerList.forEach(enhancer -> {
+            try {
+                enhancer.enhance(function);
+            } catch (Exception e) {
+                throw new FuncException("Exception occurred in function enhancer", e);
+            }
+        });
         return function;
     }
 
-    private List<Plugin> parsePlugin(Class<?> clazz, Method method) {
-        List<Plugin> pluginList = new ArrayList<>();
-
-        FuncGroup pluginGroup = AnnotationUtil.getAnnotation(clazz, FuncGroup.class);
-        this.parsePlugin(pluginGroup.plugins(), pluginList);
-
-        Func plugin = AnnotationUtil.getAnnotation(method, Func.class);
-        this.parsePlugin(plugin.plugins(), pluginList);
-
-        return pluginList;
-    }
-
-    private void parsePlugin(Class<?>[] plugins, List<Plugin> container) {
-        if (ArrayUtil.isEmpty(plugins)) {
-            return;
-        }
-
-        Arrays.stream(plugins)
+    private List<Plugin> buildPluginList(Class<?> type, Method method) {
+        return Stream.concat(
+                        Stream.of(AnnotationUtil.getAnnotation(type, Func.class).plugins()),
+                        Stream.of(AnnotationUtil.getAnnotation(method, Func.class).plugins())
+                )
+                .distinct()
                 .map(Singleton::get)
                 .filter(Objects::nonNull)
                 .map(Plugin.class::cast)
-                .forEach(ins -> {
-                    if (!container.contains(ins)) {
-                        container.add(ins);
-                    }
-                });
+                .sorted(Comparator.comparingInt(Plugin::order))
+                .toList();
     }
 
     private void cache(EnhancedFunction function) {
         String name = function.getName();
-        if (this.functions.containsKey(name)) {
-            log.warn("The function with the same name already exists : {}", name);
-        } else {
-            this.functions.put(name, function);
-            log.debug("Register function : {}", name);
-        }
+        Assert.isFalse(this.functions.containsKey(name), "The function with the same name already exists : {}", name);
+
+        this.functions.put(name, function);
+        log.debug("Cache function : {}", name);
     }
 
-    private boolean filter(Method method) {
-        return AnnotationUtil.hasAnnotation(method, Func.class);
+    private boolean matchFuncMethod(Method method) {
+        return AnnotationUtil.hasAnnotation(method, Func.class)
+                && !Modifier.isStatic(method.getModifiers())
+                && !Modifier.isPrivate(method.getModifiers());
     }
 
-    private String parseName(Method method) {
-        String name = AnnotationUtil.getAnnotationValue(method, Func.class);
-        return CharSequenceUtil.isBlank(name) ? method.getName() : name;
+    private String getFuncName(Method method) {
+        return CharSequenceUtil.blankToDefault(
+                AnnotationUtil.getAnnotationValue(method, Func.class),
+                method.getName()
+        );
     }
 }

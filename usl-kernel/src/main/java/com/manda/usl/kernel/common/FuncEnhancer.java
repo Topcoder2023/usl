@@ -7,6 +7,7 @@ import com.manda.usl.kernel.function.EnhancedFunction;
  *
  * @author hongda.li
  */
+@FunctionalInterface
 public interface FuncEnhancer {
 
     /**

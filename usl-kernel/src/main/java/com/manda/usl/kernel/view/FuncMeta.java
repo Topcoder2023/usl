@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Data
 @Accessors(chain = true)
-public class FunctionMeta {
+public class FuncMeta {
 
     private final String name;
 
@@ -24,8 +24,20 @@ public class FunctionMeta {
 
     private final Map<String, Object> attribute = new HashMap<>();
 
-    public FunctionMeta(String name, MethodMeta methodMeta) {
+    public FuncMeta(String name, MethodMeta methodMeta) {
         this.name = name;
         this.methodMeta = methodMeta;
+    }
+
+    public void addPlugin(Plugin plugin) {
+        this.pluginList.add(plugin);
+    }
+
+    public void addAttribute(String name, Object value) {
+        this.attribute.put(name, value);
+    }
+
+    public void addPluginList(List<Plugin> pluginList) {
+        this.pluginList.addAll(pluginList);
     }
 }

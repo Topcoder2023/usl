@@ -7,7 +7,7 @@ import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.utils.Env;
 import com.manda.usl.kernel.common.FuncException;
-import com.manda.usl.kernel.view.FunctionMeta;
+import com.manda.usl.kernel.view.FuncMeta;
 import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.kernel.view.MethodMeta;
 import com.manda.usl.kernel.view.SharedSession;
@@ -31,9 +31,9 @@ import java.util.function.Consumer;
 @Getter
 public class EnhancedFunction extends AbstractVariadicFunction {
 
-    private final FunctionMeta definition;
+    private final FuncMeta definition;
 
-    public EnhancedFunction(FunctionMeta definition) {
+    public EnhancedFunction(FuncMeta definition) {
         this.definition = definition;
     }
 
@@ -97,11 +97,13 @@ public class EnhancedFunction extends AbstractVariadicFunction {
             // 返回并包装调用会话中的返回值
             return FunctionUtils.wrapReturn(session.getResult());
         } finally {
-            // 清除会话
-            SharedSession.clear();
-
-            // 执行最终回调插件
-            this.invokePlugin(FinallyPlugin.class, plugin -> plugin.onFinally(session));
+            try {
+                // 执行最终回调插件
+                this.invokePlugin(FinallyPlugin.class, plugin -> plugin.onFinally(session));
+            } finally {
+                // 清除会话
+                SharedSession.clear();
+            }
         }
     }
 

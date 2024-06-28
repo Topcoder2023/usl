@@ -16,7 +16,7 @@ public final class FunctionSession {
 
     private final AviatorObject[] objects;
 
-    private final FunctionMeta definition;
+    private final FuncMeta definition;
 
     private Invocation<?> invocation;
 
@@ -24,7 +24,7 @@ public final class FunctionSession {
 
     private Exception exception;
 
-    public FunctionSession(Env env, AviatorObject[] objects, FunctionMeta definition) {
+    public FunctionSession(Env env, AviatorObject[] objects, FuncMeta definition) {
         this.env = env;
         this.objects = objects;
         this.definition = definition;
