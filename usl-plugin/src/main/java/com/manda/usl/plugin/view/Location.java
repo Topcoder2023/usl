@@ -1,4 +1,4 @@
-package com.manda.usl.plugin.entity;
+package com.manda.usl.plugin.view;
 
 import com.googlecode.aviator.lexer.token.Token;
 import lombok.Data;

@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.manda.usl.kernel.common.FuncException;
 import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.NotEmpty;
-import com.manda.usl.plugin.entity.Location;
+import com.manda.usl.plugin.view.Location;
 
 /**
  * @author hongda.li
@@ -12,7 +12,7 @@ import com.manda.usl.plugin.entity.Location;
 public class NotEmptyValidPlugin extends AbstractValidPlugin<NotEmpty> {
     @Override
     public void onBegin(FunctionSession session) {
-        this.filterAnnotation(session);
+        this.matchAnnotation(session);
     }
 
     @Override

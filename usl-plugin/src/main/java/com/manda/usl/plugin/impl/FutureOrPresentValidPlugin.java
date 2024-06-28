@@ -3,7 +3,7 @@ package com.manda.usl.plugin.impl;
 import com.manda.usl.kernel.common.FuncException;
 import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.FutureOrPresent;
-import com.manda.usl.plugin.entity.Location;
+import com.manda.usl.plugin.view.Location;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -14,7 +14,7 @@ import java.util.Date;
 public class FutureOrPresentValidPlugin extends AbstractValidPlugin<FutureOrPresent> {
     @Override
     public void onBegin(FunctionSession session) {
-        this.filterAnnotation(session);
+        this.matchAnnotation(session);
     }
 
     @Override

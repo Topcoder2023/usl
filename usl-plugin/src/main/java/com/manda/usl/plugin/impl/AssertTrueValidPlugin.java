@@ -3,7 +3,7 @@ package com.manda.usl.plugin.impl;
 import com.manda.usl.kernel.common.FuncException;
 import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.AssertTrue;
-import com.manda.usl.plugin.entity.Location;
+import com.manda.usl.plugin.view.Location;
 
 /**
  * 真值校验插件
@@ -11,15 +11,16 @@ import com.manda.usl.plugin.entity.Location;
  * @author jingshu.zeng
  */
 public class AssertTrueValidPlugin extends AbstractValidPlugin<AssertTrue> {
+
     @Override
     public void onBegin(FunctionSession session) {
-        this.filterAnnotation(session);
+        this.matchAnnotation(session);
     }
 
     @Override
     protected void valid(Location location, AssertTrue annotation, Object actual) {
         // 参数实际值校验
-        if (!(actual instanceof Boolean && ((Boolean) actual))) {
+        if (!Boolean.TRUE.equals(actual)) {
             // 注解指定的错误信息
             String message = annotation.message();
 

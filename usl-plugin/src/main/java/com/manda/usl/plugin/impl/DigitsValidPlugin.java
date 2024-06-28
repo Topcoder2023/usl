@@ -3,7 +3,7 @@ package com.manda.usl.plugin.impl;
 import com.manda.usl.kernel.common.FuncException;
 import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.Digits;
-import com.manda.usl.plugin.entity.Location;
+import com.manda.usl.plugin.view.Location;
 
 /**
  * 数字格式验证插件
@@ -15,7 +15,7 @@ public class DigitsValidPlugin extends AbstractValidPlugin<Digits> {
 
     @Override
     public void onBegin(FunctionSession session) {
-        this.filterAnnotation(session);
+        this.matchAnnotation(session);
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.manda.usl.plugin.impl;
 import com.manda.usl.kernel.common.FuncException;
 import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.Null;
-import com.manda.usl.plugin.entity.Location;
+import com.manda.usl.plugin.view.Location;
 
 /**
  * @author jiahao.song
@@ -11,7 +11,7 @@ import com.manda.usl.plugin.entity.Location;
 public class NullValidPlugin extends AbstractValidPlugin<Null> {
     @Override
     public void onBegin(FunctionSession session) {
-        this.filterAnnotation(session);
+        this.matchAnnotation(session);
     }
 
     @Override

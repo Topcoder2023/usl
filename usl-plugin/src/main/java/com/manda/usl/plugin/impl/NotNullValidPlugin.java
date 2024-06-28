@@ -3,7 +3,7 @@ package com.manda.usl.plugin.impl;
 import com.manda.usl.kernel.common.FuncException;
 import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.NotNull;
-import com.manda.usl.plugin.entity.Location;
+import com.manda.usl.plugin.view.Location;
 
 /**
  * @author jiahao.song, jingshu.zeng
@@ -11,7 +11,7 @@ import com.manda.usl.plugin.entity.Location;
 public class NotNullValidPlugin extends AbstractValidPlugin<NotNull> {
     @Override
     public void onBegin(FunctionSession session) {
-        this.filterAnnotation(session);
+        this.matchAnnotation(session);
     }
 
     @Override

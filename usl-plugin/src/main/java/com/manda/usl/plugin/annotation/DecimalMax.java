@@ -17,9 +17,9 @@ public @interface DecimalMax {
     /**
      * 最大值
      *
-     * @return 长整型最大值
+     * @return 最大值
      */
-    String value();
+    double value();
 
     /**
      * 错误消息

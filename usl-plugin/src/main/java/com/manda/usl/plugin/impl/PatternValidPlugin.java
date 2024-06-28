@@ -4,7 +4,7 @@ import cn.hutool.core.util.ReUtil;
 import com.manda.usl.kernel.common.FuncException;
 import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.plugin.annotation.Pattern;
-import com.manda.usl.plugin.entity.Location;
+import com.manda.usl.plugin.view.Location;
 
 /**
  * @author jiahao.song
@@ -12,7 +12,7 @@ import com.manda.usl.plugin.entity.Location;
 public class PatternValidPlugin extends AbstractValidPlugin<Pattern> {
     @Override
     public void onBegin(FunctionSession session) {
-        this.filterAnnotation(session);
+        this.matchAnnotation(session);
     }
 
     @Override

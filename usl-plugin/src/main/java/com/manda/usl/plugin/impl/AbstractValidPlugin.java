@@ -8,7 +8,7 @@ import com.googlecode.aviator.lexer.token.Token;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.manda.usl.kernel.view.FunctionSession;
 import com.manda.usl.kernel.plugin.BeginPlugin;
-import com.manda.usl.plugin.entity.Location;
+import com.manda.usl.plugin.view.Location;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
@@ -26,6 +26,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SuppressWarnings("unchecked")
 public abstract class AbstractValidPlugin<T extends Annotation> implements BeginPlugin {
 
+    private final Class<T> target;
+
+    protected AbstractValidPlugin() {
+        this.target = (Class<T>) TypeUtil.getTypeArgument(this.getClass());
+    }
+
     /**
      * 校验参数
      *
@@ -40,10 +46,7 @@ public abstract class AbstractValidPlugin<T extends Annotation> implements Begin
      *
      * @param session 函数会话
      */
-    protected void filterAnnotation(FunctionSession session) {
-        // 注解类型
-        Class<T> target = (Class<T>) TypeUtil.getTypeArgument(this.getClass());
-
+    protected void matchAnnotation(FunctionSession session) {
         // 原始参数
         AviatorObject[] objects = session.getObjects();
 
